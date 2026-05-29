@@ -2,7 +2,7 @@
   <div class="inline-flex flex-wrap gap-2">
     <!-- Loading State -->
     <div v-if="loading" class="text-xs text-gray-500 dark:text-gray-400">
-      Loading trades...
+      {{ s('Loading trades...') }}
     </div>
 
     <!-- Trades -->
@@ -40,12 +40,18 @@
 
     <!-- No trades found -->
     <div v-if="!loading && trades.length === 0" class="text-xs text-gray-500 dark:text-gray-400 italic">
-      No trade details available
+      {{ s('No trade details available') }}
     </div>
   </div>
 </template>
 
 <script setup>
+import { tSentence } from '@/i18n'
+import { useI18n } from 'vue-i18n'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'diary' })
+
 import { ref, watch, onMounted } from 'vue'
 import api from '@/services/api'
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'

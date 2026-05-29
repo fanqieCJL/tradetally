@@ -4,9 +4,9 @@
     <div class="mb-8">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 class="heading-page">Trading Journal</h1>
+          <h1 class="heading-page">{{ s('Trading Journal') }}</h1>
           <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            Track your daily market thoughts, trading plans, and reflections
+            {{ s('Track your daily market thoughts, trading plans, and reflections') }}
           </p>
         </div>
         
@@ -24,7 +24,7 @@
                 ]"
               >
                 <ListBulletIcon class="w-4 h-4 mr-1" />
-                List
+                {{ s('List') }}
               </button>
               <button
                 @click="currentView = 'calendar'"
@@ -36,7 +36,7 @@
                 ]"
               >
                 <CalendarDaysIcon class="w-4 h-4 mr-1" />
-                Calendar
+                {{ s('Calendar') }}
               </button>
               <button
                 @click="currentView = 'templates'"
@@ -48,7 +48,7 @@
                 ]"
               >
                 <DocumentTextIcon class="w-4 h-4 mr-1" />
-                Templates
+                {{ s('Templates') }}
               </button>
               <button
                 @click="currentView = 'analysis'"
@@ -60,7 +60,7 @@
                 ]"
               >
                 <SparklesIcon class="w-4 h-4 mr-1" />
-                AI Analysis
+                {{ s('AI Analysis') }}
               </button>
             </div>
           </div>
@@ -71,7 +71,7 @@
             class="btn-primary flex-shrink-0"
           >
             <PlusIcon class="w-4 h-4 mr-2" />
-            New Entry
+            {{ s('New Entry') }}
           </router-link>
         </div>
       </div>
@@ -83,9 +83,9 @@
       :step="3"
       :total-steps="5"
       :next-step="4"
-      title="Trading Journal"
-      description="Track your daily market outlook, key levels, and lessons learned. Build the habit that separates consistent traders."
-      cta-label="Next: Accounts"
+      :title="s('Trading Journal')"
+      :description="onboardingDescription"
+      :cta-label="s('Next: Accounts')"
       cta-route="accounts"
     />
 
@@ -95,40 +95,40 @@
         <!-- Entry Type Filter -->
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Type
+            {{ s('Type') }}
           </label>
           <select
             v-model="filters.entryType"
             @change="applyFilters"
             class="input text-sm"
           >
-            <option value="">All Types</option>
-            <option value="diary">Diary</option>
-            <option value="playbook">Playbook</option>
+            <option value="">{{ s('All Types') }}</option>
+            <option value="diary">{{ s('Diary') }}</option>
+            <option value="playbook">{{ s('Playbook') }}</option>
           </select>
         </div>
 
         <!-- Market Bias Filter -->
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Market Bias
+            {{ s('Market Bias') }}
           </label>
           <select
             v-model="filters.marketBias"
             @change="applyFilters"
             class="input text-sm"
           >
-            <option value="">All Bias</option>
-            <option value="bullish">Bullish</option>
-            <option value="bearish">Bearish</option>
-            <option value="neutral">Neutral</option>
+            <option value="">{{ s('All Bias') }}</option>
+            <option value="bullish">{{ s('Bullish') }}</option>
+            <option value="bearish">{{ s('Bearish') }}</option>
+            <option value="neutral">{{ s('Neutral') }}</option>
           </select>
         </div>
 
         <!-- Date Range Filter -->
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Start Date
+            {{ s('Start Date') }}
           </label>
           <input
             type="date"
@@ -140,7 +140,7 @@
 
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            End Date
+            {{ s('End Date') }}
           </label>
           <input
             type="date"
@@ -153,7 +153,7 @@
         <!-- Search -->
         <div class="flex-1">
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Search
+            {{ s('Search') }}
           </label>
           <div class="relative">
             <input
@@ -162,7 +162,7 @@
               @input="debounceSearch"
               @focus="showTagSuggestions = searchQuery.includes('#')"
               @blur="hideTagSuggestions"
-              placeholder="Search entries or #tag..."
+              :placeholder="s('Search entries or #tag...')"
               class="input text-sm pl-10"
             />
             <MagnifyingGlassIcon class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
@@ -190,7 +190,7 @@
             @click="clearFilters"
             class="btn-secondary text-sm"
           >
-            Clear
+            {{ s('Clear') }}
           </button>
         </div>
       </div>
@@ -207,7 +207,7 @@
       <div v-else-if="error" class="text-center py-12">
         <ExclamationTriangleIcon class="w-12 h-12 text-red-400 mx-auto mb-4" />
         <p class="text-red-600 dark:text-red-400">{{ error }}</p>
-        <button @click="loadEntries" class="btn-primary mt-4">Try Again</button>
+        <button @click="loadEntries" class="btn-primary mt-4">{{ s('Try Again') }}</button>
       </div>
 
       <!-- Content -->
@@ -238,7 +238,7 @@
                       : 'bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-400'
                   ]"
                 >
-                  {{ entry.entry_type === 'diary' ? 'Diary' : 'Playbook' }}
+                  {{ entryTypeLabel(entry.entry_type) }}
                 </span>
                 
                 <span
@@ -246,7 +246,7 @@
                   :class="marketBiasClasses(entry.market_bias)"
                   class="px-2 py-1 text-xs font-medium rounded-full"
                 >
-                  {{ entry.market_bias.charAt(0).toUpperCase() + entry.market_bias.slice(1) }}
+                  {{ formatBiasLabel(entry.market_bias) }}
                 </span>
               </div>
               
@@ -289,12 +289,12 @@
           </div>
 
           <div v-if="entry.key_levels && entry.key_levels.length > 0" class="mb-3">
-            <span class="text-xs font-medium text-yellow-600 dark:text-yellow-400">Key Levels:</span>
+            <span class="text-xs font-medium text-yellow-600 dark:text-yellow-400">{{ s('Key Levels:') }}</span>
             <div class="text-sm text-gray-600 dark:text-gray-400 mt-1" v-html="truncateHtml(parseMarkdown(entry.key_levels), 150)"></div>
           </div>
           
           <div v-if="entry.watchlist && entry.watchlist.length > 0" class="mb-3">
-            <span class="text-xs font-medium text-blue-600 dark:text-blue-400 mr-2">Watchlist:</span>
+            <span class="text-xs font-medium text-blue-600 dark:text-blue-400 mr-2">{{ s('Watchlist:') }}</span>
             <div class="inline-flex flex-wrap gap-1">
               <WatchlistSymbol
                 v-for="(symbol, index) in entry.watchlist.slice(0, 5)"
@@ -307,13 +307,13 @@
                 v-if="entry.watchlist.length > 5"
                 class="text-xs text-gray-500 dark:text-gray-400 px-2"
               >
-                +{{ entry.watchlist.length - 5 }} more
+                {{ s(`+${entry.watchlist.length - 5} more`) }}
               </span>
             </div>
           </div>
 
           <div v-if="entry.linked_trades && entry.linked_trades.length > 0" class="mb-3">
-            <span class="text-xs font-medium text-purple-600 dark:text-purple-400 mr-2">Linked Trades:</span>
+            <span class="text-xs font-medium text-purple-600 dark:text-purple-400 mr-2">{{ s('Linked Trades:') }}</span>
             <LinkedTradesList :trade-ids="entry.linked_trades" />
           </div>
 
@@ -329,7 +329,7 @@
               v-if="entry.tags.length > 3"
               class="text-xs text-gray-500 dark:text-gray-400"
             >
-              +{{ entry.tags.length - 3 }} more tags
+              {{ s(`+${entry.tags.length - 3} more tags`) }}
             </span>
           </div>
 
@@ -359,14 +359,14 @@
         <!-- No Entries State -->
         <div v-if="!loading && entries.length === 0" class="text-center py-12">
           <BookOpenIcon class="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No journal entries found</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">{{ s('No journal entries found') }}</h3>
           <p class="text-gray-500 dark:text-gray-400 mb-6">
-            {{ hasActiveFilters ? 'Try adjusting your filters or' : '' }}
-            Start documenting your trading journey with your first entry.
+            {{ hasActiveFilters ? s('Try adjusting your filters or') : '' }}
+            {{ s('Start documenting your trading journey with your first entry.') }}
           </p>
           <router-link to="/diary/new" class="btn-primary">
             <PlusIcon class="w-4 h-4 mr-2" />
-            Create Your First Entry
+            {{ s('Create Your First Entry') }}
           </router-link>
         </div>
         </div>
@@ -376,7 +376,7 @@
         <!-- Calendar Header -->
         <div class="flex justify-between items-center mb-6">
           <h2 class="heading-section">
-            {{ format(calendarDate, 'MMMM yyyy') }}
+            {{ formatCalendarMonth }}
           </h2>
           <div class="flex items-center space-x-2">
             <button
@@ -389,7 +389,7 @@
               @click="goToToday"
               class="px-3 py-1 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600"
             >
-              Today
+              {{ s('Today') }}
             </button>
             <button
               @click="changeMonth(1)"
@@ -448,7 +448,7 @@
                 <component :is="getEntryIcon(entry)" class="w-3 h-3 inline mr-1" />
                 <span class="font-medium">{{ getEntryDisplayText(entry) }}</span>
                 <div v-if="entry.market_bias" class="text-xs opacity-75">
-                  {{ entry.market_bias }} bias
+                  {{ formatBiasLabel(entry.market_bias) }}{{ s(' bias') }}
                 </div>
               </div>
               <div
@@ -456,7 +456,7 @@
                 class="text-xs text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-300"
                 @click.stop="showDayEntries(day.date)"
               >
-                +{{ day.entries.length - 2 }} more entries
+                {{ s(`+${day.entries.length - 2} more entries`) }}
               </div>
             </div>
           </div>
@@ -465,16 +465,16 @@
         <!-- Empty State for Calendar -->
         <div v-if="entries.length === 0" class="text-center py-12">
           <BookOpenIcon class="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No Diary Entries</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">{{ s('No Diary Entries') }}</h3>
           <p class="text-gray-500 dark:text-gray-400 mb-4">
-            Create your first entry to see it on the calendar.
+            {{ s('Create your first entry to see it on the calendar.') }}
           </p>
           <router-link
             to="/diary/new"
             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700"
           >
             <PlusIcon class="w-4 h-4 mr-2" />
-            Create Your First Entry
+            {{ s('Create Your First Entry') }}
           </router-link>
         </div>
         </div>
@@ -499,11 +499,11 @@
           :disabled="pagination.page <= 1"
           class="px-3 py-2 text-sm font-medium text-gray-500 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Previous
+          {{ s('Previous') }}
         </button>
         
         <span class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
-          Page {{ pagination.page }} of {{ pagination.pages }}
+          {{ s(`Page ${pagination.page} of ${pagination.pages}`) }}
         </span>
         
         <button
@@ -511,7 +511,7 @@
           :disabled="pagination.page >= pagination.pages"
           class="px-3 py-2 text-sm font-medium text-gray-500 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Next
+          {{ s('Next') }}
         </button>
       </nav>
     </div>
@@ -526,23 +526,23 @@
         class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full mx-4"
         @click.stop
       >
-        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Delete Entry</h3>
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Delete Entry') }}</h3>
         <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
-          Are you sure you want to delete this journal entry? This action cannot be undone.
+          {{ s('Are you sure you want to delete this journal entry? This action cannot be undone.') }}
         </p>
         <div class="flex justify-end space-x-3">
           <button
             @click="showDeleteModal = false"
             class="btn-secondary"
           >
-            Cancel
+            {{ s('Cancel') }}
           </button>
           <button
             @click="deleteEntry"
             :disabled="deleting"
             class="btn-danger"
           >
-            {{ deleting ? 'Deleting...' : 'Delete' }}
+            {{ deleting ? s('Deleting...') : s('Delete') }}
           </button>
         </div>
       </div>
@@ -576,7 +576,9 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import { tSentence, i18n } from '@/i18n'
 import { useAuthStore } from '@/stores/auth'
 import { useDiaryStore } from '@/stores/diary'
 import { useUiPreferencesStore } from '@/stores/uiPreferences'
@@ -602,6 +604,24 @@ import {
   SparklesIcon,
   DocumentTextIcon
 } from '@heroicons/vue/24/outline'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'diary' })
+
+function formatBiasLabel(bias) {
+  if (!bias) return ''
+  const key = bias.charAt(0).toUpperCase() + bias.slice(1)
+  return s(key)
+}
+
+function entryTypeLabel(type) {
+  return type === 'diary' ? s('Diary') : s('Playbook')
+}
+
+const onboardingDescription = computed(() => {
+  void locale.value
+  return s('Track your daily market outlook, key levels, and lessons learned. Build the habit that separates consistent traders.')
+})
 
 const authStore = useAuthStore()
 const diaryStore = useDiaryStore()
@@ -658,7 +678,10 @@ const filteredTags = computed(() => {
 })
 
 // Calendar computed properties
-const dayHeaders = computed(() => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'])
+const dayHeaders = computed(() => {
+  void locale.value
+  return [s('Sun'), s('Mon'), s('Tue'), s('Wed'), s('Thu'), s('Fri'), s('Sat')]
+})
 
 const calendarDays = computed(() => {
   const start = startOfWeek(startOfMonth(calendarDate.value))
@@ -687,8 +710,15 @@ const formatDate = (dateString) => {
   // Parse as local date to avoid timezone shifts
   const [year, month, day] = dateString.split('T')[0].split('-')
   const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
-  return format(date, 'MMM d, yyyy')
+  const dateLocale = i18n.global.locale.value === 'zh' ? 'zh-CN' : 'en-US'
+  return date.toLocaleDateString(dateLocale, { year: 'numeric', month: 'short', day: 'numeric' })
 }
+
+const formatCalendarMonth = computed(() => {
+  void locale.value
+  const dateLocale = i18n.global.locale.value === 'zh' ? 'zh-CN' : 'en-US'
+  return calendarDate.value.toLocaleDateString(dateLocale, { year: 'numeric', month: 'long' })
+})
 
 const splitContent = (content) => {
   if (!content) return []
@@ -850,14 +880,14 @@ const getEntryDisplayText = (entry) => {
   if (entry.title && entry.title.trim()) {
     return entry.title.length > 12 ? entry.title.substring(0, 12) + '...' : entry.title
   }
-  return entry.entry_type === 'playbook' ? 'Playbook' : 'Journal'
+  return entry.entry_type === 'playbook' ? s('Playbook') : s('Journal')
 }
 
 const getEntryTooltip = (entry) => {
-  let tooltip = entry.title || (entry.entry_type === 'playbook' ? 'Playbook Entry' : 'Journal Entry')
+  let tooltip = entry.title || (entry.entry_type === 'playbook' ? s('Playbook Entry') : s('Journal Entry'))
   
   if (entry.market_bias) {
-    tooltip += `\nMarket Bias: ${entry.market_bias}`
+    tooltip += `\n${s('Market Bias:')} ${formatBiasLabel(entry.market_bias)}`
   }
   
   if (entry.content && entry.content.length > 0) {

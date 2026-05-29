@@ -1,7 +1,7 @@
 <template>
     <div class="content-wrapper py-8">
         <div class="mb-8">
-            <h1 class="heading-page">App Settings</h1>
+            <h1 class="heading-page">{{ s("App Settings") }}</h1>
             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                 Configure your application preferences and AI provider settings.
             </p>
@@ -359,7 +359,7 @@
                                         ></div>
                                         Saving...
                                     </span>
-                                    <span v-else>Save Analytics Settings</span>
+                                    <span v-else>{{ s("Save Analytics Settings") }}</span>
                                 </button>
                             </div>
                         </form>
@@ -450,7 +450,7 @@
                                         ></div>
                                         Saving...
                                     </span>
-                                    <span v-else>Save Privacy Settings</span>
+                                    <span v-else>{{ s("Save Privacy Settings") }}</span>
                                 </button>
                             </div>
                         </form>
@@ -879,7 +879,7 @@
                                         ></div>
                                         Saving...
                                     </span>
-                                    <span v-else>Save AI Settings</span>
+                                    <span v-else>{{ s("Save AI Settings") }}</span>
                                 </button>
                             </div>
                         </form>
@@ -1044,7 +1044,7 @@
                                         ></div>
                                         Saving...
                                     </span>
-                                    <span v-else>Save CUSIP AI Settings</span>
+                                    <span v-else>{{ s("Save CUSIP AI Settings") }}</span>
                                 </button>
                             </div>
                         </form>
@@ -1206,7 +1206,7 @@
                                         ></div>
                                         Saving...
                                     </span>
-                                    <span v-else>Save Admin AI Settings</span>
+                                    <span v-else>{{ s("Save Admin AI Settings") }}</span>
                                 </button>
                             </div>
                         </form>
@@ -2567,6 +2567,9 @@ import {
     ArrowTopRightOnSquareIcon,
 } from "@heroicons/vue/24/outline";
 import LogsViewer from "@/components/admin/LogsViewer.vue";
+import { tSentence } from "@/i18n";
+
+const s = (text) => tSentence(text, { context: "settings" });
 
 const authStore = useAuthStore();
 const versionStore = useVersionStore();

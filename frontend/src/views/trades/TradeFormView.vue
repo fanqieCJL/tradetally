@@ -19,11 +19,11 @@
             </svg>
           </div>
           <div class="ml-3 flex-1">
-            <h3 class="text-lg font-medium text-red-800 dark:text-red-400">Revenge Trading Alert</h3>
+            <h3 class="text-lg font-medium text-red-800 dark:text-red-400">{{ s('Revenge Trading Alert') }}</h3>
             <p class="text-red-700 dark:text-red-300 mt-1">{{ behavioralAlert.message }}</p>
             <div v-if="behavioralAlert.recommendation" class="mt-2">
               <p class="text-sm text-red-600 dark:text-red-400">
-                <strong>Recommendation:</strong> {{ behavioralAlert.recommendation }}
+                <strong>{{ s('Recommendation:') }}</strong> {{ behavioralAlert.recommendation }}
               </p>
             </div>
             <div v-if="behavioralAlert.coolingPeriod" class="mt-3">
@@ -55,7 +55,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728" />
           </svg>
         </div>
-        <h3 class="text-lg font-medium text-red-800 dark:text-red-400 mb-2">Trading Temporarily Blocked</h3>
+        <h3 class="text-lg font-medium text-red-800 dark:text-red-400 mb-2">{{ s('Trading Temporarily Blocked') }}</h3>
         <p class="text-red-700 dark:text-red-300 mb-4">
           Based on your recent trading patterns, we recommend taking a break to avoid emotional decision-making.
         </p>
@@ -69,11 +69,11 @@
       <div class="card-body space-y-6">
         <!-- Trade Info Section -->
         <div class="border-b border-gray-200 dark:border-gray-700 pb-6">
-          <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Trade Information</h2>
+          <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Trade Information') }}</h2>
 
           <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
             <div>
-              <label for="symbol" class="label">Symbol *</label>
+              <label for="symbol" class="label">{{ s('Symbol *') }}</label>
               <SymbolAutocomplete
                 id="symbol"
                 v-model="form.symbol"
@@ -83,28 +83,28 @@
             </div>
 
             <div v-if="!hasGroupedExecutions">
-              <label for="side" class="label">Side *</label>
+              <label for="side" class="label">{{ s('Side *') }}</label>
               <select id="side" v-model="form.side" required class="input">
-                <option value="">Select side</option>
-                <option value="long">Long</option>
-                <option value="short">Short</option>
+                <option value="">{{ s('Select side') }}</option>
+                <option value="long">{{ s('Long') }}</option>
+                <option value="short">{{ s('Short') }}</option>
               </select>
             </div>
 
             <div>
-              <label for="instrumentType" class="label">Instrument Type *</label>
+              <label for="instrumentType" class="label">{{ s('Instrument Type *') }}</label>
               <select id="instrumentType" v-model="form.instrumentType" required class="input">
-                <option value="stock">Stock</option>
-                <option value="option">Option</option>
-                <option value="future">Future</option>
-                <option value="crypto">Crypto</option>
+                <option value="stock">{{ s('Stock') }}</option>
+                <option value="option">{{ s('Option') }}</option>
+                <option value="future">{{ s('Future') }}</option>
+                <option value="crypto">{{ s('Crypto') }}</option>
               </select>
             </div>
           </div>
 
           <div v-if="!hasGroupedExecutions" class="grid grid-cols-1 gap-6 sm:grid-cols-2 mt-6">
             <div>
-              <label for="stopLoss" class="label">Stop Loss</label>
+              <label for="stopLoss" class="label">{{ s('Stop Loss') }}</label>
               <input
                 id="stopLoss"
                 v-model="form.stopLoss"
@@ -121,7 +121,7 @@
               <!-- TP1 -->
               <div class="grid gap-2 items-end" style="grid-template-columns: 1fr 5rem 1.5rem;">
                 <div>
-                  <label for="takeProfit" class="label">Take Profit (TP1)</label>
+                  <label for="takeProfit" class="label">{{ s('Take Profit (TP1)') }}</label>
                   <input
                     id="takeProfit"
                     v-model="form.takeProfit"
@@ -133,7 +133,7 @@
                   />
                 </div>
                 <div>
-                  <label for="takeProfitQty" class="label text-xs">Qty</label>
+                  <label for="takeProfitQty" class="label text-xs">{{ s('Qty') }}</label>
                   <input
                     id="takeProfitQty"
                     v-model.number="form.takeProfitQty"
@@ -162,7 +162,7 @@
                   />
                 </div>
                 <div>
-                  <label :for="`tp-shares-${tpIndex}`" class="label text-xs">Shares</label>
+                  <label :for="`tp-shares-${tpIndex}`" class="label text-xs">{{ s('Shares') }}</label>
                   <input
                     :id="`tp-shares-${tpIndex}`"
                     v-model.number="form.takeProfitTargets[tpIndex].shares"
@@ -200,7 +200,7 @@
 
           <!-- Target Hit First (only shown when stop loss is set) -->
           <div v-if="!hasGroupedExecutions && form.stopLoss" class="mt-6">
-            <label for="manualTargetHitFirst" class="label">Target Hit First</label>
+            <label for="manualTargetHitFirst" class="label">{{ s('Target Hit First') }}</label>
             <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">
               Manually specify which target was hit first (for R-Multiple analysis)
             </p>
@@ -209,9 +209,9 @@
               v-model="form.manualTargetHitFirst"
               class="input"
             >
-              <option :value="null">-- Auto-detect (requires API) --</option>
-              <option value="take_profit">Take Profit Hit First</option>
-              <option value="stop_loss">Stop Loss Hit First</option>
+              <option :value="null">{{ s('-- Auto-detect (requires API) --') }}</option>
+              <option value="take_profit">{{ s('Take Profit Hit First') }}</option>
+              <option value="stop_loss">{{ s('Stop Loss Hit First') }}</option>
             </select>
           </div>
 
@@ -227,7 +227,7 @@
         <div class="border-b border-gray-200 dark:border-gray-700 pb-6">
           <div class="flex items-center justify-between mb-4">
             <div>
-              <h2 class="text-lg font-medium text-gray-900 dark:text-white">Executions</h2>
+              <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('Executions') }}</h2>
               <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
                 Add individual fills or complete trades (grouped)
               </p>
@@ -257,7 +257,7 @@
                  : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Estimated P&L</p>
+                <p class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ s('Estimated P&L') }}</p>
                 <p class="text-xs text-gray-500 dark:text-gray-400" v-if="computedPnlPreview.instrumentType === 'future'">
                   Point Value: ${{ form.pointValue || 1 }}
                 </p>
@@ -597,8 +597,8 @@
           </div>
 
           <div v-else class="text-center py-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
-            <p class="text-gray-500 dark:text-gray-400 mb-2">No executions added yet</p>
-            <p class="text-sm text-gray-400 dark:text-gray-500">Click "Add Execution" to add your first fill</p>
+            <p class="text-gray-500 dark:text-gray-400 mb-2">{{ s('No executions added yet') }}</p>
+            <p class="text-sm text-gray-400 dark:text-gray-500">{{ s('Click "Add Execution" to add your first fill') }}</p>
           </div>
         </div>
 
@@ -609,7 +609,7 @@
             @click="showAdditionalFields = !showAdditionalFields"
             class="flex items-center justify-between w-full text-left mb-4"
           >
-            <h2 class="text-lg font-medium text-gray-900 dark:text-white">Additional Fields</h2>
+            <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('Additional Fields') }}</h2>
             <svg
               class="h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform duration-200"
               :class="{ 'rotate-180': showAdditionalFields }"
@@ -650,7 +650,7 @@
           </div>
 
           <div class="relative">
-            <label for="broker" class="label">Broker</label>
+            <label for="broker" class="label">{{ s('Broker') }}</label>
             <div class="relative">
               <input
                 v-if="showBrokerInput"
@@ -669,10 +669,10 @@
                 class="input pr-20"
                 @change="handleBrokerSelect"
               >
-                <option value="">Select broker</option>
+                <option value="">{{ s('Select broker') }}</option>
                 <option v-if="form.broker && !brokersList.includes(form.broker)" :value="form.broker">{{ form.broker }}</option>
                 <option v-for="broker in brokersList" :key="broker" :value="broker">{{ broker }}</option>
-                <option value="__custom__">+ Add New Broker</option>
+                <option value="__custom__">{{ s('+ Add New Broker') }}</option>
               </select>
               <button
                 v-if="showBrokerInput"
@@ -686,7 +686,7 @@
           </div>
 
           <div class="relative">
-            <label for="account_identifier" class="label">Account</label>
+            <label for="account_identifier" class="label">{{ s('Account') }}</label>
             <div class="relative">
               <input
                 v-if="showAccountInput"
@@ -705,10 +705,10 @@
                 class="input pr-20"
                 @change="handleAccountSelect"
               >
-                <option value="">Select account</option>
+                <option value="">{{ s('Select account') }}</option>
                 <option v-if="form.account_identifier && !accountsList.includes(form.account_identifier)" :value="form.account_identifier">{{ form.account_identifier }}</option>
                 <option v-for="account in accountsList" :key="account" :value="account">{{ account }}</option>
-                <option value="__custom__">+ Add New Account</option>
+                <option value="__custom__">{{ s('+ Add New Account') }}</option>
               </select>
               <button
                 v-if="showAccountInput"
@@ -723,7 +723,7 @@
 
           <!-- Confidence Level -->
           <div class="sm:col-span-2">
-            <label for="confidence" class="label">Confidence Level (1-10)</label>
+            <label for="confidence" class="label">{{ s('Confidence Level (1-10)') }}</label>
             <div class="mt-2">
               <div class="flex items-center space-x-4">
                 <span class="text-sm text-gray-500 dark:text-gray-400">1</span>
@@ -765,7 +765,7 @@
             @click="showMoreOptions = !showMoreOptions"
             class="flex items-center justify-between w-full text-left mb-4"
           >
-            <h2 class="text-lg font-medium text-gray-900 dark:text-white">More Options</h2>
+            <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('More Options') }}</h2>
             <svg
               class="h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform duration-200"
               :class="{ 'rotate-180': showMoreOptions }"
@@ -781,7 +781,7 @@
         <!-- Options-specific fields -->
         <div v-if="form.instrumentType === 'option'" class="grid grid-cols-1 gap-6 sm:grid-cols-2 border border-gray-200 dark:border-gray-600 rounded-lg p-4">
           <div class="sm:col-span-2 flex items-center justify-between">
-            <h3 class="text-md font-medium text-gray-900 dark:text-white">Option Details</h3>
+            <h3 class="text-md font-medium text-gray-900 dark:text-white">{{ s('Option Details') }}</h3>
             <div class="flex items-center gap-2">
               <select
                 v-model="selectedOptionsTemplate"
@@ -789,7 +789,7 @@
                 :disabled="optionsTemplates.length === 0"
                 class="text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white px-2 py-1 disabled:opacity-50"
               >
-                <option value="">{{ optionsTemplates.length === 0 ? 'No templates saved' : 'Load Template...' }}</option>
+                <option value="">{{ optionsTemplates.length === 0 ? s('No templates saved') : s('Load Template...') }}</option>
                 <option v-for="t in optionsTemplates" :key="t.id" :value="t.id">{{ t.name }}</option>
               </select>
               <button
@@ -811,7 +811,7 @@
           </div>
 
           <div>
-            <label for="underlyingSymbol" class="label">Underlying Symbol *</label>
+            <label for="underlyingSymbol" class="label">{{ s('Underlying Symbol *') }}</label>
             <input
               id="underlyingSymbol"
               v-model="form.underlyingSymbol"
@@ -823,16 +823,16 @@
           </div>
 
           <div>
-            <label for="optionType" class="label">Option Type *</label>
+            <label for="optionType" class="label">{{ s('Option Type *') }}</label>
             <select id="optionType" v-model="form.optionType" :required="form.instrumentType === 'option'" class="input">
-              <option value="">Select type</option>
-              <option value="call">Call</option>
-              <option value="put">Put</option>
+              <option value="">{{ s('Select type') }}</option>
+              <option value="call">{{ s('Call') }}</option>
+              <option value="put">{{ s('Put') }}</option>
             </select>
           </div>
 
           <div>
-            <label for="strikePrice" class="label">Strike Price *</label>
+            <label for="strikePrice" class="label">{{ s('Strike Price *') }}</label>
             <input
               id="strikePrice"
               v-model="form.strikePrice"
@@ -846,7 +846,7 @@
           </div>
 
           <div>
-            <label for="expirationDate" class="label">Expiration Date *</label>
+            <label for="expirationDate" class="label">{{ s('Expiration Date *') }}</label>
             <input
               id="expirationDate"
               v-model="form.expirationDate"
@@ -857,7 +857,7 @@
           </div>
 
           <div>
-            <label for="contractSize" class="label">Contract Size</label>
+            <label for="contractSize" class="label">{{ s('Contract Size') }}</label>
             <input
               id="contractSize"
               v-model="form.contractSize"
@@ -872,7 +872,7 @@
         <!-- Futures-specific fields -->
         <div v-if="form.instrumentType === 'future'" class="grid grid-cols-1 gap-6 sm:grid-cols-2 border border-gray-200 dark:border-gray-600 rounded-lg p-4">
           <div class="sm:col-span-2 flex items-center justify-between">
-            <h3 class="text-md font-medium text-gray-900 dark:text-white">Futures Details</h3>
+            <h3 class="text-md font-medium text-gray-900 dark:text-white">{{ s('Futures Details') }}</h3>
             <div class="flex items-center gap-2">
               <select
                 v-model="selectedFuturesTemplate"
@@ -880,7 +880,7 @@
                 :disabled="futuresTemplates.length === 0"
                 class="text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white px-2 py-1 disabled:opacity-50"
               >
-                <option value="">{{ futuresTemplates.length === 0 ? 'No templates saved' : 'Load Template...' }}</option>
+                <option value="">{{ futuresTemplates.length === 0 ? s('No templates saved') : s('Load Template...') }}</option>
                 <option v-for="t in futuresTemplates" :key="t.id" :value="t.id">{{ t.name }}</option>
               </select>
               <button
@@ -902,7 +902,7 @@
           </div>
 
           <div>
-            <label for="underlyingAsset" class="label">Underlying Asset *</label>
+            <label for="underlyingAsset" class="label">{{ s('Underlying Asset *') }}</label>
             <input
               id="underlyingAsset"
               v-model="form.underlyingAsset"
@@ -914,9 +914,9 @@
           </div>
 
           <div>
-            <label for="contractMonth" class="label">Contract Month *</label>
+            <label for="contractMonth" class="label">{{ s('Contract Month *') }}</label>
             <select id="contractMonth" v-model="form.contractMonth" :required="form.instrumentType === 'future'" class="input">
-              <option value="">Select month</option>
+              <option value="">{{ s('Select month') }}</option>
               <option value="JAN">January</option>
               <option value="FEB">February</option>
               <option value="MAR">March</option>
@@ -933,7 +933,7 @@
           </div>
 
           <div>
-            <label for="contractYear" class="label">Contract Year *</label>
+            <label for="contractYear" class="label">{{ s('Contract Year *') }}</label>
             <input
               id="contractYear"
               v-model="form.contractYear"
@@ -1498,6 +1498,9 @@ import ChartUpload from '@/components/trades/ChartUpload.vue'
 import TradeCharts from '@/components/trades/TradeCharts.vue'
 import api from '@/services/api'
 import SymbolAutocomplete from '@/components/common/SymbolAutocomplete.vue'
+import { tSentence } from '@/i18n'
+
+const s = (text) => tSentence(text, { context: 'trades' })
 
 // Load section preferences from localStorage
 const defaultSectionPrefs = {

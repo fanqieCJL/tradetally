@@ -4,11 +4,11 @@
     >
         <div class="flex items-center justify-between mb-4">
             <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
-                Pinned Notes
+                {{ s('Pinned Notes') }}
             </h2>
             <button @click="showAddModal = true" class="btn-primary">
                 <PlusIcon class="w-4 h-4 mr-2" />
-                Add Note
+                {{ s('Add Note') }}
             </button>
         </div>
 
@@ -35,21 +35,21 @@
                         <p
                             class="text-xs text-gray-500 dark:text-gray-400 mt-2"
                         >
-                            Updated {{ formatDate(note.updated_at) }}
+                            {{ s('Updated') }} {{ formatDate(note.updated_at) }}
                         </p>
                     </div>
                     <div class="flex items-center space-x-2 ml-4">
                         <button
                             @click="editNote(note)"
                             class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                            title="Edit"
+                            :title="s('Edit')"
                         >
                             <PencilIcon class="w-4 h-4" />
                         </button>
                         <button
                             @click="deleteNote(note.id)"
                             class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
-                            title="Delete"
+                            :title="s('Delete')"
                         >
                             <TrashIcon class="w-4 h-4" />
                         </button>
@@ -61,8 +61,7 @@
         <!-- Empty State -->
         <div v-else class="text-center py-8">
             <p class="text-gray-500 dark:text-gray-400">
-                No pinned notes yet. Add your first note to keep important
-                information handy.
+                {{ s('No pinned notes yet. Add your first note to keep important information handy.') }}
             </p>
         </div>
 
@@ -77,7 +76,7 @@
                 <h3
                     class="text-lg font-semibold text-gray-900 dark:text-white mb-4"
                 >
-                    {{ editingNote ? "Edit Note" : "Add Note" }}
+                    {{ editingNote ? s('Edit Note') : s('Add Note') }}
                 </h3>
 
                 <div class="space-y-4">
@@ -85,13 +84,13 @@
                         <label
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                         >
-                            Title (Optional)
+                            {{ s('Title (Optional)') }}
                         </label>
                         <input
                             v-model="noteForm.title"
                             type="text"
                             class="input"
-                            placeholder="Note title..."
+                            :placeholder="s('Note title...')"
                         />
                     </div>
 
@@ -99,28 +98,28 @@
                         <label
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                         >
-                            Content *
+                            {{ s('Content *') }}
                         </label>
                         <textarea
                             v-model="noteForm.content"
                             rows="6"
                             required
                             class="input resize-none"
-                            placeholder="Write your note..."
+                            :placeholder="s('Write your note...')"
                         ></textarea>
                     </div>
                 </div>
 
                 <div class="flex justify-end space-x-3 mt-6">
                     <button @click="closeModal" class="btn-secondary">
-                        Cancel
+                        {{ s('Cancel') }}
                     </button>
                     <button
                         @click="saveNote"
                         :disabled="!noteForm.content.trim()"
                         class="btn-primary"
                     >
-                        {{ editingNote ? "Update" : "Add" }} Note
+                        {{ editingNote ? s('Update') : s('Add') }} {{ s('Note') }}
                     </button>
                 </div>
             </div>
@@ -130,10 +129,15 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { tSentence } from '@/i18n'
+import { useI18n } from 'vue-i18n'
 import { PlusIcon, PencilIcon, TrashIcon } from "@heroicons/vue/24/outline";
 import api from "@/services/api";
 import { useUserTimezone } from "@/composables/useUserTimezone";
 import { useNotification } from "@/composables/useNotification";
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'diary' })
 
 const { formatDateTime: formatDateTimeTz } = useUserTimezone();
 const { showDangerConfirmation } = useNotification();

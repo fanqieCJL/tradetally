@@ -7,7 +7,7 @@
 
     <!-- No Trades -->
     <div v-else-if="availableTrades.length === 0" class="text-sm text-gray-500 dark:text-gray-400 italic">
-      No trades found for this date
+      {{ s('No trades found for this date') }}
     </div>
 
     <!-- Trade List -->
@@ -45,10 +45,10 @@
               </span>
             </div>
             <div class="mt-1 flex items-center space-x-4 text-xs text-gray-500 dark:text-gray-400">
-              <span>Qty: {{ Math.abs(trade.quantity) }}</span>
-              <span v-if="trade.entry_price">Entry: {{ formatCurrency(trade.entry_price, { abs: true }) }}</span>
+              <span>{{ s('Qty:') }} {{ Math.abs(trade.quantity) }}</span>
+              <span v-if="trade.entry_price">{{ s('Entry:') }} {{ formatCurrency(trade.entry_price, { abs: true }) }}</span>
               <span v-if="trade.pnl !== null && trade.pnl !== undefined" :class="trade.pnl >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
-                P/L: {{ formatCurrency(trade.pnl, { abs: true }) }}
+                {{ s('P&L') }}: {{ formatCurrency(trade.pnl, { abs: true }) }}
               </span>
             </div>
           </div>
@@ -58,12 +58,18 @@
 
     <!-- Selected Count -->
     <div v-if="selectedTrades.length > 0" class="mt-3 text-sm text-gray-600 dark:text-gray-400">
-      {{ selectedTrades.length }} trade{{ selectedTrades.length !== 1 ? 's' : '' }} selected
+      {{ s(`${selectedTrades.length} trade${selectedTrades.length === 1 ? '' : 's'} selected`) }}
     </div>
   </div>
 </template>
 
 <script setup>
+import { tSentence } from '@/i18n'
+import { useI18n } from 'vue-i18n'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'diary' })
+
 import { ref, watch, computed } from 'vue'
 import api from '@/services/api'
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'

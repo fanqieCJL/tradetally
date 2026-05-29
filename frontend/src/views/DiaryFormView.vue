@@ -5,10 +5,10 @@
       <div class="flex items-center justify-between">
         <div>
           <h1 class="heading-page">
-            {{ isEditing ? 'Edit Entry' : 'New Journal Entry' }}
+            {{ isEditing ? s('Edit Entry') : s('New Journal Entry') }}
           </h1>
           <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ isEditing ? 'Update your journal entry' : 'Document your trading thoughts and plans' }}
+            {{ isEditing ? s('Update your journal entry') : s('Document your trading thoughts and plans') }}
           </p>
         </div>
         
@@ -17,7 +17,7 @@
           class="btn-secondary"
         >
           <ArrowLeftIcon class="w-4 h-4 mr-2" />
-          Back to Journal
+          {{ s('Back to Journal') }}
         </router-link>
       </div>
     </div>
@@ -39,29 +39,29 @@
     <div v-if="showDuplicateModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
       <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Entry Already Exists
+          {{ s('Entry Already Exists') }}
         </h3>
         <p class="text-gray-600 dark:text-gray-400 mb-6">
-          An entry for {{ form.entryDate }} already exists. Would you like to append to the existing entry or overwrite it?
+          {{ duplicateEntryMessage }}
         </p>
         <div class="flex flex-col space-y-3">
           <button
             @click="handleDuplicateChoice('append')"
             class="btn-primary"
           >
-            Append to Existing Entry
+            {{ s('Append to Existing Entry') }}
           </button>
           <button
             @click="handleDuplicateChoice('overwrite')"
             class="btn-secondary"
           >
-            Overwrite Existing Entry
+            {{ s('Overwrite Existing Entry') }}
           </button>
           <button
             @click="showDuplicateModal = false"
             class="btn-secondary"
           >
-            Cancel
+            {{ s('Cancel') }}
           </button>
         </div>
       </div>
@@ -75,23 +75,23 @@
           <div class="flex items-center justify-between mb-3">
             <div class="flex items-center">
               <DocumentTextIcon class="w-5 h-5 text-primary-600 dark:text-primary-400 mr-2" />
-              <h3 class="text-sm font-medium text-primary-900 dark:text-primary-200">Use a Template</h3>
+              <h3 class="text-sm font-medium text-primary-900 dark:text-primary-200">{{ s('Use a Template') }}</h3>
             </div>
             <button
               type="button"
               @click="toggleTemplates"
               class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
             >
-              {{ showTemplates ? 'Hide' : 'Show' }}
+              {{ showTemplates ? s('Hide') : s('Show') }}
             </button>
           </div>
 
           <div v-if="showTemplates" class="space-y-3">
             <div v-if="templatesLoading" class="text-sm text-primary-700 dark:text-primary-300">
-              Loading templates...
+              {{ s('Loading templates...') }}
             </div>
             <div v-else-if="availableTemplates.length === 0" class="text-sm text-primary-700 dark:text-primary-300">
-              No templates available. Create one from the Templates section in your journal.
+              {{ s('No templates available. Create one from the Templates section in your journal.') }}
             </div>
             <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-2">
               <button
@@ -114,7 +114,7 @@
                     v-if="template.is_default"
                     class="ml-2 flex-shrink-0 inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400"
                   >
-                    Default
+                    {{ s('Default') }}
                   </span>
                 </div>
               </button>
@@ -122,15 +122,15 @@
           </div>
         </div>
 
-        <!-- Basic Information -->
+        <!--  -->
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-          <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Basic Information</h2>
+          <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Basic Information') }}</h2>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Entry Date -->
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Entry Date *
+                {{ s('Entry Date *') }}
               </label>
               <input
                 type="date"
@@ -140,40 +140,40 @@
               />
             </div>
 
-            <!-- Entry Type -->
+            <!--  -->
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Entry Type
+                {{ s('Entry Type') }}
               </label>
               <select v-model="form.entryType" class="input">
-                <option value="diary">Diary Entry</option>
-                <option value="playbook">Playbook Setup</option>
+                <option value="diary">{{ s('Diary Entry') }}</option>
+                <option value="playbook">{{ s('Playbook Setup') }}</option>
               </select>
               <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                {{ form.entryType === 'diary' ? 'Daily thoughts and reflections' : 'Trade setups and strategies' }}
+                {{ form.entryType === 'diary' ? s('Daily thoughts and reflections') : s('Trade setups and strategies') }}
               </p>
             </div>
           </div>
 
-          <!-- Title -->
+          <!--  -->
           <div class="mt-6">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Title
+              {{ s('Title') }}
               <span v-if="form.entryType === 'playbook'" class="text-red-500">*</span>
             </label>
             <input
               type="text"
               v-model="form.title"
               :required="form.entryType === 'playbook'"
-              placeholder="Enter a title for your entry..."
+              :placeholder="s('Enter a title for your entry...')"
               class="input"
             />
           </div>
 
-          <!-- Market Bias -->
+          <!--  -->
           <div class="mt-6">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Market Bias
+              {{ s('Market Bias') }}
             </label>
             <div class="flex space-x-4">
               <label class="flex items-center">
@@ -185,7 +185,7 @@
                 />
                 <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">
                   <ArrowTrendingUpIcon class="w-4 h-4 inline mr-1 text-green-600" />
-                  Bullish
+                  {{ s('Bullish') }}
                 </span>
               </label>
               <label class="flex items-center">
@@ -197,7 +197,7 @@
                 />
                 <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">
                   <ArrowTrendingDownIcon class="w-4 h-4 inline mr-1 text-red-600" />
-                  Bearish
+                  {{ s('Bearish') }}
                 </span>
               </label>
               <label class="flex items-center">
@@ -209,7 +209,7 @@
                 />
                 <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">
                   <MinusIcon class="w-4 h-4 inline mr-1 text-gray-600" />
-                  Neutral
+                  {{ s('Neutral') }}
                 </span>
               </label>
               <label class="flex items-center">
@@ -219,20 +219,20 @@
                   value=""
                   class="form-radio text-gray-400"
                 />
-                <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">No bias</span>
+                <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">{{ s('No bias') }}</span>
               </label>
             </div>
           </div>
         </div>
 
-        <!-- Content -->
+        <!--  -->
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-          <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Content</h2>
+          <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Content') }}</h2>
           
           <!-- Main Content -->
           <div class="mb-6">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              {{ form.entryType === 'diary' ? 'Journal Entry' : 'Setup Description' }}
+              {{ form.entryType === 'diary' ? s('Journal Entry') : s('Setup Description') }}
             </label>
             <div class="border border-gray-300 dark:border-gray-600 rounded-lg">
               <!-- Enhanced markdown toolbar -->
@@ -346,7 +346,7 @@
                 ref="contentEditor"
                 v-model="form.content"
                 rows="8"
-                placeholder="Write your thoughts, observations, and plans..."
+                :placeholder="s('Write your thoughts, observations, and plans...')"
                 class="w-full p-3 border-0 focus:ring-0 focus:outline-none bg-transparent resize-none"
                 @input="adjustTextareaHeight"
                 @keydown="handleKeyDown"
@@ -354,37 +354,37 @@
             </div>
           </div>
 
-          <!-- Key Levels -->
+          <!--  -->
           <div class="mb-6">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Key Levels
+              {{ s('Key Levels') }}
             </label>
             <textarea
               v-model="form.keyLevels"
               rows="3"
-              placeholder="Support: 150.50, Resistance: 155.25..."
+              :placeholder="s('Support: 150.50, Resistance: 155.25...')"
               class="input resize-none"
             ></textarea>
             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              Important price levels to watch during the trading session
+              {{ s('Important price levels to watch during the trading session') }}
             </p>
           </div>
         </div>
 
-        <!-- Trading Information -->
+        <!--  -->
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-          <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Trading Information</h2>
+          <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Trading Information') }}</h2>
           
-          <!-- Watchlist -->
+          <!--  -->
           <div class="mb-6">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Watchlist
+              {{ s('Watchlist') }}
             </label>
             <div class="flex items-center space-x-2 mb-2">
               <SymbolAutocomplete
                 v-model="newWatchlistSymbol"
                 @select="addWatchlistSymbol"
-                placeholder="Enter symbol (e.g., AAPL)"
+                :placeholder="s('Enter symbol (e.g., AAPL)')"
                 input-class="flex-1"
               />
               <button
@@ -413,15 +413,15 @@
             </div>
           </div>
 
-          <!-- Linked Trades -->
+          <!--  -->
           <div class="mb-6">
             <div class="flex items-start justify-between gap-4 mb-2">
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Linked Trades
+                  {{ s('Linked Trades') }}
                 </label>
                 <p class="text-xs text-gray-500 dark:text-gray-400">
-                  Link trades from {{ form.entryDate }} to this journal entry
+                  {{ linkedTradesHint }}
                 </p>
               </div>
               <button
@@ -429,12 +429,12 @@
                 @click="showLinkedTradesSection = !showLinkedTradesSection"
                 class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 whitespace-nowrap"
               >
-                {{ showLinkedTradesSection ? 'Hide' : (form.linkedTrades.length > 0 ? 'Manage' : 'Add trades') }}
+                {{ showLinkedTradesSection ? s('Hide') : (form.linkedTrades.length > 0 ? s('Manage') : s('Add trades')) }}
               </button>
             </div>
             <div v-if="!showLinkedTradesSection" class="text-sm text-gray-500 dark:text-gray-400">
-              <span v-if="form.linkedTrades.length > 0">{{ form.linkedTrades.length }} trade{{ form.linkedTrades.length === 1 ? '' : 's' }} linked</span>
-              <span v-else>Trade lookup loads when you open this section.</span>
+              <span v-if="form.linkedTrades.length > 0">{{ s(`${form.linkedTrades.length} trade${form.linkedTrades.length === 1 ? '' : 's'} linked`) }}</span>
+              <span v-else>{{ s('Trade lookup loads when you open this section.') }}</span>
             </div>
             <TradeSelector
               v-else
@@ -443,17 +443,17 @@
             />
           </div>
 
-          <!-- Tags -->
+          <!--  -->
           <div class="mb-6">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Tags
+              {{ s('Tags') }}
             </label>
             <div class="flex items-center space-x-2 mb-2">
               <input
                 type="text"
                 v-model="newTag"
                 @keydown.enter.prevent="addTag"
-                placeholder="Add a tag..."
+                :placeholder="s('Add a tag...')"
                 class="input flex-1"
               />
               <button
@@ -483,17 +483,17 @@
           </div>
         </div>
 
-        <!-- Post-Market Reflection -->
+        <!--  -->
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
-            Post-Market Reflection
-            <span class="text-sm font-normal text-gray-500 dark:text-gray-400">(Optional)</span>
+            {{ s('Post-Market Reflection') }}
+            <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ s('(Optional)') }}</span>
           </h2>
 
           <!-- Followed Plan -->
           <div class="mb-6">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Did you follow your plan?
+              {{ s('Did you follow your plan?') }}
             </label>
             <div class="flex space-x-4">
               <label class="flex items-center">
@@ -503,7 +503,7 @@
                   :value="true"
                   class="form-radio text-green-600"
                 />
-                <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Yes</span>
+                <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">{{ s('Yes') }}</span>
               </label>
               <label class="flex items-center">
                 <input
@@ -512,7 +512,7 @@
                   :value="false"
                   class="form-radio text-red-600"
                 />
-                <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">No</span>
+                <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">{{ s('No') }}</span>
               </label>
               <label class="flex items-center">
                 <input
@@ -521,21 +521,21 @@
                   :value="null"
                   class="form-radio text-gray-400"
                 />
-                <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">Not applicable</span>
+                <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">{{ s('Not applicable') }}</span>
               </label>
             </div>
           </div>
 
-          <!-- Lessons Learned -->
+          <!--  -->
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Lessons Learned
+              {{ s('Lessons Learned') }}
             </label>
             <textarea
               ref="lessonsLearnedEditor"
               v-model="form.lessonsLearned"
               rows="8"
-              placeholder="What went well? What could be improved? Key takeaways..."
+              :placeholder="s('What went well? What could be improved? Key takeaways...')"
               class="input resize-none"
               @input="adjustLessonsTextareaHeight"
             ></textarea>
@@ -546,9 +546,9 @@
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <div class="flex items-start justify-between gap-4 mb-3">
             <div>
-              <h2 class="text-lg font-medium text-gray-900 dark:text-white">Attachments</h2>
+              <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('Attachments') }}</h2>
               <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Add charts and screenshots only when you need them.
+                {{ s('Add charts and screenshots only when you need them.') }}
               </p>
             </div>
             <button
@@ -556,14 +556,14 @@
               @click="showAttachmentsSection = !showAttachmentsSection"
               class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 whitespace-nowrap"
             >
-              {{ showAttachmentsSection ? 'Hide' : ((entryAttachments.length > 0 || hasPendingImages) ? 'Manage' : 'Add images') }}
+              {{ showAttachmentsSection ? s('Hide') : ((entryAttachments.length > 0 || hasPendingImages) ? s('Manage') : s('Add images')) }}
             </button>
           </div>
 
           <div v-if="!showAttachmentsSection" class="text-sm text-gray-500 dark:text-gray-400">
-            <span v-if="entryAttachments.length > 0">{{ entryAttachments.length }} uploaded image{{ entryAttachments.length === 1 ? '' : 's' }}</span>
-            <span v-else-if="hasPendingImages">Images ready to upload when you save.</span>
-            <span v-else>Uploader stays unloaded until you open this section.</span>
+            <span v-if="entryAttachments.length > 0">{{ s(`${entryAttachments.length} uploaded image${entryAttachments.length === 1 ? '' : 's'}`) }}</span>
+            <span v-else-if="hasPendingImages">{{ s('Images ready to upload when you save.') }}</span>
+            <span v-else>{{ s('Uploader stays unloaded until you open this section.') }}</span>
           </div>
 
           <DiaryImageUpload
@@ -583,14 +583,14 @@
             to="/diary"
             class="btn-secondary"
           >
-            Cancel
+            {{ s('Cancel') }}
           </router-link>
           <button
             type="submit"
             :disabled="saving"
             class="btn-primary"
           >
-            {{ saving ? 'Saving...' : (isEditing ? 'Update Entry' : 'Create Entry') }}
+            {{ saving ? s('Saving...') : (isEditing ? s('Update Entry') : s('Create Entry')) }}
           </button>
         </div>
       </form>
@@ -600,7 +600,9 @@
 
 <script setup>
 import { ref, computed, onMounted, nextTick, watch, defineAsyncComponent } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
+import { tSentence } from '@/i18n'
 import { useDiaryStore } from '@/stores/diary'
 import { useDiaryTemplateStore } from '@/stores/diaryTemplate'
 import { getLocalToday } from '@/utils/date'
@@ -623,6 +625,19 @@ import {
 
 const TradeSelector = defineAsyncComponent(() => import('@/components/diary/TradeSelector.vue'))
 const DiaryImageUpload = defineAsyncComponent(() => import('@/components/diary/DiaryImageUpload.vue'))
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'diary' })
+
+const duplicateEntryMessage = computed(() => {
+  void locale.value
+  return s(`An entry for ${form.value.entryDate} already exists. Would you like to append to the existing entry or overwrite it?`)
+})
+
+const linkedTradesHint = computed(() => {
+  void locale.value
+  return s(`Link trades from ${form.value.entryDate} to this journal entry`)
+})
 
 const route = useRoute()
 const router = useRouter()

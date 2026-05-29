@@ -77,23 +77,33 @@
                 @click="authStore.logout"
                 class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
               >
-                Logout
+                {{ t('nav.logout') }}
               </button>
             </div>
             
             <div v-else class="flex items-center space-x-3">
               <router-link to="/login" class="btn-secondary text-sm">
-                Login
+                {{ t('nav.login') }}
               </router-link>
               <router-link to="/register" class="btn-primary text-sm">
-                Sign Up
+                {{ t('nav.signUp') }}
               </router-link>
             </div>
 
             <button
+              @click="toggleLanguage"
+              class="inline-flex items-center gap-1 rounded-md border border-gray-200 dark:border-gray-600 px-2.5 py-1.5 text-xs font-semibold text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              :title="t('common.language')"
+              :aria-label="t('common.language')"
+            >
+              <span class="text-sm">🌐</span>
+              <span>{{ currentLanguageLabel }}</span>
+            </button>
+
+            <button
               @click="toggleDarkMode"
               class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+              :aria-label="isDark ? t('nav.switchToLight') : t('nav.switchToDark')"
             >
               <SunIcon v-if="isDark" class="h-5 w-5" />
               <MoonIcon v-else class="h-5 w-5" />
@@ -105,15 +115,23 @@
             <button
               @click="toggleDarkMode"
               class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+              :aria-label="isDark ? t('nav.switchToLight') : t('nav.switchToDark')"
             >
               <SunIcon v-if="isDark" class="h-5 w-5" />
               <MoonIcon v-else class="h-5 w-5" />
             </button>
             <button
+              @click="toggleLanguage"
+              class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              :title="t('common.language')"
+              :aria-label="t('common.language')"
+            >
+              <span class="text-sm font-semibold">{{ currentLanguageLabel }}</span>
+            </button>
+            <button
               @click="toggleMobileMenu"
               class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              :aria-label="isMobileMenuOpen ? 'Close menu' : 'Open menu'"
+              :aria-label="isMobileMenuOpen ? t('nav.closeMenu') : t('nav.openMenu')"
               :aria-expanded="isMobileMenuOpen"
             >
               <Bars3Icon v-if="!isMobileMenuOpen" class="h-6 w-6" />
@@ -236,7 +254,7 @@
                 @click="authStore.logout(); isMobileMenuOpen = false"
                 class="block w-full text-left mx-3 px-4 py-3 rounded-lg text-base font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700 transition-all duration-200"
               >
-                Logout
+                {{ t('nav.logout') }}
               </button>
             </div>
           </template>
@@ -261,14 +279,14 @@
                 @click="isMobileMenuOpen = false"
                 class="block mx-3 px-4 py-3 rounded-lg text-base font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700 transition-all duration-200"
               >
-                Login
+                {{ t('nav.login') }}
               </router-link>
               <router-link
                 to="/register"
                 @click="isMobileMenuOpen = false"
                 class="block mx-3 px-4 py-3 rounded-lg text-base font-semibold bg-primary-100 text-primary-700 hover:bg-primary-200 dark:bg-primary-900/30 dark:text-primary-300 dark:hover:bg-primary-900/40 shadow-sm transition-all duration-200"
               >
-                Sign Up
+                {{ t('nav.signUp') }}
               </router-link>
             </div>
           </template>
@@ -283,18 +301,38 @@ import { ref, onMounted, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useUiPreferencesStore } from '@/stores/uiPreferences'
 import { useRegistrationMode } from '@/composables/useRegistrationMode'
+import { useI18n } from 'vue-i18n'
 import { SunIcon, MoonIcon, Bars3Icon, XMarkIcon, ChevronDownIcon, ChevronUpIcon, UserIcon } from '@heroicons/vue/24/outline'
 import config from '@/config'
 import NavDropdown from '@/components/common/NavDropdown.vue'
 import NotificationBell from '@/components/common/NotificationBell.vue'
 import GlobalAccountSelector from '@/components/layout/GlobalAccountSelector.vue'
+import { LANGUAGE_STORAGE_KEY, setLocale } from '@/i18n'
 
 const authStore = useAuthStore()
 const uiPreferencesStore = useUiPreferencesStore()
 const { showSEOPages, isBillingEnabled } = useRegistrationMode()
+const { t, locale } = useI18n()
 const isDark = ref(false)
 const isMobileMenuOpen = ref(false)
 const expandedSections = ref({})
+
+const NAV_TEXT_KEYS = {
+  Dashboard: 'nav.dashboard',
+  Trades: 'nav.trades',
+  Metrics: 'nav.metrics',
+  Analysis: 'nav.analysis',
+  Calendar: 'nav.calendar',
+  Import: 'nav.import',
+  Settings: 'nav.settings',
+  'Public Trades': 'nav.publicTrades',
+  Pricing: 'nav.pricing',
+  Features: 'nav.features',
+  FAQ: 'nav.faq',
+  Compare: 'nav.compare'
+}
+
+const currentLanguageLabel = computed(() => (locale.value === 'zh' ? '中' : 'EN'))
 
 const baseNavigation = [
   { 
@@ -436,7 +474,10 @@ const publicNavigation = computed(() => {
     )
   }
 
-  return nav
+  return nav.map((item) => ({
+    ...item,
+    name: NAV_TEXT_KEYS[item.name] ? t(NAV_TEXT_KEYS[item.name]) : item.name
+  }))
 })
 
 const navigation = computed(() => {
@@ -483,7 +524,10 @@ const navigation = computed(() => {
     })
   }
 
-  return nav
+  return nav.map((item) => ({
+    ...item,
+    name: NAV_TEXT_KEYS[item.name] ? t(NAV_TEXT_KEYS[item.name]) : item.name
+  }))
 })
 
 function toggleDarkMode() {
@@ -499,6 +543,12 @@ function toggleMobileMenu() {
 
 function toggleSection(sectionName) {
   expandedSections.value[sectionName] = !expandedSections.value[sectionName]
+}
+
+function toggleLanguage() {
+  const nextLocale = locale.value === 'zh' ? 'en' : 'zh'
+  setLocale(nextLocale)
+  uiPreferencesStore.notifyChanged(LANGUAGE_STORAGE_KEY, nextLocale)
 }
 
 onMounted(() => {

@@ -1,9 +1,9 @@
 <template>
   <div class="content-wrapper py-8">
     <div class="mb-8">
-      <h1 class="heading-page">Analytics</h1>
+      <h1 class="heading-page">{{ s('Analytics') }}</h1>
       <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-        Analyze your trading performance and identify areas for improvement.
+        {{ s('Analyze your trading performance and identify areas for improvement.') }}
       </p>
     </div>
 
@@ -20,10 +20,10 @@
             <div class="flex items-center justify-between">
               <div>
                 <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Display Charts in R-Multiples
+                  {{ s('Display Charts in R-Multiples') }}
                 </label>
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Show performance in terms of risk units instead of dollar amounts
+                  {{ s('Show performance in terms of risk units instead of dollar amounts') }}
                 </p>
               </div>
               <button
@@ -55,7 +55,7 @@
                 <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
-                {{ isCustomizing ? 'Done' : 'Reorder Charts' }}
+                {{ isCustomizing ? s('Done') : s('Reorder Charts') }}
               </button>
               <button
                 @click="showLayoutSettings = true"
@@ -65,14 +65,14 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
-                Show/Hide Charts
+                {{ s('Show/Hide Charts') }}
               </button>
               <button
                 v-if="isCustomizing"
                 @click="resetChartLayout"
                 class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
-                Reset to Default
+                {{ s('Reset to Default') }}
               </button>
             </div>
             <button
@@ -85,7 +85,7 @@
               <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
               </svg>
-              <span>{{ showAIPanel ? 'Hide AI Assistant' : 'AI Assistant' }}</span>
+              <span>{{ showAIPanel ? s('Hide AI Assistant') : s('AI Assistant') }}</span>
             </button>
           </div>
         </div>
@@ -104,8 +104,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div>
-              <p class="text-sm font-medium text-blue-900 dark:text-blue-100">Customization Mode Active</p>
-              <p class="text-xs text-blue-700 dark:text-blue-300 mt-1">Drag and drop chart sections to reorder them. Charts will auto-resize based on their width setting.</p>
+              <p class="text-sm font-medium text-blue-900 dark:text-blue-100">{{ s('Customization Mode Active') }}</p>
+              <p class="text-xs text-blue-700 dark:text-blue-300 mt-1">{{ s('Drag and drop chart sections to reorder them. Charts will auto-resize based on their width setting.') }}</p>
             </div>
           </div>
         </div>
@@ -122,7 +122,7 @@
         <div v-if="loading && !initialLoading" class="absolute top-0 right-0 z-10">
           <div class="flex items-center space-x-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-gray-200 dark:border-gray-700">
             <div class="animate-spin rounded-full h-4 w-4 border-2 border-primary-600 border-t-transparent"></div>
-            <span class="text-xs text-gray-600 dark:text-gray-400">Updating...</span>
+            <span class="text-xs text-gray-600 dark:text-gray-400">{{ s('Updating...') }}</span>
           </div>
         </div>
       <draggable
@@ -147,7 +147,7 @@
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
                 </svg>
-                <span class="text-xs text-gray-500 dark:text-gray-400">{{ getChartDefinition(element.id)?.title }}</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">{{ getChartTitle(element.id) }}</span>
               </div>
             </div>
 
@@ -158,7 +158,7 @@
         <div class="card card-mobile-safe flex-1">
           <div class="card-body">
             <dt class="text-data-secondary truncate">
-              Total P&L{{ rValueMode ? ' (R-Trades)' : '' }}
+              {{ s('Total P&L') }}{{ rValueMode ? s(' (R-Trades)') : '' }}
             </dt>
             <dd class="mt-1 text-lg sm:text-xl lg:text-2xl font-semibold whitespace-nowrap" :class="[
               displayOverview.total_pnl >= 0 ? 'text-green-600' : 'text-red-600'
@@ -171,7 +171,7 @@
         <div class="card card-mobile-safe flex-1">
           <div class="card-body">
             <dt class="text-data-secondary truncate">
-              Win Rate{{ rValueMode ? ' (R-Trades)' : '' }}
+              {{ s('Win Rate') }}{{ rValueMode ? s(' (R-Trades)') : '' }}
             </dt>
             <dd class="mt-1 text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900 dark:text-white whitespace-nowrap">
               {{ displayOverview.win_rate }}%
@@ -182,7 +182,7 @@
         <div class="card card-mobile-safe flex-1">
           <div class="card-body">
             <dt class="text-data-secondary truncate">
-              Total Trades{{ rValueMode ? ' (R-Trades)' : '' }}
+              {{ s('Total Trades') }}{{ rValueMode ? s(' (R-Trades)') : '' }}
             </dt>
             <dd class="mt-1 text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900 dark:text-white whitespace-nowrap">
               {{ displayOverview.total_trades }}
@@ -193,7 +193,7 @@
         <div class="card card-mobile-safe flex-1">
           <div class="card-body">
             <dt class="text-data-secondary truncate">
-              {{ calculationMethod }} Trade{{ rValueMode ? ' (R-Trades)' : '' }}
+              {{ calculationMethod }} {{ s('Trade') }}{{ rValueMode ? s(' (R-Trades)') : '' }}
             </dt>
             <dd class="mt-1 text-lg sm:text-xl lg:text-2xl font-semibold whitespace-nowrap" :class="[
               displayOverview.avg_pnl >= 0 ? 'text-green-600' : 'text-red-600'
@@ -206,7 +206,7 @@
         <div class="card card-mobile-safe flex-1">
           <div class="card-body">
             <dt class="text-data-secondary truncate">
-              Profit Factor{{ rValueMode ? ' (R-Trades)' : '' }}
+              {{ s('Profit Factor') }}{{ rValueMode ? s(' (R-Trades)') : '' }}
             </dt>
             <dd class="mt-1 text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900 dark:text-white whitespace-nowrap">
               {{ displayOverview.profit_factor ?? '0.00' }}
@@ -229,7 +229,7 @@
               style="backface-visibility: hidden;"
             >
               <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
-                {{ calculationMethod }} R-Multiple
+                {{ calculationMethod }} {{ s('R-Multiple') }}
                 <span class="ml-1 text-xs text-gray-400">↻</span>
               </dt>
               <dd class="mt-1 text-2xl font-semibold text-gray-900 dark:text-white whitespace-nowrap">
@@ -244,7 +244,7 @@
               style="backface-visibility: hidden; transform: rotateY(180deg);"
             >
               <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
-                Total R
+                {{ s('Total R') }}
                 <span class="ml-1 text-xs text-gray-400">↻</span>
               </dt>
               <dd class="mt-1 text-2xl font-semibold whitespace-nowrap" :class="[
@@ -257,7 +257,7 @@
 
           <!-- Click hint tooltip -->
           <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            <span class="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap">Click to toggle</span>
+            <span class="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap">{{ s('Click to toggle') }}</span>
           </div>
         </div>
       </div>
@@ -272,16 +272,16 @@
               </svg>
             </div>
             <div>
-              <h4 class="text-sm font-medium text-gray-900 dark:text-white">K-Ratio Requires Account Equity Tracking</h4>
+              <h4 class="text-sm font-medium text-gray-900 dark:text-white">{{ s('K-Ratio Requires Account Equity Tracking') }}</h4>
               <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                To calculate your K-Ratio, you need to track your account equity over time. The K-Ratio requires at least 3 equity entries to calculate meaningful consistency metrics.
+                {{ s('To calculate your K-Ratio, you need to track your account equity over time. The K-Ratio requires at least 3 equity entries to calculate meaningful consistency metrics.') }}
               </p>
               <div class="mt-2 flex flex-wrap gap-2">
                 <router-link to="/settings" class="inline-flex items-center px-3 py-1 text-xs font-medium text-primary-700 bg-primary-100 rounded-full hover:bg-primary-200 dark:bg-primary-900/20 dark:text-primary-400 dark:hover:bg-primary-900/40">
-                  Update Current Equity
+                  {{ s('Update Current Equity') }}
                 </router-link>
                 <router-link to="/equity-history" class="inline-flex items-center px-3 py-1 text-xs font-medium text-green-700 bg-green-100 rounded-full hover:bg-green-200 dark:bg-green-900/20 dark:text-green-400 dark:hover:bg-green-900/40">
-                  View Equity History
+                  {{ s('View Equity History') }}
                 </router-link>
               </div>
             </div>
@@ -300,28 +300,28 @@
             <svg class="mx-auto h-12 w-12 text-primary-600 dark:text-primary-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Pro Feature</h3>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ s('Pro Feature') }}</h3>
             <p class="text-gray-600 dark:text-gray-400 mb-6">
-              Unlock advanced trading metrics including SQN, Kelly Criterion, K-Ratio, MAE/MFE, and more with Pro.
+              {{ s('Unlock advanced trading metrics including SQN, Kelly Criterion, K-Ratio, MAE/MFE, and more with Pro.') }}
             </p>
             <router-link
               to="/pricing"
               class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
             >
-              Upgrade to Pro - {{ monthlyPricePerMonthLabel }}
+              {{ s('Upgrade to Pro') }} - {{ monthlyPricePerMonthLabel }}
             </router-link>
           </div>
         </div>
 
         <div class="card-body" :class="{ 'filter blur-sm pointer-events-none': isFreeTier }">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Advanced Trading Metrics</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Advanced Trading Metrics') }}</h3>
           <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 relative group">
               <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 truncate cursor-help">
-                System Quality Number
+                {{ s('System Quality Number') }}
               </dt>
               <dd class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
-                {{ overview.sqn ?? '0.00' }} <span class="text-sm text-gray-500">(ratio)</span>
+                {{ overview.sqn ?? '0.00' }} <span class="text-sm text-gray-500">{{ s('(ratio)') }}</span>
               </dd>
               <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                 {{ getSQNInterpretation(overview.sqn) }}
@@ -329,8 +329,8 @@
               <!-- Tooltip -->
               <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 delay-1500 z-10 w-64">
                 <div class="text-center">
-                  <strong>System Quality Number (SQN)</strong><br>
-                  Measures the quality of your trading system by calculating ({{ calculationMethod }} Trade / Standard Deviation) × √Number of Trades. Higher values indicate more consistent performance.
+                  <strong>{{ s('System Quality Number (SQN)') }}</strong><br>
+                  {{ sqnTooltipText }}
                 </div>
                 <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
               </div>
@@ -338,19 +338,19 @@
             
             <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 relative group">
               <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 truncate cursor-help">
-                Probability of Random
+                {{ s('Probability of Random') }}
               </dt>
               <dd class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
-                {{ overview.probability_random ?? 'N/A' }} <span class="text-sm text-gray-500">(probability)</span>
+                {{ overview.probability_random ?? 'N/A' }} <span class="text-sm text-gray-500">{{ s('(probability)') }}</span>
               </dd>
               <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                Statistical significance
+                {{ s('Statistical significance') }}
               </p>
               <!-- Tooltip -->
               <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 delay-1500 z-10 w-64">
                 <div class="text-center">
-                  <strong>Probability of Random</strong><br>
-                  The likelihood that your trading results could have occurred by random chance. Lower percentages indicate more statistically significant results.
+                  <strong>{{ s('Probability of Random') }}</strong><br>
+                  {{ s('The likelihood that your trading results could have occurred by random chance. Lower percentages indicate more statistically significant results.') }}
                 </div>
                 <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
               </div>
@@ -358,19 +358,19 @@
             
             <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 relative group">
               <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 truncate cursor-help">
-                Kelly Percentage
+                {{ s('Kelly Percentage') }}
               </dt>
               <dd class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
-                {{ overview.kelly_percentage ?? '0.00' }}% <span class="text-sm text-gray-500">(of capital)</span>
+                {{ overview.kelly_percentage ?? '0.00' }}% <span class="text-sm text-gray-500">{{ s('(of capital)') }}</span>
               </dd>
               <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                Optimal position size
+                {{ s('Optimal position size') }}
               </p>
               <!-- Tooltip -->
               <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 delay-1500 z-10 w-64">
                 <div class="text-center">
-                  <strong>Kelly Percentage</strong><br>
-                  The optimal percentage of your capital to risk per trade to maximize long-term growth, based on your win rate and average win/loss ratio.
+                  <strong>{{ s('Kelly Percentage') }}</strong><br>
+                  {{ s('The optimal percentage of your capital to risk per trade to maximize long-term growth, based on your win rate and average win/loss ratio.') }}
                 </div>
                 <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
               </div>
@@ -378,24 +378,24 @@
             
             <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 relative group">
               <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 truncate cursor-help">
-                K-Ratio
+                {{ s('K-Ratio') }}
               </dt>
               <dd class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
-                {{ overview.k_ratio ?? '0.00' }} <span class="text-sm text-gray-500">(ratio)</span>
+                {{ overview.k_ratio ?? '0.00' }} <span class="text-sm text-gray-500">{{ s('(ratio)') }}</span>
               </dd>
               <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                 <span v-if="overview.k_ratio === '0.00'">
-                  Requires 3+ equity entries
+                  {{ s('Requires 3+ equity entries') }}
                 </span>
                 <span v-else>
-                  {{ getKRatioInterpretation(overview.k_ratio) }} (equity-based)
+                  {{ getKRatioInterpretation(overview.k_ratio) }}{{ s(' (equity-based)') }}
                 </span>
               </p>
               <!-- Tooltip -->
               <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 delay-1500 z-10 w-64">
                 <div class="text-center">
-                  <strong>K-Ratio</strong><br>
-                  Measures the consistency of your equity curve by calculating {{ calculationMethod }} Return / Standard Deviation of Returns. Higher values indicate smoother, more consistent performance.
+                  <strong>{{ s('K-Ratio') }}</strong><br>
+                  {{ kRatioTooltipText }}
                 </div>
                 <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
               </div>
@@ -403,7 +403,7 @@
             
             <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
               <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 truncate">
-                Total Commissions
+                {{ s('Total Commissions') }}
               </dt>
               <dd class="mt-1 text-lg font-semibold text-red-600">
                 {{ formatCurrency(overview.total_commissions ?? 0) }}
@@ -412,7 +412,7 @@
             
             <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
               <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 truncate">
-                Total Fees
+                {{ s('Total Fees') }}
               </dt>
               <dd class="mt-1 text-lg font-semibold text-red-600">
                 {{ formatCurrency(overview.total_fees ?? 0) }}
@@ -421,20 +421,20 @@
             
             <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 relative group">
               <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 truncate cursor-help">
-                {{ calculationMethod }} Position MAE
+                {{ calculationMethod }} {{ s('Position MAE') }}
               </dt>
               <dd class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
                 <span v-if="overview.avg_mae !== 'N/A'">{{ formatCurrency(overview.avg_mae) }}</span>
                 <span v-else>{{ overview.avg_mae }}</span>
               </dd>
               <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                Max adverse excursion (est.)
+                {{ s('Max adverse excursion (est.)') }}
               </p>
               <!-- Tooltip -->
               <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 delay-1500 z-10 w-64">
                 <div class="text-center">
-                  <strong>Maximum Adverse Excursion (MAE)</strong><br>
-                  The largest unrealized loss your position experienced during the trade. Helps assess risk management and stop-loss placement.
+                  <strong>{{ s('Maximum Adverse Excursion (MAE)') }}</strong><br>
+                  {{ s('The largest unrealized loss your position experienced during the trade. Helps assess risk management and stop-loss placement.') }}
                 </div>
                 <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
               </div>
@@ -442,20 +442,20 @@
             
             <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 relative group">
               <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 truncate cursor-help">
-                {{ calculationMethod }} Position MFE
+                {{ calculationMethod }} {{ s('Position MFE') }}
               </dt>
               <dd class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
                 <span v-if="overview.avg_mfe !== 'N/A'">{{ formatCurrency(overview.avg_mfe) }}</span>
                 <span v-else>{{ overview.avg_mfe }}</span>
               </dd>
               <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                Max favorable excursion (est.)
+                {{ s('Max favorable excursion (est.)') }}
               </p>
               <!-- Tooltip -->
               <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 delay-1500 z-10 w-64">
                 <div class="text-center">
-                  <strong>Maximum Favorable Excursion (MFE)</strong><br>
-                  The largest unrealized profit your position experienced during the trade. Helps assess profit-taking strategies and potential missed opportunities.
+                  <strong>{{ s('Maximum Favorable Excursion (MFE)') }}</strong><br>
+                  {{ s('The largest unrealized profit your position experienced during the trade. Helps assess profit-taking strategies and potential missed opportunities.') }}
                 </div>
                 <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
               </div>
@@ -469,54 +469,54 @@
         <!-- Win/Loss Breakdown -->
         <div class="card">
           <div class="card-body">
-            <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Win/Loss Breakdown</h3>
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Win/Loss Breakdown') }}</h3>
             <div>
               <!-- Column Headers -->
               <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-200 dark:border-gray-700">
-                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Metric</span>
-                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Value</span>
+                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ s('Metric') }}</span>
+                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ s('Value') }}</span>
               </div>
               
               <!-- Data Rows -->
               <div class="space-y-1">
                 <div class="flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 rounded p-1 -m-1">
-                  <span class="text-sm text-gray-500 dark:text-gray-400">Winning Trades</span>
+                  <span class="text-sm text-gray-500 dark:text-gray-400">{{ s('Winning Trades') }}</span>
                   <span class="text-sm font-medium text-green-600">
                     {{ displayOverview.winning_trades }} ({{ getWinPercentage() }}%)
                   </span>
                 </div>
                 <div class="flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 rounded p-1 -m-1">
-                  <span class="text-sm text-gray-500 dark:text-gray-400">Losing Trades</span>
+                  <span class="text-sm text-gray-500 dark:text-gray-400">{{ s('Losing Trades') }}</span>
                   <span class="text-sm font-medium text-red-600">
                     {{ displayOverview.losing_trades }} ({{ getLossPercentage() }}%)
                   </span>
                 </div>
                 <div class="flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 rounded p-1 -m-1">
-                  <span class="text-sm text-gray-500 dark:text-gray-400">Breakeven Trades</span>
+                  <span class="text-sm text-gray-500 dark:text-gray-400">{{ s('Breakeven Trades') }}</span>
                   <span class="text-sm font-medium text-gray-500">
                     {{ displayOverview.breakeven_trades }}
                   </span>
                 </div>
                 <div class="flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 rounded p-1 -m-1">
-                  <span class="text-sm text-gray-500 dark:text-gray-400">{{ calculationMethod }} Win</span>
+                  <span class="text-sm text-gray-500 dark:text-gray-400">{{ calculationMethod }} {{ s('Win') }}</span>
                   <span class="text-sm font-medium text-green-600">
                     {{ formatCurrency(displayOverview.avg_win) }}
                   </span>
                 </div>
                 <div class="flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 rounded p-1 -m-1">
-                  <span class="text-sm text-gray-500 dark:text-gray-400">{{ calculationMethod }} Loss</span>
+                  <span class="text-sm text-gray-500 dark:text-gray-400">{{ calculationMethod }} {{ s('Loss') }}</span>
                   <span class="text-sm font-medium text-red-600">
                     {{ formatCurrency(displayOverview.avg_loss, { abs: true }) }}
                   </span>
                 </div>
                 <div class="flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 rounded p-1 -m-1">
-                  <span class="text-sm text-gray-500 dark:text-gray-400">Best Trade</span>
+                  <span class="text-sm text-gray-500 dark:text-gray-400">{{ s('Best Trade') }}</span>
                   <span class="text-sm font-medium text-green-600">
                     {{ formatCurrency(overview.best_trade) }}
                   </span>
                 </div>
                 <div class="flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 rounded p-1 -m-1">
-                  <span class="text-sm text-gray-500 dark:text-gray-400">Worst Trade</span>
+                  <span class="text-sm text-gray-500 dark:text-gray-400">{{ s('Worst Trade') }}</span>
                   <span class="text-sm font-medium text-red-600">
                     {{ formatCurrency(overview.worst_trade) }}
                   </span>
@@ -529,20 +529,20 @@
         <!-- Top Symbols -->
         <div class="card">
           <div class="card-body">
-            <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Top Performing Symbols</h3>
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Top Performing Symbols') }}</h3>
             <div v-if="symbolStats.length === 0" class="text-center py-4 text-gray-500 dark:text-gray-400">
-              No data available
+              {{ s('No data available') }}
             </div>
             <div v-else>
               <!-- Column Headers -->
               <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-200 dark:border-gray-700">
                 <div class="flex items-baseline">
-                  <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider w-16">Symbol</span>
-                  <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Trades</span>
+                  <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider w-16">{{ s('Symbol') }}</span>
+                  <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ s('Trades') }}</span>
                 </div>
                 <div class="flex items-center">
-                  <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider w-20 text-right">P&L</span>
-                  <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider w-12 text-right">Win %</span>
+                  <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider w-20 text-right">{{ s('P&L') }}</span>
+                  <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider w-12 text-right">{{ s('Win %') }}</span>
                 </div>
               </div>
               
@@ -587,11 +587,11 @@
       <div class="card">
         <div class="card-body">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="heading-card">Performance Over Time</h3>
+            <h3 class="heading-card">{{ s('Performance Over Time') }}</h3>
             <select v-model="performancePeriod" @change="fetchPerformance" class="input w-auto">
-              <option value="daily">Daily</option>
-              <option value="weekly">Weekly</option>
-              <option value="monthly">Monthly</option>
+              <option value="daily">{{ s('Daily') }}</option>
+              <option value="weekly">{{ s('Weekly') }}</option>
+              <option value="monthly">{{ s('Monthly') }}</option>
             </select>
           </div>
           <div class="h-80">
@@ -607,18 +607,18 @@
         <div class="card-body">
           <div class="flex items-center justify-between mb-4">
             <div>
-              <h3 class="heading-card">Sector Performance</h3>
+              <h3 class="heading-card">{{ s('Sector Performance') }}</h3>
               <div v-if="sectorStats.uncategorizedSymbols > 0 || showCompletionMessage" class="mt-2">
                 <div class="flex items-center justify-between text-xs mb-1" 
                      :class="showCompletionMessage ? 'text-green-600 dark:text-green-400' : 'text-amber-600 dark:text-amber-400'">
                   <span>
                     <MdiIcon v-if="showCompletionMessage" :icon="mdiCheckCircle" :size="16" class="mr-1 text-green-500" />
-                    {{ showCompletionMessage ? 'All symbols processed!' : 'Processing symbols in background...' }}
+                    {{ showCompletionMessage ? s('All symbols processed!') : s('Processing symbols in background...') }}
                   </span>
                   <span>{{ categorizationProgress.completed }}/{{ categorizationProgress.total }}</span>
                 </div>
                 <div v-if="!showCompletionMessage && sectorStats.failedSymbols > 0" class="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                  {{ sectorStats.symbolsAnalyzed }} categorized, {{ sectorStats.failedSymbols }} failed, {{ sectorStats.uncategorizedSymbols }} pending
+                  {{ sectorStats.symbolsAnalyzed }}{{ s(' categorized, ') }}{{ sectorStats.failedSymbols }}{{ s(' failed, ') }}{{ sectorStats.uncategorizedSymbols }}{{ s(' pending') }}
                 </div>
                 <div class="w-full rounded-full h-1.5"
                      :class="showCompletionMessage ? 'bg-green-200 dark:bg-green-800' : 'bg-amber-200 dark:bg-amber-800'">
@@ -638,7 +638,7 @@
                 class="px-3 py-1 text-xs bg-primary-100 hover:bg-primary-200 dark:bg-primary-900 dark:hover:bg-primary-800 text-primary-700 dark:text-primary-300 rounded-md transition-colors disabled:opacity-50"
               >
                 <div v-if="loadingSectorRefresh" class="animate-spin rounded-full h-3 w-3 border-b border-current"></div>
-                <span v-else>Refresh</span>
+                <span v-else>{{ s('Refresh') }}</span>
               </button>
               <div v-if="loadingSectors" class="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-600"></div>
             </div>
@@ -651,8 +651,8 @@
             <div v-if="loadingSectors" class="absolute inset-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm z-10 flex items-center justify-center">
               <div class="text-center">
                 <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto mb-4"></div>
-                <p class="text-sm text-gray-600 dark:text-gray-400">Fetching industry data...</p>
-                <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">This may take a moment</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400">{{ s('Fetching industry data...') }}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">{{ s('This may take a moment') }}</p>
               </div>
             </div>
             
@@ -663,7 +663,7 @@
               :key="sector.industry"
               class="group border border-gray-200 dark:border-gray-700 rounded-lg p-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
               @click="navigateToSectorTrades(sector.industry)"
-              :title="`Click to view trades in ${sector.industry} sector`"
+              :title="sectorClickTitle(sector.industry)"
             >
               <div class="flex items-center justify-between mb-2">
                 <div class="flex items-center">
@@ -682,11 +682,11 @@
               
               <div class="grid grid-cols-2 gap-2 text-xs mb-2">
                 <div class="flex justify-between">
-                  <span class="text-gray-500 dark:text-gray-400">Trades:</span>
+                  <span class="text-gray-500 dark:text-gray-400">{{ s('Trades:') }}</span>
                   <span class="font-medium">{{ sector.total_trades }}</span>
                 </div>
                 <div class="flex justify-between">
-                  <span class="text-gray-500 dark:text-gray-400">Win Rate:</span>
+                  <span class="text-gray-500 dark:text-gray-400">{{ s('Win Rate:') }}</span>
                   <span class="font-medium">{{ sector.win_rate }}%</span>
                 </div>
               </div>
@@ -697,7 +697,7 @@
                     v-for="symbol in sector.symbols.slice(0, 6)" 
                     :key="symbol.symbol"
                     class="inline-flex items-center px-1.5 py-0.5 rounded text-xs bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
-                    :title="`${symbol.trades} trades, ${formatCurrency(symbol.pnl)} P&L`"
+                    :title="symbolSectorTooltip(symbol.trades, symbol.pnl)"
                   >
                     <StockLogo
                       :symbol="symbol.symbol"
@@ -715,7 +715,7 @@
                     </span>
                   </span>
                   <span v-if="sector.symbols.length > 6" class="text-xs text-gray-500 dark:text-gray-400 px-1">
-                    +{{ sector.symbols.length - 6 }} more
+                    +{{ sector.symbols.length - 6 }}{{ s(' more') }}
                   </span>
                 </div>
               </div>
@@ -728,7 +728,7 @@
               <svg class="w-12 h-12 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
-              <p>No sector data available. Industry information will be fetched automatically from your trades.</p>
+              <p>{{ s('No sector data available. Industry information will be fetched automatically from your trades.') }}</p>
             </div>
             
             <!-- Initial placeholder while waiting for first load -->
@@ -738,7 +738,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <p class="text-sm">Sector data will appear here</p>
+              <p class="text-sm">{{ s('Sector data will appear here') }}</p>
             </div>
             
           </div>
@@ -751,14 +751,14 @@
                 @click="collapseSectors"
                 class="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700"
               >
-                Show Less
+                {{ s('Show Less') }}
               </button>
               <button 
                 v-if="hasMoreSectors"
                 @click="loadMoreSectors"
                 class="px-3 py-1.5 text-sm font-medium text-white bg-primary-600 border border-transparent rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors"
               >
-                Show More
+                {{ s('Show More') }}
               </button>
             </div>
           </div>
@@ -770,7 +770,7 @@
             <template v-else-if="element.id === 'drawdown-chart'">
       <div id="drawdown" class="card">
         <div class="card-body">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Drawdown Analysis</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Drawdown Analysis') }}</h3>
           <div class="h-80 relative">
             <canvas ref="drawdownChart" class="absolute inset-0 w-full h-full"></canvas>
           </div>
@@ -782,7 +782,7 @@
             <template v-else-if="element.id === 'daily-volume-chart'">
       <div class="card">
         <div class="card-body">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Daily Volume Traded</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Daily Volume Traded') }}</h3>
           <div class="h-80 relative">
             <canvas ref="dailyVolumeChart" class="absolute inset-0 w-full h-full"></canvas>
           </div>
@@ -794,7 +794,7 @@
             <template v-else-if="element.id === 'day-of-week'">
       <div class="card">
         <div class="card-body">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Performance by Day of Week</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Performance by Day of Week') }}</h3>
           <div class="h-80 relative">
             <canvas ref="dayOfWeekChart" class="absolute inset-0 w-full h-full"></canvas>
           </div>
@@ -806,7 +806,7 @@
             <template v-else-if="element.id === 'performance-by-hold-time'">
       <div class="card">
         <div class="card-body">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Performance by Hold Time</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Performance by Hold Time') }}</h3>
           <div class="h-96 relative">
             <canvas ref="performanceByHoldTimeChart" class="absolute inset-0 w-full h-full"></canvas>
           </div>
@@ -818,7 +818,7 @@
             <template v-else-if="element.id === 'trade-distribution'">
       <div class="card">
         <div class="card-body">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Trade Distribution by Price</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Trade Distribution by Price') }}</h3>
           <div class="h-80 relative">
             <canvas ref="tradeDistributionChart" class="absolute inset-0 w-full h-full"></canvas>
           </div>
@@ -830,7 +830,7 @@
             <template v-else-if="element.id === 'performance-by-price'">
       <div class="card">
         <div class="card-body">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Performance by Price</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Performance by Price') }}</h3>
           <div class="h-80 relative">
             <canvas ref="performanceByPriceChart" class="absolute inset-0 w-full h-full"></canvas>
           </div>
@@ -842,7 +842,7 @@
             <template v-else-if="element.id === 'performance-by-volume'">
       <div class="card">
         <div class="card-body">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Performance by Volume Traded</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Performance by Volume Traded') }}</h3>
           <div class="h-80 relative">
             <canvas
               ref="performanceByVolumeChart"
@@ -857,7 +857,7 @@
                 <svg class="w-12 h-12 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                 </svg>
-                <p>No volume data available for the selected period</p>
+                <p>{{ s('No volume data available for the selected period') }}</p>
               </div>
             </div>
           </div>
@@ -869,7 +869,7 @@
             <template v-else-if="element.id === 'performance-by-position-size'">
       <div class="card">
         <div class="card-body">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Performance by Position Size ($)</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Performance by Position Size ($)') }}</h3>
           <div class="h-80 relative">
             <canvas
               ref="performanceByPositionSizeChart"
@@ -884,7 +884,7 @@
                 <svg class="w-12 h-12 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                <p>No position size data available for the selected period</p>
+                <p>{{ s('No position size data available for the selected period') }}</p>
               </div>
             </div>
           </div>
@@ -901,15 +901,15 @@
             <svg class="mx-auto h-12 w-12 text-primary-600 dark:text-primary-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Pro Feature</h3>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ s('Pro Feature') }}</h3>
             <p class="text-gray-600 dark:text-gray-400 mb-6">
-              Unlock news sentiment correlation analytics to see how news affects your trading performance with Pro.
+              {{ s('Unlock news sentiment correlation analytics to see how news affects your trading performance with Pro.') }}
             </p>
             <router-link
               to="/pricing"
               class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
             >
-              Upgrade to Pro - {{ monthlyPricePerMonthLabel }}
+              {{ s('Upgrade to Pro') }} - {{ monthlyPricePerMonthLabel }}
             </router-link>
           </div>
         </div>
@@ -924,25 +924,25 @@
             <template v-else-if="element.id === 'tag-performance'">
       <div v-if="filteredTagStats.length > 0" class="card">
         <div class="card-body">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Tag Performance</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Tag Performance') }}</h3>
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
               <thead>
                 <tr>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Tag
+                    {{ s('Tag') }}
                   </th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Trades
+                    {{ s('Trades') }}
                   </th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Win Rate
+                    {{ s('Win Rate') }}
                   </th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    {{ rValueMode ? 'Total R' : 'Total P&L' }}
+                    {{ rValueMode ? s('Total R') : s('Total P&L') }}
                   </th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    {{ calculationMethod }} {{ rValueMode ? 'R' : 'P&L' }}
+                    {{ calculationMethod }} {{ rValueMode ? s('R') : s('P&L') }}
                   </th>
                 </tr>
               </thead>
@@ -983,25 +983,25 @@
             <template v-else-if="element.id === 'strategy-performance'">
       <div v-if="filteredStrategyStats.length > 0" class="card">
         <div class="card-body">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Strategy/Setup Performance</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Strategy/Setup Performance') }}</h3>
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
               <thead>
                 <tr>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Strategy
+                    {{ s('Strategy') }}
                   </th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Trades
+                    {{ s('Trades') }}
                   </th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Win Rate
+                    {{ s('Win Rate') }}
                   </th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    {{ rValueMode ? 'Total R' : 'Total P&L' }}
+                    {{ rValueMode ? s('Total R') : s('Total P&L') }}
                   </th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    {{ calculationMethod }} {{ rValueMode ? 'R' : 'P&L' }}
+                    {{ calculationMethod }} {{ rValueMode ? s('R') : s('P&L') }}
                   </th>
                 </tr>
               </thead>
@@ -1042,25 +1042,25 @@
             <template v-else-if="element.id === 'hour-of-day-performance'">
       <div v-if="filteredHourOfDayStats.length > 0" class="card">
         <div class="card-body">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Hour of Day Performance</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Hour of Day Performance') }}</h3>
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
               <thead>
                 <tr>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Hour
+                    {{ s('Hour') }}
                   </th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Trades
+                    {{ s('Trades') }}
                   </th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Win Rate
+                    {{ s('Win Rate') }}
                   </th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    {{ rValueMode ? 'Total R' : 'Total P&L' }}
+                    {{ rValueMode ? s('Total R') : s('Total P&L') }}
                   </th>
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    {{ calculationMethod }} {{ rValueMode ? 'R' : 'P&L' }}
+                    {{ calculationMethod }} {{ rValueMode ? s('R') : s('P&L') }}
                   </th>
                 </tr>
               </thead>
@@ -1116,7 +1116,7 @@
         >
           <div class="flex items-center justify-between mb-6">
             <h3 class="heading-card">
-              Chart Visibility & Size
+              {{ s('Chart Visibility & Size') }}
             </h3>
             <button
               @click="showLayoutSettings = false"
@@ -1131,7 +1131,7 @@
           <div class="space-y-6">
             <!-- Stats Section -->
             <div>
-              <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Statistics</h4>
+              <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{{ s('Statistics') }}</h4>
               <div class="space-y-2">
                 <div v-for="chart in chartDefinitions.filter(c => c.category === 'stats')" :key="chart.id" class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                   <div class="flex items-center gap-3">
@@ -1142,7 +1142,7 @@
                         @change="toggleChartVisibility(chart.id)"
                         class="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                       />
-                      <span class="ml-2 text-sm text-gray-900 dark:text-white">{{ chart.title }}</span>
+                      <span class="ml-2 text-sm text-gray-900 dark:text-white">{{ getChartTitle(chart.id) }}</span>
                     </label>
                   </div>
                 </div>
@@ -1151,7 +1151,7 @@
 
             <!-- Charts Section -->
             <div>
-              <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Charts</h4>
+              <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{{ s('Charts') }}</h4>
               <div class="space-y-2">
                 <div v-for="chart in chartDefinitions.filter(c => c.category === 'charts')" :key="chart.id" class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                   <div class="flex items-center gap-3">
@@ -1162,7 +1162,7 @@
                         @change="toggleChartVisibility(chart.id)"
                         class="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                       />
-                      <span class="ml-2 text-sm text-gray-900 dark:text-white">{{ chart.title }}</span>
+                      <span class="ml-2 text-sm text-gray-900 dark:text-white">{{ getChartTitle(chart.id) }}</span>
                     </label>
                   </div>
                   <button
@@ -1170,7 +1170,7 @@
                     @click="toggleChartSize(chart.id)"
                     class="px-2 py-1 text-xs font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded hover:bg-gray-50 dark:hover:bg-gray-500"
                   >
-                    {{ chartLayout.find(c => c.id === chart.id)?.size === 'full' ? 'Full Width' : 'Half Width' }}
+                    {{ chartLayout.find(c => c.id === chart.id)?.size === 'full' ? s('Full Width') : s('Half Width') }}
                   </button>
                 </div>
               </div>
@@ -1178,7 +1178,7 @@
 
             <!-- Tables Section -->
             <div>
-              <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Performance Tables</h4>
+              <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{{ s('Performance Tables') }}</h4>
               <div class="space-y-2">
                 <div v-for="chart in chartDefinitions.filter(c => c.category === 'tables')" :key="chart.id" class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                   <div class="flex items-center gap-3">
@@ -1189,7 +1189,7 @@
                         @change="toggleChartVisibility(chart.id)"
                         class="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                       />
-                      <span class="ml-2 text-sm text-gray-900 dark:text-white">{{ chart.title }}</span>
+                      <span class="ml-2 text-sm text-gray-900 dark:text-white">{{ getChartTitle(chart.id) }}</span>
                     </label>
                   </div>
                 </div>
@@ -1202,13 +1202,13 @@
               @click="resetChartLayout"
               class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600"
             >
-              Reset to Defaults
+              {{ s('Reset to Defaults') }}
             </button>
             <button
               @click="showLayoutSettings = false"
               class="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-md hover:bg-primary-700"
             >
-              Done
+              {{ s('Done') }}
             </button>
           </div>
         </div>
@@ -1219,6 +1219,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick, computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useUiPreferencesStore } from '@/stores/uiPreferences'
@@ -1238,6 +1239,14 @@ import { usePricingExperiment } from '@/composables/usePricingExperiment'
 import { useUserTimezone } from '@/composables/useUserTimezone'
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'
 import Chart from 'chart.js/auto'
+import { tSentence, i18n } from '@/i18n'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+
+function getDisplayLocale() {
+  return i18n.global.locale.value === 'zh' ? 'zh-CN' : 'en-US'
+}
 
 const { use12Hour } = useUserTimezone()
 const { formatCurrency, currencySymbol } = useCurrencyFormatter()
@@ -1283,30 +1292,35 @@ const availableSectorsFilter = ref([])
 const availableBrokersFilter = ref([])
 
 // Strategy options
-const strategyOptions = [
-  { value: 'scalper', label: 'Scalper' },
-  { value: 'momentum', label: 'Momentum' },
-  { value: 'mean_reversion', label: 'Mean Reversion' },
-  { value: 'swing', label: 'Swing' },
-  { value: 'day_trading', label: 'Day Trading' },
-  { value: 'position', label: 'Position Trading' },
-  { value: 'breakout', label: 'Breakout' },
-  { value: 'reversal', label: 'Reversal' },
-  { value: 'trend_following', label: 'Trend Following' },
-  { value: 'contrarian', label: 'Contrarian' },
-  { value: 'news_momentum', label: 'News Momentum' },
-  { value: 'news_swing', label: 'News Swing' },
-  { value: 'news_uncertainty', label: 'News Uncertainty' }
-]
+const strategyOptions = computed(() => {
+  void locale.value
+  return [
+    { value: 'scalper', label: s('Scalper') },
+    { value: 'momentum', label: s('Momentum') },
+    { value: 'mean_reversion', label: s('Mean Reversion') },
+    { value: 'swing', label: s('Swing') },
+    { value: 'day_trading', label: s('Day Trading') },
+    { value: 'position', label: s('Position Trading') },
+    { value: 'breakout', label: s('Breakout') },
+    { value: 'reversal', label: s('Reversal') },
+    { value: 'trend_following', label: s('Trend Following') },
+    { value: 'contrarian', label: s('Contrarian') },
+    { value: 'news_momentum', label: s('News Momentum') },
+    { value: 'news_swing', label: s('News Swing') },
+    { value: 'news_uncertainty', label: s('News Uncertainty') }
+  ]
+})
 
-// Day of week options
-const dayOfWeekOptions = [
-  { value: 1, label: 'Monday' },
-  { value: 2, label: 'Tuesday' },
-  { value: 3, label: 'Wednesday' },
-  { value: 4, label: 'Thursday' },
-  { value: 5, label: 'Friday' }
-]
+const dayOfWeekOptions = computed(() => {
+  void locale.value
+  return [
+    { value: 1, label: s('Monday') },
+    { value: 2, label: s('Tuesday') },
+    { value: 3, label: s('Wednesday') },
+    { value: 4, label: s('Thursday') },
+    { value: 5, label: s('Friday') }
+  ]
+})
 
 // Local filters that are displayed in UI
 const localFilters = ref({
@@ -1453,8 +1467,31 @@ const showLayoutSettings = ref(false)
 
 // Computed property for calculation method
 const calculationMethod = computed(() => {
-  return userSettings.value?.statisticsCalculation === 'median' ? 'Median' : 'Average'
+  void locale.value
+  return userSettings.value?.statisticsCalculation === 'median' ? s('Median') : s('Average')
 })
+
+const sqnTooltipText = computed(() => {
+  void locale.value
+  return s('Measures the quality of your trading system by calculating ({method} Trade / Standard Deviation) × √Number of Trades. Higher values indicate more consistent performance.').replace('{method}', calculationMethod.value)
+})
+
+const kRatioTooltipText = computed(() => {
+  void locale.value
+  return s('Measures the consistency of your equity curve by calculating {method} Return / Standard Deviation of Returns. Higher values indicate smoother, more consistent performance.').replace('{method}', calculationMethod.value)
+})
+
+function sectorClickTitle(industry) {
+  void locale.value
+  return s('Click to view trades in {industry} sector').replace('{industry}', industry)
+}
+
+function symbolSectorTooltip(trades, pnl) {
+  void locale.value
+  return s('{trades} trades, {pnl} P&L')
+    .replace('{trades}', String(trades))
+    .replace('{pnl}', formatCurrency(pnl))
+}
 
 // Filtered stats for R-Value mode - exclude entries with 0 R-value (no stop_loss data)
 // Helper to check if a value is effectively zero (handles strings, nulls, and floats)
@@ -1530,6 +1567,11 @@ function getChartDefinition(id) {
   return chartDefinitions.find(chart => chart.id === id)
 }
 
+function getChartTitle(id) {
+  const def = getChartDefinition(id)
+  return def ? s(def.title) : id
+}
+
 // Get chart size class
 function getChartSizeClass(chart) {
   if (chart.size === 'full') return 'col-span-1 lg:col-span-2'
@@ -1541,33 +1583,37 @@ function getChartSizeClass(chart) {
 
 // Helper methods for multi-select dropdowns
 function getSelectedStrategyText() {
-  if (localFilters.value.strategies.length === 0) return 'All Strategies'
+  void locale.value
+  if (localFilters.value.strategies.length === 0) return s('All Strategies')
   if (localFilters.value.strategies.length === 1) {
-    const strategy = strategyOptions.find(s => s.value === localFilters.value.strategies[0])
-    return strategy ? strategy.label : 'All Strategies'
+    const strategy = strategyOptions.value.find(opt => opt.value === localFilters.value.strategies[0])
+    return strategy ? strategy.label : s('All Strategies')
   }
-  return `${localFilters.value.strategies.length} strategies selected`
+  return s('{count} strategies selected').replace('{count}', String(localFilters.value.strategies.length))
 }
 
 function getSelectedSectorText() {
-  if (localFilters.value.sectors.length === 0) return loadingSectorsFilter.value ? 'Loading sectors...' : 'All Sectors'
+  void locale.value
+  if (localFilters.value.sectors.length === 0) return loadingSectorsFilter.value ? s('Loading sectors...') : s('All Sectors')
   if (localFilters.value.sectors.length === 1) return localFilters.value.sectors[0]
-  return `${localFilters.value.sectors.length} sectors selected`
+  return s('{count} sectors selected').replace('{count}', String(localFilters.value.sectors.length))
 }
 
 function getSelectedBrokerText() {
-  if (localFilters.value.brokers.length === 0) return loadingBrokersFilter.value ? 'Loading brokers...' : 'All Brokers'
+  void locale.value
+  if (localFilters.value.brokers.length === 0) return loadingBrokersFilter.value ? s('Loading brokers...') : s('All Brokers')
   if (localFilters.value.brokers.length === 1) return localFilters.value.brokers[0]
-  return `${localFilters.value.brokers.length} brokers selected`
+  return s('{count} brokers selected').replace('{count}', String(localFilters.value.brokers.length))
 }
 
 function getSelectedDayOfWeekText() {
-  if (localFilters.value.daysOfWeek.length === 0) return 'All Days'
+  void locale.value
+  if (localFilters.value.daysOfWeek.length === 0) return s('All Days')
   if (localFilters.value.daysOfWeek.length === 1) {
-    const day = dayOfWeekOptions.find(d => d.value === localFilters.value.daysOfWeek[0])
-    return day ? day.label : 'All Days'
+    const day = dayOfWeekOptions.value.find(d => d.value === localFilters.value.daysOfWeek[0])
+    return day ? day.label : s('All Days')
   }
-  return `${localFilters.value.daysOfWeek.length} days selected`
+  return s('{count} days selected').replace('{count}', String(localFilters.value.daysOfWeek.length))
 }
 
 function toggleAllStrategies(event) {
@@ -1590,7 +1636,7 @@ function toggleAllBrokers(event) {
 
 function toggleAllDaysOfWeek(event) {
   if (!event.target.checked) {
-    localFilters.value.daysOfWeek = dayOfWeekOptions.map(d => d.value)
+    localFilters.value.daysOfWeek = dayOfWeekOptions.value.map(d => d.value)
   } else {
     localFilters.value.daysOfWeek = []
   }
@@ -1726,20 +1772,40 @@ const chartLabels = ref({
 const priceLabels = ['< $2', '$2-4.99', '$5-9.99', '$10-19.99', '$20-49.99', '$50-99.99', '$100-199.99', '$200+']
 const holdTimeLabels = ['< 1 min', '1-5 min', '5-15 min', '15-30 min', '30-60 min', '1-2 hours', '2-4 hours', '4-24 hours', '1-7 days', '1-4 weeks', '1+ months']
 
+function translatedPriceLabels() {
+  void locale.value
+  return priceLabels.map(label => s(label))
+}
+
+function translatedHoldTimeLabels() {
+  void locale.value
+  return holdTimeLabels.map(label => s(label))
+}
+
+function weekdayChartLabels() {
+  void locale.value
+  return [s('Monday'), s('Tuesday'), s('Wednesday'), s('Thursday'), s('Friday')]
+}
+
+function chartTooltipTrades(count) {
+  return s('{count} trades').replace('{count}', String(count))
+}
+
 function formatNumber(num) {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat(getDisplayLocale(), {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   }).format(num || 0)
 }
 
 function formatHour(hour) {
+  void locale.value
   const h = parseInt(hour)
   if (use12Hour.value) {
-    if (h === 0) return '12:00 AM'
-    if (h < 12) return `${h}:00 AM`
-    if (h === 12) return '12:00 PM'
-    return `${h - 12}:00 PM`
+    if (h === 0) return s('12:00 AM')
+    if (h < 12) return s('{h}:00 AM').replace('{h}', String(h))
+    if (h === 12) return s('12:00 PM')
+    return s('{h}:00 PM').replace('{h}', String(h - 12))
   }
   return `${String(h).padStart(2, '0')}:00`
 }
@@ -1755,24 +1821,26 @@ function getLossPercentage() {
 }
 
 function getSQNInterpretation(sqn) {
+  void locale.value
   const sqnValue = parseFloat(sqn) || 0
-  if (sqnValue < 1.6) return 'Poor system'
-  if (sqnValue < 2.0) return 'Below average'
-  if (sqnValue < 2.5) return 'Average'
-  if (sqnValue < 3.0) return 'Good'
-  if (sqnValue < 5.0) return 'Excellent'
-  if (sqnValue < 7.0) return 'Superb'
-  return 'Holy Grail'
+  if (sqnValue < 1.6) return s('Poor system')
+  if (sqnValue < 2.0) return s('Below average')
+  if (sqnValue < 2.5) return s('Average')
+  if (sqnValue < 3.0) return s('Good')
+  if (sqnValue < 5.0) return s('Excellent')
+  if (sqnValue < 7.0) return s('Superb')
+  return s('Holy Grail')
 }
 
 function getKRatioInterpretation(kRatio) {
+  void locale.value
   const kValue = parseFloat(kRatio) || 0
-  if (kValue < -1.0) return 'Very inconsistent returns'
-  if (kValue < 0) return 'Inconsistent returns'
-  if (kValue < 0.5) return 'Somewhat consistent'
-  if (kValue < 1.0) return 'Consistent returns'
-  if (kValue < 2.0) return 'Very consistent'
-  return 'Extremely consistent'
+  if (kValue < -1.0) return s('Very inconsistent returns')
+  if (kValue < 0) return s('Inconsistent returns')
+  if (kValue < 0.5) return s('Somewhat consistent')
+  if (kValue < 1.0) return s('Consistent returns')
+  if (kValue < 2.0) return s('Very consistent')
+  return s('Extremely consistent')
 }
 
 // Chart creation functions
@@ -1792,7 +1860,7 @@ function createTradeDistributionChart() {
   if (tradeDistributionChartInstance) {
     tradeDistributionChartInstance.destroy()
   }
-  const labels = ['< $2', '$2-4.99', '$5-9.99', '$10-19.99', '$20-49.99', '$50-99.99', '$100-199.99', '$200+']
+  const labels = translatedPriceLabels()
   
   console.log('Creating trade distribution chart with data:', tradeDistributionData.value)
   
@@ -1801,7 +1869,7 @@ function createTradeDistributionChart() {
     data: {
       labels: labels,
       datasets: [{
-        label: 'Number of Trades',
+        label: s('Number of Trades'),
         data: tradeDistributionData.value,
         backgroundColor: '#f3a05a',
         borderColor: '#e89956',
@@ -1815,7 +1883,7 @@ function createTradeDistributionChart() {
       onClick: (event, elements) => {
         if (elements.length > 0) {
           const index = elements[0].index
-          const priceRange = labels[index]
+          const priceRange = priceLabels[index]
           navigateToTradesByPriceRange(priceRange)
         }
       },
@@ -1824,13 +1892,13 @@ function createTradeDistributionChart() {
           beginAtZero: true,
           title: {
             display: true,
-            text: 'Number of Trades'
+            text: s('Number of Trades')
           }
         },
         y: {
           title: {
             display: true,
-            text: 'Price Range'
+            text: s('Price Range')
           }
         }
       },
@@ -1859,12 +1927,12 @@ function createPerformanceByPriceChart() {
   if (performanceByPriceChartInstance) {
     performanceByPriceChartInstance.destroy()
   }
-  const labels = ['< $2', '$2-4.99', '$5-9.99', '$10-19.99', '$20-49.99', '$50-99.99', '$100-199.99', '$200+']
+  const labels = translatedPriceLabels()
 
   // Use R-value data if in R-value mode, otherwise use P&L data
   const chartData = rValueMode.value ? performanceByPriceRData.value : performanceByPriceData.value
-  const chartLabel = rValueMode.value ? 'Total R-Multiple' : 'Total P&L'
-  const xAxisLabel = rValueMode.value ? 'Total R-Multiple' : 'Total P&L ($)'
+  const chartLabel = rValueMode.value ? s('Total R-Multiple') : s('Total P&L')
+  const xAxisLabel = rValueMode.value ? s('Total R-Multiple') : s('Total P&L ($)')
 
   performanceByPriceChartInstance = new Chart(ctx, {
     type: 'bar',
@@ -1906,7 +1974,7 @@ function createPerformanceByPriceChart() {
         y: {
           title: {
             display: true,
-            text: 'Price Range'
+            text: s('Price Range')
           }
         }
       },
@@ -1920,9 +1988,9 @@ function createPerformanceByPriceChart() {
               const index = context.dataIndex
               const tradeCount = performanceByPriceCounts.value[index] || 0
               if (rValueMode.value) {
-                return `Total R-Multiple: ${context.parsed.x.toFixed(2)}R (${tradeCount} trades)`
+                return `${s('Total R-Multiple')}: ${context.parsed.x.toFixed(2)}R (${chartTooltipTrades(tradeCount)})`
               }
-              return `Total P&L: ${currencySymbol.value}${context.parsed.x.toFixed(2)} (${tradeCount} trades)`
+              return `${s('Total P&L')}: ${currencySymbol.value}${context.parsed.x.toFixed(2)} (${chartTooltipTrades(tradeCount)})`
             }
           }
         }
@@ -1947,8 +2015,8 @@ function createPerformanceByVolumeChart() {
 
   const ctx = performanceByVolumeChart.value.getContext('2d')
   const labels = chartLabels.value.volume.length > 0 ? chartLabels.value.volume : []
-  const chartLabel = rValueMode.value ? 'Total R-Multiple' : 'Total P&L'
-  const xAxisLabel = rValueMode.value ? 'Total R-Multiple' : 'Total P&L ($)'
+  const chartLabel = rValueMode.value ? s('Total R-Multiple') : s('Total P&L')
+  const xAxisLabel = rValueMode.value ? s('Total R-Multiple') : s('Total P&L ($)')
 
   performanceByVolumeChartInstance = new Chart(ctx, {
     type: 'bar',
@@ -1990,7 +2058,7 @@ function createPerformanceByVolumeChart() {
         y: {
           title: {
             display: true,
-            text: 'Volume Range (Shares)'
+            text: s('Volume Range (Shares)')
           }
         }
       },
@@ -2004,9 +2072,9 @@ function createPerformanceByVolumeChart() {
               const index = context.dataIndex
               const tradeCount = performanceByVolumeCounts.value[index] || 0
               if (rValueMode.value) {
-                return `Total R-Multiple: ${context.parsed.x.toFixed(2)}R (${tradeCount} trades)`
+                return `${s('Total R-Multiple')}: ${context.parsed.x.toFixed(2)}R (${chartTooltipTrades(tradeCount)})`
               }
-              return `Total P&L: ${currencySymbol.value}${context.parsed.x.toFixed(2)} (${tradeCount} trades)`
+              return `${s('Total P&L')}: ${currencySymbol.value}${context.parsed.x.toFixed(2)} (${chartTooltipTrades(tradeCount)})`
             }
           }
         }
@@ -2031,8 +2099,8 @@ function createPerformanceByPositionSizeChart() {
 
   const ctx = performanceByPositionSizeChart.value.getContext('2d')
   const labels = chartLabels.value.positionSize?.length > 0 ? chartLabels.value.positionSize : []
-  const chartLabel = rValueMode.value ? 'Total R-Multiple' : 'Total P&L'
-  const xAxisLabel = rValueMode.value ? 'Total R-Multiple' : 'Total P&L ($)'
+  const chartLabel = rValueMode.value ? s('Total R-Multiple') : s('Total P&L')
+  const xAxisLabel = rValueMode.value ? s('Total R-Multiple') : s('Total P&L ($)')
 
   performanceByPositionSizeChartInstance = new Chart(ctx, {
     type: 'bar',
@@ -2074,7 +2142,7 @@ function createPerformanceByPositionSizeChart() {
         y: {
           title: {
             display: true,
-            text: 'Position Size ($)'
+            text: s('Position Size ($)')
           }
         }
       },
@@ -2088,9 +2156,9 @@ function createPerformanceByPositionSizeChart() {
               const index = context.dataIndex
               const tradeCount = performanceByPositionSizeCounts.value[index] || 0
               if (rValueMode.value) {
-                return `Total R-Multiple: ${context.parsed.x.toFixed(2)}R (${tradeCount} trades)`
+                return `${s('Total R-Multiple')}: ${context.parsed.x.toFixed(2)}R (${chartTooltipTrades(tradeCount)})`
               }
-              return `Total P&L: ${currencySymbol.value}${context.parsed.x.toFixed(2)} (${tradeCount} trades)`
+              return `${s('Total P&L')}: ${currencySymbol.value}${context.parsed.x.toFixed(2)} (${chartTooltipTrades(tradeCount)})`
             }
           }
         }
@@ -2111,16 +2179,14 @@ function createDayOfWeekChart() {
 
   const ctx = dayOfWeekChart.value.getContext('2d')
   // Only show weekdays since markets are closed on weekends
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-  // Backend already returns only weekdays (Monday-Friday), no need to slice
+  const days = weekdayChartLabels()
   const weekdayData = dayOfWeekData.value
 
-  // Use R-value data if in R-value mode, otherwise use P&L data
   const chartData = rValueMode.value
     ? weekdayData.map(d => d.total_r_value || 0)
     : weekdayData.map(d => d.total_pnl || 0)
-  const chartLabel = rValueMode.value ? 'Total R-Multiple' : 'Total P&L'
-  const xAxisLabel = rValueMode.value ? 'Total R-Multiple' : 'Total P&L ($)'
+  const chartLabel = rValueMode.value ? s('Total R-Multiple') : s('Total P&L')
+  const xAxisLabel = rValueMode.value ? s('Total R-Multiple') : s('Total P&L ($)')
 
   dayOfWeekChartInstance = new Chart(ctx, {
     type: 'bar',
@@ -2165,7 +2231,7 @@ function createDayOfWeekChart() {
         y: {
           title: {
             display: true,
-            text: 'Day of Week'
+            text: s('Day of Week')
           }
         }
       },
@@ -2177,9 +2243,9 @@ function createDayOfWeekChart() {
           callbacks: {
             label: function(context) {
               if (rValueMode.value) {
-                return `R-Multiple: ${context.parsed.x.toFixed(2)}R`
+                return `${s('R-Multiple')}: ${context.parsed.x.toFixed(2)}R`
               }
-              return `P&L: ${currencySymbol.value}${context.parsed.x.toFixed(2)}`
+              return `${s('P&L')}: ${currencySymbol.value}${context.parsed.x.toFixed(2)}`
             }
           }
         }
@@ -2199,12 +2265,11 @@ function createPerformanceByHoldTimeChart() {
   }
 
   const ctx = performanceByHoldTimeChart.value.getContext('2d')
-  const labels = ['< 1 min', '1-5 min', '5-15 min', '15-30 min', '30-60 min', '1-2 hours', '2-4 hours', '4-24 hours', '1-7 days', '1-4 weeks', '1+ months']
+  const labels = translatedHoldTimeLabels()
 
-  // Use R-value data if in R-value mode, otherwise use P&L data
   const chartData = rValueMode.value ? performanceByHoldTimeRData.value : performanceByHoldTimeData.value
-  const chartLabel = rValueMode.value ? 'Total R-Multiple' : 'Total P&L'
-  const xAxisLabel = rValueMode.value ? 'Total R-Multiple' : 'Total P&L ($)'
+  const chartLabel = rValueMode.value ? s('Total R-Multiple') : s('Total P&L')
+  const xAxisLabel = rValueMode.value ? s('Total R-Multiple') : s('Total P&L ($)')
 
   performanceByHoldTimeChartInstance = new Chart(ctx, {
     type: 'bar',
@@ -2257,7 +2322,7 @@ function createPerformanceByHoldTimeChart() {
         y: {
           title: {
             display: true,
-            text: 'Hold Time'
+            text: s('Hold Time')
           }
         }
       },
@@ -2271,9 +2336,9 @@ function createPerformanceByHoldTimeChart() {
               const index = context.dataIndex
               const tradeCount = performanceByHoldTimeCounts.value[index] || 0
               if (rValueMode.value) {
-                return `Total R-Multiple: ${context.parsed.x.toFixed(2)}R (${tradeCount} trades)`
+                return `${s('Total R-Multiple')}: ${context.parsed.x.toFixed(2)}R (${chartTooltipTrades(tradeCount)})`
               }
-              return `Total P&L: ${currencySymbol.value}${context.parsed.x.toFixed(2)} (${tradeCount} trades)`
+              return `${s('Total P&L')}: ${currencySymbol.value}${context.parsed.x.toFixed(2)} (${chartTooltipTrades(tradeCount)})`
             }
           }
         }
@@ -2295,7 +2360,7 @@ function createDailyVolumeChart() {
   const ctx = dailyVolumeChart.value.getContext('2d')
   const labels = dailyVolumeData.value.map(d => {
     const date = new Date(d.trade_date)
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    return date.toLocaleDateString(getDisplayLocale(), { month: 'short', day: 'numeric' })
   })
   const volumes = dailyVolumeData.value.map(d => d.total_volume)
   
@@ -2304,7 +2369,7 @@ function createDailyVolumeChart() {
     data: {
       labels: labels,
       datasets: [{
-        label: 'Total Volume',
+        label: s('Total Volume'),
         data: volumes,
         backgroundColor: '#f3a05a',
         borderColor: '#e89956',
@@ -2325,11 +2390,10 @@ function createDailyVolumeChart() {
         x: {
           title: {
             display: true,
-            text: 'Date'
+            text: s('Date')
           },
           ticks: {
             callback: function(value, index) {
-              // Show every 7th tick (weekly intervals)
               if (index % 7 === 0) {
                 return this.getLabelForValue(value)
               }
@@ -2343,7 +2407,7 @@ function createDailyVolumeChart() {
           beginAtZero: true,
           title: {
             display: true,
-            text: 'Volume (Shares)'
+            text: s('Volume (Shares)')
           }
         }
       },
@@ -2354,16 +2418,16 @@ function createDailyVolumeChart() {
         tooltip: {
           callbacks: {
             label: function(context) {
-              return `Volume: ${context.parsed.y.toLocaleString()} shares`
+              return `${s('Volume')}: ${context.parsed.y.toLocaleString(getDisplayLocale())} ${s('shares')}`
             },
             title: function(context) {
               const originalDate = dailyVolumeData.value[context[0].dataIndex].trade_date
               const date = new Date(originalDate)
-              return date.toLocaleDateString('en-US', { 
-                weekday: 'short', 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
+              return date.toLocaleDateString(getDisplayLocale(), {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
               })
             }
           }
@@ -2386,7 +2450,7 @@ function createDrawdownChart() {
   const ctx = drawdownChart.value.getContext('2d')
   const labels = drawdownData.value.map(d => {
     const date = new Date(d.trade_date)
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    return date.toLocaleDateString(getDisplayLocale(), { month: 'short', day: 'numeric' })
   })
 
   // Use R-value drawdown if in R-value mode, otherwise use dollar drawdown
@@ -2394,7 +2458,7 @@ function createDrawdownChart() {
     ? drawdownData.value.map(d => d.r_value_drawdown || 0)
     : drawdownData.value.map(d => d.drawdown)
 
-  const yAxisLabel = rValueMode.value ? 'Drawdown (R)' : 'Drawdown ($)'
+  const yAxisLabel = rValueMode.value ? s('Drawdown (R)') : s('Drawdown ($)')
 
   // Log drawdown data for debugging
   console.log('Drawdown chart data:', {
@@ -2409,7 +2473,7 @@ function createDrawdownChart() {
     data: {
       labels: labels,
       datasets: [{
-        label: 'Drawdown',
+        label: s('Drawdown'),
         data: drawdowns,
         borderColor: '#ef4444',
         backgroundColor: 'rgba(239, 68, 68, 0.1)',
@@ -2432,11 +2496,10 @@ function createDrawdownChart() {
         x: {
           title: {
             display: true,
-            text: 'Date'
+            text: s('Date')
           },
           ticks: {
             callback: function(value, index) {
-              // Show every 7th tick (weekly intervals)
               if (index % 7 === 0) {
                 return this.getLabelForValue(value)
               }
@@ -2467,18 +2530,18 @@ function createDrawdownChart() {
           callbacks: {
             label: function(context) {
               if (rValueMode.value) {
-                return `Drawdown: ${context.parsed.y.toFixed(2)}R`
+                return `${s('Drawdown')}: ${context.parsed.y.toFixed(2)}R`
               }
-              return `Drawdown: ${currencySymbol.value}${context.parsed.y.toFixed(2)}`
+              return `${s('Drawdown')}: ${currencySymbol.value}${context.parsed.y.toFixed(2)}`
             },
             title: function(context) {
               const originalDate = drawdownData.value[context[0].dataIndex].trade_date
               const date = new Date(originalDate)
-              return date.toLocaleDateString('en-US', { 
-                weekday: 'short', 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
+              return date.toLocaleDateString(getDisplayLocale(), {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
               })
             }
           }
@@ -3228,7 +3291,7 @@ function startProgressTracking() {
 }
 
 function formatDate(dateString) {
-  return new Date(dateString).toLocaleString()
+  return new Date(dateString).toLocaleString(getDisplayLocale())
 }
 
 async function loadData() {
@@ -3628,6 +3691,14 @@ function collapseSectors() {
   sectorsToShow.value = 10
   console.log(`[DISPLAY] Collapsed to show ${sectorsToShow.value} sectors`)
 }
+
+watch(() => locale.value, () => {
+  nextTick(() => {
+    setTimeout(() => {
+      initializeAllCharts()
+    }, 100)
+  })
+})
 
 // Watch for R-value mode changes and refetch all data with hasRValue filter
 watch(() => rValueMode.value, async () => {

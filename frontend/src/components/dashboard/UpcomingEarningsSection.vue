@@ -2,9 +2,9 @@
   <div class="card">
     <div class="card-body">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-medium text-gray-900 dark:text-white">Upcoming Earnings</h3>
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('Upcoming Earnings') }}</h3>
         <div class="flex items-center space-x-2">
-          <span class="text-xs text-gray-500 dark:text-gray-400">Next 2 weeks</span>
+          <span class="text-xs text-gray-500 dark:text-gray-400">{{ s('Next 2 weeks') }}</span>
           <button
             @click="refreshEarnings"
             :disabled="loading"
@@ -24,7 +24,7 @@
                 d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
               />
             </svg>
-            Refresh
+            {{ s('Refresh') }}
           </button>
         </div>
       </div>
@@ -44,12 +44,12 @@
           @click="fetchEarnings"
           class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
         >
-          Try again
+          {{ s('Try again') }}
         </button>
       </div>
 
       <div v-else-if="!earnings.length" class="text-center py-8">
-        <p class="text-gray-500 dark:text-gray-400">No upcoming earnings for your open positions in the next 2 weeks.</p>
+        <p class="text-gray-500 dark:text-gray-400">{{ s('No upcoming earnings for your open positions in the next 2 weeks.') }}</p>
       </div>
 
       <div v-else class="overflow-x-auto">
@@ -57,22 +57,22 @@
           <thead>
             <tr>
               <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Symbol
+                {{ s('Symbol') }}
               </th>
               <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Date
+                {{ s('Date') }}
               </th>
               <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Time
+                {{ s('Time') }}
               </th>
               <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Estimate
+                {{ s('Estimate') }}
               </th>
               <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Last Year
+                {{ s('Last Year') }}
               </th>
               <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Days Until
+                {{ s('Days Until') }}
               </th>
             </tr>
           </thead>
@@ -91,9 +91,9 @@
                       ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
                       : 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400'
                   ]">
-                  {{ earning.hour === 'bmo' ? 'Before Market' : 'After Market' }}
+                  {{ earning.hour === 'bmo' ? s('Before Market') : s('After Market') }}
                 </span>
-                <span v-else class="text-gray-400">TBD</span>
+                <span v-else class="text-gray-400">{{ s('TBD') }}</span>
               </td>
               <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-300">
                 <span v-if="earning.epsEstimate !== null">
@@ -116,7 +116,7 @@
                       ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
                       : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
                   ]">
-                  {{ earning.daysUntil === 0 ? 'Today' : earning.daysUntil === 1 ? 'Tomorrow' : `${earning.daysUntil} days` }}
+                  {{ daysUntilLabel(earning.daysUntil) }}
                 </span>
               </td>
             </tr>
@@ -130,6 +130,9 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import api from '@/services/api'
+import { tSentence, i18n } from '@/i18n'
+
+const s = (text) => tSentence(text, { context: 'dashboard' })
 
 const props = defineProps({
   symbols: {
@@ -142,9 +145,16 @@ const earnings = ref([])
 const loading = ref(false)
 const error = ref(null)
 
+function daysUntilLabel(daysUntil) {
+  if (daysUntil === 0) return s('Today')
+  if (daysUntil === 1) return s('Tomorrow')
+  return s(`${daysUntil} days`)
+}
+
 const formatEarningsDate = (dateStr) => {
   const date = new Date(dateStr)
-  return date.toLocaleDateString('en-US', { 
+  const locale = i18n.global.locale.value === 'zh' ? 'zh-CN' : 'en-US'
+  return date.toLocaleDateString(locale, { 
     month: 'short', 
     day: 'numeric',
     year: 'numeric'
@@ -172,7 +182,6 @@ const fetchEarnings = async () => {
       }
     })
 
-    // Calculate days until earnings and sort by date
     const now = new Date()
     now.setHours(0, 0, 0, 0)
     
@@ -188,11 +197,11 @@ const fetchEarnings = async () => {
           daysUntil: diffDays
         }
       })
-      .filter(earning => earning.daysUntil >= 0 && earning.daysUntil <= 14) // Only next 2 weeks
+      .filter(earning => earning.daysUntil >= 0 && earning.daysUntil <= 14)
       .sort((a, b) => a.daysUntil - b.daysUntil)
   } catch (err) {
     console.error('Failed to fetch earnings:', err)
-    error.value = err.response?.data?.error || 'Failed to load earnings data. Please try again later.'
+    error.value = s(err.response?.data?.error || 'Failed to load earnings data. Please try again later.')
   } finally {
     loading.value = false
   }
@@ -228,7 +237,7 @@ const refreshEarnings = async () => {
       .sort((a, b) => a.daysUntil - b.daysUntil)
   } catch (err) {
     console.error('Failed to refresh earnings:', err)
-    error.value = err.response?.data?.error || 'Failed to refresh earnings data. Please try again later.'
+    error.value = s(err.response?.data?.error || 'Failed to refresh earnings data. Please try again later.')
   } finally {
     loading.value = false
   }

@@ -1,9 +1,9 @@
 <template>
   <div class="content-wrapper py-8">
     <div class="mb-8">
-      <h1 class="heading-page">Trading Accounts</h1>
+      <h1 class="heading-page">{{ s('Trading Accounts') }}</h1>
       <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-        Manage your brokerage accounts for trade imports and cashflow tracking.
+        {{ s('Manage your brokerage accounts for trade imports and cashflow tracking.') }}
       </p>
     </div>
 
@@ -13,9 +13,9 @@
       :step="4"
       :total-steps="5"
       :next-step="5"
-      title="Accounts & Cashflow"
-      description="Set up your trading accounts to track balances, deposits, and withdrawals over time."
-      cta-label="Next: Calendar"
+      :title="s('Accounts & Cashflow')"
+      :description="onboardingDescription"
+      :cta-label="s('Next: Calendar')"
       cta-route="calendar"
     />
 
@@ -28,7 +28,7 @@
     <div v-else-if="error" class="card">
       <div class="card-body">
         <div class="text-red-600 dark:text-red-400">{{ error }}</div>
-        <button @click="fetchAccounts" class="btn-secondary mt-4">Retry</button>
+        <button @click="fetchAccounts" class="btn-secondary mt-4">{{ s('Retry') }}</button>
       </div>
     </div>
 
@@ -37,57 +37,57 @@
       <div class="card mb-8">
         <div class="card-body">
           <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-6">
-            {{ editingAccount ? 'Edit Account' : 'Add New Account' }}
+            {{ editingAccount ? s('Edit Account') : s('Add New Account') }}
           </h3>
 
           <form @submit.prevent="saveAccount" class="space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label for="accountName" class="label">Account Name <span class="text-red-500">*</span></label>
+                <label for="accountName" class="label">{{ s('Account Name') }} <span class="text-red-500">*</span></label>
                 <input
                   id="accountName"
                   v-model="form.accountName"
                   type="text"
                   required
                   class="input"
-                  placeholder="e.g., Main Trading Account"
+                  :placeholder="s('e.g., Main Trading Account')"
                 />
               </div>
 
               <div>
-                <label for="accountIdentifier" class="label">Account Identifier</label>
+                <label for="accountIdentifier" class="label">{{ s('Account Identifier') }}</label>
                 <input
                   id="accountIdentifier"
                   v-model="form.accountIdentifier"
                   type="text"
                   class="input"
-                  placeholder="e.g., ****1234 (last 4 digits)"
+                  :placeholder="s('e.g., ****1234 (last 4 digits)')"
                 />
                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                  For privacy, only store the last 4 characters
+                  {{ s('For privacy, only store the last 4 characters') }}
                 </p>
               </div>
 
               <div>
-                <label for="broker" class="label">Broker</label>
+                <label for="broker" class="label">{{ s('Broker') }}</label>
                 <select id="broker" v-model="form.broker" class="input">
-                  <option value="">Select broker...</option>
-                  <option value="schwab">Charles Schwab</option>
-                  <option value="thinkorswim">thinkorswim</option>
-                  <option value="ibkr">Interactive Brokers</option>
-                  <option value="captrader">CapTrader</option>
-                  <option value="lightspeed">Lightspeed</option>
-                  <option value="webull">Webull</option>
-                  <option value="etrade">E*TRADE</option>
-                  <option value="avatrade">AvaTrade</option>
-                  <option value="tradingview">TradingView</option>
-                  <option value="tradovate">Tradovate</option>
-                  <option value="other">Other</option>
+                  <option value="">{{ s('Select broker...') }}</option>
+                  <option value="schwab">{{ s('Charles Schwab') }}</option>
+                  <option value="thinkorswim">{{ s('thinkorswim') }}</option>
+                  <option value="ibkr">{{ s('Interactive Brokers') }}</option>
+                  <option value="captrader">{{ s('CapTrader') }}</option>
+                  <option value="lightspeed">{{ s('Lightspeed') }}</option>
+                  <option value="webull">{{ s('Webull') }}</option>
+                  <option value="etrade">{{ s('E*TRADE') }}</option>
+                  <option value="avatrade">{{ s('AvaTrade') }}</option>
+                  <option value="tradingview">{{ s('TradingView') }}</option>
+                  <option value="tradovate">{{ s('Tradovate') }}</option>
+                  <option value="other">{{ s('Other') }}</option>
                 </select>
               </div>
 
               <div>
-                <label for="initialBalance" class="label">Initial Balance</label>
+                <label for="initialBalance" class="label">{{ s('Initial Balance') }}</label>
                 <div class="relative">
                   <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
                   <input
@@ -103,7 +103,7 @@
               </div>
 
               <div>
-                <label for="initialBalanceDate" class="label">Balance Start Date</label>
+                <label for="initialBalanceDate" class="label">{{ s('Balance Start Date') }}</label>
                 <input
                   id="initialBalanceDate"
                   v-model="form.initialBalanceDate"
@@ -119,28 +119,28 @@
                     v-model="form.isPrimary"
                     class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                   />
-                  <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Set as primary account</span>
+                  <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">{{ s('Set as primary account') }}</span>
                 </label>
               </div>
             </div>
 
             <div>
-              <label for="notes" class="label">Notes</label>
+              <label for="notes" class="label">{{ s('Notes') }}</label>
               <textarea
                 id="notes"
                 v-model="form.notes"
                 rows="2"
                 class="input"
-                placeholder="Optional notes about this account..."
+                :placeholder="s('Optional notes about this account...')"
               ></textarea>
             </div>
 
             <div class="flex gap-3">
               <button type="submit" class="btn-primary" :disabled="saving">
-                {{ saving ? 'Saving...' : (editingAccount ? 'Update Account' : 'Add Account') }}
+                {{ saving ? s('Saving...') : (editingAccount ? s('Update Account') : s('Add Account')) }}
               </button>
               <button v-if="editingAccount" type="button" @click="cancelEdit" class="btn-secondary">
-                Cancel
+                {{ s('Cancel') }}
               </button>
             </div>
           </form>
@@ -150,10 +150,10 @@
       <!-- Accounts List -->
       <div class="card">
         <div class="card-body">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-6">Your Accounts</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-6">{{ s('Your Accounts') }}</h3>
 
           <div v-if="accounts.length === 0" class="text-center py-8 text-gray-500 dark:text-gray-400">
-            <p>No accounts yet. Add your first trading account above.</p>
+            <p>{{ s('No accounts yet. Add your first trading account above.') }}</p>
           </div>
 
           <div v-else class="space-y-4">
@@ -166,24 +166,24 @@
                 <div class="flex items-center gap-2">
                   <span class="font-medium text-gray-900 dark:text-white">{{ account.accountName }}</span>
                   <span v-if="account.isPrimary" class="px-2 py-0.5 text-xs font-medium rounded bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300">
-                    Primary
+                    {{ s('Primary') }}
                   </span>
                   <span v-if="account.broker" class="px-2 py-0.5 text-xs font-medium rounded bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
                     {{ formatBroker(account.broker) }}
                   </span>
                 </div>
                 <div class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                  <span v-if="account.accountIdentifier">ID: {{ redactAccountId(account.accountIdentifier) }}</span>
+                  <span v-if="account.accountIdentifier">{{ s('ID:') }} {{ redactAccountId(account.accountIdentifier) }}</span>
                   <span v-if="account.accountIdentifier && account.tradeCount"> | </span>
-                  <span v-if="account.tradeCount">{{ account.tradeCount }} trades</span>
-                  <span v-if="!account.accountIdentifier && !account.tradeCount">No identifier set</span>
+                  <span v-if="account.tradeCount">{{ account.tradeCount }} {{ s('trades') }}</span>
+                  <span v-if="!account.accountIdentifier && !account.tradeCount">{{ s('No identifier set') }}</span>
                 </div>
               </div>
               <div class="flex gap-2">
                 <button
                   @click="editAccount(account)"
                   class="p-2 text-gray-500 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400"
-                  title="Edit"
+                  :title="s('Edit')"
                 >
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -192,7 +192,7 @@
                 <button
                   @click="confirmDelete(account)"
                   class="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400"
-                  title="Delete"
+                  :title="s('Delete')"
                 >
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -203,12 +203,12 @@
           </div>
         </div>
       </div>
-      <!-- Unlinked Account Identifiers -->
+      <!-- Unlinked account identifiers -->
       <div v-if="unlinkedIdentifiers.length > 0" class="card mt-8">
         <div class="card-body">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Unmanaged Account Identifiers</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">{{ s('Unmanaged Account Identifiers') }}</h3>
           <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
-            These account identifiers exist on your trades but don't have a managed account. Add them to track cashflow and balances.
+            {{ s("These account identifiers exist on your trades but don't have a managed account. Add them to track cashflow and balances.") }}
           </p>
 
           <div class="space-y-3">
@@ -227,7 +227,7 @@
                 @click="createFromUnlinked(item)"
                 class="btn-secondary text-sm"
               >
-                Add Account
+                {{ s('Add Account') }}
               </button>
             </div>
           </div>
@@ -250,11 +250,11 @@
               </div>
               <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                 <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-title">
-                  Delete Account
+                  {{ s('Delete Account') }}
                 </h3>
                 <div class="mt-2">
                   <p class="text-sm text-gray-500 dark:text-gray-400">
-                    Are you sure you want to delete "{{ accountToDelete?.accountName }}"? This will not delete any trades associated with this account.
+                    {{ s(`Are you sure you want to delete "${accountToDelete?.accountName}"? This will not delete any trades associated with this account.`) }}
                   </p>
                 </div>
               </div>
@@ -267,14 +267,14 @@
               :disabled="deleting"
               class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50"
             >
-              {{ deleting ? 'Deleting...' : 'Delete' }}
+              {{ deleting ? s('Deleting...') : s('Delete') }}
             </button>
             <button
               type="button"
               @click="showDeleteModal = false"
               class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
             >
-              Cancel
+              {{ s('Cancel') }}
             </button>
           </div>
         </div>
@@ -284,12 +284,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import api from '@/services/api'
 import OnboardingCard from '@/components/onboarding/OnboardingCard.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'cashflow' })
+
+const onboardingDescription = computed(() => {
+  void locale.value
+  return s('Set up your trading accounts to track balances, deposits, and withdrawals over time.')
+})
 
 const loading = ref(true)
 const saving = ref(false)
@@ -326,7 +335,9 @@ const brokerLabels = {
 }
 
 function formatBroker(broker) {
-  return brokerLabels[broker] || broker
+  void locale.value
+  const label = brokerLabels[broker] || broker
+  return s(label)
 }
 
 /**
@@ -380,7 +391,7 @@ async function fetchAccounts() {
     unlinkedIdentifiers.value = unlinkedRes.data.data || []
   } catch (err) {
     console.error('Failed to fetch accounts:', err)
-    error.value = err.response?.data?.error || err.response?.data?.message || 'Failed to load accounts'
+    error.value = s(err.response?.data?.error || err.response?.data?.message || 'Failed to load accounts')
   } finally {
     loading.value = false
   }
@@ -457,7 +468,7 @@ async function saveAccount() {
     await fetchAccounts()
   } catch (err) {
     console.error('Failed to save account:', err)
-    error.value = err.response?.data?.error || 'Failed to save account'
+    error.value = s(err.response?.data?.error || 'Failed to save account')
   } finally {
     saving.value = false
   }
@@ -485,7 +496,7 @@ async function deleteAccount() {
     await fetchAccounts()
   } catch (err) {
     console.error('Failed to delete account:', err)
-    error.value = err.response?.data?.error || 'Failed to delete account'
+    error.value = s(err.response?.data?.error || 'Failed to delete account')
   } finally {
     deleting.value = false
   }

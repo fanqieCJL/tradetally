@@ -4,15 +4,15 @@
     <div class="mb-8">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 class="heading-page">Dashboard</h1>
+          <h1 class="heading-page">{{ s('Dashboard') }}</h1>
           <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            Trading performance analytics and insights
+            {{ s('Trading performance analytics and insights') }}
           </p>
           <div
             v-if="selectedAccount"
             class="mt-2 inline-flex max-w-full items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700 dark:bg-primary-900/30 dark:text-primary-300"
           >
-            Viewing: <span class="ml-1 truncate">{{ selectedAccountLabel }}</span>
+            {{ s('Viewing:') }} <span class="ml-1 truncate">{{ selectedAccountLabel }}</span>
           </div>
           
           <!-- Market Status and Refresh Indicator -->
@@ -71,7 +71,7 @@
               @change="applyFilters"
               @keydown.enter="applyFilters"
               class="input text-sm"
-              placeholder="Start Date"
+              :placeholder="s('Start Date')"
             />
             <input
               type="date"
@@ -79,7 +79,7 @@
               @change="applyFilters"
               @keydown.enter="applyFilters"
               class="input text-sm"
-              placeholder="End Date"
+              :placeholder="s('End Date')"
             />
           </div>
 
@@ -93,7 +93,7 @@
               <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
-              {{ isCustomizing ? 'Done' : 'Reorder Sections' }}
+              {{ isCustomizing ? s('Done') : s('Reorder Sections') }}
             </button>
             <button
               @click="showLayoutSettings = true"
@@ -103,14 +103,14 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
-              Show/Hide Sections
+              {{ s('Show/Hide Sections') }}
             </button>
             <button
               v-if="isCustomizing"
               @click="resetDashboardLayout"
               class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
-              Reset to Default
+              {{ s('Reset to Default') }}
             </button>
           </div>
           <!-- Account filter is now global in the navbar -->
@@ -127,9 +127,9 @@
       :step="1"
       :total-steps="5"
       :next-step="2"
-      title="Welcome to TradeTally"
-      description="We've loaded sample trades so you can see your dashboard in action. Let's take a quick tour of the key features."
-      cta-label="Next: Import Trades"
+      :title="s('Welcome to TradeTally')"
+      :description="onboardingDescription"
+      :cta-label="s('Next: Import Trades')"
       cta-route="import"
     />
 
@@ -141,15 +141,15 @@
       <div class="card-body">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-amber-900 dark:text-amber-100">You're exploring with sample data.</p>
-            <p class="mt-0.5 text-sm text-amber-700 dark:text-amber-300">Import your own trades or remove the sample data when you're ready.</p>
+            <p class="text-sm font-medium text-amber-900 dark:text-amber-100">{{ s("You're exploring with sample data.") }}</p>
+            <p class="mt-0.5 text-sm text-amber-700 dark:text-amber-300">{{ s("Import your own trades or remove the sample data when you're ready.") }}</p>
           </div>
           <div class="flex items-center gap-2 flex-shrink-0 ml-4">
             <RouterLink
               :to="{ name: 'import' }"
               class="btn-primary text-sm"
             >
-              Import Trades
+              {{ s('Import Trades') }}
             </RouterLink>
             <button
               type="button"
@@ -157,7 +157,7 @@
               :disabled="removingSampleData"
               @click="removeSampleData"
             >
-              {{ removingSampleData ? 'Removing...' : 'Remove Sample Data' }}
+              {{ removingSampleData ? s('Removing...') : s('Remove Sample Data') }}
             </button>
           </div>
         </div>
@@ -177,36 +177,36 @@
             </svg>
           </div>
           <div class="flex-1 min-w-0">
-            <h3 class="text-sm font-medium text-primary-900 dark:text-primary-100">Get started with TradeTally</h3>
+            <h3 class="text-sm font-medium text-primary-900 dark:text-primary-100">{{ s('Get started with TradeTally') }}</h3>
             <p class="mt-1 text-sm text-primary-700 dark:text-primary-300">
-              Import your first trades to see your P&L, win rate, and analytics here.
+              {{ s('Import your first trades to see your P&L, win rate, and analytics here.') }}
             </p>
             <div class="mt-3 flex flex-wrap gap-2">
               <RouterLink
                 :to="{ name: 'import' }"
                 class="inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-md bg-primary-600 text-white hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600"
               >
-                Import your first trades
+                {{ s('Import your first trades') }}
               </RouterLink>
               <RouterLink
                 :to="{ name: 'broker-sync' }"
                 class="inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-md border border-primary-600 text-primary-700 dark:text-primary-300 dark:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/30"
               >
-                Connect a broker
+                {{ s('Connect a broker') }}
               </RouterLink>
               <button
                 type="button"
                 class="inline-flex items-center px-3 py-1.5 text-sm text-primary-600 dark:text-primary-400 hover:underline"
                 @click="onboardingBannerDismissed = true"
               >
-                Dismiss
+                {{ s('Dismiss') }}
               </button>
             </div>
           </div>
           <button
             type="button"
             class="flex-shrink-0 p-1 rounded text-primary-500 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-200"
-            aria-label="Dismiss"
+            :aria-label="s('Dismiss')"
             @click="onboardingBannerDismissed = true"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -229,10 +229,10 @@
         <div class="flex items-center justify-between gap-3">
           <div class="flex items-center gap-3">
             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-800 dark:text-primary-200">
-              Pro Trial
+              {{ s('Pro Trial') }}
             </span>
             <span class="text-sm text-primary-800 dark:text-primary-200">
-              {{ subscription.trial.days_remaining }} day{{ subscription.trial.days_remaining === 1 ? '' : 's' }} left. Upgrade before your trial ends to keep Pro features.
+              {{ trialRemainingMessage(subscription.trial.days_remaining) }}
             </span>
           </div>
           <div class="flex items-center gap-2">
@@ -240,12 +240,12 @@
               :to="{ name: 'pricing' }"
               class="inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-md bg-primary-600 text-white hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600"
             >
-              Upgrade before trial ends
+              {{ s('Upgrade before trial ends') }}
             </RouterLink>
             <button
               type="button"
               class="p-1 rounded text-primary-500 hover:text-primary-700 dark:text-primary-400"
-              aria-label="Dismiss"
+              :aria-label="s('Dismiss')"
               @click="trialBannerDismissed = true"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -265,9 +265,9 @@
       <div class="card-body">
         <div class="flex items-center justify-between gap-3">
           <div>
-            <p class="text-sm font-medium text-gray-900 dark:text-white">Your trial ended</p>
+            <p class="text-sm font-medium text-gray-900 dark:text-white">{{ s('Your trial ended') }}</p>
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-0.5">
-              Upgrade to Pro to keep advanced analytics, AI insights, and more.
+              {{ s('Upgrade to Pro to keep advanced analytics, AI insights, and more.') }}
             </p>
           </div>
           <div class="flex items-center gap-2">
@@ -275,12 +275,12 @@
               :to="{ name: 'pricing' }"
               class="inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-md bg-primary-600 text-white hover:bg-primary-700"
             >
-              View Pro plans
+              {{ s('View Pro plans') }}
             </RouterLink>
             <button
               type="button"
               class="p-1 rounded text-gray-500 hover:text-gray-700 dark:text-gray-400"
-              aria-label="Dismiss"
+              :aria-label="s('Dismiss')"
               @click="postTrialBannerDismissed = true"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -305,9 +305,9 @@
       >
         <div class="card-body flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 class="heading-card">Dashboard Sections Hidden</h2>
+            <h2 class="heading-card">{{ s('Dashboard Sections Hidden') }}</h2>
             <p class="mt-1 text-sm text-primary-700 dark:text-primary-300">
-              Your saved dashboard layout is hiding every section. Reset the layout to restore the default dashboard.
+              {{ s('Your saved dashboard layout is hiding every section. Reset the layout to restore the default dashboard.') }}
             </p>
           </div>
           <div class="flex gap-2">
@@ -316,14 +316,14 @@
               class="btn-secondary"
               @click="showLayoutSettings = true"
             >
-              Show/Hide Sections
+              {{ s('Show/Hide Sections') }}
             </button>
             <button
               type="button"
               class="btn-primary"
               @click="resetDashboardLayout"
             >
-              Reset Layout
+              {{ s('Reset Layout') }}
             </button>
           </div>
         </div>
@@ -337,8 +337,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div>
-              <p class="text-sm font-medium text-blue-900 dark:text-blue-100">Customization Mode Active</p>
-              <p class="text-xs text-blue-700 dark:text-blue-300 mt-1">Drag and drop sections to reorder them. Use "Show/Hide Sections" to control visibility.</p>
+              <p class="text-sm font-medium text-blue-900 dark:text-blue-100">{{ s('Customization Mode Active') }}</p>
+              <p class="text-xs text-blue-700 dark:text-blue-300 mt-1">{{ s('Drag and drop sections to reorder them. Use "Show/Hide Sections" to control visibility.') }}</p>
             </div>
           </div>
         </div>
@@ -368,7 +368,7 @@
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
                 </svg>
-                <span class="text-xs text-gray-500 dark:text-gray-400">{{ getSectionDefinition(element.id)?.title }}</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">{{ getSectionTitle(element.id) }}</span>
               </div>
             </div>
             
@@ -383,21 +383,21 @@
                 <div class="card-body">
                   <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center">
-                      <h3 class="heading-card">Open Positions</h3>
+                      <h3 class="heading-card">{{ s('Open Positions') }}</h3>
                       <button 
                         @click="navigateToOpenTrades"
                         class="ml-3 text-sm text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300"
                       >
-                        View all →
+                        {{ s('View all →') }}
                       </button>
                     </div>
                     <div class="flex items-center gap-2">
                       <div v-if="loading" class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400">
                         <div class="animate-spin rounded-full h-3 w-3 border-[1.5px] border-primary-600 border-t-transparent"></div>
-                        <span>Updating...</span>
+                        <span>{{ s('Updating...') }}</span>
                       </div>
                       <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/20 dark:text-primary-400">
-                        {{ openTrades.length }} {{ openTrades.length === 1 ? 'position' : 'positions' }}
+                        {{ openTrades.length }} {{ positionCountLabel(openTrades.length) }}
                       </span>
                     </div>
                   </div>
@@ -423,7 +423,7 @@
                           ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
                           : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
                       ]">
-                      {{ position.side === 'neutral' ? 'hedged' : position.side }}
+                      {{ formatSideLabel(position.side) }}
                     </span>
                   </div>
                 </div>
@@ -440,7 +440,7 @@
                       {{ getOptionPnL(position).unrealizedPnLPercent >= 0 ? '+' : '' }}{{ formatNumber(getOptionPnL(position).unrealizedPnLPercent) }}%
                     </div>
                   </template>
-                  <span v-else class="text-xs text-gray-400">Enter premium below</span>
+                  <span v-else class="text-xs text-gray-400">{{ s('Enter premium below') }}</span>
                 </div>
                 <div v-else-if="position.unrealizedPnL !== null" class="text-right">
                   <div class="text-lg font-bold" :class="[
@@ -459,27 +459,27 @@
               <!-- Key Metrics Grid -->
               <div class="grid grid-cols-2 gap-3 mb-3">
                 <div class="table-card-row">
-                  <span class="table-card-label">Traded</span>
+                  <span class="table-card-label">{{ s('Traded') }}</span>
                   <span class="table-card-value">
                     {{ (position.totalSharesTraded || position.totalQuantity || 0).toLocaleString() }}
                   </span>
                 </div>
                 <div class="table-card-row">
-                  <span class="table-card-label">Shares Held</span>
+                  <span class="table-card-label">{{ s('Shares Held') }}</span>
                   <span class="table-card-value">
-                    {{ position.totalQuantity === 0 ? 'Hedged' : (position.totalQuantity || 0).toLocaleString() }}
+                    {{ position.totalQuantity === 0 ? s('Hedged') : (position.totalQuantity || 0).toLocaleString() }}
                   </span>
                 </div>
                 <div class="table-card-row">
-                  <span class="table-card-label">Avg Price</span>
+                  <span class="table-card-label">{{ s('Avg Price') }}</span>
                   <span class="table-card-value">{{ formatCurrency(position.avgPrice) }}</span>
                 </div>
                 <div class="table-card-row">
-                  <span class="table-card-label">Total Cost</span>
+                  <span class="table-card-label">{{ s('Total Cost') }}</span>
                   <span class="table-card-value">{{ formatCurrency(position.totalCost) }}</span>
                 </div>
                 <div class="table-card-row">
-                  <span class="table-card-label">{{ position.requires_manual_price ? 'Premium' : 'Current Price' }}<span v-if="position.quoteSource === 'alpaca'" class="ml-1 text-gray-400 font-normal">(via Alpaca)</span></span>
+                  <span class="table-card-label">{{ position.requires_manual_price ? s('Premium') : s('Current Price') }}<span v-if="position.quoteSource === 'alpaca'" class="ml-1 text-gray-400 font-normal">({{ s('via Alpaca') }})</span></span>
                   <span class="table-card-value">
                     <template v-if="position.requires_manual_price">
                       <div class="flex items-center space-x-1">
@@ -488,7 +488,7 @@
                           type="number"
                           step="0.01"
                           min="0"
-                          placeholder="Enter"
+                          :placeholder="s('Enter')"
                           :value="manualOptionPrices[position.symbol] ?? ''"
                           @input="setManualOptionPrice(position.symbol, $event.target.value)"
                           class="w-20 text-right text-sm font-bold bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded px-1.5 py-0.5 text-gray-900 dark:text-white focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
@@ -506,20 +506,20 @@
               <!-- Individual Trades (only show when position has multiple trades) -->
               <div v-if="position.trades.length > 1" class="pt-3 border-t border-gray-200 dark:border-gray-700">
                 <div class="text-xs text-gray-500 dark:text-gray-400 mb-2">
-                  {{ position.trades.length }} trades
+                  {{ position.trades.length }} {{ tradeCountLabel(position.trades.length) }}
                 </div>
                 <div class="space-y-2">
                   <div v-for="trade in position.trades" :key="trade.id"
                        class="flex justify-between items-center text-sm bg-gray-50 dark:bg-gray-900 rounded px-3 py-2">
                     <div class="flex items-center space-x-2">
-                      <span class="text-xs text-gray-500">Trade #{{ trade.id }}</span>
+                      <span class="text-xs text-gray-500">{{ s('Trade #') }}{{ trade.id }}</span>
                       <span class="px-1.5 text-xs leading-4 font-medium rounded"
                         :class="[
                           trade.side === 'long'
                             ? 'bg-green-50 text-green-700 dark:bg-green-900/10 dark:text-green-400'
                             : 'bg-red-50 text-red-700 dark:bg-red-900/10 dark:text-red-400'
                         ]">
-                        {{ trade.side }}
+                        {{ formatSideLabel(trade.side) }}
                       </span>
                       <span class="text-xs text-gray-600 dark:text-gray-400">
                         {{ (trade.quantity || 0).toLocaleString() }} @ {{ formatCurrency(trade.entry_price) }}
@@ -529,7 +529,7 @@
                       :to="`/trades/${trade.id}`"
                       class="text-xs text-primary-600 hover:text-primary-900 dark:hover:text-primary-400 font-medium"
                     >
-                      View →
+                      {{ s('View →') }}
                     </router-link>
                   </div>
                 </div>
@@ -540,7 +540,7 @@
                   :to="`/trades/${position.trades[0].id}`"
                   class="text-sm text-primary-600 hover:text-primary-900 dark:hover:text-primary-400 font-medium"
                 >
-                  View Trade →
+                  {{ s('View Trade →') }}
                 </router-link>
               </div>
             </div>
@@ -548,7 +548,7 @@
             <!-- Total Summary Card -->
             <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border-2 border-gray-300 dark:border-gray-600">
               <div class="flex justify-between items-center">
-                <div class="text-sm font-bold text-gray-900 dark:text-white">Total Position</div>
+                <div class="text-sm font-bold text-gray-900 dark:text-white">{{ s('Total Position') }}</div>
                 <div class="text-right">
                   <div class="text-sm font-bold text-gray-900 dark:text-white">
                     {{ formatCurrency(totalOpenCost) }}
@@ -569,37 +569,37 @@
               <thead>
                 <tr>
                   <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Symbol
+                    {{ s('Symbol') }}
                   </th>
                   <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Side
+                    {{ s('Side') }}
                   </th>
                   <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Traded
+                    {{ s('Traded') }}
                   </th>
                   <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Shares Held
+                    {{ s('Shares Held') }}
                   </th>
                   <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Avg Entry Price
+                    {{ s('Avg Entry Price') }}
                   </th>
                   <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Total Cost
+                    {{ s('Total Cost') }}
                   </th>
                   <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Current Price
+                    {{ s('Current Price') }}
                   </th>
                   <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Current Value
+                    {{ s('Current Value') }}
                   </th>
                   <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Unrealized P&L
+                    {{ s('Unrealized P&L') }}
                   </th>
                   <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Individual Trades
+                    {{ s('Individual Trades') }}
                   </th>
                   <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Actions
+                    {{ s('Actions') }}
                   </th>
                 </tr>
               </thead>
@@ -625,14 +625,14 @@
                             ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
                             : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
                         ]">
-                        {{ position.side === 'neutral' ? 'hedged' : position.side }}
+                        {{ formatSideLabel(position.side) }}
                       </span>
                     </td>
                     <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-300 text-right">
                       {{ (position.totalSharesTraded || position.totalQuantity || 0).toLocaleString() }}
                     </td>
                     <td class="px-3 py-2 text-sm font-bold text-gray-900 dark:text-white text-right">
-                      {{ position.totalQuantity === 0 ? 'Hedged' : (position.totalQuantity || 0).toLocaleString() }}
+                      {{ position.totalQuantity === 0 ? s('Hedged') : (position.totalQuantity || 0).toLocaleString() }}
                     </td>
                     <td class="px-3 py-2 text-sm font-bold text-gray-900 dark:text-white text-right">
                       {{ formatCurrency(position.avgPrice) }}
@@ -649,7 +649,7 @@
                             type="number"
                             step="0.01"
                             min="0"
-                            placeholder="Premium"
+                            :placeholder="s('Premium')"
                             :value="manualOptionPrices[position.symbol] ?? ''"
                             @input="setManualOptionPrice(position.symbol, $event.target.value)"
                             class="w-20 text-right text-sm font-bold bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded px-1.5 py-0.5 text-gray-900 dark:text-white focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
@@ -666,7 +666,7 @@
                             {{ formatSignedCurrency(position.dayChange) }}
                             ({{ position.dayChangePercent >= 0 ? '+' : '' }}{{ formatNumber(position.dayChangePercent) }}%)
                           </div>
-                          <div v-if="position.quoteSource === 'alpaca'" class="text-xs text-gray-400">via Alpaca</div>
+                          <div v-if="position.quoteSource === 'alpaca'" class="text-xs text-gray-400">{{ s('via Alpaca') }}</div>
                         </div>
                         <span v-else class="text-xs text-gray-400">-</span>
                       </template>
@@ -699,7 +699,7 @@
                             {{ getOptionPnL(position).unrealizedPnLPercent >= 0 ? '+' : '' }}{{ formatNumber(getOptionPnL(position).unrealizedPnLPercent) }}%
                           </div>
                         </div>
-                        <span v-else class="text-xs text-gray-400">Enter premium</span>
+                        <span v-else class="text-xs text-gray-400">{{ s('Enter premium') }}</span>
                       </template>
                       <template v-else>
                         <div v-if="position.unrealizedPnL !== null">
@@ -718,7 +718,7 @@
                       </template>
                     </td>
                     <td class="px-3 py-2 text-sm text-gray-500 dark:text-gray-400 text-right">
-                      {{ position.trades.length }} {{ position.trades.length === 1 ? 'trade' : 'trades' }}
+                      {{ position.trades.length }} {{ tradeCountLabel(position.trades.length) }}
                     </td>
                     <td class="px-3 py-2 text-sm text-right">
                       <router-link
@@ -726,16 +726,16 @@
                         :to="`/trades/${position.trades[0].id}`"
                         class="text-primary-600 hover:text-primary-900 dark:hover:text-primary-400 font-medium text-xs"
                       >
-                        View
+                        {{ s('View') }}
                       </router-link>
-                      <span v-else class="text-xs text-gray-400">Position Total</span>
+                      <span v-else class="text-xs text-gray-400">{{ s('Position Total') }}</span>
                     </td>
                   </tr>
                   
                   <!-- Individual Trade Rows (only show when position has multiple trades) -->
                   <tr v-if="position.trades.length > 1" v-for="trade in position.trades" :key="trade.id" class="hover:bg-gray-50 dark:hover:bg-gray-800">
                     <td class="px-3 py-2 text-sm text-gray-500 dark:text-gray-400 pl-6">
-                      <span class="text-xs">└─</span> Trade #{{ trade.id }}
+                      <span class="text-xs">└─</span> {{ s('Trade #') }}{{ trade.id }}
                     </td>
                     <td class="px-3 py-2 text-sm">
                       <span class="px-1.5 inline-flex text-xs leading-4 font-medium rounded"
@@ -744,7 +744,7 @@
                             ? 'bg-green-50 text-green-700 dark:bg-green-900/10 dark:text-green-400'
                             : 'bg-red-50 text-red-700 dark:bg-red-900/10 dark:text-red-400'
                         ]">
-                        {{ trade.side }}
+                        {{ formatSideLabel(trade.side) }}
                       </span>
                     </td>
                     <td class="px-3 py-2 text-sm text-gray-700 dark:text-gray-300 text-right">
@@ -776,7 +776,7 @@
                         :to="`/trades/${trade.id}`"
                         class="text-primary-600 hover:text-primary-900 dark:hover:text-primary-400 font-medium text-xs"
                       >
-                        View
+                        {{ s('View') }}
                       </router-link>
                     </td>
                   </tr>
@@ -785,7 +785,7 @@
               <tfoot class="bg-gray-50 dark:bg-gray-800 border-t-2 border-gray-300 dark:border-gray-600">
                 <tr>
                   <td colspan="5" class="px-3 py-3 text-sm font-bold text-gray-900 dark:text-white text-right">
-                    Total:
+                    {{ s('Total:') }}
                   </td>
                   <td class="px-3 py-3 text-sm font-bold text-gray-900 dark:text-white text-right tabular-nums">
                     {{ formatCurrency(totalOpenCost) }}
@@ -851,11 +851,11 @@
                 <div class="card card-mobile-safe flex-1">
                   <div class="card-body">
                     <dt class="text-data-secondary truncate">
-                      Total P&L
+                      {{ s('Total P&L') }}
                     </dt>
                     <div class="mt-1 space-y-2">
                       <div>
-                        <div class="text-[11px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Gross</div>
+                        <div class="text-[11px] uppercase tracking-wider text-gray-500 dark:text-gray-400">{{ s('Gross') }}</div>
                         <dd class="text-xl sm:text-2xl lg:text-3xl font-semibold whitespace-nowrap" :class="[
                           dashboardGrossPnl >= 0 ? 'text-green-600' : 'text-red-600'
                         ]">
@@ -863,7 +863,7 @@
                         </dd>
                       </div>
                       <div>
-                        <div class="text-[11px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Net</div>
+                        <div class="text-[11px] uppercase tracking-wider text-gray-500 dark:text-gray-400">{{ s('Net') }}</div>
                         <dd class="text-base sm:text-lg font-semibold whitespace-nowrap" :class="[
                           dashboardNetPnl >= 0 ? 'text-green-600' : 'text-red-600'
                         ]">
@@ -872,7 +872,7 @@
                       </div>
                     </div>
                     <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                      {{ calculationMethod }} net avg: {{ formatCurrency(dashboardAvgNetPnl) }}
+                      {{ calculationMethod }} {{ s('net avg') }}: {{ formatCurrency(dashboardAvgNetPnl) }}
                     </div>
                   </div>
                 </div>
@@ -880,7 +880,7 @@
                 <div class="card card-mobile-safe flex-1">
                   <div class="card-body">
                     <dt class="text-data-secondary truncate">
-                      Win Rate
+                      {{ s('Win Rate') }}
                     </dt>
                     <dd class="mt-1 text-xl sm:text-2xl lg:text-3xl font-semibold whitespace-nowrap" :class="[
                       analytics.summary.winRate >= 50 ? 'text-green-600' : 'text-red-600'
@@ -888,7 +888,7 @@
                       {{ formatPercent(analytics.summary.winRate) }}%
                     </dd>
                     <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                      {{ analytics.summary.winningTrades }}/{{ analytics.summary.totalTrades }} trades
+                      {{ analytics.summary.winningTrades }}/{{ analytics.summary.totalTrades }} {{ s('trades') }}
                     </div>
                   </div>
                 </div>
@@ -896,7 +896,7 @@
                 <div class="card card-mobile-safe flex-1">
                   <div class="card-body">
                     <dt class="text-data-secondary truncate">
-                      Profit Factor
+                      {{ s('Profit Factor') }}
                     </dt>
                     <dd class="mt-1 text-xl sm:text-2xl lg:text-3xl font-semibold whitespace-nowrap" :class="[
                       analytics.summary.profitFactor >= 1 ? 'text-green-600' : 'text-red-600'
@@ -904,7 +904,7 @@
                       {{ formatNumber(analytics.summary.profitFactor) }}
                     </dd>
                     <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                      {{ analytics.summary.profitFactor >= 1 ? 'Profitable' : 'Unprofitable' }}
+                      {{ analytics.summary.profitFactor >= 1 ? s('Profitable') : s('Unprofitable') }}
                     </div>
                   </div>
                 </div>
@@ -913,20 +913,20 @@
                   class="card card-mobile-safe flex-1 cursor-pointer hover:shadow-lg transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                   role="button"
                   tabindex="0"
-                  aria-label="View max drawdown trades"
+                  :aria-label="s('View max drawdown trades')"
                   @click="navigateToAnalytics('drawdown')"
                   @keydown.enter.prevent="navigateToAnalytics('drawdown')"
                   @keydown.space.prevent="navigateToAnalytics('drawdown')"
                 >
                   <div class="card-body">
                     <dt class="text-data-secondary truncate">
-                      Max Drawdown
+                      {{ s('Max Drawdown') }}
                     </dt>
                     <dd class="mt-1 text-xl sm:text-2xl lg:text-3xl font-semibold text-red-600 whitespace-nowrap">
                       {{ formatCurrency(analytics.summary.maxDrawdown, { abs: true }) }}
                     </dd>
                     <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                      Peak decline
+                      {{ s('Peak decline') }}
                     </div>
                   </div>
                 </div>
@@ -948,14 +948,14 @@
                   class="card card-mobile-safe flex-1 cursor-pointer hover:shadow-lg transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                   role="button"
                   tabindex="0"
-                  :aria-label="`View ${calculationMethod} winning trades`"
+                  :aria-label="s(`View ${userSettings?.statisticsCalculation === 'median' ? 'Median' : 'Average'} winning trades`)"
                   @click="navigateToTradesFiltered('avgWin')"
                   @keydown.enter.prevent="navigateToTradesFiltered('avgWin')"
                   @keydown.space.prevent="navigateToTradesFiltered('avgWin')"
                 >
                   <div class="card-body">
                     <dt class="text-data-secondary truncate">
-                      {{ calculationMethod }} Win
+                      {{ calculationMethodWinLabel }}
                     </dt>
                     <dd class="mt-1 text-lg sm:text-xl lg:text-2xl font-semibold text-green-600 whitespace-nowrap">
                       {{ formatCurrency(analytics.summary.avgWin) }}
@@ -967,14 +967,14 @@
                   class="card card-mobile-safe flex-1 cursor-pointer hover:shadow-lg transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                   role="button"
                   tabindex="0"
-                  :aria-label="`View ${calculationMethod} losing trades`"
+                  :aria-label="s(`View ${userSettings?.statisticsCalculation === 'median' ? 'Median' : 'Average'} losing trades`)"
                   @click="navigateToTradesFiltered('avgLoss')"
                   @keydown.enter.prevent="navigateToTradesFiltered('avgLoss')"
                   @keydown.space.prevent="navigateToTradesFiltered('avgLoss')"
                 >
                   <div class="card-body">
                     <dt class="text-data-secondary truncate">
-                      {{ calculationMethod }} Loss
+                      {{ calculationMethodLossLabel }}
                     </dt>
                     <dd class="mt-1 text-lg sm:text-xl lg:text-2xl font-semibold text-red-600 whitespace-nowrap">
                       {{ formatCurrency(analytics.summary.avgLoss, { abs: true }) }}
@@ -986,14 +986,14 @@
                   class="card card-mobile-safe flex-1 cursor-pointer hover:shadow-lg transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                   role="button"
                   tabindex="0"
-                  aria-label="View best trade"
+                  :aria-label="s('View best trade')"
                   @click="navigateToTradesFiltered('best')"
                   @keydown.enter.prevent="navigateToTradesFiltered('best')"
                   @keydown.space.prevent="navigateToTradesFiltered('best')"
                 >
                   <div class="card-body">
                     <dt class="text-data-secondary truncate">
-                      Best Trade
+                      {{ s('Best Trade') }}
                     </dt>
                     <dd class="mt-1 text-lg sm:text-xl lg:text-2xl font-semibold text-green-600 whitespace-nowrap">
                       {{ formatCurrency(analytics.summary.bestTrade) }}
@@ -1005,14 +1005,14 @@
                   class="card card-mobile-safe flex-1 cursor-pointer hover:shadow-lg transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                   role="button"
                   tabindex="0"
-                  aria-label="View worst trade"
+                  :aria-label="s('View worst trade')"
                   @click="navigateToTradesFiltered('worst')"
                   @keydown.enter.prevent="navigateToTradesFiltered('worst')"
                   @keydown.space.prevent="navigateToTradesFiltered('worst')"
                 >
                   <div class="card-body">
                     <dt class="text-data-secondary truncate">
-                      Worst Trade
+                      {{ s('Worst Trade') }}
                     </dt>
                     <dd class="mt-1 text-lg sm:text-xl lg:text-2xl font-semibold text-red-600 whitespace-nowrap">
                       {{ formatCurrency(analytics.summary.worstTrade) }}
@@ -1043,7 +1043,7 @@
                 <div class="lg:col-span-2 card">
                   <div class="card-body">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                      Cumulative P&L Over Time
+                      {{ s('Cumulative P&L Over Time') }}
                     </h3>
                     <div class="h-80">
                       <canvas ref="pnlChart"></canvas>
@@ -1055,7 +1055,7 @@
                 <div class="lg:col-span-1 card">
                   <div class="card-body">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                      Win/Loss Distribution
+                      {{ s('Win/Loss Distribution') }}
                     </h3>
                     <div class="h-64 relative">
                       <canvas ref="distributionChart"></canvas>
@@ -1066,7 +1066,7 @@
                             {{ computedWinRate }}%
                           </div>
                           <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Win Rate
+                            {{ s('Win Rate') }}
                           </div>
                         </div>
                       </div>
@@ -1078,21 +1078,21 @@
                         @click="navigateToTradesByPnLType('profit')"
                       >
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                        <span class="text-gray-600 dark:text-gray-400">{{ parseInt(analytics?.summary?.winningTrades) || 0 }} Wins</span>
+                        <span class="text-gray-600 dark:text-gray-400">{{ s(`${parseInt(analytics?.summary?.winningTrades) || 0} Wins`) }}</span>
                       </button>
                       <button
                         class="flex items-center gap-1.5 text-sm cursor-pointer hover:opacity-80 transition-opacity"
                         @click="navigateToTradesByPnLType('loss')"
                       >
                         <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
-                        <span class="text-gray-600 dark:text-gray-400">{{ parseInt(analytics?.summary?.losingTrades) || 0 }} Losses</span>
+                        <span class="text-gray-600 dark:text-gray-400">{{ s(`${parseInt(analytics?.summary?.losingTrades) || 0} Losses`) }}</span>
                       </button>
                       <button
                         class="flex items-center gap-1.5 text-sm cursor-pointer hover:opacity-80 transition-opacity"
                         @click="navigateToTradesByPnLType('breakeven')"
                       >
                         <span class="w-2.5 h-2.5 rounded-full bg-gray-400"></span>
-                        <span class="text-gray-600 dark:text-gray-400">{{ parseInt(analytics?.summary?.breakevenTrades) || 0 }} BE</span>
+                        <span class="text-gray-600 dark:text-gray-400">{{ s(`${parseInt(analytics?.summary?.breakevenTrades) || 0} BE`) }}</span>
                       </button>
                     </div>
                   </div>
@@ -1106,7 +1106,7 @@
                 <div class="card">
                   <div class="card-body">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                      Daily Win Rate
+                      {{ s('Daily Win Rate') }}
                     </h3>
                     <div class="h-80">
                       <canvas ref="winRateChart"></canvas>
@@ -1123,23 +1123,23 @@
                 <div class="card">
                   <div class="card-body">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                      Performance by Symbol
+                      {{ s('Performance by Symbol') }}
                     </h3>
                     <div class="overflow-x-auto">
                       <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead>
                           <tr>
                             <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                              Symbol
+                              {{ s('Symbol') }}
                             </th>
                             <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                              Trades
+                              {{ s('Trades') }}
                             </th>
                             <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                              P&L
+                              {{ s('P&L') }}
                             </th>
                             <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                              Avg
+                              {{ s('Avg') }}
                             </th>
                           </tr>
                         </thead>
@@ -1178,12 +1178,12 @@
                 <div class="card">
                   <div class="card-body">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                      Top Trades
+                      {{ s('Top Trades') }}
                     </h3>
                     
                     <div class="space-y-4">
                       <div>
-                        <h4 class="text-sm font-medium text-green-600 mb-2">Best Trades</h4>
+                        <h4 class="text-sm font-medium text-green-600 mb-2">{{ s('Best Trades') }}</h4>
                         <div class="space-y-1">
                           <div v-for="trade in analytics.topTrades.best" :key="`best-${trade.symbol}-${trade.trade_date}`"
                                @click="navigateToTradesBySymbolAndDate(trade.symbol, trade.trade_date)"
@@ -1199,7 +1199,7 @@
                       </div>
 
                       <div>
-                        <h4 class="text-sm font-medium text-red-600 mb-2">Worst Trades</h4>
+                        <h4 class="text-sm font-medium text-red-600 mb-2">{{ s('Worst Trades') }}</h4>
                         <div class="space-y-1">
                           <div v-if="analytics.topTrades.worst && analytics.topTrades.worst.length > 0"
                                v-for="trade in analytics.topTrades.worst" :key="`worst-${trade.symbol}-${trade.trade_date}`"
@@ -1217,7 +1217,7 @@
                           </div>
                           <div v-else class="text-sm text-gray-500 dark:text-gray-400 italic py-2 flex items-center">
                             <MdiIcon :icon="mdiCheckCircle" :size="16" class="mr-1 text-green-500" />
-                            No losing trades found
+                            {{ s('No losing trades found') }}
                           </div>
                         </div>
                       </div>
@@ -1225,7 +1225,7 @@
                       <!-- Net P&L Difference -->
                       <div v-if="analytics.topTrades.best?.length && analytics.topTrades.worst?.length" class="border-t border-gray-200 dark:border-gray-600 pt-3">
                         <div class="flex justify-between items-center px-2">
-                          <span class="text-sm font-semibold text-gray-900 dark:text-white">Net Difference</span>
+                          <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ s('Net Difference') }}</span>
                           <span class="text-sm font-semibold" :class="topTradesNetPnl >= 0 ? 'text-green-600' : 'text-red-600'">
                             {{ formatCurrency(topTradesNetPnl) }}
                           </span>
@@ -1242,12 +1242,12 @@
               <div class="card">
                 <div class="card-body">
                   <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                    Additional Statistics
+                    {{ s('Additional Statistics') }}
                   </h3>
                   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div>
                       <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        Sharpe Ratio
+                        {{ s('Sharpe Ratio') }}
                       </dt>
                       <dd class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
                         {{ formatNumber(analytics.summary.sharpeRatio) }}
@@ -1255,7 +1255,7 @@
                     </div>
                     <div>
                       <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        Total Commissions
+                        {{ s('Total Commissions') }}
                       </dt>
                       <dd class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
                         {{ formatCurrency(analytics.summary.totalCosts) }}
@@ -1263,7 +1263,7 @@
                     </div>
                     <div>
                       <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        Symbols Traded
+                        {{ s('Symbols Traded') }}
                       </dt>
                       <dd class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
                         {{ analytics.summary.symbolsTraded }}
@@ -1271,7 +1271,7 @@
                     </div>
                     <div>
                       <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        Trading Days
+                        {{ s('Trading Days') }}
                       </dt>
                       <dd class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
                         {{ analytics.summary.tradingDays }}
@@ -1297,11 +1297,11 @@
         >
           <div class="flex items-center justify-between mb-6">
             <h3 class="heading-card">
-              Section Visibility
+              {{ s('Section Visibility') }}
             </h3>
             <button
               @click="showLayoutSettings = false"
-              aria-label="Close"
+              :aria-label="s('Close')"
               class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1320,7 +1320,7 @@
                     @change="toggleSectionVisibility(section.id)"
                     class="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                   />
-                  <span class="ml-2 text-sm text-gray-900 dark:text-white">{{ section.title }}</span>
+                  <span class="ml-2 text-sm text-gray-900 dark:text-white">{{ getSectionTitle(section.id) }}</span>
                 </label>
               </div>
             </div>
@@ -1331,13 +1331,13 @@
               @click="resetDashboardLayout"
               class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600"
             >
-              Reset to Defaults
+              {{ s('Reset to Defaults') }}
             </button>
             <button
               @click="showLayoutSettings = false"
               class="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-md hover:bg-primary-700"
             >
-              Done
+              {{ s('Done') }}
             </button>
           </div>
         </div>
@@ -1348,9 +1348,11 @@
 
 <script setup>
 import { ref, onMounted, nextTick, watch, computed, onUnmounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
 import { format } from 'date-fns'
+import { zhCN, enUS } from 'date-fns/locale'
 import { formatTradeDate, formatLocalDate } from '@/utils/date'
 import Chart from 'chart.js/auto'
 import api from '@/services/api'
@@ -1370,6 +1372,63 @@ import { useGlobalAccountFilter } from '@/composables/useGlobalAccountFilter'
 import { useUserTimezone } from '@/composables/useUserTimezone'
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'
 import draggable from 'vuedraggable'
+import { tSentence, i18n } from '@/i18n'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'dashboard' })
+
+function getSectionTitle(id) {
+  const def = sectionDefinitions.find((section) => section.id === id)
+  return def ? s(def.title) : id
+}
+
+function positionCountLabel(count) {
+  return count === 1 ? s('position') : s('positions')
+}
+
+function tradeCountLabel(count) {
+  return count === 1 ? s('trade') : s('trades')
+}
+
+function formatSideLabel(side) {
+  if (side === 'neutral') return s('hedged')
+  return s(side)
+}
+
+function trialRemainingMessage(days) {
+  if (days === 1) {
+    return s('1 day left. Upgrade before your trial ends to keep Pro features.')
+  }
+  return s(`${days} days left. Upgrade before your trial ends to keep Pro features.`)
+}
+
+function getChartDateLocale() {
+  return i18n.global.locale.value === 'zh' ? zhCN : enUS
+}
+
+function formatChartAxisDate(dateStr) {
+  if (!dateStr) return ''
+  return format(new Date(dateStr), 'MMM dd', { locale: getChartDateLocale() })
+}
+
+function chartTooltipBase(isDark) {
+  return {
+    backgroundColor: isDark ? '#374151' : '#1f2937',
+    titleColor: '#f9fafb',
+    bodyColor: '#d1d5db',
+    borderColor: isDark ? '#4b5563' : '#374151',
+    borderWidth: 1,
+    cornerRadius: 8,
+    padding: 10,
+    displayColors: true,
+    boxPadding: 4
+  }
+}
+
+const onboardingDescription = computed(() => {
+  void locale.value
+  return s("We've loaded sample trades so you can see your dashboard in action. Let's take a quick tour of the key features.")
+})
 
 const authStore = useAuthStore()
 const { formatTime: formatTimeTz } = useUserTimezone()
@@ -1397,7 +1456,18 @@ const isAutoUpdating = ref(false)
 const marketStatus = ref({ isOpen: false, status: 'Market Closed' })
 
 const calculationMethod = computed(() => {
-  return userSettings.value?.statisticsCalculation === 'median' ? 'Median' : 'Average'
+  void locale.value
+  return userSettings.value?.statisticsCalculation === 'median' ? s('Median') : s('Average')
+})
+
+const calculationMethodWinLabel = computed(() => {
+  void locale.value
+  return userSettings.value?.statisticsCalculation === 'median' ? s('Median Win') : s('Average Win')
+})
+
+const calculationMethodLossLabel = computed(() => {
+  void locale.value
+  return userSettings.value?.statisticsCalculation === 'median' ? s('Median Loss') : s('Average Loss')
 })
 const openTrades = ref([])
 const quotesLoading = ref(false) // True while Finnhub quotes are being fetched
@@ -1453,31 +1523,34 @@ const showTimeRangeDropdown = ref(false)
 function generateMonthOptions() {
   const months = []
   const now = new Date()
+  const monthLocale = i18n.global.locale.value === 'zh' ? 'zh-CN' : 'en-US'
   for (let i = 0; i < 12; i++) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
     const year = d.getFullYear()
     const month = d.getMonth() // 0-indexed
-    const label = d.toLocaleString('default', { month: 'long', year: 'numeric' })
+    const label = d.toLocaleString(monthLocale, { month: 'long', year: 'numeric' })
     const value = `month_${year}_${month}`
     months.push({ value, label })
   }
   return months
 }
 
-const timeRangeOptions = [
-  { value: 'all', label: 'All Time' },
-  { value: 'custom', label: 'Custom Range' },
+const timeRangeOptions = computed(() => {
+  void locale.value
+  return [
+  { value: 'all', label: s('All Time') },
+  { value: 'custom', label: s('Custom Range') },
   ...generateMonthOptions(),
-  { value: '7d', label: 'Last 7 Days' },
-  { value: '30d', label: 'Last 30 Days' },
-  { value: '90d', label: 'Last 90 Days' },
-  { value: '1y', label: 'Last Year' },
-  { value: 'ytd', label: 'Year to Date' }
-]
+  { value: '7d', label: s('Last 7 Days') },
+  { value: '30d', label: s('Last 30 Days') },
+  { value: '90d', label: s('Last 90 Days') },
+  { value: '1y', label: s('Last Year') },
+  { value: 'ytd', label: s('Year to Date') }
+]})
 
 function getSelectedTimeRangeText() {
-  const option = timeRangeOptions.find(o => o.value === filters.value.timeRange)
-  return option ? option.label : 'All Time'
+  const option = timeRangeOptions.value.find(o => o.value === filters.value.timeRange)
+  return option ? option.label : s('All Time')
 }
 
 function selectTimeRange(value) {
@@ -1638,6 +1711,11 @@ watch(dashboardLayout, () => {
     saveDashboardLayout()
   }, 1000) // Save 1 second after user stops making changes
 }, { deep: true })
+
+watch(() => locale.value, () => {
+  updateMarketStatus()
+  nextTick(() => createCharts())
+})
 
 // Stable symbol list - only updates the ref when symbols actually change.
 // This prevents child components (UpcomingEarnings, TradeNews) from re-fetching
@@ -2003,9 +2081,9 @@ function createPnLChart() {
     pnlChartInstance = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: dailyData.map(d => format(new Date(d.trade_date), 'MMM dd')),
+        labels: dailyData.map(d => formatChartAxisDate(d.trade_date)),
         datasets: [{
-          label: 'Cumulative P&L',
+          label: s('Cumulative P&L'),
           data: pnlValues,
           fill: {
             target: 'origin',
@@ -2036,6 +2114,13 @@ function createPnLChart() {
         plugins: {
           legend: {
             display: false
+          },
+          tooltip: {
+            ...chartTooltipBase(document.documentElement.classList.contains('dark')),
+            callbacks: {
+              title: (items) => items[0]?.label || '',
+              label: (context) => `${s('Cumulative P&L')}: ${formatCurrency(context.parsed.y)}`
+            }
           }
         },
         scales: {
@@ -2080,7 +2165,7 @@ function createDistributionChart() {
   distributionChartInstance = new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: ['Wins', 'Losses', 'Breakeven'],
+      labels: [s('Wins'), s('Losses'), s('Breakeven')],
       datasets: [{
         data: [wins, losses, breakeven],
         backgroundColor: ['#10b981', '#ef4444', '#9ca3af'],
@@ -2113,20 +2198,13 @@ function createDistributionChart() {
           display: false
         },
         tooltip: {
-          backgroundColor: isDark ? '#374151' : '#1f2937',
-          titleColor: '#f9fafb',
-          bodyColor: '#d1d5db',
-          borderColor: isDark ? '#4b5563' : '#374151',
-          borderWidth: 1,
-          cornerRadius: 8,
-          padding: 10,
-          displayColors: true,
-          boxPadding: 4,
+          ...chartTooltipBase(isDark),
           callbacks: {
+            title: (items) => items[0]?.label || '',
             label: function(context) {
               const total = wins + losses + breakeven
               const pct = total > 0 ? ((context.raw / total) * 100).toFixed(1) : 0
-              return ` ${context.raw} trades (${pct}%)`
+              return s(`${context.raw} trades (${pct}%)`)
             }
           }
         }
@@ -2152,9 +2230,9 @@ function createWinRateChart() {
   winRateChartInstance = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: winRateData.map(d => format(new Date(d.trade_date), 'MMM dd')),
+      labels: winRateData.map(d => formatChartAxisDate(d.trade_date)),
       datasets: [{
-        label: 'Win Rate (%)',
+        label: s('Win Rate (%)'),
         data: winRateData.map(d => parseFloat(d.win_rate) || 0),
         backgroundColor: 'rgba(16, 185, 129, 0.6)',
         borderColor: '#10b981',
@@ -2174,6 +2252,13 @@ function createWinRateChart() {
       plugins: {
         legend: {
           display: false
+        },
+        tooltip: {
+          ...chartTooltipBase(document.documentElement.classList.contains('dark')),
+          callbacks: {
+            title: (items) => items[0]?.label || '',
+            label: (context) => `${s('Win Rate')}: ${context.parsed.y.toFixed(1)}%`
+          }
         }
       },
       scales: {
@@ -2469,9 +2554,10 @@ async function fetchUserSettings() {
 // Update market status
 function updateMarketStatus() {
   const status = getMarketStatus()
+  const rawStatus = status.marketPhase || status.reason || status.status || 'Market Closed'
   marketStatus.value = {
     isOpen: status.isOpen || status.isRegularHours,
-    status: status.marketPhase || status.reason || status.status || 'Market Closed'
+    status: s(rawStatus)
   }
 }
 

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import api from '@/services/api'
+import { LANGUAGE_STORAGE_KEY, setLocale } from '@/i18n'
 
 // Keys whose values live inside the user_settings.ui_preferences JSONB blob.
 // The same key is also used as the localStorage key so callers can keep
@@ -27,7 +28,8 @@ export const SYNCED_KEYS = Object.freeze([
   'priceAlertsFilters',
   'monthlyPerformanceYear',
   'lastSelectedBroker',
-  'passkey_prompt_dismissed'
+  'passkey_prompt_dismissed',
+  LANGUAGE_STORAGE_KEY
 ])
 
 const SYNCED_KEY_SET = new Set(SYNCED_KEYS)
@@ -123,6 +125,7 @@ export const useUiPreferencesStore = defineStore('uiPreferences', () => {
 
       // Apply dark mode immediately so the DOM matches before NavBar mounts.
       applyDarkModeFromStorage()
+      applyLanguageFromStorage()
 
       initialized.value = true
     } catch (err) {
@@ -135,6 +138,13 @@ export const useUiPreferencesStore = defineStore('uiPreferences', () => {
   function applyDarkModeFromStorage() {
     const isDark = localStorage.getItem('darkMode') === 'true'
     document.documentElement.classList.toggle('dark', isDark)
+  }
+
+  function applyLanguageFromStorage() {
+    const language = localStorage.getItem(LANGUAGE_STORAGE_KEY)
+    if (language) {
+      setLocale(language)
+    }
   }
 
   // Called by refactored sites whenever they persist a preference locally.
@@ -164,6 +174,7 @@ export const useUiPreferencesStore = defineStore('uiPreferences', () => {
     notifyChanged,
     flush,
     reset,
-    applyDarkModeFromStorage
+    applyDarkModeFromStorage,
+    applyLanguageFromStorage
   }
 })

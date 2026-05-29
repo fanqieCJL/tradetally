@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-body">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-medium text-gray-900 dark:text-white">Latest News</h3>
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('Latest News') }}</h3>
         <button
           @click="refreshNews"
           :disabled="loading"
@@ -22,7 +22,7 @@
               d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
             />
           </svg>
-          Refresh
+          {{ s('Refresh') }}
         </button>
       </div>
 
@@ -41,12 +41,12 @@
           @click="fetchNews"
           class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
         >
-          Try again
+          {{ s('Try again') }}
         </button>
       </div>
 
       <div v-else-if="!newsItems.length" class="text-center py-8">
-        <p class="text-gray-500 dark:text-gray-400">No news available for your open positions.</p>
+        <p class="text-gray-500 dark:text-gray-400">{{ s('No news available for your open positions.') }}</p>
       </div>
 
       <div v-else class="space-y-4">
@@ -54,7 +54,7 @@
           <div class="mb-2">
             <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center">
               <span class="bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded text-xs mr-2">{{ symbol }}</span>
-              <span class="text-xs text-gray-500 dark:text-gray-400">{{ newsGroup.length }} article{{ newsGroup.length !== 1 ? 's' : '' }}</span>
+              <span class="text-xs text-gray-500 dark:text-gray-400">{{ articleCountLabel(newsGroup.length) }}</span>
             </h4>
           </div>
           <div class="space-y-3">
@@ -100,7 +100,7 @@
             @click="toggleExpanded(symbol)"
             class="mt-2 text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
           >
-            {{ expandedSymbols[symbol] ? 'Show less' : `Show ${newsGroup.length - 3} more` }}
+            {{ expandedSymbols[symbol] ? s('Show less') : s(`Show ${newsGroup.length - 3} more`) }}
           </button>
         </div>
       </div>
@@ -111,6 +111,9 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import api from '@/services/api'
+import { tSentence } from '@/i18n'
+
+const s = (text) => tSentence(text, { context: 'dashboard' })
 
 const props = defineProps({
   symbols: {
@@ -123,6 +126,10 @@ const newsItems = ref([])
 const loading = ref(false)
 const error = ref(null)
 const expandedSymbols = ref({})
+
+function articleCountLabel(count) {
+  return `${count} ${count === 1 ? s('article') : s('articles')}`
+}
 
 const groupedNews = computed(() => {
   const grouped = {}
@@ -144,11 +151,11 @@ const formatNewsDate = (timestamp) => {
   const diffDays = Math.floor(diffMs / 86400000)
 
   if (diffMins < 60) {
-    return `${diffMins}m ago`
+    return s(`${diffMins}m ago`)
   } else if (diffHours < 24) {
-    return `${diffHours}h ago`
+    return s(`${diffHours}h ago`)
   } else if (diffDays < 7) {
-    return `${diffDays}d ago`
+    return s(`${diffDays}d ago`)
   } else {
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
   }
@@ -181,7 +188,7 @@ const fetchNews = async () => {
     newsItems.value = response.data
   } catch (err) {
     console.error('Failed to fetch news:', err)
-    error.value = err.response?.data?.error || 'Failed to load news. Please try again later.'
+    error.value = s(err.response?.data?.error || 'Failed to load news. Please try again later.')
   } finally {
     loading.value = false
   }
@@ -201,7 +208,7 @@ const refreshNews = async () => {
     newsItems.value = response.data
   } catch (err) {
     console.error('Failed to refresh news:', err)
-    error.value = err.response?.data?.error || 'Failed to refresh news. Please try again later.'
+    error.value = s(err.response?.data?.error || 'Failed to refresh news. Please try again later.')
   } finally {
     loading.value = false
   }

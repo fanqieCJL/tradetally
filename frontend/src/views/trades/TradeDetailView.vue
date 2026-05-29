@@ -9,7 +9,7 @@
         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
-        <span class="ml-1 text-sm">Back</span>
+        <span class="ml-1 text-sm">{{ s('Back') }}</span>
       </button>
     </div>
 
@@ -158,14 +158,14 @@
         <div class="lg:col-span-2 space-y-6">
           <div class="card">
             <div class="card-body">
-              <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Trade Details</h3>
+              <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Trade Details') }}</h3>
               <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-6">
                 <div>
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Symbol</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Symbol *').replace(' *', '') }}</dt>
                   <dd class="mt-1 text-sm text-gray-900 dark:text-white font-mono">{{ trade.symbol }}</dd>
                 </div>
                 <div>
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Side</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Side *').replace(' *', '') }}</dt>
                   <dd class="mt-1">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                       :class="[
@@ -179,7 +179,7 @@
                 </div>
                 <!-- Options-specific fields -->
                 <div v-if="trade.instrument_type === 'option'">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Instrument Type</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Instrument Type *').replace(' *', '') }}</dt>
                   <dd class="mt-1">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400">
                       Option
@@ -187,7 +187,7 @@
                   </dd>
                 </div>
                 <div v-if="trade.instrument_type === 'option' && trade.option_type">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Option Type</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Option Type *').replace(' *', '') }}</dt>
                   <dd class="mt-1">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                       :class="[
@@ -200,15 +200,15 @@
                   </dd>
                 </div>
                 <div v-if="trade.instrument_type === 'option' && trade.strike_price">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Strike Price</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Strike Price *').replace(' *', '') }}</dt>
                   <dd class="mt-1 text-sm text-gray-900 dark:text-white font-mono">{{ formatCurrency(trade.strike_price) }}</dd>
                 </div>
                 <div v-if="trade.instrument_type === 'option' && trade.expiration_date">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Expiration Date</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Expiration Date *').replace(' *', '') }}</dt>
                   <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ formatDate(trade.expiration_date) }}</dd>
                 </div>
                 <div v-if="trade.instrument_type === 'option' && trade.contract_size">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Contract Size</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Contract Size') }}</dt>
                   <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ trade.contract_size }} shares/contract</dd>
                 </div>
                 <div>
@@ -227,15 +227,15 @@
                       {{ formatCurrency(manualOptionPrice) }}
                       <span class="text-xs text-gray-500 dark:text-gray-400 font-normal ml-1">(current)</span>
                     </template>
-                    <template v-else>Open</template>
+                    <template v-else>{{ s('Open') }}</template>
                   </dd>
                 </div>
                 <div v-if="trade.stopLoss || trade.stop_loss">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Stop Loss</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Stop Loss') }}</dt>
                   <dd class="mt-1 text-sm text-gray-900 dark:text-white font-mono">{{ formatCurrency(trade.stop_loss || trade.stopLoss) }}</dd>
                 </div>
                 <div v-if="trade.takeProfit || trade.take_profit || (trade.take_profit_targets && trade.take_profit_targets.length > 0)">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Take Profit</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Take Profit (TP1)').replace('（TP1）', '') }}</dt>
                   <dd class="mt-1 text-sm text-gray-900 dark:text-white font-mono flex flex-wrap gap-x-4 gap-y-1">
                     <!-- Show single take_profit as TP1 only when NO take_profit_targets exist -->
                     <span v-if="(trade.take_profit || trade.takeProfit) && (!trade.take_profit_targets || trade.take_profit_targets.length === 0)">
@@ -249,7 +249,7 @@
                   </dd>
                 </div>
                 <div v-if="trade.rValue !== null && trade.rValue !== undefined">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">R-Multiple</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('R-Multiple') }}</dt>
                   <dd class="mt-1">
                     <span class="text-sm font-semibold font-mono"
                       :class="[
@@ -267,13 +267,13 @@
                   </dd>
                 </div>
                 <div>
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">MAE</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('MAE') }}</dt>
                   <dd class="mt-1 text-sm font-mono" :class="trade.mae !== null && trade.mae !== undefined ? 'text-red-600 dark:text-red-400' : 'text-gray-400 dark:text-gray-500'">
                     {{ trade.mae !== null && trade.mae !== undefined ? formatCurrency(trade.mae) : '—' }}
                   </dd>
                 </div>
                 <div>
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">MFE</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('MFE') }}</dt>
                   <dd class="mt-1 text-sm font-mono" :class="trade.mfe !== null && trade.mfe !== undefined ? 'text-green-600 dark:text-green-400' : 'text-gray-400 dark:text-gray-500'">
                     {{ trade.mfe !== null && trade.mfe !== undefined ? formatCurrency(trade.mfe) : '—' }}
                   </dd>
@@ -298,7 +298,7 @@
                   </dd>
                 </div>
                 <div>
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Status</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Status') }}</dt>
                   <dd class="mt-1">
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                       :class="[
@@ -311,7 +311,7 @@
                   </dd>
                 </div>
                 <div v-if="trade.confidence">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Confidence Level</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Confidence Level') }}</dt>
                   <dd class="mt-1">
                     <div class="flex items-center space-x-3">
                       <div class="flex space-x-1">
@@ -324,7 +324,7 @@
                   </dd>
                 </div>
                 <div class="sm:col-span-2">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Setup Quality</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Setup Quality') }}</dt>
                   <dd class="mt-1">
                     <div v-if="trade.qualityGrade" class="flex items-center space-x-3">
                       <span class="px-3 py-1 inline-flex text-sm font-semibold rounded"
@@ -342,7 +342,7 @@
                       </span>
                     </div>
                     <div v-else class="flex items-center space-x-2">
-                      <span class="text-sm text-gray-500 dark:text-gray-400">Not calculated</span>
+                      <span class="text-sm text-gray-500 dark:text-gray-400">{{ s('Not calculated') }}</span>
                       <button
                         @click="calculateQuality"
                         :disabled="calculatingQuality"
@@ -354,23 +354,23 @@
                   </dd>
                 </div>
                 <div v-if="trade.sector">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Sector</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Sector') }}</dt>
                   <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ trade.sector }}</dd>
                 </div>
                 <div v-if="trade.broker">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Broker</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Broker') }}</dt>
                   <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ trade.broker }}</dd>
                 </div>
                 <div v-if="trade.account_identifier">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Account</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Account') }}</dt>
                   <dd class="mt-1 text-sm text-gray-900 dark:text-white font-mono">{{ redactAccountId(trade.account_identifier) }}</dd>
                 </div>
                 <div v-if="trade.strategy">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Strategy</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Strategy') }}</dt>
                   <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ trade.strategy }}</dd>
                 </div>
                 <div v-if="trade.setup">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Setup</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Setup') }}</dt>
                   <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ trade.setup }}</dd>
                 </div>
                 <div v-if="detailCommission">
@@ -388,7 +388,7 @@
                   </dd>
                 </div>
                 <div v-if="detailFees">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Fees</dt>
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ s('Fees') }}</dt>
                   <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ formatCurrency(detailFees) }}</dd>
                 </div>
               </dl>
@@ -398,7 +398,7 @@
           <!-- Setup Quality Breakdown -->
           <div v-if="trade.qualityGrade && trade.qualityMetrics" class="card">
             <div class="card-body">
-              <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Setup Quality Breakdown</h3>
+              <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Setup Quality Breakdown') }}</h3>
 
               <div class="space-y-4">
                 <!-- News Sentiment (35% weight) -->
@@ -638,7 +638,7 @@
             <div class="card-body">
               <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between mb-5">
                 <div>
-                  <h3 class="text-lg font-medium text-gray-900 dark:text-white">Playbook Adherence</h3>
+                  <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('Playbook Adherence') }}</h3>
                   <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                     Review this trade against a structured setup and measure whether you followed plan.
                   </p>
@@ -650,7 +650,7 @@
 
               <div class="mb-5 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
                 <div class="flex flex-wrap items-center gap-3">
-                  <div class="text-sm font-medium text-gray-700 dark:text-gray-300">Setup Quality</div>
+                  <div class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ s('Setup Quality') }}</div>
                   <span
                     v-if="trade.setupQuality?.grade"
                     class="inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold"
@@ -689,9 +689,9 @@
 
               <div v-else class="space-y-5">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Playbook</label>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('Playbook') }}</label>
                   <select v-model="selectedPlaybookId" @change="onPlaybookChange" class="input">
-                    <option value="">Select a playbook</option>
+                    <option value="">{{ s('Select a playbook') }}</option>
                     <option
                       v-for="playbook in playbooks"
                       :key="playbook.id"
@@ -707,7 +707,7 @@
                   <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
                     <div class="flex items-center justify-between mb-3">
                       <div>
-                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Checklist</h4>
+                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white">{{ s('Checklist') }}</h4>
                         <p class="text-xs text-gray-500 dark:text-gray-400">
                           {{ checklistCompletion.checked }}/{{ checklistCompletion.total }} items checked
                         </p>
@@ -742,7 +742,7 @@
                           </div>
                           <div class="mt-1 flex flex-wrap gap-2 text-xs text-gray-500 dark:text-gray-400">
                             <span>Weight {{ Number(item.weight || 1).toFixed(2) }}</span>
-                            <span v-if="item.isRequired" class="text-orange-600 dark:text-orange-400">Required</span>
+                            <span v-if="item.isRequired" class="text-orange-600 dark:text-orange-400">{{ s('Required') }}</span>
                           </div>
                         </div>
                       </label>
@@ -751,16 +751,16 @@
 
                   <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4 space-y-4">
                     <div>
-                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Followed plan?</label>
+                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('Followed plan?') }}</label>
                       <select v-model="reviewForm.followedPlan" class="input">
-                        <option value="">Not set</option>
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
+                        <option value="">{{ s('Not set') }}</option>
+                        <option value="true">{{ s('Yes') }}</option>
+                        <option value="false">{{ s('No') }}</option>
                       </select>
                     </div>
 
                     <div>
-                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Review notes</label>
+                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('Review notes') }}</label>
                       <textarea
                         v-model="reviewForm.reviewNotes"
                         rows="5"
@@ -1326,8 +1326,8 @@
                       class="btn-primary"
                       :disabled="!newComment.trim() || submittingComment"
                     >
-                      <span v-if="submittingComment">Posting...</span>
-                      <span v-else>Post Comment</span>
+                      <span v-if="submittingComment">{{ s('Posting...') }}</span>
+                      <span v-else>{{ s('Post Comment') }}</span>
                     </button>
                   </div>
                 </form>
@@ -1341,7 +1341,7 @@
         <div class="space-y-6">
           <div class="card">
             <div class="card-body">
-              <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Performance</h3>
+              <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Performance') }}</h3>
               <dl class="space-y-4">
                 <div>
                   <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -1353,7 +1353,7 @@
                   ]">
                     <template v-if="trade.exit_time">{{ formatCurrency(displayPnl) }}</template>
                     <template v-else-if="openOptionUnrealizedPnL !== null">{{ formatCurrency(openOptionUnrealizedPnL) }}</template>
-                    <template v-else>Open</template>
+                    <template v-else>{{ s('Open') }}</template>
                   </dd>
                 </div>
                 <div v-if="trade.pnl_percent || openOptionUnrealizedPnLPercent !== null">
@@ -1480,7 +1480,7 @@
     </div>
 
     <div v-else class="text-center py-12">
-      <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">Trade not found</h3>
+      <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">{{ s('Trade not found') }}</h3>
       <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
         The trade you're looking for doesn't exist or you don't have permission to view it.
       </p>
@@ -1511,6 +1511,9 @@ import ProUpgradePrompt from '@/components/ProUpgradePrompt.vue'
 import AIConversationPanel from '@/components/ai/AIConversationPanel.vue'
 import AIReportRenderer from '@/components/ai/AIReportRenderer.vue'
 import { useAIStore } from '@/stores/ai'
+import { tSentence } from '@/i18n'
+
+const s = (text) => tSentence(text, { context: 'trades' })
 
 const route = useRoute()
 const router = useRouter()

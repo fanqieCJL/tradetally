@@ -3,15 +3,15 @@
     <div class="card-body">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white">Today's Journal Entry</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ s("Today's Journal Entry") }}</h3>
           <div v-if="entry?.market_bias" class="ml-3 flex items-center">
-            <span class="text-sm text-gray-500 dark:text-gray-400 mr-2">Market Bias:</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400 mr-2">{{ s('Market Bias:') }}</span>
             <span 
               class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium"
               :class="marketBiasClasses(entry.market_bias)"
             >
               <component :is="marketBiasIcon(entry.market_bias)" class="w-3 h-3 mr-1" />
-              {{ entry.market_bias.charAt(0).toUpperCase() + entry.market_bias.slice(1) }}
+              {{ formatBiasLabel(entry.market_bias) }}
             </span>
           </div>
         </div>
@@ -23,14 +23,14 @@
             class="btn-secondary text-sm"
           >
             <PencilIcon class="w-4 h-4 mr-1" />
-            Edit
+            {{ s('Edit') }}
           </button>
           
           <router-link
             to="/diary"
             class="text-sm text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300"
           >
-            View All →
+            {{ s('View All →') }}
           </router-link>
           
           <button
@@ -77,19 +77,19 @@
             @click="expanded = true"
             class="text-primary-600 hover:text-primary-900 dark:text-primary-400 text-sm mt-2"
           >
-            Show more...
+            {{ s('Show more...') }}
           </button>
         </div>
 
         <!-- Key Levels -->
         <div v-if="entry.key_levels && expanded" class="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-lg">
-          <h5 class="text-sm font-medium text-yellow-800 dark:text-yellow-200 mb-2">Key Levels</h5>
+          <h5 class="text-sm font-medium text-yellow-800 dark:text-yellow-200 mb-2">{{ s('Key Levels') }}</h5>
           <div class="text-sm text-yellow-700 dark:text-yellow-300" v-html="parseMarkdown(entry.key_levels)"></div>
         </div>
 
         <!-- Watchlist -->
         <div v-if="entry.watchlist && entry.watchlist.length > 0 && expanded" class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
-          <h5 class="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">Watchlist</h5>
+          <h5 class="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">{{ s('Watchlist') }}</h5>
           <div class="flex flex-wrap gap-2">
             <span
               v-for="symbol in entry.watchlist"
@@ -115,18 +115,18 @@
         <!-- Post-market reflection -->
         <div v-if="entry.followed_plan !== null && expanded" class="border-t pt-3">
           <div class="flex items-center text-sm">
-            <span class="text-gray-500 dark:text-gray-400 mr-2">Followed Plan:</span>
+            <span class="text-gray-500 dark:text-gray-400 mr-2">{{ s('Followed Plan:') }}</span>
             <span 
               :class="entry.followed_plan ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'"
               class="font-medium"
             >
-              {{ entry.followed_plan ? 'Yes' : 'No' }}
+              {{ entry.followed_plan ? s('Yes') : s('No') }}
             </span>
           </div>
         </div>
 
         <div v-if="entry.lessons_learned && expanded" class="border-t pt-3">
-          <h5 class="text-sm font-medium text-gray-900 dark:text-white mb-2">Lessons Learned</h5>
+          <h5 class="text-sm font-medium text-gray-900 dark:text-white mb-2">{{ s('Lessons Learned') }}</h5>
           <div class="text-sm text-gray-700 dark:text-gray-300" v-html="parseMarkdown(entry.lessons_learned)"></div>
         </div>
       </div>
@@ -135,7 +135,7 @@
       <div v-if="!entry && !loading" class="text-center py-6">
         <BookOpenIcon class="w-12 h-12 text-gray-400 mx-auto mb-3" />
         <p class="text-gray-500 dark:text-gray-400 mb-4">
-          No journal entry for today yet. Start documenting your trading plan and market thoughts.
+          {{ s('No journal entry for today yet. Start documenting your trading plan and market thoughts.') }}
         </p>
         <button
           @click="createTodaysEntry"
@@ -143,14 +143,14 @@
           :disabled="creating"
         >
           <PlusIcon class="w-4 h-4 mr-2" />
-          {{ creating ? 'Creating...' : 'Create Today\'s Entry' }}
+          {{ creating ? s('Creating...') : s("Create Today's Entry") }}
         </button>
       </div>
 
       <!-- Loading State -->
       <div v-if="loading" class="text-center py-6">
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto"></div>
-        <p class="text-gray-500 dark:text-gray-400 mt-2">Loading today's entry...</p>
+        <p class="text-gray-500 dark:text-gray-400 mt-2">{{ s("Loading today's entry...") }}</p>
       </div>
 
       <!-- Quick Entry Form (when creating) -->
@@ -159,25 +159,25 @@
           <div class="space-y-3">
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Market Bias
+                {{ s('Market Bias') }}
               </label>
               <select v-model="quickEntry.marketBias" class="input text-sm">
-                <option value="">Select bias...</option>
-                <option value="bullish">Bullish</option>
-                <option value="bearish">Bearish</option>
-                <option value="neutral">Neutral</option>
+                <option value="">{{ s('Select bias...') }}</option>
+                <option value="bullish">{{ s('Bullish') }}</option>
+                <option value="bearish">{{ s('Bearish') }}</option>
+                <option value="neutral">{{ s('Neutral') }}</option>
               </select>
             </div>
             
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Quick Notes
+                {{ s('Quick Notes') }}
               </label>
               <textarea
                 v-model="quickEntry.content"
                 rows="3"
                 class="input text-sm"
-                placeholder="What's your plan for today?"
+                :placeholder="quickNotesPlaceholder"
               ></textarea>
             </div>
             
@@ -187,14 +187,14 @@
                 @click="cancelQuickEntry"
                 class="btn-secondary text-sm"
               >
-                Cancel
+                {{ s('Cancel') }}
               </button>
               <button
                 type="submit"
                 class="btn-primary text-sm"
                 :disabled="saving"
               >
-                {{ saving ? 'Saving...' : 'Save Entry' }}
+                {{ saving ? s('Saving...') : s('Save Entry') }}
               </button>
             </div>
           </div>
@@ -218,6 +218,17 @@ import {
   ArrowTrendingDownIcon,
   MinusIcon
 } from '@heroicons/vue/24/outline'
+import { tSentence } from '@/i18n'
+
+const s = (text) => tSentence(text, { context: 'diary' })
+
+function formatBiasLabel(bias) {
+  if (!bias) return ''
+  const key = bias.charAt(0).toUpperCase() + bias.slice(1)
+  return s(key)
+}
+
+const quickNotesPlaceholder = s("What's your plan for today?")
 
 const router = useRouter()
 const diaryStore = useDiaryStore()

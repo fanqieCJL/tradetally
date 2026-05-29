@@ -5,7 +5,7 @@
       ref="buttonRef"
       @click="toggleMenu"
       class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
-      title="Customize columns"
+      :title="s('Customize columns')"
     >
       <AdjustmentsHorizontalIcon class="h-4 w-4" />
     </button>
@@ -29,12 +29,12 @@
           <!-- Header (Fixed) -->
           <div class="p-4 flex-shrink-0 border-b border-gray-200 dark:border-gray-700">
             <div class="flex items-center justify-between">
-              <h3 class="text-sm font-medium text-gray-900 dark:text-white">Customize Columns</h3>
+              <h3 class="text-sm font-medium text-gray-900 dark:text-white">{{ s('Customize Columns') }}</h3>
               <button
                 @click="resetToDefault"
                 class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
               >
-                Reset to default
+                {{ s('Reset to default') }}
               </button>
             </div>
           </div>
@@ -72,7 +72,7 @@
                 <!-- Column Name -->
                 <label class="text-sm text-gray-700 dark:text-gray-300 select-none">
                   {{ column.label }}
-                  <span v-if="isRequiredColumn(column.key)" class="text-xs text-gray-400 ml-1">(required)</span>
+                  <span v-if="isRequiredColumn(column.key)" class="text-xs text-gray-400 ml-1">{{ s('(required)') }}</span>
                 </label>
               </div>
 
@@ -83,10 +83,10 @@
                   @change="updateColumns"
                   class="text-xs pl-2 pr-6 py-1 border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-gray-300"
                 >
-                  <option value="auto">Auto</option>
-                  <option value="sm">Small</option>
-                  <option value="md">Medium</option>
-                  <option value="lg">Large</option>
+                  <option value="auto">{{ s('Auto') }}</option>
+                  <option value="sm">{{ s('Small') }}</option>
+                  <option value="md">{{ s('Medium') }}</option>
+                  <option value="lg">{{ s('Large') }}</option>
                 </select>
               </div>
             </div>
@@ -100,13 +100,13 @@
                 @click="selectAll"
                 class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
               >
-                Select all
+                {{ s('Select all') }}
               </button>
               <button
                 @click="deselectAll"
                 class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
               >
-                Deselect all
+                {{ s('Deselect all') }}
               </button>
             </div>
 
@@ -116,13 +116,13 @@
                 @click="cancel"
                 class="px-3 py-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
               >
-                Cancel
+                {{ s('Cancel') }}
               </button>
               <button
                 @click="apply"
                 class="px-3 py-2 text-sm text-white bg-primary-600 border border-transparent rounded-md hover:bg-primary-700"
               >
-                Apply
+                {{ s('Apply') }}
               </button>
             </div>
           </div>
@@ -137,8 +137,10 @@ import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { AdjustmentsHorizontalIcon } from '@heroicons/vue/24/outline'
 import { Bars3Icon } from '@heroicons/vue/24/solid'
 import { useUiPreferencesStore } from '@/stores/uiPreferences'
+import { tSentence } from '@/i18n'
 
 const uiPreferencesStore = useUiPreferencesStore()
+const s = (text) => tSentence(text, { context: 'trades' })
 
 const props = defineProps({
   columns: {

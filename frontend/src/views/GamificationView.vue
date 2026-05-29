@@ -12,13 +12,12 @@
                                     :size="32"
                                     class="mr-3 text-yellow-500"
                                 />
-                                Leaderboard
+                                {{ s('Leaderboard') }}
                             </h1>
                             <p
                                 class="mt-1 text-sm text-gray-600 dark:text-gray-400"
                             >
-                                Track your achievements, compete with peers, and
-                                level up your trading skills
+                                {{ s('Track your achievements, compete with peers, and level up your trading skills') }}
                             </p>
                             <div
                                 v-if="anonymousName"
@@ -27,7 +26,7 @@
                                 <span
                                     class="text-xs bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 px-2 py-1 rounded-full"
                                 >
-                                    Your leaderboard name: {{ anonymousName }}
+                                    {{ s('Your leaderboard name:') }} {{ anonymousName }}
                                 </span>
                             </div>
                         </div>
@@ -36,13 +35,12 @@
                                 <div
                                     class="text-2xl font-bold text-primary-600 dark:text-primary-400"
                                 >
-                                    Level {{ userStats.level || 1 }}
+                                    {{ s('Level') }} {{ userStats.level || 1 }}
                                 </div>
                                 <div
                                     class="text-sm text-gray-600 dark:text-gray-400"
                                 >
-                                    {{ userStats.total_points || 0 }} total
-                                    points
+                                    {{ userStats.total_points || 0 }} {{ s('total points') }}
                                 </div>
                                 <div
                                     v-if="userStats.level_progress"
@@ -52,7 +50,7 @@
                                         userStats.level_progress
                                             .points_needed_for_next_level
                                     }}
-                                    XP to next level
+                                    {{ s('XP to next level') }}
                                 </div>
                             </div>
                             <!-- Radial Progress Indicator -->
@@ -152,7 +150,7 @@
                                         <dt
                                             class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate"
                                         >
-                                            Achievements
+                                            {{ s('Achievements') }}
                                         </dt>
                                         <dd
                                             class="text-lg font-medium text-gray-900 dark:text-white"
@@ -182,7 +180,7 @@
                                         <dt
                                             class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate"
                                         >
-                                            Rank
+                                            {{ s('Rank') }}
                                         </dt>
                                         <dd
                                             class="text-lg font-medium text-gray-900 dark:text-white"
@@ -212,7 +210,7 @@
                                         <dt
                                             class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate"
                                         >
-                                            Current Streak
+                                            {{ s('Current Streak') }}
                                         </dt>
                                         <dd
                                             class="text-lg font-medium text-gray-900 dark:text-white"
@@ -220,7 +218,7 @@
                                             {{
                                                 userStats.current_streak_days
                                             }}
-                                            days
+                                            {{ s('days') }}
                                         </dd>
                                     </dl>
                                 </div>
@@ -245,7 +243,7 @@
                                         <dt
                                             class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate"
                                         >
-                                            Progress
+                                            {{ s('Progress') }}
                                         </dt>
                                         <dd
                                             class="text-lg font-medium text-gray-900 dark:text-white"
@@ -270,7 +268,7 @@
                                                                 .level_progress
                                                                 .progress_percentage,
                                                         )
-                                                    }}% to Level
+                                                    }}% {{ s('to Level') }}
                                                     {{
                                                         (userStats.level || 1) +
                                                         1
@@ -315,7 +313,7 @@
                                 :size="20"
                                 class="mr-2 text-yellow-500"
                             />
-                            Recent Achievements
+                            {{ s('Recent Achievements') }}
                         </h3>
                     </div>
                     <div class="p-6">
@@ -329,8 +327,7 @@
                                 class="text-gray-400 mx-auto mb-4"
                             />
                             <p class="mt-4 text-gray-500 dark:text-gray-400">
-                                No achievements yet. Start trading to unlock
-                                your first achievement!
+                                {{ s('No achievements yet. Start trading to unlock your first achievement!') }}
                             </p>
                         </div>
                         <div v-else class="space-y-4">
@@ -372,7 +369,7 @@
                                 @click="activeTab = 'achievements'"
                                 class="text-primary-600 dark:text-primary-400 hover:text-primary-500 text-sm font-medium"
                             >
-                                View all achievements →
+                                {{ s('View all achievements →') }}
                             </button>
                             <button
                                 @click="checkForNewAchievements"
@@ -390,8 +387,8 @@
                                 ></div>
                                 {{
                                     checkingAchievements
-                                        ? "Checking..."
-                                        : "Check for new achievements"
+                                        ? s('Checking...')
+                                        : s('Check for new achievements')
                                 }}
                             </button>
                         </div>
@@ -406,7 +403,7 @@
                         class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"
                     ></div>
                     <p class="mt-2 text-gray-600 dark:text-gray-400">
-                        Loading achievements...
+                        {{ s('Loading achievements...') }}
                     </p>
                 </div>
 
@@ -434,14 +431,14 @@
                                         :icon="mdiCheckCircle"
                                         :size="14"
                                     />
-                                    Earned
+                                    {{ s('Earned') }}
                                 </span>
                                 <span
                                     v-else
                                     class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400"
                                 >
                                     <MdiIcon :icon="mdiLock" :size="14" />
-                                    Locked
+                                    {{ s('Locked') }}
                                 </span>
                             </div>
 
@@ -502,16 +499,16 @@
 
                             <div class="mt-3 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                                 <span v-if="achievement.is_earned">
-                                    Earned {{ formatDate(achievement.earned_at) }}
+                                    {{ s('Earned') }} {{ formatDate(achievement.earned_at) }}
                                 </span>
                                 <span v-else></span>
                                 <span
                                     v-if="typeof achievement.unlock_percentage === 'number'"
                                     class="font-medium"
                                     :class="rarityTextClass(achievement.unlock_percentage)"
-                                    :title="`${achievement.earned_by_count || 0} trader${achievement.earned_by_count === 1 ? '' : 's'} have earned this`"
+                                    :title="tradersEarnedTitle(achievement)"
                                 >
-                                    {{ formatUnlockPct(achievement.unlock_percentage) }} of traders
+                                    {{ formatUnlockPct(achievement.unlock_percentage) }} {{ s('of traders') }}
                                 </span>
                             </div>
                         </div>
@@ -530,16 +527,16 @@
                     <h3
                         class="mt-4 text-lg font-medium text-gray-900 dark:text-white"
                     >
-                        No achievements found
+                        {{ s('No achievements found') }}
                     </h3>
                     <p class="mt-2 text-gray-500 dark:text-gray-400">
-                        Start trading to unlock achievements!
+                        {{ s('Start trading to unlock achievements!') }}
                     </p>
                     <button
                         @click="loadAchievements"
                         class="mt-4 bg-primary-600 text-white px-4 py-2 rounded hover:bg-primary-700 transition-colors"
                     >
-                        Reload Achievements
+                        {{ s('Reload Achievements') }}
                     </button>
                 </div>
             </div>
@@ -561,7 +558,7 @@
                                         :size="20"
                                         class="mr-2 text-primary-500"
                                     />
-                                    My Rankings
+                                    {{ s('My Rankings') }}
                                 </h3>
                                 <button
                                     @click="showFilters = !showFilters"
@@ -579,8 +576,8 @@
                                     />
                                     {{
                                         showFilters
-                                            ? "Hide Filters"
-                                            : "Filter by Peers"
+                                            ? s('Hide Filters')
+                                            : s('Filter by Peers')
                                     }}
                                 </button>
                             </div>
@@ -597,7 +594,7 @@
                                 ></div>
                                 <span
                                     class="ml-2 text-sm text-gray-600 dark:text-gray-400"
-                                    >Loading filter options...</span
+                                    >{{ s('Loading filter options...') }}</span
                                 >
                             </div>
 
@@ -610,7 +607,7 @@
                                     <label
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                                     >
-                                        Trading Strategy
+                                        {{ s('Trading Strategy') }}
                                     </label>
                                     <select
                                         v-model="filters.strategy"
@@ -618,7 +615,7 @@
                                         class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white text-sm"
                                     >
                                         <option value="all">
-                                            All Strategies
+                                            {{ s('All Strategies') }}
                                         </option>
                                         <option
                                             v-for="strategy in filterOptions.strategies ||
@@ -636,7 +633,7 @@
                                     <label
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                                     >
-                                        Average Position Size
+                                        {{ s('Average Position Size') }}
                                     </label>
                                     <select
                                         v-model="filters.volumeRange"
@@ -658,7 +655,7 @@
                                     <label
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                                     >
-                                        Average Profit Per Trade
+                                        {{ s('Average Profit Per Trade') }}
                                     </label>
                                     <select
                                         v-model="filters.pnlRange"
@@ -682,7 +679,7 @@
                                     @click="clearFilters"
                                     class="px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
                                 >
-                                    Clear Filters
+                                    {{ s('Clear Filters') }}
                                 </button>
                             </div>
                         </div>
@@ -701,8 +698,8 @@
                                 >
                                     {{
                                         applyingFilters
-                                            ? "Applying filters..."
-                                            : "Loading your rankings..."
+                                            ? s('Applying filters...')
+                                            : s('Loading your rankings...')
                                     }}
                                 </p>
                             </div>
@@ -721,16 +718,15 @@
                                 >
                                     {{
                                         hasFiltersApplied
-                                            ? "No rankings found matching your filter criteria"
-                                            : "No rankings available yet"
+                                            ? s('No rankings found matching your filter criteria')
+                                            : s('No rankings available yet')
                                     }}
                                 </p>
                                 <p
                                     v-if="hasFiltersApplied"
                                     class="text-xs text-gray-400 dark:text-gray-500 mt-2"
                                 >
-                                    Try adjusting your filters to find peers
-                                    with similar trading patterns
+                                    {{ s('Try adjusting your filters to find peers with similar trading patterns') }}
                                 </p>
                             </div>
 
@@ -750,7 +746,7 @@
                                                 :size="16"
                                                 class="mr-2"
                                             />
-                                            Showing filtered rankings
+                                            {{ s('Showing filtered rankings') }}
                                             <span
                                                 v-if="
                                                     userRankings[0]
@@ -758,11 +754,7 @@
                                                 "
                                                 class="ml-2 px-2 py-1 bg-primary-100 dark:bg-primary-800 rounded-full text-xs"
                                             >
-                                                {{
-                                                    userRankings[0]
-                                                        .total_filtered_users
-                                                }}
-                                                peers found
+                                                {{ peersFoundLabel(userRankings[0].total_filtered_users) }}
                                             </span>
                                         </div>
                                     </div>
@@ -791,19 +783,14 @@
                                                 {{
                                                     ranking.period_type ===
                                                     "all_time"
-                                                        ? "All Time"
+                                                        ? s('All Time')
                                                         : ranking.period_type
                                                 }}
                                                 <span
-                                                    v-if="
-                                                        ranking.total_participants
-                                                    "
+                                                    v-if="ranking.total_participants"
                                                 >
                                                     •
-                                                    {{
-                                                        ranking.total_participants
-                                                    }}
-                                                    participants
+                                                    {{ participantsLabel(ranking.total_participants) }}
                                                 </span>
                                             </div>
                                         </div>
@@ -833,8 +820,8 @@
                     >
                         {{
                             hasFiltersApplied
-                                ? "Filtered Leaderboards"
-                                : "All Leaderboards"
+                                ? s('Filtered Leaderboards')
+                                : s('All Leaderboards')
                         }}
                     </h3>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -858,10 +845,7 @@
                                         "
                                         class="text-xs text-gray-500 dark:text-gray-400"
                                     >
-                                        {{
-                                            leaderboard.totalFilteredUsers
-                                        }}
-                                        peers
+                                        {{ peersLabel(leaderboard.totalFilteredUsers) }}
                                     </span>
                                 </div>
                             </div>
@@ -880,8 +864,8 @@
                                     >
                                         {{
                                             leaderboard.filtered
-                                                ? "No peers match the selected filters"
-                                                : "No rankings available yet"
+                                                ? s('No peers match the selected filters')
+                                                : s('No rankings available yet')
                                         }}
                                     </p>
                                 </div>
@@ -926,7 +910,7 @@
                                                     v-if="entry.is_current_user"
                                                     class="text-xs text-primary-600 dark:text-primary-400"
                                                 >
-                                                    You
+                                                    {{ s('You') }}
                                                 </div>
                                             </div>
                                         </div>
@@ -954,7 +938,7 @@
                                         "
                                         class="text-primary-600 dark:text-primary-400 hover:text-primary-500 text-sm font-medium flex items-center mx-auto"
                                     >
-                                        View all rankings
+                                        {{ s('View all rankings') }}
                                         <MdiIcon
                                             :icon="mdiChevronRight"
                                             :size="16"
@@ -980,12 +964,12 @@
                             :size="20"
                             class="mr-1"
                         />
-                        Back to Rankings
+                        {{ s('Back to Rankings') }}
                     </button>
                     <h2
                         class="text-2xl font-bold text-gray-900 dark:text-white"
                     >
-                        {{ selectedLeaderboard?.name }} - Full Rankings
+                        {{ selectedLeaderboard?.name }}{{ s('- Full Rankings') }}
                     </h2>
                 </div>
 
@@ -998,7 +982,7 @@
                             class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"
                         ></div>
                         <p class="mt-2 text-gray-600 dark:text-gray-400">
-                            Loading full rankings...
+                            {{ s('Loading full rankings...') }}
                         </p>
                     </div>
 
@@ -1012,7 +996,7 @@
                             class="text-gray-400 mx-auto mb-4"
                         />
                         <p class="text-gray-500 dark:text-gray-400">
-                            No rankings available
+                            {{ s('No rankings available') }}
                         </p>
                     </div>
 
@@ -1056,7 +1040,7 @@
                                             v-if="entry.is_current_user"
                                             class="text-sm text-primary-600 dark:text-primary-400"
                                         >
-                                            You
+                                            {{ s('You') }}
                                         </div>
                                     </div>
                                 </div>
@@ -1084,6 +1068,8 @@
 <script>
 import { ref, computed, onMounted, watch, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+import { tSentence, i18n } from "@/i18n";
 import api from "@/services/api";
 import MdiIcon from "@/components/MdiIcon.vue";
 import { useNotification } from "@/composables/useNotification";
@@ -1125,6 +1111,8 @@ export default {
         const uiPreferencesStore = useUiPreferencesStore();
         const route = useRoute();
         const router = useRouter();
+        const { locale } = useI18n();
+        const s = (text) => tSentence(text, { context: "leaderboard" });
 
         // Load saved tab from localStorage
         const savedTab = localStorage.getItem("gamificationTab");
@@ -1142,11 +1130,14 @@ export default {
                 : validTabs.has(savedTab) ? savedTab : "overview",
         );
 
-        const tabs = [
-            { key: "overview", name: "Overview", icon: mdiChartBox },
-            { key: "achievements", name: "Achievements", icon: mdiTrophy },
-            { key: "leaderboards", name: "Rankings", icon: mdiTrendingUp },
-        ];
+        const tabs = computed(() => {
+            void locale.value;
+            return [
+                { key: "overview", name: s("Overview"), icon: mdiChartBox },
+                { key: "achievements", name: s("Achievements"), icon: mdiTrophy },
+                { key: "leaderboards", name: s("Rankings"), icon: mdiTrendingUp },
+            ];
+        });
 
         const userStats = ref({
             level: 1,
@@ -1197,7 +1188,7 @@ export default {
         );
 
         // Predefined volume ranges (average position size per trade)
-        const volumeRanges = [
+        const volumeRangeOptions = [
             { value: "all", label: "All Position Sizes", min: null, max: null },
             {
                 value: "micro",
@@ -1231,8 +1222,16 @@ export default {
             },
         ];
 
+        const volumeRanges = computed(() => {
+            void locale.value;
+            return volumeRangeOptions.map((range) => ({
+                ...range,
+                label: s(range.label),
+            }));
+        });
+
         // Predefined P&L ranges (average profit/loss per trade)
-        const pnlRanges = [
+        const pnlRangeOptions = [
             { value: "all", label: "All Profit Levels", min: null, max: null },
             {
                 value: "small_profit",
@@ -1265,6 +1264,14 @@ export default {
                 max: null,
             },
         ];
+
+        const pnlRanges = computed(() => {
+            void locale.value;
+            return pnlRangeOptions.map((range) => ({
+                ...range,
+                label: s(range.label),
+            }));
+        });
 
         const loadDashboard = async () => {
             try {
@@ -1373,7 +1380,7 @@ export default {
                     appliedFilters.volumeRange &&
                     appliedFilters.volumeRange !== "all"
                 ) {
-                    const volumeRange = volumeRanges.find(
+                    const volumeRange = volumeRangeOptions.find(
                         (r) => r.value === appliedFilters.volumeRange,
                     );
                     if (volumeRange) {
@@ -1391,7 +1398,7 @@ export default {
                     appliedFilters.pnlRange &&
                     appliedFilters.pnlRange !== "all"
                 ) {
-                    const pnlRange = pnlRanges.find(
+                    const pnlRange = pnlRangeOptions.find(
                         (r) => r.value === appliedFilters.pnlRange,
                     );
                     if (pnlRange) {
@@ -1421,8 +1428,8 @@ export default {
         const formatStrategyLabel = (strategy) => {
             if (!strategy) return strategy;
 
-            // Convert snake_case and kebab-case to Title Case
-            return strategy
+            void locale.value;
+            const label = strategy
                 .replace(/[_-]/g, " ")
                 .replace(/\b\w/g, (l) => l.toUpperCase())
                 .replace(/\bDay\b/g, "Day")
@@ -1433,6 +1440,7 @@ export default {
                 .replace(/\bBreakout/g, "Breakout")
                 .replace(/\bNews/g, "News")
                 .replace(/\bEarnings/g, "Earnings");
+            return s(label);
         };
 
         // Load filter options from the API
@@ -1488,7 +1496,7 @@ export default {
                     appliedFilters.volumeRange &&
                     appliedFilters.volumeRange !== "all"
                 ) {
-                    const volumeRange = volumeRanges.find(
+                    const volumeRange = volumeRangeOptions.find(
                         (r) => r.value === appliedFilters.volumeRange,
                     );
                     if (volumeRange) {
@@ -1506,7 +1514,7 @@ export default {
                     appliedFilters.pnlRange &&
                     appliedFilters.pnlRange !== "all"
                 ) {
-                    const pnlRange = pnlRanges.find(
+                    const pnlRange = pnlRangeOptions.find(
                         (r) => r.value === appliedFilters.pnlRange,
                     );
                     if (pnlRange) {
@@ -1600,14 +1608,16 @@ export default {
             const date = new Date(dateString);
             const now = new Date();
             const diffInHours = (now - date) / (1000 * 60 * 60);
+            const dateLocale =
+                i18n.global.locale.value === "zh" ? "zh-CN" : "en-US";
 
             if (diffInHours < 24) {
-                if (diffInHours < 1) return "just now";
-                return `${Math.floor(diffInHours)}h ago`;
+                if (diffInHours < 1) return s("just now");
+                return s(`${Math.floor(diffInHours)}h ago`);
             } else if (diffInHours < 24 * 7) {
-                return `${Math.floor(diffInHours / 24)}d ago`;
+                return s(`${Math.floor(diffInHours / 24)}d ago`);
             } else {
-                return date.toLocaleDateString();
+                return date.toLocaleDateString(dateLocale);
             }
         };
 
@@ -1661,10 +1671,10 @@ export default {
                 return `${Math.round(value)}%`;
             }
             if (key.includes("streak")) {
-                return `${value} days`;
+                return s(`${value} days`);
             }
             if (key.includes("points")) {
-                return `${value} pts`;
+                return s(`${value} pts`);
             }
             return value;
         };
@@ -1753,7 +1763,9 @@ export default {
 
                     // Show success message to user
                     showSuccess(
-                        `${newAchievements.length} New Achievement${newAchievements.length > 1 ? "s" : ""} Unlocked!`,
+                        s(
+                            `${newAchievements.length} New Achievement${newAchievements.length > 1 ? "s" : ""} Unlocked!`,
+                        ),
                         achievementNames,
                     );
 
@@ -1836,15 +1848,15 @@ export default {
                     console.log("[CHECK] No new achievements found");
                     // Show info message to user
                     showWarning(
-                        "No New Achievements",
-                        "Keep trading to unlock more achievements!",
+                        s("No New Achievements"),
+                        s("Keep trading to unlock more achievements!"),
                     );
                 }
             } catch (error) {
                 console.error("[CHECK] Error checking achievements:", error);
                 showError(
-                    "Achievement Check Failed",
-                    "Please try again later.",
+                    s("Achievement Check Failed"),
+                    s("Please try again later."),
                 );
             } finally {
                 checkingAchievements.value = false;
@@ -2199,8 +2211,8 @@ export default {
             } catch (error) {
                 console.error("Error loading full leaderboard:", error);
                 showError(
-                    "Failed to Load Rankings",
-                    "Unable to load complete leaderboard data.",
+                    s("Failed to Load Rankings"),
+                    s("Unable to load complete leaderboard data."),
                 );
                 fullLeaderboardEntries.value = [];
             } finally {
@@ -2283,9 +2295,27 @@ export default {
             { deep: true },
         );
 
+        const tradersEarnedTitle = (achievement) => {
+            const count = achievement.earned_by_count || 0;
+            return s(
+                `${count} trader${count === 1 ? "" : "s"} have earned this`,
+            );
+        };
+
+        const peersFoundLabel = (count) => s(`${count} peers found`);
+
+        const participantsLabel = (count) => s(`${count} participants`);
+
+        const peersLabel = (count) => s(`${count} peers`);
+
         return {
+            s,
             activeTab,
             tabs,
+            tradersEarnedTitle,
+            peersFoundLabel,
+            participantsLabel,
+            peersLabel,
             userStats,
             anonymousName,
             recentAchievements,

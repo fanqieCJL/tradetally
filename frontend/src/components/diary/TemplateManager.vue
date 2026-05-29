@@ -1,26 +1,26 @@
 <template>
   <div class="template-manager">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-lg font-medium text-gray-900 dark:text-white">Journal Templates</h3>
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('Journal Templates') }}</h3>
       <button
         @click="showCreateModal = true"
         class="btn-primary text-sm"
       >
         <PlusIcon class="w-4 h-4 mr-1" />
-        New Template
+        {{ s('New Template') }}
       </button>
     </div>
 
     <!-- Templates List -->
     <div v-if="loading && !hasTemplates" class="text-center py-8">
       <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto"></div>
-      <p class="text-gray-500 dark:text-gray-400 mt-2">Loading templates...</p>
+      <p class="text-gray-500 dark:text-gray-400 mt-2">{{ s('Loading templates...') }}</p>
     </div>
 
     <div v-else-if="!hasTemplates" class="text-center py-8">
       <DocumentTextIcon class="w-12 h-12 text-gray-400 mx-auto mb-3" />
       <p class="text-gray-500 dark:text-gray-400 mb-4">
-        No templates yet. Create your first template to speed up journal entry creation.
+        {{ s('No templates yet. Create your first template to speed up journal entry creation.') }}
       </p>
     </div>
 
@@ -47,7 +47,7 @@
                 <span
                   class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400"
                 >
-                  {{ template.entry_type === 'diary' ? 'Diary' : 'Playbook' }}
+                  {{ template.entry_type === 'diary' ? s('Diary') : s('Playbook') }}
                 </span>
               </div>
 
@@ -56,7 +56,7 @@
               </p>
 
               <div v-if="template.use_count > 0" class="flex items-center mt-2 text-xs text-gray-500 dark:text-gray-400">
-                <span>Used {{ template.use_count }} {{ template.use_count === 1 ? 'time' : 'times' }}</span>
+                <span>{{ s(`Used ${template.use_count} ${template.use_count === 1 ? 'time' : 'times'}`) }}</span>
               </div>
             </div>
           </div>
@@ -64,14 +64,14 @@
           <!-- Template Preview (if has content) -->
           <div v-if="template.content || template.title || template.market_bias" class="border-t pt-4 space-y-2">
             <p v-if="template.title" class="text-sm text-gray-700 dark:text-gray-300">
-              <span class="font-medium">Title:</span> {{ template.title }}
+              <span class="font-medium">{{ s('Title:') }}</span> {{ template.title }}
             </p>
             <p v-if="template.market_bias" class="text-sm text-gray-700 dark:text-gray-300">
-              <span class="font-medium">Market Bias:</span>
+              <span class="font-medium">{{ s('Market Bias:') }}</span>
               <span class="capitalize">{{ template.market_bias }}</span>
             </p>
             <div v-if="template.content" class="text-sm text-gray-600 dark:text-gray-400">
-              <span class="font-medium text-gray-700 dark:text-gray-300">Content Preview:</span>
+              <span class="font-medium text-gray-700 dark:text-gray-300">{{ s('Content Preview:') }}</span>
               <p class="mt-1 line-clamp-2">{{ template.content }}</p>
             </div>
           </div>
@@ -82,37 +82,37 @@
               <button
                 @click="editTemplate(template)"
                 class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                title="Edit"
+                :title="s('Edit')"
               >
                 <PencilIcon class="w-4 h-4 mr-1" />
-                Edit
+                {{ s('Edit') }}
               </button>
 
               <button
                 @click="duplicateTemplate(template)"
                 class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                title="Duplicate"
+                :title="s('Duplicate')"
               >
                 <DocumentDuplicateIcon class="w-4 h-4 mr-1" />
-                Duplicate
+                {{ s('Duplicate') }}
               </button>
 
               <button
                 @click="confirmDelete(template)"
                 class="inline-flex items-center px-3 py-1.5 text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
-                title="Delete"
+                :title="s('Delete')"
               >
                 <TrashIcon class="w-4 h-4 mr-1" />
-                Delete
+                {{ s('Delete') }}
               </button>
             </div>
 
             <button
               @click="$emit('apply-template', template)"
               class="btn-primary"
-              title="Apply Template"
+              :title="s('Apply Template')"
             >
-              Apply Template
+              {{ s('Apply Template') }}
             </button>
           </div>
         </div>
@@ -131,34 +131,34 @@
       >
         <div class="p-6">
           <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
-            {{ editingTemplate ? 'Edit Template' : 'Create New Template' }}
+            {{ editingTemplate ? s('Edit Template') : s('Create New Template') }}
           </h3>
 
                 <form @submit.prevent="saveTemplate" class="mt-4 space-y-4">
                   <!-- Template Name -->
                   <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Template Name *
+                      {{ s('Template Name *') }}
                     </label>
                     <input
                       v-model="templateForm.name"
                       type="text"
                       required
                       class="input"
-                      placeholder="e.g., Morning Market Analysis"
+                      :placeholder="s('e.g., Morning Market Analysis')"
                     />
                   </div>
 
                   <!-- Description -->
                   <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Description
+                      {{ s('Description') }}
                     </label>
                     <input
                       v-model="templateForm.description"
                       type="text"
                       class="input"
-                      placeholder="When to use this template (optional)"
+                      :placeholder="s('When to use this template (optional)')"
                     />
                   </div>
 
@@ -182,17 +182,17 @@
                       class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                     />
                     <label for="isDefault" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                      Set as default template for new entries
+                      {{ s('Set as default template for new entries') }}
                     </label>
                   </div>
 
                   <div class="border-t pt-4 mt-4">
-                    <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-3">Template Content</h4>
+                    <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-3">{{ s('Template Content') }}</h4>
 
                     <!-- Title -->
                     <div class="mb-3">
                       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Default Title
+                        {{ s('Default Title') }}
                       </label>
                       <input
                         v-model="templateForm.title"
@@ -298,7 +298,7 @@
                       class="btn-primary"
                       :disabled="loading || !templateForm.name"
                     >
-                      {{ loading ? 'Saving...' : 'Save Template' }}
+                      {{ loading ? s('Saving...') : s('Save Template') }}
                     </button>
                   </div>
                 </form>
@@ -318,11 +318,11 @@
       >
         <div class="p-6">
           <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
-            Delete Template
+            {{ s('Delete Template') }}
           </h3>
                 <div class="mt-2">
                   <p class="text-sm text-gray-500 dark:text-gray-400">
-                    Are you sure you want to delete "{{ templateToDelete?.name }}"? This action cannot be undone.
+                    {{ s(`Are you sure you want to delete "${templateToDelete?.name}"? This action cannot be undone.`) }}
                   </p>
                 </div>
 
@@ -332,7 +332,7 @@
               @click="showDeleteModal = false"
               class="btn-secondary"
             >
-              Cancel
+              {{ s('Cancel') }}
             </button>
             <button
               type="button"
@@ -340,7 +340,7 @@
               class="btn-danger"
               :disabled="loading"
             >
-              {{ loading ? 'Deleting...' : 'Delete' }}
+              {{ loading ? s('Deleting...') : s('Delete') }}
             </button>
           </div>
         </div>
@@ -351,6 +351,8 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { tSentence } from '@/i18n'
+import { useI18n } from 'vue-i18n'
 import { useDiaryTemplateStore } from '@/stores/diaryTemplate'
 import {
   PlusIcon,
@@ -363,6 +365,8 @@ import {
 const emit = defineEmits(['apply-template', 'template-created'])
 
 const templateStore = useDiaryTemplateStore()
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'diary' })
 
 // Component state
 const showCreateModal = ref(false)

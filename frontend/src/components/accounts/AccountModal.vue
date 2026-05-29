@@ -5,7 +5,7 @@
         <!-- Header -->
         <div class="flex items-center justify-between mb-6">
           <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-            {{ isEditing ? 'Edit Account' : 'Add Account' }}
+            {{ isEditing ? s('Edit Account') : s('Add Account') }}
           </h3>
           <button
             @click="$emit('close')"
@@ -21,31 +21,31 @@
         <form @submit.prevent="handleSubmit" class="space-y-4">
           <!-- Account Name -->
           <div>
-            <label for="accountName" class="label">Account Name *</label>
+            <label for="accountName" class="label">{{ s('Account Name') }} *</label>
             <input
               id="accountName"
               v-model="form.accountName"
               type="text"
               class="input w-full"
-              placeholder="e.g., Main Trading Account"
+              :placeholder="s('e.g., Main Trading Account')"
               required
             />
           </div>
 
           <!-- Broker -->
           <div>
-            <label for="broker" class="label">Broker</label>
+            <label for="broker" class="label">{{ s('Broker') }}</label>
             <select id="broker" v-model="form.broker" class="input w-full">
-              <option value="">Select broker (optional)</option>
+              <option value="">{{ s('Select broker (optional)') }}</option>
               <option v-for="broker in brokerOptions" :key="broker" :value="broker">
-                {{ broker }}
+                {{ s(broker) }}
               </option>
             </select>
           </div>
 
           <!-- Account Identifier -->
           <div>
-            <label for="accountIdentifier" class="label">Account Identifier</label>
+            <label for="accountIdentifier" class="label">{{ s('Account Identifier') }}</label>
             <div class="space-y-2">
               <select
                 v-if="unlinkedIdentifiers.length > 0"
@@ -53,7 +53,7 @@
                 @change="onIdentifierSelected"
                 class="input w-full"
               >
-                <option value="">Select from existing trades or enter manually</option>
+                <option value="">{{ s('Select from existing trades or enter manually') }}</option>
                 <option v-for="id in unlinkedIdentifiers" :key="id.accountIdentifier" :value="id.accountIdentifier">
                   {{ id.accountIdentifier }} {{ id.broker ? `(${id.broker})` : '' }}
                 </option>
@@ -63,17 +63,17 @@
                 v-model="form.accountIdentifier"
                 type="text"
                 class="input w-full"
-                placeholder="e.g., ****1234"
+                :placeholder="s('e.g., ****1234')"
               />
             </div>
             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-              Link to existing trades by matching account identifier from CSV imports
+              {{ s('Link to existing trades by matching account identifier from CSV imports') }}
             </p>
           </div>
 
           <!-- Initial Balance -->
           <div>
-            <label for="initialBalance" class="label">Initial Balance *</label>
+            <label for="initialBalance" class="label">{{ s('Initial Balance') }} *</label>
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <span class="text-gray-500 dark:text-gray-400">$</span>
@@ -90,13 +90,13 @@
               />
             </div>
             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-              Starting cash balance for cashflow calculations
+              {{ s('Starting cash balance for cashflow calculations') }}
             </p>
           </div>
 
           <!-- Initial Balance Date -->
           <div>
-            <label for="initialBalanceDate" class="label">Initial Balance Date *</label>
+            <label for="initialBalanceDate" class="label">{{ s('Initial Balance Date *') }}</label>
             <input
               id="initialBalanceDate"
               v-model="form.initialBalanceDate"
@@ -105,7 +105,7 @@
               required
             />
             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-              Date when this balance was accurate - cashflow starts from this date
+              {{ s('Date when this balance was accurate - cashflow starts from this date') }}
             </p>
           </div>
 
@@ -118,32 +118,32 @@
               class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
             <label for="isPrimary" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
-              Set as primary account
+              {{ s('Set as primary account') }}
             </label>
           </div>
           <p v-if="form.isPrimary" class="text-xs text-gray-500 dark:text-gray-400 -mt-2 ml-6">
-            Primary account is used as the default for imports and shown first in lists
+            {{ s('Primary account is used as the default for imports and shown first in lists') }}
           </p>
 
           <!-- Notes -->
           <div>
-            <label for="notes" class="label">Notes (Optional)</label>
+            <label for="notes" class="label">{{ s('Notes (Optional)') }}</label>
             <textarea
               id="notes"
               v-model="form.notes"
               rows="2"
               class="input w-full"
-              placeholder="Any additional notes about this account"
+              :placeholder="s('Any additional notes about this account')"
             ></textarea>
           </div>
 
           <!-- Actions -->
           <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
             <button type="button" @click="$emit('close')" class="btn-secondary">
-              Cancel
+              {{ s('Cancel') }}
             </button>
             <button type="submit" class="btn-primary" :disabled="loading">
-              {{ loading ? 'Saving...' : 'Save Account' }}
+              {{ loading ? s('Saving...') : s('Save Account') }}
             </button>
           </div>
         </form>
@@ -154,6 +154,8 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { tSentence } from '@/i18n'
+import { useI18n } from 'vue-i18n'
 import { useAccountsStore } from '@/stores/accounts'
 
 const props = defineProps({
@@ -166,6 +168,8 @@ const props = defineProps({
 const emit = defineEmits(['close', 'save'])
 
 const store = useAccountsStore()
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'cashflow' })
 const loading = ref(false)
 const unlinkedIdentifiers = ref([])
 

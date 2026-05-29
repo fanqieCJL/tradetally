@@ -1,23 +1,22 @@
 <template>
   <div class="content-wrapper py-8">
     <div class="mb-8">
-      <h1 class="heading-page">Public Trades</h1>
+      <h1 class="heading-page">{{ s('Public Trades') }}</h1>
       <p class="mt-2 text-gray-600 dark:text-gray-400 max-w-3xl">
-        Explore real trades shared by the TradeTally community to study entries, exits, risk sizing, and execution outcomes across different symbols and setups.
-        Public trades are useful for benchmarking ideas, reviewing strategy tags, and learning how other traders document decisions.
+        {{ s('Explore real trades shared by the TradeTally community to study entries, exits, risk sizing, and execution outcomes across different symbols and setups. Public trades are useful for benchmarking ideas, reviewing strategy tags, and learning how other traders document decisions.') }}
       </p>
       <p class="mt-3 text-sm text-gray-500 dark:text-gray-400 max-w-3xl">
-        Looking for platform details? Visit our
-        <router-link to="/features" class="text-primary-600 hover:text-primary-500">Features</router-link>,
-        <router-link to="/compare" class="text-primary-600 hover:text-primary-500">Compare</router-link>,
-        <router-link to="/pricing" class="text-primary-600 hover:text-primary-500">Pricing</router-link>,
-        and
-        <router-link to="/faq" class="text-primary-600 hover:text-primary-500">FAQ</router-link>
-        pages.
-        You can also read
-        <a href="https://docs.tradetally.io" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:text-primary-500">Documentation</a>
-        and view the
-        <a href="https://github.com/GeneBO98/tradetally" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:text-primary-500">open-source repository</a>.
+        {{ s('Looking for platform details? Visit our') }}
+        <router-link to="/features" class="text-primary-600 hover:text-primary-500">{{ s('Features') }}</router-link>,
+        <router-link to="/compare" class="text-primary-600 hover:text-primary-500">{{ s('Compare') }}</router-link>,
+        <router-link to="/pricing" class="text-primary-600 hover:text-primary-500">{{ s('Pricing') }}</router-link>,
+        {{ s('and') }}
+        <router-link to="/faq" class="text-primary-600 hover:text-primary-500">{{ s('FAQ') }}</router-link>
+        {{ s('pages.') }}
+        {{ s('You can also read') }}
+        <a href="https://docs.tradetally.io" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:text-primary-500">{{ s('Documentation') }}</a>
+        {{ s('and view the') }}
+        <a href="https://github.com/GeneBO98/tradetally" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:text-primary-500">{{ s('open-source repository') }}</a>.
       </p>
     </div>
 
@@ -27,9 +26,9 @@
 
     <div v-else-if="trades.length === 0" class="text-center py-12">
       <DocumentTextIcon class="mx-auto h-12 w-12 text-gray-400" />
-      <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No public trades</h3>
+      <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">{{ s('No public trades') }}</h3>
       <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-        No trades have been shared publicly yet.
+        {{ s('No trades have been shared publicly yet.') }}
       </p>
     </div>
 
@@ -69,7 +68,7 @@
                         ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
                         : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
                     ]">
-                    {{ trade.side }}
+                    {{ formatSide(trade.side) }}
                   </span>
                   <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                     :class="[
@@ -77,11 +76,11 @@
                         ? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
                         : 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
                     ]">
-                    {{ trade.exit_price ? 'Closed' : 'Open' }}
+                    {{ trade.exit_price ? s('Closed') : s('Open') }}
                   </span>
                 </div>
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                  by @{{ trade.display_name || trade.username }} • {{ formatDate(trade.trade_date) }}
+                  {{ s('by') }} @{{ trade.display_name || trade.username }} • {{ formatDate(trade.trade_date) }}
                 </p>
               </div>
             </div>
@@ -90,7 +89,7 @@
               <div class="text-lg font-semibold" :class="[
                 trade.pnl >= 0 ? 'text-green-600' : 'text-red-600'
               ]">
-                {{ trade.pnl ? formatCurrency(trade.pnl) : 'Open' }}
+                {{ trade.pnl ? formatCurrency(trade.pnl) : s('Open') }}
               </div>
               <div v-if="trade.pnl_percent" class="text-sm text-gray-500 dark:text-gray-400">
                 {{ trade.pnl_percent > 0 ? '+' : '' }}{{ formatNumber(trade.pnl_percent) }}%
@@ -101,7 +100,7 @@
           <div class="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
             <div>
               <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Entry Price
+                {{ s('Entry Price') }}
               </dt>
               <dd class="mt-1 text-sm font-medium text-gray-900 dark:text-white">
                 {{ formatCurrency(trade.entry_price) }}
@@ -109,15 +108,15 @@
             </div>
             <div>
               <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Exit Price
+                {{ s('Exit Price') }}
               </dt>
               <dd class="mt-1 text-sm font-medium text-gray-900 dark:text-white">
-                {{ trade.exit_price ? formatCurrency(trade.exit_price) : 'Open' }}
+                {{ trade.exit_price ? formatCurrency(trade.exit_price) : s('Open') }}
               </dd>
             </div>
             <div>
               <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Quantity
+                {{ s('Quantity') }}
               </dt>
               <dd class="mt-1 text-sm font-medium text-gray-900 dark:text-white">
                 {{ formatNumber(trade.quantity, 0) }}
@@ -125,7 +124,7 @@
             </div>
             <div>
               <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Value
+                {{ s('Value') }}
               </dt>
               <dd class="mt-1 text-sm font-medium text-gray-900 dark:text-white">
                 {{ formatCurrency(trade.entry_price * trade.quantity) }}
@@ -161,7 +160,7 @@
                 class="inline-flex items-center px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 <DocumentIcon class="h-4 w-4 mr-1" />
-                View Chart
+                {{ s('View Chart') }}
               </a>
             </div>
           </div>
@@ -173,15 +172,14 @@
                 class="flex items-center hover:text-primary-600 transition-colors"
               >
                 <ChatBubbleLeftIcon class="h-4 w-4 mr-1" />
-                {{ trade.comment_count || 0 }} comments
+                {{ commentsLabel(trade.comment_count || 0) }}
               </button>
               <span>{{ formatDateTime(trade.created_at) }}</span>
-              <!-- Delete button for trade owner or admin -->
               <button
                 v-if="canDeleteTrade(trade)"
                 @click="deleteTrade(trade)"
                 class="flex items-center text-red-600 hover:text-red-700 transition-colors"
-                title="Delete trade"
+                :title="s('Delete trade')"
               >
                 <TrashIcon class="h-4 w-4" />
               </button>
@@ -191,26 +189,24 @@
               :to="`/trades/${trade.id}`"
               class="text-primary-600 hover:text-primary-500 font-medium"
             >
-              View Details
+              {{ s('View Details') }}
             </router-link>
           </div>
         </div>
       </div>
 
-      <!-- Load More -->
       <div v-if="hasMore" class="text-center">
         <button
           @click="loadMore"
           :disabled="loading"
           class="btn-secondary"
         >
-          <span v-if="loading">Loading...</span>
-          <span v-else>Load More</span>
+          <span v-if="loading">{{ s('Loading...') }}</span>
+          <span v-else>{{ s('Load More') }}</span>
         </button>
       </div>
     </div>
 
-    <!-- Comments Dialog -->
     <TradeCommentsDialog
       v-if="selectedTrade"
       :is-open="showCommentsDialog"
@@ -223,9 +219,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { format } from 'date-fns'
-import { formatTradeDate } from '@/utils/date'
+import { zhCN, enUS } from 'date-fns/locale'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
+import { parseTradeDate } from '@/utils/date'
 import { DocumentTextIcon, DocumentIcon, ChatBubbleLeftIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import api from '@/services/api'
 import TradeCommentsDialog from '@/components/trades/TradeCommentsDialog.vue'
@@ -235,36 +234,67 @@ import { useUserTimezone } from '@/composables/useUserTimezone'
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'
 
 const { formatCurrency } = useCurrencyFormatter()
-
 const { formatDateTime: formatDateTimeTz } = useUserTimezone()
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'publicTrades' })
+
 const loading = ref(true)
 const trades = ref([])
 const hasMore = ref(true)
 const currentPage = ref(0)
 const pageSize = 10
 
-// Comments dialog
 const showCommentsDialog = ref(false)
 const selectedTrade = ref(null)
 
-// Auth and notifications
 const authStore = useAuthStore()
 const { showSuccess, showError, showConfirmation } = useNotification()
 
 function formatNumber(num, decimals = 2) {
-  return new Intl.NumberFormat('en-US', {
+  void locale.value
+  const numberLocale = locale.value === 'zh' ? 'zh-CN' : 'en-US'
+  return new Intl.NumberFormat(numberLocale, {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals
   }).format(num || 0)
 }
 
+function formatSide(side) {
+  void locale.value
+  return s(side)
+}
+
+function commentsLabel(count) {
+  if (count === 1) return s('1 comment')
+  return s(`${count} comments`)
+}
 
 function formatDate(date) {
-  return formatTradeDate(date, 'MMM dd, yyyy')
+  void locale.value
+  const d = parseTradeDate(date)
+  if (!d) return ''
+  const dateLocale = locale.value === 'zh' ? zhCN : enUS
+  return format(d, 'MMM dd, yyyy', { locale: dateLocale })
 }
 
 function formatDateTime(date) {
   return formatDateTimeTz(date)
+}
+
+function updatePageMeta() {
+  void locale.value
+  document.title = s('Public Trades - TradeTally Trading Journal Community')
+
+  let metaDescription = document.querySelector('meta[name="description"]')
+  if (!metaDescription) {
+    metaDescription = document.createElement('meta')
+    metaDescription.setAttribute('name', 'description')
+    document.head.appendChild(metaDescription)
+  }
+  metaDescription.setAttribute(
+    'content',
+    s('Explore public trades shared by the TradeTally community. Review entries, exits, notes, tags, and performance from a free trading journal platform.')
+  )
 }
 
 async function fetchTrades(offset = 0) {
@@ -304,7 +334,6 @@ function openComments(trade) {
 }
 
 function handleCommentAdded() {
-  // Increment the comment count for the trade
   const tradeIndex = trades.value.findIndex(t => t.id === selectedTrade.value.id)
   if (tradeIndex !== -1) {
     trades.value[tradeIndex].comment_count = (trades.value[tradeIndex].comment_count || 0) + 1
@@ -312,7 +341,6 @@ function handleCommentAdded() {
 }
 
 function handleCommentDeleted() {
-  // Decrement the comment count for the trade
   const tradeIndex = trades.value.findIndex(t => t.id === selectedTrade.value.id)
   if (tradeIndex !== -1) {
     trades.value[tradeIndex].comment_count = Math.max((trades.value[tradeIndex].comment_count || 0) - 1, 0)
@@ -320,64 +348,38 @@ function handleCommentDeleted() {
 }
 
 function canDeleteTrade(trade) {
-  // Only allow deletion if user is authenticated and either owns the trade or is admin
   if (!authStore.isAuthenticated) return false
   
   const user = authStore.user
   if (!user) return false
   
-  // User can delete if they own the trade OR if they are an admin
   return trade.user_id === user.id || user.role === 'admin'
 }
 
 async function deleteTrade(trade) {
   showConfirmation(
-    'Delete Trade',
-    `Are you sure you want to delete this trade for ${trade.symbol}?`,
+    s('Delete Trade'),
+    s(`Are you sure you want to delete this trade for ${trade.symbol}?`),
     async () => {
       try {
         await api.delete(`/trades/${trade.id}`)
         
-        // Remove the trade from the list
         trades.value = trades.value.filter(t => t.id !== trade.id)
         
-        showSuccess('Success', 'Trade deleted successfully')
+        showSuccess(s('Success'), s('Trade deleted successfully'))
       } catch (error) {
         console.error('Failed to delete trade:', error)
-        const errorMessage = error.response?.data?.error || 'Failed to delete trade'
-        showError('Error', errorMessage)
+        const errorMessage = error.response?.data?.error || s('Failed to delete trade')
+        showError(s('Error'), errorMessage)
       }
     }
   )
 }
 
 onMounted(() => {
-  document.title = 'Public Trades - TradeTally Trading Journal Community'
-
-  let metaDescription = document.querySelector('meta[name="description"]')
-  if (!metaDescription) {
-    metaDescription = document.createElement('meta')
-    metaDescription.setAttribute('name', 'description')
-    document.head.appendChild(metaDescription)
-  }
-  metaDescription.setAttribute('content', 'Explore public trades shared by the TradeTally community. Review entries, exits, notes, tags, and performance from a free trading journal platform.')
-
-  let metaKeywords = document.querySelector('meta[name="keywords"]')
-  if (!metaKeywords) {
-    metaKeywords = document.createElement('meta')
-    metaKeywords.setAttribute('name', 'keywords')
-    document.head.appendChild(metaKeywords)
-  }
-  metaKeywords.setAttribute('content', 'public trades, shared trading journal, TradeTally community trades, free trading journal examples')
-
-  let canonical = document.querySelector('link[rel="canonical"]')
-  if (!canonical) {
-    canonical = document.createElement('link')
-    canonical.setAttribute('rel', 'canonical')
-    document.head.appendChild(canonical)
-  }
-  canonical.setAttribute('href', 'https://tradetally.io/public')
-
+  updatePageMeta()
   fetchTrades()
 })
+
+watch(locale, updatePageMeta)
 </script>

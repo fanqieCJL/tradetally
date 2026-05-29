@@ -6,12 +6,14 @@ import './assets/main.css'
 import { useAuthStore } from './stores/auth'
 import { useAnalytics } from './composables/useAnalytics'
 import { growthbook, initializeGrowthBook, updateGrowthBookContext } from './services/growthbook'
+import { i18n, initLocale } from './i18n'
 
 const app = createApp(App)
 const AUTH_BOOTSTRAP_TIMEOUT_MS = 4000
 const GROWTHBOOK_BOOTSTRAP_TIMEOUT_MS = 1500
 
 app.use(createPinia())
+app.use(i18n)
 app.use(router)
 app.config.globalProperties.$growthbook = growthbook
 app.config.errorHandler = (error, instance, info) => {
@@ -57,6 +59,7 @@ function withTimeout(promise, timeoutMs) {
 }
 
 async function bootstrap() {
+  initLocale()
   const authStore = useAuthStore()
   const runWhenIdle = window.requestIdleCallback
     ? (callback) => window.requestIdleCallback(callback)

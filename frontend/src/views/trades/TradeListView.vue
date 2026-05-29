@@ -2,9 +2,9 @@
   <div :class="[isFullWidth ? 'max-w-full px-4 sm:px-6 lg:px-12 mx-auto' : 'content-wrapper', 'py-8 transition-all duration-300']">
     <!-- Title -->
     <div class="mb-6">
-      <h1 class="heading-page">Trades</h1>
+      <h1 class="heading-page">{{ s('Trades') }}</h1>
       <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
-        A list of all your trades including their details and performance.
+        {{ s('A list of all your trades including their details and performance.') }}
       </p>
     </div>
     
@@ -17,10 +17,10 @@
         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
         </svg>
-        Back
+        {{ s('Back') }}
       </button>
       <router-link to="/trades/new" class="btn-primary">
-        Add trade
+        {{ s('Add trade') }}
       </router-link>
     </div>
 
@@ -162,13 +162,13 @@
 
       <div v-else-if="tradesStore.trades.length === 0 && !tradesStore.loading" class="text-center py-12">
         <DocumentTextIcon class="mx-auto h-12 w-12 text-gray-400" />
-        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No trades</h3>
+        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">{{ s('No trades') }}</h3>
         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          Get started by creating a new trade.
+          {{ s('Get started by creating a new trade.') }}
         </p>
         <div class="mt-6">
           <router-link to="/trades/new" class="btn-primary">
-            Add trade
+            {{ s('Add trade') }}
           </router-link>
         </div>
       </div>
@@ -987,6 +987,9 @@ import { mdiNewspaper } from '@mdi/js'
 import api from '@/services/api'
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'
 import { getTradeGrossPnl } from '@/utils/tradePnl'
+import { tSentence } from '@/i18n'
+
+const s = (text) => tSentence(text, { context: 'trades' })
 
 const tradesStore = useTradesStore()
 const uiPreferencesStore = useUiPreferencesStore()

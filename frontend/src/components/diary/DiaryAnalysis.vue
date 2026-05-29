@@ -5,10 +5,10 @@
       <div>
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
           <SparklesIcon class="w-5 h-5 mr-2 text-purple-600" />
-          AI Journal Analysis
+          {{ s('AI Journal Analysis') }}
         </h3>
         <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-          Get AI-powered insights and recommendations from your journal entries
+          {{ s('Get AI-powered insights and recommendations from your journal entries') }}
         </p>
       </div>
       <button
@@ -17,18 +17,18 @@
         class="btn-primary flex items-center"
       >
         <SparklesIcon class="w-4 h-4 mr-2" />
-        Analyze Journal
+        {{ s('Analyze Journal') }}
       </button>
     </div>
 
     <!-- Date Range Selection Form -->
     <div v-if="showAnalysisForm && !analyzing" class="mb-6">
       <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-        <h4 class="font-medium text-gray-900 dark:text-white mb-4">Select Analysis Period</h4>
+        <h4 class="font-medium text-gray-900 dark:text-white mb-4">{{ s('Select Analysis Period') }}</h4>
         
         <!-- Quick Date Presets -->
         <div class="mb-4">
-          <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Quick Select:</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">{{ s('Quick Select:') }}</p>
           <div class="flex flex-wrap gap-2">
             <button
               v-for="preset in datePresets"
@@ -45,7 +45,7 @@
         <div class="grid grid-cols-2 gap-4 mb-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Start Date
+              {{ s('Start Date') }}
             </label>
             <input
               v-model="startDate"
@@ -56,7 +56,7 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              End Date
+              {{ s('End Date') }}
             </label>
             <input
               v-model="endDate"
@@ -74,7 +74,7 @@
             @click="cancelAnalysis"
             class="btn-secondary"
           >
-            Cancel
+            {{ s('Cancel') }}
           </button>
           <button
             @click="startAnalysis"
@@ -83,7 +83,7 @@
             :class="{ 'opacity-50 cursor-not-allowed': !startDate || !endDate }"
           >
             <SparklesIcon class="w-4 h-4 mr-2" />
-            Start Analysis
+            {{ s('Start Analysis') }}
           </button>
         </div>
       </div>
@@ -92,33 +92,32 @@
     <!-- Loading State -->
     <div v-if="analyzing" class="text-center py-8">
       <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
-      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Analyzing Your Journal</h3>
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">{{ s('Analyzing Your Journal') }}</h3>
       <p class="text-gray-600 dark:text-gray-400">
-        AI is reviewing your entries from {{ startDate }} to {{ endDate }}...
+        {{ analyzingMessage }}
       </p>
       <div class="mt-4 text-sm text-gray-500 dark:text-gray-400">
-        This may take up to 30 seconds
+        {{ s('This may take up to 30 seconds') }}
       </div>
     </div>
 
-    <!-- Analysis Results -->
+    <!-- {{ s('Analysis Results') }} -->
     <div v-if="analysis && !analyzing" class="space-y-6">
       <!-- Analysis Header -->
       <div class="flex items-center justify-between">
         <div>
           <h4 class="text-lg font-medium text-gray-900 dark:text-white">
-            Analysis Results
+            {{ s('Analysis Results') }}
           </h4>
           <p class="text-sm text-gray-600 dark:text-gray-400">
-            Period: {{ formatDate(startDate) }} - {{ formatDate(endDate) }} 
-            ({{ entriesAnalyzed }} entries analyzed)
+            {{ analysisPeriodSummary }}
           </p>
         </div>
         <button
           @click="startNewAnalysis"
           class="btn-secondary text-sm"
         >
-          New Analysis
+          {{ s('New Analysis') }}
         </button>
       </div>
 
@@ -139,7 +138,7 @@
           class="btn-primary flex items-center"
         >
           <BookmarkIcon class="w-4 h-4 mr-2" />
-          Save Analysis
+          {{ s('Save Analysis') }}
         </button>
       </div>
     </div>
@@ -150,7 +149,7 @@
         <ExclamationTriangleIcon class="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5 mr-3 flex-shrink-0" />
         <div>
           <h3 class="text-sm font-medium text-red-800 dark:text-red-200">
-            Analysis Failed
+            {{ s('Analysis Failed') }}
           </h3>
           <p class="text-sm text-red-700 dark:text-red-300 mt-1">
             {{ error }}
@@ -159,7 +158,7 @@
             @click="clearError"
             class="text-sm text-red-800 dark:text-red-200 underline mt-2"
           >
-            Try Again
+            {{ s('Try Again') }}
           </button>
         </div>
       </div>
@@ -170,6 +169,8 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { format, subDays, subWeeks, subMonths, startOfWeek, startOfMonth } from 'date-fns'
+import { tSentence } from '@/i18n'
+import { useI18n } from 'vue-i18n'
 import { useDiaryStore } from '@/stores/diary'
 import api from '@/services/api'
 import AIReportRenderer from '@/components/ai/AIReportRenderer.vue'
@@ -181,6 +182,8 @@ import {
 } from '@heroicons/vue/24/outline'
 
 const diaryStore = useDiaryStore()
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'diary' })
 
 // Component state
 const showAnalysisForm = ref(false)
@@ -194,34 +197,27 @@ const today = new Date().toISOString().split('T')[0]
 const startDate = ref('')
 const endDate = ref(today)
 
-// Date presets
-const datePresets = ref([
-  {
-    label: 'Last 7 days',
-    start: () => subDays(new Date(), 7),
-    end: () => new Date()
-  },
-  {
-    label: 'Last 2 weeks',
-    start: () => subWeeks(new Date(), 2),
-    end: () => new Date()
-  },
-  {
-    label: 'Last month',
-    start: () => subMonths(new Date(), 1),
-    end: () => new Date()
-  },
-  {
-    label: 'This week',
-    start: () => startOfWeek(new Date()),
-    end: () => new Date()
-  },
-  {
-    label: 'This month',
-    start: () => startOfMonth(new Date()),
-    end: () => new Date()
-  }
-])
+const datePresets = computed(() => {
+  void locale.value
+  return [
+    { label: s('Last 7 days'), start: () => subDays(new Date(), 7), end: () => new Date() },
+    { label: s('Last 2 weeks'), start: () => subWeeks(new Date(), 2), end: () => new Date() },
+    { label: s('Last month'), start: () => subMonths(new Date(), 1), end: () => new Date() },
+    { label: s('This week'), start: () => startOfWeek(new Date()), end: () => new Date() },
+    { label: s('This month'), start: () => startOfMonth(new Date()), end: () => new Date() }
+  ]
+})
+
+const analysisPeriodSummary = computed(() => {
+  if (!startDate.value || !endDate.value) return ''
+  void locale.value
+  return s(`Period: ${formatDate(startDate.value)} - ${formatDate(endDate.value)} (${entriesAnalyzed.value} entries analyzed)`)
+})
+
+const analyzingMessage = computed(() => {
+  void locale.value
+  return s(`AI is reviewing your entries from ${startDate.value} to ${endDate.value}...`)
+})
 
 // Methods
 const selectDatePreset = (preset) => {
@@ -248,7 +244,7 @@ const startAnalysis = async () => {
     entriesAnalyzed.value = result.entriesAnalyzed
     showAnalysisForm.value = false
   } catch (err) {
-    error.value = err.response?.data?.error || err.message || 'Failed to analyze journal entries'
+    error.value = s(err.response?.data?.error || err.message || 'Failed to analyze journal entries')
   } finally {
     analyzing.value = false
   }
