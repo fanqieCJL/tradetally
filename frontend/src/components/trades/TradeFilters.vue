@@ -3,11 +3,11 @@
     <!-- Basic filters always visible -->
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <div>
-        <label for="symbol" class="label">Symbol</label>
+        <label for="symbol" class="label">{{ s('Symbol') }}</label>
         <SymbolAutocomplete
           id="symbol"
           v-model="filters.symbol"
-          placeholder="e.g., AAPL"
+          :placeholder="s('e.g., AAPL')"
           @select="applyFilters"
         />
         <label class="flex items-center mt-1.5 cursor-pointer">
@@ -16,12 +16,12 @@
             v-model="filters.symbolExact"
             class="h-3.5 w-3.5 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
           />
-          <span class="ml-1.5 text-xs text-gray-500 dark:text-gray-400">Exact match</span>
+          <span class="ml-1.5 text-xs text-gray-500 dark:text-gray-400">{{ s('Exact match') }}</span>
         </label>
       </div>
 
       <div>
-        <label class="label">Time Period</label>
+        <label class="label">{{ s('Time Period') }}</label>
         <div class="relative" data-dropdown="timePeriod">
           <button
             @click.stop="showTimePeriodDropdown = !showTimePeriodDropdown"
@@ -48,7 +48,7 @@
       </div>
 
       <div v-if="selectedPeriod === 'custom'">
-        <label for="startDate" class="label">Start Date</label>
+        <label for="startDate" class="label">{{ s('Start Date') }}</label>
         <input
           id="startDate"
           v-model="filters.startDate"
@@ -59,7 +59,7 @@
       </div>
 
       <div v-if="selectedPeriod === 'custom'">
-        <label for="endDate" class="label">End Date</label>
+        <label for="endDate" class="label">{{ s('End Date') }}</label>
         <input
           id="endDate"
           v-model="filters.endDate"
@@ -70,7 +70,7 @@
       </div>
 
       <div>
-        <label class="label">Strategy</label>
+        <label class="label">{{ s('Strategy') }}</label>
         <div class="relative" data-dropdown="strategy">
           <button
             @click.stop="showStrategyDropdown = !showStrategyDropdown"
@@ -94,11 +94,11 @@
                   @change="toggleAllStrategies"
                   class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded flex-shrink-0"
                 />
-                <span class="ml-3 text-sm text-gray-900 dark:text-white">All Strategies</span>
+                <span class="ml-3 text-sm text-gray-900 dark:text-white">{{ s('All Strategies') }}</span>
               </label>
             </div>
             <div class="border-t border-gray-200 dark:border-gray-600">
-              <div v-for="strategy in strategyOptions" :key="strategy.value" class="p-1">
+              <div v-for="strategy in translatedStrategyOptions" :key="strategy.value" class="p-1">
                 <label class="flex items-center w-full px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer">
                   <input
                     type="checkbox"
@@ -118,7 +118,7 @@
     <!-- Second Row of Basic Filters -->
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <div>
-        <label class="label">Trade Status</label>
+        <label class="label">{{ s('Trade Status') }}</label>
         <div class="relative" data-dropdown="status">
           <button
             @click.stop="showStatusDropdown = !showStatusDropdown"
@@ -145,7 +145,7 @@
       </div>
 
       <div>
-        <label class="label">Position Type</label>
+        <label class="label">{{ s('Position Type') }}</label>
         <div class="relative" data-dropdown="side">
           <button
             @click.stop="showSideDropdown = !showSideDropdown"
@@ -172,7 +172,7 @@
       </div>
 
       <div>
-        <label class="label">Instrument Type</label>
+        <label class="label">{{ s('Instrument Type') }}</label>
         <div class="relative" data-dropdown="instrumentType">
           <button
             @click.stop="showInstrumentTypeDropdown = !showInstrumentTypeDropdown"
@@ -196,7 +196,7 @@
                   @change="toggleAllInstrumentTypes"
                   class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded flex-shrink-0"
                 />
-                <span class="ml-3 text-sm text-gray-900 dark:text-white">All Types</span>
+                <span class="ml-3 text-sm text-gray-900 dark:text-white">{{ s('All Types') }}</span>
               </label>
             </div>
             <div class="border-t border-gray-200 dark:border-gray-600">
@@ -217,7 +217,7 @@
       </div>
 
       <div>
-        <label class="label">Tags</label>
+        <label class="label">{{ s('Tags') }}</label>
         <TagManagement v-model="filters.tags" />
       </div>
     </div>
@@ -232,7 +232,7 @@
         <ChevronRightIcon 
           :class="[showAdvanced ? 'rotate-90' : '', 'h-4 w-4 mr-1 transition-transform']"
         />
-        Advanced Filters
+        {{ s('Advanced Filters') }}
         <span v-if="activeAdvancedCount > 0" class="ml-2 bg-primary-100 text-primary-800 dark:bg-primary-900/20 dark:text-primary-400 text-xs px-2 py-0.5 rounded-full">
           {{ activeAdvancedCount }}
         </span>
@@ -245,11 +245,11 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Range Filters Group -->
         <div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-          <h4 class="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-3">Range Filters</h4>
+          <h4 class="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-3">{{ s('Range Filters') }}</h4>
           <div class="space-y-4">
             <!-- Price Range -->
             <div>
-              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Entry Price</label>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">{{ s('Entry Price') }}</label>
               <div class="flex items-center gap-1.5">
                 <input
                   v-model.number="filters.minPrice"
@@ -257,7 +257,7 @@
                   step="0.01"
                   min="0"
                   class="input text-sm flex-1"
-                  placeholder="Min"
+                  :placeholder="s('Min')"
                   @keydown.enter="applyFilters"
                 />
                 <span class="text-xs text-gray-400">-</span>
@@ -267,7 +267,7 @@
                   step="0.01"
                   min="0"
                   class="input text-sm flex-1"
-                  placeholder="Max"
+                  :placeholder="s('Max')"
                   @keydown.enter="applyFilters"
                 />
               </div>
@@ -275,14 +275,14 @@
 
             <!-- Quantity Range -->
             <div>
-              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Share Quantity</label>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">{{ s('Share Quantity') }}</label>
               <div class="flex items-center gap-1.5">
                 <input
                   v-model.number="filters.minQuantity"
                   type="number"
                   min="0"
                   class="input text-sm flex-1"
-                  placeholder="Min"
+                  :placeholder="s('Min')"
                   @keydown.enter="applyFilters"
                 />
                 <span class="text-xs text-gray-400">-</span>
@@ -291,7 +291,7 @@
                   type="number"
                   min="0"
                   class="input text-sm flex-1"
-                  placeholder="Max"
+                  :placeholder="s('Max')"
                   @keydown.enter="applyFilters"
                 />
               </div>
@@ -299,14 +299,14 @@
 
             <!-- P&L Range -->
             <div>
-              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">P&L ($)</label>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">{{ s('P&L ($)') }}</label>
               <div class="flex items-center gap-1.5">
                 <input
                   v-model.number="filters.minPnl"
                   type="number"
                   step="0.01"
                   class="input text-sm flex-1"
-                  placeholder="Min"
+                  :placeholder="s('Min')"
                   @keydown.enter="applyFilters"
                 />
                 <span class="text-xs text-gray-400">-</span>
@@ -315,7 +315,7 @@
                   type="number"
                   step="0.01"
                   class="input text-sm flex-1"
-                  placeholder="Max"
+                  :placeholder="s('Max')"
                   @keydown.enter="applyFilters"
                 />
               </div>
@@ -325,11 +325,11 @@
 
         <!-- Timing & Options Group -->
         <div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-          <h4 class="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-3">Timing & Options</h4>
+          <h4 class="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-3">{{ s('Timing & Options') }}</h4>
           <div class="space-y-4">
             <!-- Hold Time -->
             <div>
-              <label class="label">Hold Time</label>
+              <label class="label">{{ s('Hold Time') }}</label>
               <div class="relative" data-dropdown="holdTime">
                 <button
                   @click.stop="showHoldTimeDropdown = !showHoldTimeDropdown"
@@ -357,7 +357,7 @@
 
             <!-- Day of Week -->
             <div>
-              <label class="label">Day of Week</label>
+              <label class="label">{{ s('Day of Week') }}</label>
               <div class="relative" data-dropdown="dayOfWeek">
                 <button
                   @click.stop="showDayOfWeekDropdown = !showDayOfWeekDropdown"
@@ -381,7 +381,7 @@
                         @change="toggleAllDaysOfWeek"
                         class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded flex-shrink-0"
                       />
-                      <span class="ml-3 text-sm text-gray-900 dark:text-white">All Days</span>
+                      <span class="ml-3 text-sm text-gray-900 dark:text-white">{{ s('All Days') }}</span>
                     </label>
                   </div>
                   <div class="border-t border-gray-200 dark:border-gray-600">
@@ -403,7 +403,7 @@
 
             <!-- Option Type Filter (only shown when Options selected in main filters) -->
             <div v-if="filters.instrumentTypes.includes('option')">
-              <label class="label">Option Type</label>
+              <label class="label">{{ s('Option Type') }}</label>
               <div class="relative" data-dropdown="optionType">
                 <button
                   @click.stop="showOptionTypeDropdown = !showOptionTypeDropdown"
@@ -427,7 +427,7 @@
                         @change="toggleAllOptionTypes"
                         class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded flex-shrink-0"
                       />
-                      <span class="ml-3 text-sm text-gray-900 dark:text-white">All Option Types</span>
+                      <span class="ml-3 text-sm text-gray-900 dark:text-white">{{ s('All Option Types') }}</span>
                     </label>
                   </div>
                   <div class="border-t border-gray-200 dark:border-gray-600">
@@ -452,11 +452,11 @@
 
       <!-- Trade Characteristics Group -->
       <div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-        <h4 class="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-3">Trade Characteristics</h4>
+        <h4 class="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-3">{{ s('Trade Characteristics') }}</h4>
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <!-- Sector -->
           <div>
-            <label class="label">Sector</label>
+            <label class="label">{{ s('Sector') }}</label>
             <div class="relative" data-dropdown="sector">
               <button
                 @click.stop="showSectorDropdown = !showSectorDropdown"
@@ -481,7 +481,7 @@
                       @change="toggleAllSectors"
                       class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded flex-shrink-0"
                     />
-                    <span class="ml-3 text-sm text-gray-900 dark:text-white">All Sectors</span>
+                    <span class="ml-3 text-sm text-gray-900 dark:text-white">{{ s('All Sectors') }}</span>
                   </label>
                 </div>
                 <div class="border-t border-gray-200 dark:border-gray-600">
@@ -503,7 +503,7 @@
 
           <!-- News -->
           <div>
-            <label class="label">News</label>
+            <label class="label">{{ s('News') }}</label>
             <div class="relative" data-dropdown="news">
               <button
                 @click.stop="showNewsDropdown = !showNewsDropdown"
@@ -531,7 +531,7 @@
 
           <!-- Broker -->
           <div>
-            <label class="label">Broker</label>
+            <label class="label">{{ s('Broker') }}</label>
             <div class="relative" data-dropdown="broker">
               <button
                 @click.stop="showBrokerDropdown = !showBrokerDropdown"
@@ -556,7 +556,7 @@
                       @change="toggleAllBrokers"
                       class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded flex-shrink-0"
                     />
-                    <span class="ml-3 text-sm text-gray-900 dark:text-white">All Brokers</span>
+                    <span class="ml-3 text-sm text-gray-900 dark:text-white">{{ s('All Brokers') }}</span>
                   </label>
                 </div>
                 <div class="border-t border-gray-200 dark:border-gray-600">
@@ -578,7 +578,7 @@
 
           <!-- P&L Type -->
           <div>
-            <label class="label">P&L Type</label>
+            <label class="label">{{ s('P&L Type') }}</label>
             <div class="relative" data-dropdown="pnlType">
               <button
                 @click.stop="showPnlTypeDropdown = !showPnlTypeDropdown"
@@ -606,7 +606,7 @@
 
           <!-- Quality Grade -->
           <div>
-            <label class="label">Quality Grade</label>
+            <label class="label">{{ s('Quality Grade') }}</label>
             <div class="relative" data-dropdown="qualityGrade">
               <button
                 @click.stop="showQualityGradeDropdown = !showQualityGradeDropdown"
@@ -630,7 +630,7 @@
                       @change="toggleAllQualityGrades"
                       class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded flex-shrink-0"
                     />
-                    <span class="ml-3 text-sm text-gray-900 dark:text-white">All Grades</span>
+                    <span class="ml-3 text-sm text-gray-900 dark:text-white">{{ s('All Grades') }}</span>
                   </label>
                 </div>
                 <div class="border-t border-gray-200 dark:border-gray-600">
@@ -659,25 +659,25 @@
           v-if="filters.importId"
           class="inline-flex items-center gap-2 rounded-full bg-primary-50 px-3 py-1 text-sm text-primary-800 dark:bg-primary-900/20 dark:text-primary-300"
         >
-          <span>Showing trades from this import only</span>
+          <span>{{ s('Showing trades from this import only') }}</span>
           <button
             type="button"
             class="font-medium text-primary-700 underline decoration-primary-300 underline-offset-2 hover:text-primary-800 dark:text-primary-300 dark:hover:text-primary-200"
             @click="clearImportFilter"
           >
-            Show all trades
+            {{ s('Show all trades') }}
           </button>
         </div>
         <div v-else-if="activeFiltersCount > 0" class="text-sm text-gray-600 dark:text-gray-400">
-          {{ activeFiltersCount }} filter{{ activeFiltersCount !== 1 ? 's' : '' }} active
+          {{ activeFiltersSummary }}
         </div>
       </div>
       <div class="flex space-x-3">
         <button @click="resetFilters" class="btn-secondary">
-          Reset
+          {{ s('Reset') }}
         </button>
         <button @click="applyFilters" class="btn-primary">
-          Apply Filters
+          {{ s('Apply Filters') }}
         </button>
       </div>
     </div>
@@ -686,6 +686,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { ChevronRightIcon } from '@heroicons/vue/24/outline'
 import api from '@/services/api'
@@ -695,6 +696,10 @@ import { useUiPreferencesStore } from '@/stores/uiPreferences'
 import { formatLocalDate } from '@/utils/date'
 import { useGlobalAccountFilter } from '@/composables/useGlobalAccountFilter'
 import SymbolAutocomplete from '@/components/common/SymbolAutocomplete.vue'
+import { tSentence } from '@/i18n'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'trades' })
 
 const emit = defineEmits(['filter'])
 const route = useRoute()
@@ -794,95 +799,119 @@ const showHoldTimeDropdown = ref(false)
 const showNewsDropdown = ref(false)
 const showPnlTypeDropdown = ref(false)
 
-// Day of week options (weekdays only - markets are closed weekends)
-const dayOfWeekOptions = [
-  { value: 1, label: 'Monday' },
-  { value: 2, label: 'Tuesday' },
-  { value: 3, label: 'Wednesday' },
-  { value: 4, label: 'Thursday' },
-  { value: 5, label: 'Friday' }
+const dayOfWeekOptions = computed(() => {
+  void locale.value
+  return [
+    { value: 1, label: s('Monday') },
+    { value: 2, label: s('Tuesday') },
+    { value: 3, label: s('Wednesday') },
+    { value: 4, label: s('Thursday') },
+    { value: 5, label: s('Friday') }
+  ]
+})
+
+const instrumentTypeOptions = computed(() => {
+  void locale.value
+  return [
+    { value: 'stock', label: s('Stocks') },
+    { value: 'option', label: s('Options') },
+    { value: 'future', label: s('Futures') },
+    { value: 'crypto', label: s('Crypto') }
+  ]
+})
+
+const optionTypeOptions = computed(() => {
+  void locale.value
+  return [
+    { value: 'call', label: s('Calls') },
+    { value: 'put', label: s('Puts') }
+  ]
+})
+
+const qualityGradeOptions = computed(() => {
+  void locale.value
+  return [
+    { value: 'A', label: s('A - Excellent') },
+    { value: 'B', label: s('B - Good') },
+    { value: 'C', label: s('C - Average') },
+    { value: 'D', label: s('D - Below Average') },
+    { value: 'F', label: s('F - Poor') }
+  ]
+})
+
+const timePeriodOptions = computed(() => {
+  void locale.value
+  return [
+    { value: 'today', label: s('Today') },
+    { value: 'custom', label: s('Custom Range') },
+    { value: '7d', label: s('Last 7 Days') },
+    { value: '30d', label: s('Last 30 Days') },
+    { value: '90d', label: s('Last 90 Days') },
+    { value: 'ytd', label: s('Year to Date') },
+    { value: '1y', label: s('Last Year') },
+    { value: 'all', label: s('All Time') }
+  ]
+})
+
+const statusOptions = computed(() => {
+  void locale.value
+  return [
+    { value: '', label: s('All Trades') },
+    { value: 'open', label: s('Open Only') },
+    { value: 'closed', label: s('Closed Only') }
+  ]
+})
+
+const sideOptions = computed(() => {
+  void locale.value
+  return [
+    { value: '', label: s('All') },
+    { value: 'long', label: s('Long') },
+    { value: 'short', label: s('Short') }
+  ]
+})
+
+const holdTimeOptionDefs = [
+  { value: '', labelKey: 'All' },
+  { value: '< 1 min', labelKey: '< 1 min' },
+  { value: '1-5 min', labelKey: '1-5 min' },
+  { value: '5-15 min', labelKey: '5-15 min' },
+  { value: '15-30 min', labelKey: '15-30 min' },
+  { value: '30-60 min', labelKey: '30-60 min' },
+  { value: '1-2 hours', labelKey: '1-2 hours' },
+  { value: '2-4 hours', labelKey: '2-4 hours' },
+  { value: '4-24 hours', labelKey: '4-24 hours' },
+  { value: '1-7 days', labelKey: '1-7 days' },
+  { value: '1-4 weeks', labelKey: '1-4 weeks' },
+  { value: '1+ months', labelKey: '1+ months' }
 ]
 
-// Instrument type options
-const instrumentTypeOptions = [
-  { value: 'stock', label: 'Stocks' },
-  { value: 'option', label: 'Options' },
-  { value: 'future', label: 'Futures' },
-  { value: 'crypto', label: 'Crypto' }
-]
+const holdTimeOptions = computed(() => {
+  void locale.value
+  return holdTimeOptionDefs.map((opt) => ({
+    value: opt.value,
+    label: s(opt.labelKey)
+  }))
+})
 
-// Option type options
-const optionTypeOptions = [
-  { value: 'call', label: 'Calls' },
-  { value: 'put', label: 'Puts' }
-]
+const newsOptions = computed(() => {
+  void locale.value
+  return [
+    { value: '', label: s('All Trades') },
+    { value: 'true', label: s('With News') },
+    { value: 'false', label: s('No News') }
+  ]
+})
 
-// Quality grade options
-const qualityGradeOptions = [
-  { value: 'A', label: 'A - Excellent' },
-  { value: 'B', label: 'B - Good' },
-  { value: 'C', label: 'C - Average' },
-  { value: 'D', label: 'D - Below Average' },
-  { value: 'F', label: 'F - Poor' }
-]
+const pnlTypeOptions = computed(() => {
+  void locale.value
+  return [
+    { value: '', label: s('All') },
+    { value: 'profit', label: s('Profit Only') },
+    { value: 'loss', label: s('Loss Only') }
+  ]
+})
 
-// Time period options
-const timePeriodOptions = [
-  { value: 'today', label: 'Today' },
-  { value: 'custom', label: 'Custom Range' },
-  { value: '7d', label: 'Last 7 Days' },
-  { value: '30d', label: 'Last 30 Days' },
-  { value: '90d', label: 'Last 90 Days' },
-  { value: 'ytd', label: 'Year to Date' },
-  { value: '1y', label: 'Last Year' },
-  { value: 'all', label: 'All Time' }
-]
-
-// Trade status options
-const statusOptions = [
-  { value: '', label: 'All Trades' },
-  { value: 'open', label: 'Open Only' },
-  { value: 'closed', label: 'Closed Only' }
-]
-
-// Position type options
-const sideOptions = [
-  { value: '', label: 'All' },
-  { value: 'long', label: 'Long' },
-  { value: 'short', label: 'Short' }
-]
-
-// Hold time options
-const holdTimeOptions = [
-  { value: '', label: 'All' },
-  { value: '< 1 min', label: '< 1 minute' },
-  { value: '1-5 min', label: '1-5 minutes' },
-  { value: '5-15 min', label: '5-15 minutes' },
-  { value: '15-30 min', label: '15-30 minutes' },
-  { value: '30-60 min', label: '30-60 minutes' },
-  { value: '1-2 hours', label: '1-2 hours' },
-  { value: '2-4 hours', label: '2-4 hours' },
-  { value: '4-24 hours', label: '4-24 hours' },
-  { value: '1-7 days', label: '1-7 days' },
-  { value: '1-4 weeks', label: '1-4 weeks' },
-  { value: '1+ months', label: '1+ months' }
-]
-
-// News filter options
-const newsOptions = [
-  { value: '', label: 'All Trades' },
-  { value: 'true', label: 'With News' },
-  { value: 'false', label: 'No News' }
-]
-
-// P&L type options
-const pnlTypeOptions = [
-  { value: '', label: 'All' },
-  { value: 'profit', label: 'Profit Only' },
-  { value: 'loss', label: 'Loss Only' }
-]
-
-// Strategy options
 const defaultStrategyOptions = [
   { value: 'scalper', label: 'Scalper' },
   { value: 'momentum', label: 'Momentum' },
@@ -898,7 +927,16 @@ const defaultStrategyOptions = [
   { value: 'news_swing', label: 'News Swing' },
   { value: 'news_uncertainty', label: 'News Uncertainty' }
 ]
-const strategyOptions = ref([...defaultStrategyOptions])
+
+const strategyOptions = ref(defaultStrategyOptions.map((option) => ({ ...option })))
+
+const translatedStrategyOptions = computed(() => {
+  void locale.value
+  return strategyOptions.value.map((option) => ({
+    ...option,
+    label: s(option.label)
+  }))
+})
 
 // Initialize filters with defaults, then load from localStorage
 const defaultFilters = {
@@ -1007,21 +1045,23 @@ const filters = ref(loadInitialFilters())
 
 // Helper methods for multi-select dropdowns
 function getSelectedStrategyText() {
+  void locale.value
   if (!filters.value.strategies || filters.value.strategies.length === 0) {
-    return loadingStrategies.value ? 'Loading strategies...' : 'All Strategies'
+    return loadingStrategies.value ? s('Loading strategies...') : s('All Strategies')
   }
   if (filters.value.strategies.length === 1) {
     const selectedValue = filters.value.strategies[0]
-    const strategy = strategyOptions.value.find(s => s.value === selectedValue)
-    return strategy ? strategy.label : selectedValue
+    const strategy = strategyOptions.value.find((opt) => opt.value === selectedValue)
+    return strategy ? s(strategy.label) : selectedValue
   }
-  return `${filters.value.strategies.length} strategies selected`
+  return s('{count} strategies selected').replace('{count}', String(filters.value.strategies.length))
 }
 
 function getSelectedSectorText() {
-  if (!filters.value.sectors || filters.value.sectors.length === 0) return loadingSectors.value ? 'Loading sectors...' : 'All Sectors'
+  void locale.value
+  if (!filters.value.sectors || filters.value.sectors.length === 0) return loadingSectors.value ? s('Loading sectors...') : s('All Sectors')
   if (filters.value.sectors.length === 1) return filters.value.sectors[0]
-  return `${filters.value.sectors.length} sectors selected`
+  return s('{count} sectors selected').replace('{count}', String(filters.value.sectors.length))
 }
 
 function toggleAllStrategies(event) {
@@ -1037,9 +1077,10 @@ function toggleAllSectors(event) {
 }
 
 function getSelectedBrokerText() {
-  if (!filters.value.brokers || filters.value.brokers.length === 0) return loadingBrokers.value ? 'Loading brokers...' : 'All Brokers'
+  void locale.value
+  if (!filters.value.brokers || filters.value.brokers.length === 0) return loadingBrokers.value ? s('Loading brokers...') : s('All Brokers')
   if (filters.value.brokers.length === 1) return filters.value.brokers[0]
-  return `${filters.value.brokers.length} brokers selected`
+  return s('{count} brokers selected').replace('{count}', String(filters.value.brokers.length))
 }
 
 function toggleAllBrokers(event) {
@@ -1049,12 +1090,13 @@ function toggleAllBrokers(event) {
 }
 
 function getSelectedDayOfWeekText() {
-  if (!filters.value.daysOfWeek || filters.value.daysOfWeek.length === 0) return 'All Days'
+  void locale.value
+  if (!filters.value.daysOfWeek || filters.value.daysOfWeek.length === 0) return s('All Days')
   if (filters.value.daysOfWeek.length === 1) {
-    const day = dayOfWeekOptions.find(d => d.value === filters.value.daysOfWeek[0])
-    return day ? day.label : 'All Days'
+    const day = dayOfWeekOptions.value.find(d => d.value === filters.value.daysOfWeek[0])
+    return day ? day.label : s('All Days')
   }
-  return `${filters.value.daysOfWeek.length} days selected`
+  return s('{count} days selected').replace('{count}', String(filters.value.daysOfWeek.length))
 }
 
 function toggleAllDaysOfWeek(event) {
@@ -1064,12 +1106,13 @@ function toggleAllDaysOfWeek(event) {
 }
 
 function getSelectedInstrumentTypeText() {
-  if (!filters.value.instrumentTypes || filters.value.instrumentTypes.length === 0) return 'All Types'
+  void locale.value
+  if (!filters.value.instrumentTypes || filters.value.instrumentTypes.length === 0) return s('All Types')
   if (filters.value.instrumentTypes.length === 1) {
-    const type = instrumentTypeOptions.find(t => t.value === filters.value.instrumentTypes[0])
-    return type ? type.label : 'All Types'
+    const type = instrumentTypeOptions.value.find(t => t.value === filters.value.instrumentTypes[0])
+    return type ? type.label : s('All Types')
   }
-  return `${filters.value.instrumentTypes.length} types selected`
+  return s('{count} types selected').replace('{count}', String(filters.value.instrumentTypes.length))
 }
 
 function toggleAllInstrumentTypes(event) {
@@ -1081,12 +1124,13 @@ function toggleAllInstrumentTypes(event) {
 }
 
 function getSelectedOptionTypeText() {
-  if (!filters.value.optionTypes || filters.value.optionTypes.length === 0) return 'All Option Types'
+  void locale.value
+  if (!filters.value.optionTypes || filters.value.optionTypes.length === 0) return s('All Option Types')
   if (filters.value.optionTypes.length === 1) {
-    const type = optionTypeOptions.find(t => t.value === filters.value.optionTypes[0])
-    return type ? type.label : 'All Option Types'
+    const type = optionTypeOptions.value.find(t => t.value === filters.value.optionTypes[0])
+    return type ? type.label : s('All Option Types')
   }
-  return `${filters.value.optionTypes.length} types selected`
+  return s('{count} types selected').replace('{count}', String(filters.value.optionTypes.length))
 }
 
 function toggleAllOptionTypes(event) {
@@ -1096,9 +1140,12 @@ function toggleAllOptionTypes(event) {
 }
 
 function getSelectedQualityGradeText() {
-  if (!filters.value.qualityGrades || filters.value.qualityGrades.length === 0) return 'All Grades'
-  if (filters.value.qualityGrades.length === 1) return `Grade ${filters.value.qualityGrades[0]}`
-  return `${filters.value.qualityGrades.length} grades selected`
+  void locale.value
+  if (!filters.value.qualityGrades || filters.value.qualityGrades.length === 0) return s('All Grades')
+  if (filters.value.qualityGrades.length === 1) {
+    return s('Grade {grade}').replace('{grade}', filters.value.qualityGrades[0])
+  }
+  return s('{count} grades selected').replace('{count}', String(filters.value.qualityGrades.length))
 }
 
 function toggleAllQualityGrades(event) {
@@ -1109,8 +1156,9 @@ function toggleAllQualityGrades(event) {
 
 // Helper methods for single-select dropdowns
 function getSelectedTimePeriodText() {
-  const option = timePeriodOptions.find(o => o.value === selectedPeriod.value)
-  return option ? option.label : 'All Time'
+  void locale.value
+  const option = timePeriodOptions.value.find(o => o.value === selectedPeriod.value)
+  return option ? option.label : s('All Time')
 }
 
 function selectTimePeriod(value) {
@@ -1120,8 +1168,9 @@ function selectTimePeriod(value) {
 }
 
 function getSelectedStatusText() {
-  const option = statusOptions.find(o => o.value === filters.value.status)
-  return option ? option.label : 'All Trades'
+  void locale.value
+  const option = statusOptions.value.find(o => o.value === filters.value.status)
+  return option ? option.label : s('All Trades')
 }
 
 function selectStatus(value) {
@@ -1130,8 +1179,9 @@ function selectStatus(value) {
 }
 
 function getSelectedSideText() {
-  const option = sideOptions.find(o => o.value === filters.value.side)
-  return option ? option.label : 'All'
+  void locale.value
+  const option = sideOptions.value.find(o => o.value === filters.value.side)
+  return option ? option.label : s('All')
 }
 
 function selectSide(value) {
@@ -1140,8 +1190,9 @@ function selectSide(value) {
 }
 
 function getSelectedHoldTimeText() {
-  const option = holdTimeOptions.find(o => o.value === filters.value.holdTime)
-  return option ? option.label : 'All'
+  void locale.value
+  const option = holdTimeOptions.value.find(o => o.value === filters.value.holdTime)
+  return option ? option.label : s('All')
 }
 
 function selectHoldTime(value) {
@@ -1150,8 +1201,9 @@ function selectHoldTime(value) {
 }
 
 function getSelectedNewsText() {
-  const option = newsOptions.find(o => o.value === filters.value.hasNews)
-  return option ? option.label : 'All Trades'
+  void locale.value
+  const option = newsOptions.value.find(o => o.value === filters.value.hasNews)
+  return option ? option.label : s('All Trades')
 }
 
 function selectNews(value) {
@@ -1160,14 +1212,22 @@ function selectNews(value) {
 }
 
 function getSelectedPnlTypeText() {
-  const option = pnlTypeOptions.find(o => o.value === filters.value.pnlType)
-  return option ? option.label : 'All'
+  void locale.value
+  const option = pnlTypeOptions.value.find(o => o.value === filters.value.pnlType)
+  return option ? option.label : s('All')
 }
 
 function selectPnlType(value) {
   filters.value.pnlType = value
   showPnlTypeDropdown.value = false
 }
+
+const activeFiltersSummary = computed(() => {
+  void locale.value
+  const count = activeFiltersCount.value
+  if (count === 1) return s('1 filter active')
+  return s('{count} filters active').replace('{count}', String(count))
+})
 
 // Count active filters
 const activeFiltersCount = computed(() => {

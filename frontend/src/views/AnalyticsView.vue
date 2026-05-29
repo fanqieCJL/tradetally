@@ -474,7 +474,7 @@
               <!-- Column Headers -->
               <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-200 dark:border-gray-700">
                 <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ s('Metric') }}</span>
-                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ s('Value') }}</span>
+                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ s('Metric Value') }}</span>
               </div>
               
               <!-- Data Rows -->
@@ -3601,6 +3601,11 @@ function navigateToTradesByDate(date) {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   })
 }
+
+watch(locale, async () => {
+  await nextTick()
+  setTimeout(() => initializeAllCharts(), 100)
+})
 
 // Watch for global account filter changes
 watch(selectedAccount, () => {

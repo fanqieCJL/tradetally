@@ -2,9 +2,9 @@
   <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
       <div>
-        <h3 class="text-lg font-medium text-gray-900 dark:text-white">R-Multiple Performance</h3>
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('R-Multiple Performance') }}</h3>
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-          Cumulative R performance across trades with stop loss defined
+          {{ s('Cumulative R performance across trades with stop loss defined') }}
         </p>
       </div>
       <button
@@ -20,7 +20,7 @@
         <svg v-else class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
         </svg>
-        {{ loading ? 'Refreshing...' : 'Refresh' }}
+        {{ loading ? s('Refreshing...') : s('Refresh') }}
       </button>
     </div>
 
@@ -28,7 +28,7 @@
       <!-- Loading State -->
       <div v-if="loading" class="flex flex-col items-center justify-center py-12">
         <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-600 mb-4"></div>
-        <p class="text-sm text-gray-500 dark:text-gray-400">Loading R performance data...</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400">{{ s('Loading R performance data...') }}</p>
       </div>
 
       <!-- Empty State -->
@@ -36,9 +36,9 @@
         <svg class="w-12 h-12 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
         </svg>
-        <p class="text-gray-500 dark:text-gray-400 mb-2">No R-Multiple data available</p>
+        <p class="text-gray-500 dark:text-gray-400 mb-2">{{ s('No R-Multiple data available') }}</p>
         <p class="text-sm text-gray-400 dark:text-gray-500">
-          Add stop loss levels to your trades to see R performance analysis
+          {{ s('Add stop loss levels to your trades to see R performance analysis') }}
         </p>
       </div>
 
@@ -48,7 +48,7 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 mb-6">
           <!-- Total Actual R -->
           <div class="r-perf-card flex flex-col min-h-[4.5rem] sm:min-h-[5.25rem] bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 sm:p-4">
-            <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider truncate shrink-0">Actual R (Net)</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider truncate shrink-0">{{ s('Actual R (Net)') }}</div>
             <div class="text-lg sm:text-xl xl:text-2xl font-bold mt-0.5 truncate" :class="summary.total_actual_r >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
               {{ formatR(summary.total_actual_r) }}
             </div>
@@ -56,7 +56,7 @@
 
           <!-- Total Potential R -->
           <div class="r-perf-card flex flex-col min-h-[4.5rem] sm:min-h-[5.25rem] bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 sm:p-4">
-            <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider truncate shrink-0">Target R (Net)</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider truncate shrink-0">{{ s('Target R (Net)') }}</div>
             <div class="text-lg sm:text-xl xl:text-2xl font-bold mt-0.5 truncate text-primary-600 dark:text-primary-400">
               {{ formatR(summary.total_potential_r) }}
             </div>
@@ -64,18 +64,18 @@
 
           <!-- Management R -->
           <div class="r-perf-card flex flex-col min-h-[4.5rem] sm:min-h-[5.25rem] bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 sm:p-4">
-            <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider truncate shrink-0">Management R</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider truncate shrink-0">{{ s('Management R') }}</div>
             <div class="text-lg sm:text-xl xl:text-2xl font-bold mt-0.5 truncate" :class="getManagementRColor(summary.total_management_r)">
               {{ formatR(summary.total_management_r || 0) }}
             </div>
             <div v-if="summary.trades_with_management_r > 0" class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate shrink-0">
-              {{ summary.trades_with_management_r }} trades
+              {{ managementTradesLabel }}
             </div>
           </div>
 
           <!-- R Left on Table -->
           <div class="r-perf-card flex flex-col min-h-[4.5rem] sm:min-h-[5.25rem] bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 sm:p-4">
-            <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider truncate shrink-0">R Left on Table</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider truncate shrink-0">{{ s('R Left on Table') }}</div>
             <div class="text-lg sm:text-xl xl:text-2xl font-bold mt-0.5 truncate" :class="summary.r_left_on_table > 0 ? 'text-red-600 dark:text-red-400' : summary.r_left_on_table < 0 ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'">
               {{ formatR(summary.r_left_on_table) }}
             </div>
@@ -83,7 +83,7 @@
 
           <!-- Win Rate -->
           <div class="r-perf-card flex flex-col min-h-[4.5rem] sm:min-h-[5.25rem] bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 sm:p-4">
-            <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider truncate shrink-0">Win Rate</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider truncate shrink-0">{{ s('Win Rate') }}</div>
             <div class="text-lg sm:text-xl xl:text-2xl font-bold mt-0.5 truncate text-gray-900 dark:text-white">
               {{ summary.win_rate }}%
             </div>
@@ -94,7 +94,7 @@
 
           <!-- Avg Win/Loss R -->
           <div class="r-perf-card flex flex-col min-h-[4.5rem] sm:min-h-[5.25rem] bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 sm:p-4">
-            <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider truncate shrink-0">Avg R</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider truncate shrink-0">{{ s('Avg R') }}</div>
             <div class="flex items-center gap-1 sm:gap-2 mt-0.5 flex-wrap min-h-[1.75rem]">
               <span class="text-base sm:text-lg font-bold text-green-600 dark:text-green-400">+{{ summary.avg_win_r }}</span>
               <span class="text-gray-400 shrink-0">/</span>
@@ -112,24 +112,21 @@
         <div class="mt-4 flex flex-wrap justify-center gap-6 text-sm">
           <div class="flex items-center">
             <span class="w-6 h-1 rounded-full bg-emerald-600 dark:bg-emerald-500 mr-2"></span>
-            <span class="text-gray-600 dark:text-gray-400">Actual Performance (Net)</span>
+            <span class="text-gray-600 dark:text-gray-400">{{ s('Actual Performance (Net)') }}</span>
           </div>
           <div class="flex items-center">
             <span class="w-6 h-1 rounded-full mr-2" style="background-color: #6366f1;"></span>
-            <span class="text-gray-600 dark:text-gray-400">Target Performance (Net)</span>
+            <span class="text-gray-600 dark:text-gray-400">{{ s('Target Performance (Net)') }}</span>
           </div>
           <div class="flex items-center">
             <span class="w-6 h-1 rounded-full bg-amber-500 dark:bg-amber-400 mr-2"></span>
-            <span class="text-gray-600 dark:text-gray-400">Trade Management Impact</span>
+            <span class="text-gray-600 dark:text-gray-400">{{ s('Trade Management Impact') }}</span>
           </div>
         </div>
 
         <!-- Trades Count -->
         <div class="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
-          Based on {{ summary.total_trades }} trades with stop loss defined
-          <span v-if="summary.trades_with_target < summary.total_trades">
-            ({{ summary.trades_with_target }} with take profit targets)
-          </span>
+          {{ tradesSummaryLine }}
         </div>
       </div>
     </div>
@@ -137,9 +134,32 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import { Chart, registerables } from 'chart.js'
 import api from '@/services/api'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
+
+const tradesSummaryLine = computed(() => {
+  if (!summary.value) return ''
+  let line = s('Based on {total} trades with stop loss defined').replace(
+    '{total}',
+    String(summary.value.total_trades),
+  )
+  if (summary.value.trades_with_target < summary.value.total_trades) {
+    line += ` ${s('({count} with take profit targets)').replace('{count}', String(summary.value.trades_with_target))}`
+  }
+  return line
+})
+
+const managementTradesLabel = computed(() => {
+  if (!summary.value?.trades_with_management_r) return ''
+  return s('{count} trades').replace('{count}', String(summary.value.trades_with_management_r))
+})
 
 Chart.register(...registerables)
 
@@ -229,7 +249,7 @@ function createChart() {
 
   const datasets = [
     {
-      label: 'Actual R (Net)',
+      label: s('Actual R (Net)'),
       data: actualData,
       borderColor: '#059669', // emerald-600 - softer green
       backgroundColor: 'rgba(5, 150, 105, 0.08)',
@@ -240,7 +260,7 @@ function createChart() {
       borderWidth: 2
     },
     {
-      label: 'Target R (Net)',
+      label: s('Target R (Net)'),
       data: potentialData,
       borderColor: '#6366f1', // indigo-500 - theme-adjacent
       backgroundColor: 'transparent',
@@ -256,7 +276,7 @@ function createChart() {
   // Add management R line if there's data
   if (hasManagementData) {
     datasets.push({
-      label: 'Management R',
+      label: s('Management R'),
       data: managementData,
       borderColor: '#f59e0b', // amber-500
       backgroundColor: 'rgba(245, 158, 11, 0.08)',
@@ -297,19 +317,27 @@ function createChart() {
             title: (items) => {
               if (items.length > 0) {
                 const dataPoint = chartData.value[items[0].dataIndex]
-                return `Trade #${dataPoint.trade_number} - ${dataPoint.symbol}`
+                return s('Trade #{n} - {symbol}')
+                  .replace('{n}', String(dataPoint.trade_number))
+                  .replace('{symbol}', dataPoint.symbol)
               }
               return ''
             },
             label: (context) => {
               const dataPoint = chartData.value[context.dataIndex]
               if (context.datasetIndex === 0) {
-                return `Actual R (Net): ${dataPoint.cumulative_actual_r}R (this trade: ${dataPoint.actual_r > 0 ? '+' : ''}${dataPoint.actual_r}R)`
+                const tradeR = `${dataPoint.actual_r > 0 ? '+' : ''}${dataPoint.actual_r}R`
+                return s('Actual R (Net): {cum}R (this trade: {trade}R)')
+                  .replace('{cum}', String(dataPoint.cumulative_actual_r))
+                  .replace('{trade}', tradeR)
               } else if (context.datasetIndex === 1) {
-                return `Target R (Net): ${dataPoint.cumulative_potential_r}R`
+                return s('Target R (Net): {cum}R').replace('{cum}', String(dataPoint.cumulative_potential_r))
               } else if (context.datasetIndex === 2) {
                 const mgmtR = dataPoint.management_r || 0
-                return `Management R: ${dataPoint.cumulative_management_r || 0}R (this trade: ${mgmtR >= 0 ? '+' : ''}${mgmtR}R)`
+                const tradeR = `${mgmtR >= 0 ? '+' : ''}${mgmtR}R`
+                return s('Management R: {cum}R (this trade: {trade}R)')
+                  .replace('{cum}', String(dataPoint.cumulative_management_r || 0))
+                  .replace('{trade}', tradeR)
               }
               return ''
             }
@@ -320,7 +348,7 @@ function createChart() {
         x: {
           title: {
             display: true,
-            text: 'Trade #',
+            text: s('Trade #'),
             color: textColor
           },
           ticks: {
@@ -334,7 +362,7 @@ function createChart() {
         y: {
           title: {
             display: true,
-            text: 'Cumulative R',
+            text: s('Cumulative R'),
             color: textColor
           },
           ticks: {

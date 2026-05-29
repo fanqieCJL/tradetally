@@ -12,17 +12,17 @@
             class="bg-white dark:bg-gray-800 rounded-md text-gray-400 hover:text-gray-500 focus:outline-none"
             @click="$emit('close')"
           >
-            <span class="sr-only">Close</span>
+            <span class="sr-only">{{ s('Close') }}</span>
             <XMarkIcon class="h-6 w-6" />
           </button>
         </div>
 
         <div class="pr-8">
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white" id="modal-title">
-            Match your CSV columns
+            {{ s('Match your CSV columns') }}
           </h3>
           <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            Tell TradeTally what each column in your file represents. We've pre-filled what we recognized — change anything that's wrong.
+            {{ s('Tell TradeTally what each column in your file represents. We\'ve pre-filled what we recognized — change anything that\'s wrong.') }}
           </p>
         </div>
 
@@ -30,9 +30,9 @@
           <!-- Column mapper table -->
           <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
             <div class="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.2fr)] gap-3 bg-gray-50 dark:bg-gray-900/40 px-4 py-2 text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-              <div>Your column</div>
-              <div>Sample value</div>
-              <div>TradeTally field</div>
+              <div>{{ s('Your column') }}</div>
+              <div>{{ s('Sample value') }}</div>
+              <div>{{ s('TradeTally field') }}</div>
             </div>
             <div class="divide-y divide-gray-200 dark:divide-gray-700">
               <div
@@ -53,23 +53,23 @@
                     class="row-select"
                     :class="rowSelectClass(header)"
                   >
-                    <option value="">— Skip —</option>
-                    <optgroup label="Required">
+                    <option value="">{{ s('— Skip —') }}</option>
+                    <optgroup :label="s('Required')">
                       <option
                         v-for="opt in requiredFieldOptions"
                         :key="opt.value"
                         :value="opt.value"
                       >
-                        {{ opt.label }}
+                        {{ s(opt.label) }}
                       </option>
                     </optgroup>
-                    <optgroup label="Optional">
+                    <optgroup :label="s('Optional')">
                       <option
                         v-for="opt in optionalFieldOptions"
                         :key="opt.value"
                         :value="opt.value"
                       >
-                        {{ opt.label }}
+                        {{ s(opt.label) }}
                       </option>
                     </optgroup>
                   </select>
@@ -81,20 +81,20 @@
           <!-- CSV settings (collapsed by default) -->
           <details class="rounded-md border border-gray-200 dark:border-gray-700">
             <summary class="cursor-pointer px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700/50">
-              CSV settings
+              {{ s('CSV settings') }}
             </summary>
             <div class="grid grid-cols-1 gap-4 border-t border-gray-200 p-4 dark:border-gray-700 sm:grid-cols-2">
               <div>
-                <label for="delimiter" class="label">Delimiter</label>
+                <label for="delimiter" class="label">{{ s('Delimiter') }}</label>
                 <select id="delimiter" v-model="mappingForm.delimiter" class="input">
-                  <option value=",">Comma (,)</option>
-                  <option value=";">Semicolon (;)</option>
-                  <option value="\t">Tab</option>
-                  <option value="|">Pipe (|)</option>
+                  <option value=",">{{ s('Comma (,)') }}</option>
+                  <option value=";">{{ s('Semicolon (;)') }}</option>
+                  <option value="\t">{{ s('Tab') }}</option>
+                  <option value="|">{{ s('Pipe (|)') }}</option>
                 </select>
               </div>
               <div>
-                <label for="dateFormat" class="label">Date format</label>
+                <label for="dateFormat" class="label">{{ s('Date format') }}</label>
                 <select id="dateFormat" v-model="mappingForm.date_format" class="input">
                   <option value="MM/DD/YYYY">MM/DD/YYYY</option>
                   <option value="DD/MM/YYYY">DD/MM/YYYY</option>
@@ -111,7 +111,7 @@
                   class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
                 <label for="hasHeaderRow" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                  First row contains column headers
+                  {{ s('First row contains column headers') }}
                 </label>
               </div>
             </div>
@@ -119,12 +119,12 @@
 
           <!-- Mapping name -->
           <div>
-            <label for="mappingName" class="label">Save this mapping as</label>
+            <label for="mappingName" class="label">{{ s('Save this mapping as') }}</label>
             <input
               id="mappingName"
               v-model="mappingForm.mapping_name"
               type="text"
-              placeholder="Optional — auto-generated if blank"
+              :placeholder="s('Optional — auto-generated if blank')"
               class="input"
             />
           </div>
@@ -136,15 +136,15 @@
 
           <!-- Help link -->
           <p class="text-xs text-gray-500 dark:text-gray-400">
-            Not sure?
+            {{ s('Not sure?') }}
             <a
               :href="supportMailtoLink"
               class="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400"
               @click="$emit('support-clicked', { source: 'mapping_modal', detectedBroker: selectedBroker, headerCount: csvHeaders.length })"
             >
-              Send us the headers
+              {{ s('Send us the headers') }}
             </a>
-            and we'll add support for this export.
+            {{ s('and we\'ll add support for this export.') }}
           </p>
 
           <!-- Actions -->
@@ -154,9 +154,9 @@
               :disabled="loading || !isFormValid"
               class="w-full inline-flex justify-center rounded-md border border-transparent bg-primary-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 sm:col-start-2 sm:text-sm"
             >
-              <span v-if="loading">Saving...</span>
+              <span v-if="loading">{{ s('Saving...') }}</span>
               <span v-else-if="!isFormValid">{{ unmatchedRequiredLabel }}</span>
-              <span v-else>Save mapping &amp; import</span>
+              <span v-else>{{ s('Save mapping & import') }}</span>
             </button>
             <button
               type="button"
@@ -164,7 +164,7 @@
               @click="$emit('close')"
               :disabled="loading"
             >
-              Cancel
+              {{ s('Cancel') }}
             </button>
           </div>
         </form>
@@ -175,9 +175,15 @@
 
 <script setup>
 import { ref, computed, watch, onBeforeUnmount } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import api from '@/services/api'
 import { useNotification } from '@/composables/useNotification'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
 
 const props = defineProps({
   isOpen: {
@@ -286,9 +292,9 @@ const unmatchedRequiredLabel = computed(() => {
     .filter(f => !mappingForm.value[f])
     .map(f => FIELD_OPTIONS.find(opt => opt.value === f)?.label)
     .filter(Boolean)
-  if (missing.length === 3) return 'Match Symbol, Quantity & Entry Price to continue'
-  if (missing.length === 0) return 'Save mapping & import'
-  return `Still need: ${missing.join(', ')}`
+  if (missing.length === 3) return s('Match Symbol, Quantity & Entry Price to continue')
+  if (missing.length === 0) return s('Save mapping & import')
+  return s('Still need: {fields}').replace('{fields}', missing.map((label) => s(label)).join(', '))
 })
 
 function getMappedField(header) {

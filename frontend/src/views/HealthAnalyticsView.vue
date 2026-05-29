@@ -3,9 +3,9 @@
     <!-- Header -->
     <div class="mb-8 flex items-center justify-between">
       <div>
-        <h1 class="heading-page">Health Analytics</h1>
+        <h1 class="heading-page">{{ s('Health Analytics') }}</h1>
         <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-          Analyze how your health metrics correlate with trading performance
+          {{ s('Analyze how your health metrics correlate with trading performance') }}
         </p>
       </div>
       <button
@@ -13,8 +13,8 @@
         :disabled="loadingCorrelation"
         class="btn btn-primary"
       >
-        <span v-if="loadingCorrelation">Correlating...</span>
-        <span v-else>Sync Health to Trades</span>
+        <span v-if="loadingCorrelation">{{ s('Correlating...') }}</span>
+        <span v-else>{{ s('Sync Health to Trades') }}</span>
       </button>
     </div>
 
@@ -24,11 +24,11 @@
         <div class="card-body">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400">Avg Heart Rate</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">{{ s('Avg Heart Rate') }}</p>
               <p class="text-2xl font-semibold text-gray-900 dark:text-white">
                 {{ healthSummary.avgHeartRate ? Math.round(healthSummary.avgHeartRate) : '--' }}
               </p>
-              <p class="text-xs text-gray-500 dark:text-gray-400">BPM</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">{{ s('BPM') }}</p>
             </div>
             <svg class="w-10 h-10 text-red-500" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
@@ -42,8 +42,8 @@
               <span v-else-if="healthSummary.heartRateTrend < 0" class="text-green-600">
                 ↓ {{ Math.abs(healthSummary.heartRateTrend).toFixed(1) }}%
               </span>
-              <span v-else class="text-gray-500">No change</span>
-              <span class="ml-1 text-gray-500">vs last period</span>
+              <span v-else class="text-gray-500">{{ s('No change') }}</span>
+              <span class="ml-1 text-gray-500">{{ s('vs last period') }}</span>
             </div>
           </div>
         </div>
@@ -53,7 +53,7 @@
         <div class="card-body">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400">Avg Sleep Score</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">{{ s('Avg Sleep Score') }}</p>
               <p class="text-2xl font-semibold text-gray-900 dark:text-white">
                 {{ healthSummary.avgSleepScore ? Math.round(healthSummary.avgSleepScore) : '--' }}
               </p>
@@ -71,8 +71,8 @@
               <span v-else-if="healthSummary.sleepScoreTrend < 0" class="text-red-600">
                 ↓ {{ Math.abs(healthSummary.sleepScoreTrend).toFixed(1) }}%
               </span>
-              <span v-else class="text-gray-500">No change</span>
-              <span class="ml-1 text-gray-500">vs last period</span>
+              <span v-else class="text-gray-500">{{ s('No change') }}</span>
+              <span class="ml-1 text-gray-500">{{ s('vs last period') }}</span>
             </div>
           </div>
         </div>
@@ -82,11 +82,11 @@
         <div class="card-body">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400">Avg Sleep Hours</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">{{ s('Avg Sleep Hours') }}</p>
               <p class="text-2xl font-semibold text-gray-900 dark:text-white">
                 {{ healthSummary.avgSleepHours ? healthSummary.avgSleepHours.toFixed(1) : '--' }}
               </p>
-              <p class="text-xs text-gray-500 dark:text-gray-400">hours</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">{{ s('hours') }}</p>
             </div>
             <svg class="w-10 h-10 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
               <path d="M19,7H11V14H3V5H1V20H3V17H21V20H23V11A4,4 0 0,0 19,7M7,10H5V8H7V10Z" />
@@ -100,8 +100,8 @@
               <span v-else-if="healthSummary.sleepHoursTrend < 0" class="text-red-600">
                 ↓ {{ Math.abs(healthSummary.sleepHoursTrend).toFixed(1) }}%
               </span>
-              <span v-else class="text-gray-500">No change</span>
-              <span class="ml-1 text-gray-500">vs last period</span>
+              <span v-else class="text-gray-500">{{ s('No change') }}</span>
+              <span class="ml-1 text-gray-500">{{ s('vs last period') }}</span>
             </div>
           </div>
         </div>
@@ -111,11 +111,11 @@
         <div class="card-body">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400">Avg Stress Level</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">{{ s('Avg Stress Level') }}</p>
               <p class="text-2xl font-semibold text-gray-900 dark:text-white">
                 {{ healthSummary.avgStressLevel ? (healthSummary.avgStressLevel * 100).toFixed(0) : '--' }}%
               </p>
-              <p class="text-xs text-gray-500 dark:text-gray-400">calculated</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">{{ s('calculated') }}</p>
             </div>
             <svg class="w-10 h-10 text-orange-500" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M10,9.5C10,10.3 9.3,11 8.5,11C7.7,11 7,10.3 7,9.5C7,8.7 7.7,8 8.5,8C9.3,8 10,8.7 10,9.5M15,13H9V14.5H15V13M17,9.5C17,10.3 16.3,11 15.5,11C14.7,11 14,10.3 14,9.5C14,8.7 14.7,8 15.5,8C16.3,8 17,8.7 17,9.5Z" />
@@ -129,8 +129,8 @@
               <span v-else-if="healthSummary.stressLevelTrend < 0" class="text-green-600">
                 ↓ {{ Math.abs(healthSummary.stressLevelTrend).toFixed(1) }}%
               </span>
-              <span v-else class="text-gray-500">No change</span>
-              <span class="ml-1 text-gray-500">vs last period</span>
+              <span v-else class="text-gray-500">{{ s('No change') }}</span>
+              <span class="ml-1 text-gray-500">{{ s('vs last period') }}</span>
             </div>
           </div>
         </div>
@@ -144,27 +144,27 @@
     <div class="card mt-6">
       <div class="card-body">
         <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
-          Performance by Health Condition
+          {{ s('Performance by Health Condition') }}
         </h3>
-        
+
         <div class="overflow-x-auto">
           <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead class="bg-gray-50 dark:bg-gray-800">
               <tr>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Condition
+                  {{ s('Condition') }}
                 </th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Trades
+                  {{ s('Trades') }}
                 </th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Win Rate
+                  {{ s('Win Rate') }}
                 </th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Avg P&L
+                  {{ s('Avg P&L') }}
                 </th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Total P&L
+                  {{ s('Total P&L') }}
                 </th>
               </tr>
             </thead>
@@ -177,10 +177,10 @@
                     </svg>
                     <div>
                       <div class="text-sm font-medium text-gray-900 dark:text-white">
-                        {{ condition.name }}
+                        {{ s(condition.name) }}
                       </div>
                       <div class="text-xs text-gray-500 dark:text-gray-400">
-                        {{ condition.description }}
+                        {{ s(condition.description) }}
                       </div>
                     </div>
                   </div>
@@ -190,12 +190,12 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center">
-                    <span class="text-sm font-medium" 
+                    <span class="text-sm font-medium"
                           :class="condition.winRate >= 50 ? 'text-green-600' : 'text-red-600'">
                       {{ condition.winRate.toFixed(1) }}%
                     </span>
                     <div class="ml-2 w-16 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div class="h-2 rounded-full" 
+                      <div class="h-2 rounded-full"
                            :class="condition.winRate >= 50 ? 'bg-green-500' : 'bg-red-500'"
                            :style="`width: ${condition.winRate}%`"></div>
                     </div>
@@ -221,16 +221,16 @@
       <div class="card-body">
         <div class="flex items-center justify-between mb-4">
           <h3 class="heading-card">
-            Personalized Health Insights
+            {{ s('Personalized Health Insights') }}
           </h3>
-          <button @click="refreshInsights" 
+          <button @click="refreshInsights"
                   :disabled="loadingInsights"
                   class="btn-secondary text-sm">
             <svg v-if="loadingInsights" class="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            Refresh Insights
+            {{ s('Refresh Insights') }}
           </button>
         </div>
 
@@ -239,7 +239,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
           </svg>
           <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            Collecting health data to generate insights...
+            {{ s('Collecting health data to generate insights...') }}
           </p>
         </div>
 
@@ -254,14 +254,14 @@
                 </svg>
               </div>
               <div class="ml-3 flex-1">
-                <h4 class="text-sm font-medium">{{ insight.title }}</h4>
-                <p class="mt-1 text-sm">{{ insight.description }}</p>
+                <h4 class="text-sm font-medium">{{ s(insight.title) }}</h4>
+                <p class="mt-1 text-sm">{{ s(insight.description) }}</p>
                 <div class="mt-2 flex items-center justify-between">
                   <span class="text-xs opacity-75">
-                    Confidence: {{ (insight.confidence * 100).toFixed(0) }}%
+                    {{ s('Confidence:') }} {{ (insight.confidence * 100).toFixed(0) }}%
                   </span>
                   <span v-if="insight.isActionable" class="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-400 rounded-full">
-                    Actionable
+                    {{ s('Actionable') }}
                   </span>
                 </div>
               </div>
@@ -274,12 +274,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import { useNotification } from '@/composables/useNotification'
 import { useGlobalAccountFilter } from '@/composables/useGlobalAccountFilter'
+import { tSentence } from '@/i18n'
 import api from '@/services/api'
 import HealthCorrelationChart from '@/components/health/HealthCorrelationChart.vue'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
 
 const authStore = useAuthStore()
 const { selectedAccount } = useGlobalAccountFilter()
@@ -328,15 +334,24 @@ function getSleepQualityValue(metadata = {}) {
   return parsed > 1 ? parsed / 100 : parsed
 }
 
+function buildSyncSuccessMessage(updatedCount, tradesProcessed, heartRateSamples) {
+  const updatedKey = updatedCount === 1
+    ? 'Successfully updated {count} trade with health data.'
+    : 'Successfully updated {count} trades with health data.'
+  const processedKey = tradesProcessed === 1
+    ? 'Processed {trades} trade with {samples} heart rate sample.'
+    : 'Processed {trades} trades with {samples} heart rate samples.'
+  return `${s(updatedKey).replace('{count}', String(updatedCount))}\n\n${s(processedKey)
+    .replace('{trades}', String(tradesProcessed))
+    .replace('{samples}', String(heartRateSamples))}`
+}
+
 async function loadHealthSummary() {
   try {
-    // Get health data from health_data table
-    // Get 90 days of data to include older sleep data
     const healthEndDate = new Date()
     const healthStartDate = new Date()
     healthStartDate.setDate(healthStartDate.getDate() - 90)
 
-    // Get sleep data first (should be much less data)
     const sleepDataResponse = await api.get('/health/data', {
       params: {
         startDate: healthStartDate.toISOString().split('T')[0],
@@ -346,7 +361,6 @@ async function loadHealthSummary() {
       }
     })
 
-    // Then get heart rate data
     const heartRateDataResponse = await api.get('/health/data', {
       params: {
         startDate: healthStartDate.toISOString().split('T')[0],
@@ -356,23 +370,14 @@ async function loadHealthSummary() {
       }
     })
 
-    // Combine both datasets
     const healthData = [
       ...(sleepDataResponse.data.data || []),
       ...(heartRateDataResponse.data.data || [])
     ]
 
-    console.log('Sleep data received:', sleepDataResponse.data.data?.length || 0)
-    console.log('Heart rate data received:', heartRateDataResponse.data.data?.length || 0)
-    console.log('Health data received:', healthData.length, 'items')
-    console.log('Data types:', [...new Set(healthData.map(d => d.data_type))])
-
-    // Calculate averages from health_data
     if (healthData.length > 0) {
       const heartRateData = healthData.filter(d => d.data_type === 'heart_rate')
       const sleepData = healthData.filter(d => d.data_type === 'sleep')
-
-      console.log('Filtered data - Heart rate:', heartRateData.length, 'Sleep:', sleepData.length)
 
       if (heartRateData.length > 0) {
         healthSummary.value.avgHeartRate = heartRateData.reduce((sum, d) => sum + parseFloat(d.value), 0) / heartRateData.length
@@ -388,16 +393,9 @@ async function loadHealthSummary() {
           sleepHours.reduce((a, b) => a + b, 0) / sleepHours.length : null
         healthSummary.value.avgSleepScore = sleepQuality.length > 0 ?
           (sleepQuality.reduce((a, b) => a + b, 0) / sleepQuality.length) * 100 : null
-
-        console.log('Sleep data processed:', {
-          count: sleepData.length,
-          avgHours: healthSummary.value.avgSleepHours,
-          avgScore: healthSummary.value.avgSleepScore
-        })
       }
     }
 
-    // Get trades for correlation
     const endDate = new Date()
     const startDate = new Date()
     startDate.setDate(startDate.getDate() - 30)
@@ -417,23 +415,6 @@ async function loadHealthSummary() {
 
     const trades = response.data.trades
 
-    console.log('Trades loaded:', trades.length)
-
-    // Check if any trades have health data
-    const tradesWithHealth = trades.filter(t =>
-      getTradeHealthValue(t, 'sleep_hours') !== null ||
-      getTradeHealthValue(t, 'heart_rate') !== null ||
-      getTradeHealthValue(t, 'stress_level') !== null
-    )
-    console.log('Trades with health data:', tradesWithHealth.length)
-
-    if (tradesWithHealth.length === 0) {
-      console.log('No trades have health data. Click "Sync Health to Trades" to correlate.')
-    } else {
-      console.log('Sample trade with health:', tradesWithHealth[0])
-    }
-
-    // Calculate average stress level from trades
     const tradesWithStress = trades.filter(t => {
       const stressLevel = getTradeHealthValue(t, 'stress_level')
       return stressLevel !== null && stressLevel !== undefined
@@ -442,10 +423,8 @@ async function loadHealthSummary() {
     if (tradesWithStress.length > 0) {
       const stressLevels = tradesWithStress.map(t => parseFloat(getTradeHealthValue(t, 'stress_level')))
       healthSummary.value.avgStressLevel = stressLevels.reduce((a, b) => a + b, 0) / stressLevels.length
-      console.log('Avg stress level calculated:', healthSummary.value.avgStressLevel, 'from', tradesWithStress.length, 'trades')
     }
 
-    // Calculate health condition performance
     calculateHealthConditions(trades)
 
   } catch (error) {
@@ -516,12 +495,12 @@ function calculateHealthConditions(trades) {
       }
     }
   ]
-  
+
   healthConditions.value = conditions.map(condition => {
     const matchingTrades = trades.filter(condition.filter)
     const wins = matchingTrades.filter(t => parseFloat(t.pnl) > 0).length
     const totalPnL = matchingTrades.reduce((sum, t) => sum + parseFloat(t.pnl || 0), 0)
-    
+
     return {
       ...condition,
       tradeCount: matchingTrades.length,
@@ -545,22 +524,19 @@ async function correlateHealthWithTrades() {
   loadingCorrelation.value = true
   try {
     const response = await api.post('/health/correlate-trades')
-    console.log('Health correlation result:', response.data)
-
     const { updatedCount, heartRateSamples, tradesProcessed } = response.data
 
     showSuccessModal(
-      'Health Data Synced',
-      `Successfully updated ${updatedCount} trade${updatedCount !== 1 ? 's' : ''} with health data.\n\nProcessed ${tradesProcessed} trade${tradesProcessed !== 1 ? 's' : ''} with ${heartRateSamples} heart rate sample${heartRateSamples !== 1 ? 's' : ''}.`
+      s('Health Data Synced'),
+      buildSyncSuccessMessage(updatedCount, tradesProcessed, heartRateSamples)
     )
 
-    // Reload the page to show updated data
     await loadHealthSummary()
   } catch (error) {
     console.error('Error correlating health with trades:', error)
     showCriticalError(
-      'Sync Failed',
-      'Failed to correlate health data with trades. Please try again.'
+      s('Sync Failed'),
+      s('Failed to correlate health data with trades. Please try again.')
     )
   } finally {
     loadingCorrelation.value = false
@@ -570,13 +546,11 @@ async function correlateHealthWithTrades() {
 async function refreshInsights() {
   loadingInsights.value = true
   try {
-    // Trigger analysis
     await api.post('/health/analyze', {
       startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       endDate: new Date().toISOString().split('T')[0]
     })
 
-    // Reload insights
     await loadHealthInsights()
   } catch (error) {
     console.error('Error refreshing insights:', error)
@@ -596,9 +570,7 @@ function getInsightTypeClass(type) {
   return classes[type] || classes.overall
 }
 
-// Watch for global account filter changes
 watch(selectedAccount, () => {
-  console.log('[HEALTH-ANALYTICS] Global account filter changed to:', selectedAccount.value || 'All Accounts')
   loadHealthSummary()
 })
 

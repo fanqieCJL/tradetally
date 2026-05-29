@@ -2,14 +2,14 @@
   <div class="space-y-3">
     <div class="flex items-center justify-between">
       <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
-        Filter by Pillars (select which must pass):
+        {{ s('Filter by Pillars (select which must pass):') }}
       </label>
       <button
         v-if="selectedPillars.length > 0"
         @click="clearFilters"
         class="text-sm text-primary-600 dark:text-primary-400 hover:underline"
       >
-        Clear filters
+        {{ s('Clear filters') }}
       </button>
     </div>
 
@@ -26,7 +26,7 @@
         ]"
       >
         <span class="mr-1.5 text-xs opacity-75">{{ pillar }}.</span>
-        {{ pillarShortNames[pillar] }}
+        {{ pillarLabel(pillar) }}
         <svg
           v-if="selectedPillars.includes(pillar)"
           class="ml-1.5 w-3.5 h-3.5"
@@ -39,22 +39,38 @@
       </button>
     </div>
 
-    <!-- Selected summary -->
     <p v-if="selectedPillars.length > 0" class="text-xs text-gray-500 dark:text-gray-400">
-      Showing stocks where {{ selectedPillars.length === 1 ? 'pillar' : 'pillars' }}
-      {{ formatSelectedPillars() }} must pass
+      {{ filterSummary }}
     </p>
   </div>
 </template>
 
 <script setup>
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import { useScannerStore } from '@/stores/scanner'
 
 const scannerStore = useScannerStore()
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
 
 const selectedPillars = computed(() => scannerStore.selectedPillars)
-const pillarShortNames = scannerStore.pillarShortNames
+
+const filterSummary = computed(() => {
+  void locale.value
+  const pillars = formatSelectedPillars()
+  const key =
+    selectedPillars.value.length === 1
+      ? 'Showing stocks where pillar {pillars} must pass'
+      : 'Showing stocks where pillars {pillars} must pass'
+  return s(key).replace('{pillars}', pillars)
+})
+
+function pillarLabel(pillar) {
+  return s(scannerStore.pillarShortNames[pillar])
+}
 
 function togglePillar(pillar) {
   scannerStore.togglePillar(pillar)
@@ -66,9 +82,11 @@ function clearFilters() {
 
 function formatSelectedPillars() {
   const sorted = [...selectedPillars.value].sort((a, b) => a - b)
-  if (sorted.length === 1) return sorted[0]
-  if (sorted.length === 2) return `${sorted[0]} and ${sorted[1]}`
+  if (sorted.length === 1) return String(sorted[0])
+  if (sorted.length === 2) {
+    return `${sorted[0]}${s(' and ')}${sorted[1]}`
+  }
   const last = sorted.pop()
-  return `${sorted.join(', ')}, and ${last}`
+  return `${sorted.join(', ')}${s(', and ')}${last}`
 }
 </script>

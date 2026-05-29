@@ -43,7 +43,7 @@
                         d="M12 4v16m8-8H4"
                     ></path>
                 </svg>
-                Add Symbol
+                {{ s('Add Symbol') }}
             </button>
         </div>
 
@@ -63,7 +63,7 @@
                 class="px-6 py-4 border-b border-gray-200 dark:border-gray-700"
             >
                 <h2 class="text-lg font-medium text-gray-900 dark:text-white">
-                    Symbols ({{ watchlist.items.length }})
+                    {{ symbolsSectionTitle }}
                 </h2>
             </div>
             <div class="overflow-x-auto">
@@ -75,32 +75,32 @@
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
                             >
-                                Symbol
+                                {{ s('Symbol') }}
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
-                                Current Price
+                                {{ s('Current Price') }}
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
-                                Change
+                                {{ s('Change') }}
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
-                                % Change
+                                {{ s('% Change') }}
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
-                                Added
+                                {{ s('Added') }}
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
-                                Actions
+                                {{ s('Actions') }}
                             </th>
                         </tr>
                     </thead>
@@ -133,7 +133,7 @@
                                 {{
                                     item.current_price
                                         ? formatPrice(item.current_price)
-                                        : "N/A"
+                                        : naLabel
                                 }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
@@ -146,7 +146,7 @@
                                 <span
                                     v-else
                                     class="text-gray-400 dark:text-gray-500"
-                                    >N/A</span
+                                    >{{ naLabel }}</span
                                 >
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
@@ -163,7 +163,7 @@
                                 <span
                                     v-else
                                     class="text-gray-400 dark:text-gray-500"
-                                    >N/A</span
+                                    >{{ naLabel }}</span
                                 >
                             </td>
                             <td
@@ -178,19 +178,19 @@
                                     @click="createPriceAlert(item.symbol)"
                                     class="text-primary-600 hover:text-primary-900"
                                 >
-                                    Alert
+                                    {{ s('Alert') }}
                                 </button>
                                 <button
                                     @click="editNotes(item)"
                                     class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
                                 >
-                                    Edit
+                                    {{ s('Edit') }}
                                 </button>
                                 <button
                                     @click="removeSymbol(item)"
                                     class="text-red-600 hover:text-red-900"
                                 >
-                                    Remove
+                                    {{ s('Remove') }}
                                 </button>
                             </td>
                         </tr>
@@ -215,14 +215,14 @@
                 ></path>
             </svg>
             <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">
-                No symbols in watchlist
+                {{ s('No symbols in watchlist') }}
             </h3>
             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Get started by adding your first symbol.
+                {{ s('Get started by adding your first symbol.') }}
             </p>
             <div class="mt-6">
                 <button @click="showAddSymbolModal = true" class="btn-primary">
-                    Add Symbol
+                    {{ s('Add Symbol') }}
                 </button>
             </div>
         </div>
@@ -252,7 +252,7 @@
                                 d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
                             ></path>
                         </svg>
-                        Recent News
+                        {{ s('Recent News') }}
                     </h2>
                     <div class="flex items-center space-x-2">
                         <select
@@ -260,17 +260,17 @@
                             @change="loadWatchlistNews"
                             class="text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
                         >
-                            <option value="3">Last 3 days</option>
-                            <option value="7">Last 7 days</option>
-                            <option value="14">Last 14 days</option>
-                            <option value="30">Last 30 days</option>
+                            <option value="3">{{ s('Last 3 days') }}</option>
+                            <option value="7">{{ s('Last 7 days') }}</option>
+                            <option value="14">{{ s('Last 14 days') }}</option>
+                            <option value="30">{{ s('Last 30 days') }}</option>
                         </select>
                         <button
                             @click="loadWatchlistNews"
                             :disabled="loadingNews"
                             class="text-sm text-primary-600 hover:text-primary-800 disabled:opacity-50"
                         >
-                            {{ loadingNews ? "Loading..." : "Refresh" }}
+                            {{ loadingNews ? s('Loading...') : s('Refresh') }}
                         </button>
                     </div>
                 </div>
@@ -361,7 +361,7 @@
                         ></path>
                     </svg>
                     <p class="text-sm">
-                        No recent news available for your watchlist symbols
+                        {{ s('No recent news available for your watchlist symbols') }}
                     </p>
                 </div>
             </div>
@@ -389,7 +389,7 @@
                                 d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
                             ></path>
                         </svg>
-                        Upcoming Earnings
+                        {{ s('Upcoming Earnings') }}
                     </h2>
                     <div class="flex items-center space-x-2">
                         <select
@@ -397,16 +397,16 @@
                             @change="loadWatchlistEarnings"
                             class="text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
                         >
-                            <option value="14">Next 14 days</option>
-                            <option value="30">Next 30 days</option>
-                            <option value="60">Next 60 days</option>
+                            <option value="14">{{ s('Next 14 days') }}</option>
+                            <option value="30">{{ s('Next 30 days') }}</option>
+                            <option value="60">{{ s('Next 60 days') }}</option>
                         </select>
                         <button
                             @click="loadWatchlistEarnings"
                             :disabled="loadingEarnings"
                             class="text-sm text-primary-600 hover:text-primary-800 disabled:opacity-50"
                         >
-                            {{ loadingEarnings ? "Loading..." : "Refresh" }}
+                            {{ loadingEarnings ? s('Loading...') : s('Refresh') }}
                         </button>
                     </div>
                 </div>
@@ -445,7 +445,7 @@
                                     <p
                                         class="text-sm font-medium text-gray-900 dark:text-white"
                                     >
-                                        Earnings Report
+                                        {{ s('Earnings Report') }}
                                     </p>
                                     <p
                                         class="text-xs text-gray-500 dark:text-gray-400"
@@ -461,9 +461,9 @@
                                 >
                                     {{
                                         earnings.hour === "amc"
-                                            ? "After Market Close"
+                                            ? s('After Market Close')
                                             : earnings.hour === "bmo"
-                                              ? "Before Market Open"
+                                              ? s('Before Market Open')
                                               : earnings.hour
                                     }}
                                 </div>
@@ -471,7 +471,7 @@
                                     v-if="earnings.epsEstimate"
                                     class="text-xs text-gray-600 dark:text-gray-400 mt-1"
                                 >
-                                    Est. EPS: ${{ earnings.epsEstimate }}
+                                    {{ s('Est. EPS:') }} ${{ earnings.epsEstimate }}
                                 </div>
                             </div>
                         </div>
@@ -496,7 +496,7 @@
                         ></path>
                     </svg>
                     <p class="text-sm">
-                        No upcoming earnings for your watchlist symbols
+                        {{ s('No upcoming earnings for your watchlist symbols') }}
                     </p>
                 </div>
             </div>
@@ -524,7 +524,7 @@
                                 d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
                             ></path>
                         </svg>
-                        8 Pillars Analysis
+                        {{ s('8 Pillars Analysis') }}
                         <span
                             class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400"
                         >
@@ -538,7 +538,7 @@
                             :disabled="loadingPillars"
                             class="text-sm text-primary-600 hover:text-primary-800 disabled:opacity-50"
                         >
-                            {{ loadingPillars ? "Analyzing..." : "Refresh" }}
+                            {{ loadingPillars ? s('Analyzing...') : s('Refresh') }}
                         </button>
                     </div>
                 </div>
@@ -551,7 +551,7 @@
                         class="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-600"
                     ></div>
                     <span class="ml-3 text-sm text-gray-500 dark:text-gray-400"
-                        >Analyzing {{ pillarsLoadingSymbol }}...</span
+                        >{{ s('Analyzing {symbol}...').replace('{symbol}', pillarsLoadingSymbol) }}</span
                     >
                 </div>
 
@@ -573,13 +573,13 @@
                         ></path>
                     </svg>
                     <p class="text-sm mb-2">
-                        No cached analysis available. Run analysis to compute pillars for your symbols.
+                        {{ s('No cached analysis available. Run analysis to compute pillars for your symbols.') }}
                     </p>
                     <button
                         @click="loadWatchlistPillars"
                         class="btn-primary text-sm"
                     >
-                        Analyze All Symbols
+                        {{ s('Analyze All Symbols') }}
                     </button>
                 </div>
 
@@ -692,14 +692,14 @@
                                     <p
                                         class="text-xs text-gray-500 dark:text-gray-400"
                                     >
-                                        Pillars Passed
+                                        {{ s('Pillars Passed') }}
                                     </p>
                                 </div>
                                 <router-link
                                     :to="`/analysis/analyze/${analysis.symbol}`"
                                     class="text-sm text-primary-600 hover:text-primary-800 whitespace-nowrap"
                                 >
-                                    View Details
+                                    {{ s('View Details') }}
                                 </router-link>
                             </div>
                         </div>
@@ -710,7 +710,7 @@
                     v-else-if="pillarsLoaded && watchlistPillars.length === 0"
                     class="p-6 text-center text-gray-500 dark:text-gray-400"
                 >
-                    <p class="text-sm">No analysis data available</p>
+                    <p class="text-sm">{{ s('No analysis data available') }}</p>
                 </div>
             </div>
         </div>
@@ -727,34 +727,34 @@
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white mb-4"
                     >
-                        Add Symbol to Watchlist
+                        {{ s('Add Symbol to Watchlist') }}
                     </h3>
                     <form @submit.prevent="addSymbol">
                         <div class="mb-4">
                             <label
                                 for="symbol"
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                >Symbol</label
+                                >{{ s('Symbol') }}</label
                             >
                             <SymbolAutocomplete
                                 id="symbol"
                                 v-model="symbolForm.symbol"
                                 :required="true"
-                                placeholder="Enter symbol (e.g., AAPL)"
+                                :placeholder="s('Enter symbol (e.g., AAPL)')"
                             />
                         </div>
                         <div class="mb-6">
                             <label
                                 for="notes"
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                >Notes (optional)</label
+                                >{{ s('Notes (optional)') }}</label
                             >
                             <textarea
                                 id="notes"
                                 v-model="symbolForm.notes"
                                 rows="3"
                                 class="input dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                placeholder="Enter notes"
+                                :placeholder="s('Enter notes')"
                             ></textarea>
                         </div>
                         <div class="flex justify-end space-x-3">
@@ -763,14 +763,14 @@
                                 @click="cancelAddSymbol"
                                 class="btn-secondary"
                             >
-                                Cancel
+                                {{ s('Cancel') }}
                             </button>
                             <button
                                 type="submit"
                                 :disabled="adding"
                                 class="px-4 py-2 text-sm font-medium text-white bg-primary-600 border border-transparent rounded-md hover:bg-primary-700 disabled:opacity-50"
                             >
-                                {{ adding ? "Adding..." : "Add Symbol" }}
+                                {{ adding ? s('Adding...') : s('Add Symbol') }}
                             </button>
                         </div>
                     </form>
@@ -790,21 +790,21 @@
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white mb-4"
                     >
-                        Edit Notes for {{ editingItem.symbol }}
+                        {{ editNotesTitle }}
                     </h3>
                     <form @submit.prevent="updateNotes">
                         <div class="mb-6">
                             <label
                                 for="editNotes"
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                >Notes</label
+                                >{{ s('Notes') }}</label
                             >
                             <textarea
                                 id="editNotes"
                                 v-model="editNotesForm.notes"
                                 rows="4"
                                 class="input dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                placeholder="Enter notes"
+                                :placeholder="s('Enter notes')"
                             ></textarea>
                         </div>
                         <div class="flex justify-end space-x-3">
@@ -813,14 +813,14 @@
                                 @click="cancelEditNotes"
                                 class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-600 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-200 dark:hover:bg-gray-500"
                             >
-                                Cancel
+                                {{ s('Cancel') }}
                             </button>
                             <button
                                 type="submit"
                                 :disabled="updating"
                                 class="px-4 py-2 text-sm font-medium text-white bg-primary-600 border border-transparent rounded-md hover:bg-primary-700 disabled:opacity-50"
                             >
-                                {{ updating ? "Updating..." : "Update Notes" }}
+                                {{ updating ? s('Updating...') : s('Update Notes') }}
                             </button>
                         </div>
                     </form>
@@ -831,7 +831,9 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useI18n } from "vue-i18n";
+import { tSentence } from "@/i18n";
 import { useRoute, useRouter } from "vue-router";
 import { useNotification } from "@/composables/useNotification";
 import { useInvestmentsStore } from "@/stores/investments";
@@ -851,6 +853,9 @@ export default {
         const { showSuccess, showError, showCriticalError, showConfirmation } =
             useNotification();
         const investmentsStore = useInvestmentsStore();
+        const { locale } = useI18n();
+        const s = (text) => tSentence(text, { context: "metrics" });
+        void locale;
 
         const watchlist = ref(null);
         const loading = ref(true);
@@ -907,7 +912,7 @@ export default {
                 }
             } catch (error) {
                 console.error("Error loading watchlist:", error);
-                showCriticalError("Error", "Failed to load watchlist");
+                showCriticalError(s("Error"), s("Failed to load watchlist"));
                 router.push("/markets");
             } finally {
                 loading.value = false;
@@ -931,7 +936,7 @@ export default {
                 watchlistNews.value = response.data.data || [];
             } catch (error) {
                 console.error("Error loading watchlist news:", error);
-                showCriticalError("Error", "Failed to load news");
+                showCriticalError(s("Error"), s("Failed to load news"));
                 watchlistNews.value = [];
             } finally {
                 loadingNews.value = false;
@@ -954,7 +959,7 @@ export default {
                 watchlistEarnings.value = response.data.data || [];
             } catch (error) {
                 console.error("Error loading watchlist earnings:", error);
-                showCriticalError("Error", "Failed to load earnings");
+                showCriticalError(s("Error"), s("Failed to load earnings"));
                 watchlistEarnings.value = [];
             } finally {
                 loadingEarnings.value = false;
@@ -1009,7 +1014,7 @@ export default {
                 pillarsLoaded.value = true;
             } catch (error) {
                 console.error("Error loading watchlist pillars:", error);
-                showCriticalError("Error", "Failed to load 8 Pillars analysis");
+                showCriticalError(s("Error"), s("Failed to load 8 Pillars analysis"));
             } finally {
                 loadingPillars.value = false;
                 pillarsLoadingSymbol.value = "";
@@ -1023,10 +1028,22 @@ export default {
         };
 
         const getPillarName = (analysis, pillarNum) => {
-            if (!analysis?.pillars) return `Pillar ${pillarNum}`;
+            if (!analysis?.pillars) {
+                return s("Pillar {n}").replace("{n}", String(pillarNum));
+            }
             const pillarKey = `pillar${pillarNum}`;
-            return analysis.pillars[pillarKey]?.name || `Pillar ${pillarNum}`;
+            const name =
+                analysis.pillars[pillarKey]?.name ||
+                s("Pillar {n}").replace("{n}", String(pillarNum));
+            return s(name);
         };
+
+        const symbolsSectionTitle = computed(() => {
+            const count = watchlist.value?.items?.length ?? 0;
+            return s("Symbols ({count})").replace("{count}", String(count));
+        });
+
+        const naLabel = computed(() => s("N/A"));
 
         const addSymbol = async () => {
             try {
@@ -1036,13 +1053,13 @@ export default {
                     symbolForm.value,
                 );
                 await loadWatchlist();
-                showSuccess("Success", "Symbol added to watchlist");
+                showSuccess(s("Success"), s("Symbol added to watchlist"));
                 cancelAddSymbol();
             } catch (error) {
                 console.error("Error adding symbol:", error);
                 const message =
                     error.response?.data?.error || "Failed to add symbol";
-                showCriticalError("Error", message);
+                showCriticalError(s("Error"), s(message));
             } finally {
                 adding.value = false;
             }
@@ -1050,18 +1067,21 @@ export default {
 
         const removeSymbol = async (item) => {
             showConfirmation(
-                "Remove Symbol",
-                `Are you sure you want to remove ${item.symbol} from this watchlist?`,
+                s("Remove Symbol"),
+                s("Are you sure you want to remove {symbol} from this watchlist?").replace(
+                    "{symbol}",
+                    item.symbol,
+                ),
                 async () => {
                     try {
                         await api.delete(
                             `/watchlists/${route.params.id}/items/${item.id}`,
                         );
                         await loadWatchlist();
-                        showSuccess("Success", "Symbol removed from watchlist");
+                        showSuccess(s("Success"), s("Symbol removed from watchlist"));
                     } catch (error) {
                         console.error("Error removing symbol:", error);
-                        showCriticalError("Error", "Failed to remove symbol");
+                        showCriticalError(s("Error"), s("Failed to remove symbol"));
                     }
                 },
             );
@@ -1080,11 +1100,11 @@ export default {
                     editNotesForm.value,
                 );
                 await loadWatchlist();
-                showSuccess("Success", "Notes updated");
+                showSuccess(s("Success"), s("Notes updated"));
                 cancelEditNotes();
             } catch (error) {
                 console.error("Error updating notes:", error);
-                showCriticalError("Error", "Failed to update notes");
+                showCriticalError(s("Error"), s("Failed to update notes"));
             } finally {
                 updating.value = false;
             }
@@ -1144,11 +1164,11 @@ export default {
             const diffDays = Math.floor(diffHours / 24);
 
             if (diffHours < 1) {
-                return "Just now";
+                return s("Just now");
             } else if (diffHours < 24) {
-                return `${diffHours}h ago`;
+                return s("{hours}h ago").replace("{hours}", String(diffHours));
             } else if (diffDays < 7) {
-                return `${diffDays}d ago`;
+                return s("{days}d ago").replace("{days}", String(diffDays));
             } else {
                 return date.toLocaleDateString("en-US", {
                     month: "short",
@@ -1178,11 +1198,11 @@ export default {
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
             if (diffDays === 0) {
-                return "Today";
+                return s("Today");
             } else if (diffDays === 1) {
-                return "Tomorrow";
+                return s("Tomorrow");
             } else if (diffDays < 7) {
-                return `In ${diffDays} days`;
+                return s("In {days} days").replace("{days}", String(diffDays));
             } else {
                 return date.toLocaleDateString("en-US", {
                     month: "short",
@@ -1199,7 +1219,18 @@ export default {
             loadWatchlist();
         });
 
+        const editNotesTitle = computed(() =>
+            s("Edit Notes for {symbol}").replace(
+                "{symbol}",
+                editingItem.value?.symbol || "",
+            ),
+        );
+
         return {
+            s,
+            naLabel,
+            symbolsSectionTitle,
+            editNotesTitle,
             watchlist,
             loading,
             adding,

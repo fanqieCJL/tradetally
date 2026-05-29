@@ -30,17 +30,21 @@
     </div>
 
     <!-- Name -->
-    <p class="text-xs font-medium text-gray-700 dark:text-gray-300 truncate">{{ name }}</p>
+    <p class="text-xs font-medium text-gray-700 dark:text-gray-300 truncate">{{ displayName }}</p>
 
     <!-- Value -->
     <p :class="['text-sm font-bold mt-1', passed ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400']">
-      {{ value }}
+      {{ displayValue }}
     </p>
   </div>
 </template>
 
 <script setup>
-defineProps({
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
+
+const props = defineProps({
   passed: {
     type: Boolean,
     required: true
@@ -53,5 +57,18 @@ defineProps({
     type: [String, Number],
     default: 'N/A'
   }
+})
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
+
+const displayName = computed(() => s(props.name))
+
+const displayValue = computed(() => {
+  const raw = props.value
+  if (raw === 'N/A' || raw === null || raw === undefined) return s('N/A')
+  if (raw === 'Growing' || raw === 'Declining') return s(String(raw))
+  return raw
 })
 </script>

@@ -40,9 +40,7 @@
                             @change="toggleAllTags"
                             class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded flex-shrink-0"
                         />
-                        <span class="ml-3 text-sm text-gray-900 dark:text-white"
-                            >All Tags</span
-                        >
+                        <span class="ml-3 text-sm text-gray-900 dark:text-white">{{ s('All Tags') }}</span>
                     </label>
                 </div>
 
@@ -83,7 +81,7 @@
                     v-else
                     class="border-t border-gray-200 dark:border-gray-600 px-3 py-2 text-sm text-gray-500 dark:text-gray-400"
                 >
-                    No tags created yet
+                    {{ s('No tags created yet') }}
                 </div>
 
                 <!-- Manage tags button -->
@@ -106,7 +104,7 @@
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                             ></path>
                         </svg>
-                        Manage Tags
+                        {{ s('Manage Tags') }}
                     </button>
                 </div>
             </div>
@@ -125,7 +123,7 @@
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white"
                     >
-                        Manage Tags
+                        {{ s('Manage Tags') }}
                     </h3>
                     <button
                         @click="showTagManager = false"
@@ -153,7 +151,7 @@
                         <input
                             v-model="newTagName"
                             type="text"
-                            placeholder="New tag name"
+                            :placeholder="s('New tag name')"
                             class="flex-1 px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
                             maxlength="50"
                             @keydown.enter="createTag"
@@ -162,14 +160,14 @@
                             v-model="newTagColor"
                             type="color"
                             class="w-12 h-10 rounded border border-gray-300 dark:border-gray-600 cursor-pointer"
-                            title="Tag color"
+                            :title="s('Tag color')"
                         />
                         <button
                             @click="createTag"
                             :disabled="!newTagName.trim() || creatingTag"
                             class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            Add
+                            {{ s('Add') }}
                         </button>
                     </div>
                 </div>
@@ -194,7 +192,7 @@
                         <button
                             @click="deleteTag(tag.id)"
                             class="text-red-600 hover:text-red-700 text-sm"
-                            title="Delete tag"
+                            :title="s('Delete tag')"
                         >
                             <svg
                                 class="w-4 h-4"
@@ -216,7 +214,7 @@
                         v-if="availableTags.length === 0"
                         class="text-center text-gray-500 dark:text-gray-400 py-8"
                     >
-                        No tags yet. Create your first tag above!
+                        {{ s('No tags yet. Create your first tag above!') }}
                     </div>
                 </div>
             </div>
@@ -226,8 +224,13 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import api from "@/services/api";
 import { useNotification } from "@/composables/useNotification";
+import { tSentence } from "@/i18n";
+
+const { locale } = useI18n();
+const s = (text) => tSentence(text, { context: "trades" });
 
 const props = defineProps({
     modelValue: {
@@ -292,7 +295,7 @@ async function createTag() {
         newTagColor.value = "#3B82F6";
     } catch (error) {
         console.error("[ERROR] Failed to create tag:", error);
-        alert(error.response?.data?.message || "Failed to create tag");
+        alert(s(error.response?.data?.message || "Failed to create tag"));
     } finally {
         creatingTag.value = false;
     }
@@ -300,8 +303,8 @@ async function createTag() {
 
 function deleteTag(tagId) {
     showDangerConfirmation(
-        "Delete Tag",
-        "Are you sure you want to delete this tag? It will be removed from all trades.",
+        s("Delete Tag"),
+        s("Are you sure you want to delete this tag? It will be removed from all trades."),
         async () => {
             try {
                 await api.delete(`/tags/${tagId}`);
@@ -310,7 +313,7 @@ function deleteTag(tagId) {
                 );
             } catch (error) {
                 console.error("[ERROR] Failed to delete tag:", error);
-                alert("Failed to delete tag");
+                alert(s("Failed to delete tag"));
             }
         },
     );
@@ -337,9 +340,10 @@ function toggleAllTags(event) {
 }
 
 function getSelectedTagText() {
-    if (!props.modelValue || props.modelValue.length === 0) return "All Tags";
+    void locale.value;
+    if (!props.modelValue || props.modelValue.length === 0) return s("All Tags");
     if (props.modelValue.length === 1) return props.modelValue[0];
-    return `${props.modelValue.length} tags selected`;
+    return s("{count} tags selected").replace("{count}", String(props.modelValue.length));
 }
 
 function openTagManager() {

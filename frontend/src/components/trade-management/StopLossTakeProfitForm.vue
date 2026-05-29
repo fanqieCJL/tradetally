@@ -2,10 +2,10 @@
   <div class="mt-6 bg-white dark:bg-gray-800 shadow-sm rounded-lg">
     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
       <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-        Set Risk Levels for {{ trade.symbol }}
+        {{ riskLevelsTitle }}
       </h3>
       <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-        Stop loss is required for R-Multiple analysis. Take profit is optional but recommended.
+        {{ s('Stop loss is required for R-Multiple analysis. Take profit is optional but recommended.') }}
       </p>
     </div>
 
@@ -13,30 +13,30 @@
       <!-- Trade Info Summary -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
         <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase">Entry Price</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase">{{ s('Entry Price') }}</div>
           <div class="text-lg font-medium text-gray-900 dark:text-white">
             {{ formatPrice(trade.entry_price) }}
           </div>
         </div>
         <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase">Exit Price</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase">{{ s('Exit Price') }}</div>
           <div class="text-lg font-medium text-gray-900 dark:text-white">
             {{ formatPrice(trade.exit_price) }}
           </div>
         </div>
         <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase">Side</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase">{{ s('Side') }}</div>
           <div
             :class="[
               'text-lg font-medium capitalize',
               trade.side === 'long' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
             ]"
           >
-            {{ trade.side }}
+            {{ s(trade.side) }}
           </div>
         </div>
         <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase">P&L</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase">{{ s('P&L') }}</div>
           <div
             :class="[
               'text-lg font-medium',
@@ -53,7 +53,7 @@
         <!-- Stop Loss -->
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Stop Loss Price
+            {{ s('Stop Loss Price') }}
             <span class="text-red-500">*</span>
           </label>
           <div class="relative">
@@ -68,7 +68,7 @@
             />
           </div>
           <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-            {{ trade.side === 'long' ? 'Must be below entry price' : 'Must be above entry price' }}
+            {{ trade.side === 'long' ? s('Must be below entry price') : s('Must be above entry price') }}
           </p>
           <p v-if="stopLossError" class="mt-1 text-xs text-red-600 dark:text-red-400">
             {{ stopLossError }}
@@ -77,7 +77,7 @@
 
         <!-- Take Profit Mode Toggle -->
         <div class="flex items-center space-x-4 mb-2">
-          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Take Profit Mode:</span>
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ s('Take Profit Mode:') }}</span>
           <button
             type="button"
             @click="useMultipleTargets = false"
@@ -88,7 +88,7 @@
                 : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
             ]"
           >
-            Single
+            {{ s('Single') }}
           </button>
           <button
             type="button"
@@ -100,15 +100,15 @@
                 : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
             ]"
           >
-            Multiple Targets
+            {{ s('Multiple Targets') }}
           </button>
         </div>
 
         <!-- Single Take Profit -->
         <div v-if="!useMultipleTargets">
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Take Profit Price
-            <span class="text-gray-400">(optional)</span>
+            {{ s('Take Profit Price') }}
+            <span class="text-gray-400">{{ s('(optional)') }}</span>
           </label>
           <div class="relative">
             <span class="absolute left-3 top-2 text-gray-500 dark:text-gray-400">{{ currencySymbol }}</span>
@@ -140,11 +140,11 @@
         <!-- Target Hit First Selection (optional) -->
         <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Which target was hit first?
-            <span class="text-gray-400 font-normal">(optional)</span>
+            {{ s('Which target was hit first?') }}
+            <span class="text-gray-400 font-normal">{{ s('(optional)') }}</span>
           </label>
           <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">
-            Setting this enables Management R calculation to measure trade execution quality.
+            {{ s('Setting this enables Management R calculation to measure trade execution quality.') }}
           </p>
           <div class="flex space-x-3">
             <button
@@ -157,7 +157,7 @@
                   : 'border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-500'
               ]"
             >
-              TP Hit First
+              {{ s('TP Hit First') }}
             </button>
             <button
               type="button"
@@ -169,14 +169,14 @@
                   : 'border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-500'
               ]"
             >
-              SL Hit First
+              {{ s('SL Hit First') }}
             </button>
           </div>
         </div>
 
         <!-- Quick Set Buttons -->
         <div class="pt-2">
-          <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Quick set stop loss:</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">{{ s('Quick set stop loss:') }}</p>
           <div class="flex flex-wrap gap-2">
             <button
               v-for="pct in [1, 2, 3, 5]"
@@ -185,7 +185,7 @@
               @click="setStopLossPercent(pct)"
               class="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600"
             >
-              {{ pct }}% risk
+              {{ s('{pct}% risk').replace('{pct}', String(pct)) }}
             </button>
           </div>
         </div>
@@ -202,15 +202,15 @@
             @click="$emit('cancel')"
             class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
           >
-            Cancel
+            {{ s('Cancel') }}
           </button>
           <button
             type="submit"
             :disabled="localSaving || !isValid"
             class="btn-primary"
           >
-            <span v-if="localSaving">Saving...</span>
-            <span v-else>Save & Analyze</span>
+            <span v-if="localSaving">{{ s('Saving...') }}</span>
+            <span v-else>{{ s('Save & Analyze') }}</span>
           </button>
         </div>
       </form>
@@ -220,11 +220,20 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import api from '@/services/api'
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'
 import TakeProfitTargetsForm from './TakeProfitTargetsForm.vue'
 
 const { formatCurrency, currencySymbol } = useCurrencyFormatter()
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
+
+const riskLevelsTitle = computed(() =>
+  s('Set Risk Levels for {symbol}').replace('{symbol}', props.trade?.symbol || ''),
+)
 
 const props = defineProps({
   trade: {

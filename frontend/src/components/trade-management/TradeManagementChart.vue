@@ -1,9 +1,9 @@
 <template>
   <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-      <h3 class="text-lg font-medium text-gray-900 dark:text-white">Trade Visualization</h3>
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('Trade Visualization') }}</h3>
       <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-        Price chart with entry, exit, stop loss, and take profit levels
+        {{ s('Price chart with entry, exit, stop loss, and take profit levels') }}
       </p>
     </div>
 
@@ -11,7 +11,7 @@
       <!-- Loading State -->
       <div v-if="loading" class="flex flex-col items-center justify-center py-16">
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mb-4"></div>
-        <p class="text-sm text-gray-500 dark:text-gray-400">Loading chart data...</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400">{{ s('Loading chart data...') }}</p>
       </div>
 
       <!-- Error State -->
@@ -23,7 +23,7 @@
         </div>
         <p class="text-red-600 dark:text-red-400 mb-4">{{ error }}</p>
         <button @click="loadChart" class="btn-secondary text-sm">
-          Try Again
+          {{ s('Try Again') }}
         </button>
       </div>
 
@@ -32,9 +32,9 @@
         <svg class="w-12 h-12 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
         </svg>
-        <p class="text-gray-500 dark:text-gray-400 mb-4">Chart will load automatically</p>
+        <p class="text-gray-500 dark:text-gray-400 mb-4">{{ s('Chart will load automatically') }}</p>
         <button @click="loadChart" class="btn-secondary text-sm">
-          Load Chart Manually
+          {{ s('Load Chart Manually') }}
         </button>
       </div>
 
@@ -67,21 +67,21 @@
             <svg class="w-4 h-4 mr-1 text-emerald-600 dark:text-emerald-500" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 4l-8 8h5v8h6v-8h5z"/>
             </svg>
-            <span class="text-gray-600 dark:text-gray-400">Entry: {{ formatCurrency(trade.entry_price) }}</span>
+            <span class="text-gray-600 dark:text-gray-400">{{ s('Entry') }}: {{ formatCurrency(trade.entry_price) }}</span>
           </div>
           <div class="flex items-center">
             <svg class="w-4 h-4 mr-1 text-red-600 dark:text-red-500" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 20l8-8h-5V4H9v8H4z"/>
             </svg>
-            <span class="text-gray-600 dark:text-gray-400">Exit: {{ formatCurrency(trade.exit_price) }}</span>
+            <span class="text-gray-600 dark:text-gray-400">{{ s('Exit') }}: {{ formatCurrency(trade.exit_price) }}</span>
           </div>
           <div class="flex items-center">
             <span class="w-3 h-3 rounded-full bg-red-600 dark:bg-red-500 mr-2"></span>
-            <span class="text-gray-600 dark:text-gray-400">Stop Loss: {{ formatCurrency(trade.stop_loss) }}</span>
+            <span class="text-gray-600 dark:text-gray-400">{{ s('Stop Loss') }}: {{ formatCurrency(trade.stop_loss) }}</span>
           </div>
           <div v-if="trade.take_profit" class="flex items-center">
             <span class="w-3 h-3 rounded-full bg-primary-600 dark:bg-primary-500 mr-2"></span>
-            <span class="text-gray-600 dark:text-gray-400">Take Profit: {{ formatCurrency(trade.take_profit) }}</span>
+            <span class="text-gray-600 dark:text-gray-400">{{ s('Take Profit') }}: {{ formatCurrency(trade.take_profit) }}</span>
             <!-- Achievability indicator -->
             <span
               v-if="takeProfitAchievable !== null"
@@ -92,7 +92,7 @@
                   : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
               ]"
             >
-              {{ takeProfitAchievable ? 'Achievable' : 'Not Reached' }}
+              {{ takeProfitAchievable ? s('Achievable') : s('Not Reached') }}
             </span>
           </div>
         </div>
@@ -103,9 +103,15 @@
 
 <script setup>
 import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import * as LightweightCharts from 'lightweight-charts'
 import api from '@/services/api'
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
 
 const props = defineProps({
   trade: {

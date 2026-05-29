@@ -6,16 +6,16 @@
                 class="flex flex-col sm:flex-row sm:items-center sm:justify-between"
             >
                 <div>
-                    <h1 class="heading-page">Monthly Performance</h1>
+                    <h1 class="heading-page">{{ s('Monthly Performance') }}</h1>
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                        Compare your trading performance month-by-month
+                        {{ s('Compare your trading performance month-by-month') }}
                     </p>
                 </div>
 
                 <div class="mt-4 sm:mt-0 flex items-center gap-3">
                     <label
                         class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                        >Year:</label
+                        >{{ s('Year:') }}</label
                     >
                     <select
                         v-model="selectedYear"
@@ -43,7 +43,7 @@
 
         <div v-else-if="error" class="card p-8 text-center">
             <p class="text-danger mb-4">{{ error }}</p>
-            <button @click="loadMonthlyData" class="btn-primary">Retry</button>
+            <button @click="loadMonthlyData" class="btn-primary">{{ s('Retry') }}</button>
         </div>
 
         <!-- Content with optional refresh indicator -->
@@ -56,9 +56,7 @@
                     <div
                         class="animate-spin rounded-full h-4 w-4 border-2 border-primary-600 border-t-transparent"
                     ></div>
-                    <span class="text-xs text-gray-600 dark:text-gray-400"
-                        >Updating...</span
-                    >
+                    <span class="text-xs text-gray-600 dark:text-gray-400">{{ s('Updating...') }}</span>
                 </div>
             </div>
             <!-- Year Summary -->
@@ -67,7 +65,7 @@
                     <h2
                         class="text-xl font-semibold text-gray-900 dark:text-white mb-6"
                     >
-                        {{ selectedYear }} Year Summary
+                        {{ yearSummaryTitle }}
                     </h2>
                     <div
                         class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
@@ -83,7 +81,7 @@
                             <div
                                 class="text-xs text-gray-600 dark:text-gray-400 mt-1"
                             >
-                                Total Trades
+                                {{ s('Total Trades') }}
                             </div>
                         </div>
 
@@ -105,7 +103,7 @@
                             <div
                                 class="text-xs text-gray-600 dark:text-gray-400 mt-1"
                             >
-                                Win Rate
+                                {{ s('Win Rate') }}
                             </div>
                         </div>
 
@@ -121,7 +119,7 @@
                             <div
                                 class="text-xs text-gray-600 dark:text-gray-400 mt-1"
                             >
-                                Total P&L
+                                {{ s('Total P&L') }}
                             </div>
                         </div>
 
@@ -146,7 +144,7 @@
                             <div
                                 class="text-xs text-gray-600 dark:text-gray-400 mt-1"
                             >
-                                Total R
+                                {{ s('Total R') }}
                             </div>
                         </div>
 
@@ -159,7 +157,7 @@
                             <div
                                 class="text-xs text-gray-600 dark:text-gray-400 mt-1"
                             >
-                                Best Trade
+                                {{ s('Best Trade') }}
                             </div>
                         </div>
 
@@ -172,7 +170,7 @@
                             <div
                                 class="text-xs text-gray-600 dark:text-gray-400 mt-1"
                             >
-                                Worst Trade
+                                {{ s('Worst Trade') }}
                             </div>
                         </div>
                     </div>
@@ -185,7 +183,7 @@
                     <h2
                         class="text-xl font-semibold text-gray-900 dark:text-white mb-6"
                     >
-                        Month-by-Month Breakdown
+                        {{ s('Month-by-Month Breakdown') }}
                     </h2>
                     <div class="overflow-x-auto">
                         <table
@@ -196,62 +194,62 @@
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Month
+                                        {{ s('Month') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Trades
+                                        {{ s('Trades') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Wins
+                                        {{ s('Wins') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Losses
+                                        {{ s('Losses') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Win Rate
+                                        {{ s('Win Rate') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Total P&L
+                                        {{ s('Total P&L') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Avg P&L
+                                        {{ s('Avg P&L') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Avg Win
+                                        {{ s('Avg Win') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Avg Loss
+                                        {{ s('Avg Loss') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Avg R
+                                        {{ s('Avg R') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Total R
+                                        {{ s('Total R') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Days
+                                        {{ s('Days') }}
                                     </th>
                                 </tr>
                             </thead>
@@ -271,7 +269,7 @@
                                         <span
                                             class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200"
                                         >
-                                            {{ month.monthName }}
+                                            {{ displayMonthName(month) }}
                                         </span>
                                     </td>
                                     <td
@@ -439,8 +437,7 @@
                     <div class="card-body">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="heading-card">
-                                Monthly
-                                {{ showRValue ? "R-Value" : "P&L" }} Trend
+                                {{ monthlyTrendTitle }}
                             </h3>
                             <button
                                 @click="toggleRValue"
@@ -451,11 +448,7 @@
                                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                                 "
                             >
-                                {{
-                                    showRValue
-                                        ? `Show P&L (${currencySymbol})`
-                                        : "Show R-Value"
-                                }}
+                                {{ rValueToggleLabel }}
                             </button>
                         </div>
                         <div class="h-80">
@@ -472,7 +465,7 @@
                         <h3
                             class="text-lg font-semibold text-gray-900 dark:text-white mb-4"
                         >
-                            Win Rate by Month
+                            {{ s('Win Rate by Month') }}
                         </h3>
                         <div class="h-80">
                             <canvas
@@ -489,13 +482,22 @@
 
 <script setup>
 import { ref, onMounted, computed, nextTick, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import { useTradesStore } from "@/stores/trades";
 import { useUiPreferencesStore } from "@/stores/uiPreferences";
 import { Chart, registerables } from "chart.js";
 import { useGlobalAccountFilter } from "@/composables/useGlobalAccountFilter";
 import { useCurrencyFormatter } from "@/composables/useCurrencyFormatter";
+import { tSentence, i18n } from "@/i18n";
 
 Chart.register(...registerables);
+
+const { locale } = useI18n();
+const s = (text) => tSentence(text, { context: "metrics" });
+
+function getDisplayLocale() {
+    return i18n.global.locale.value === "zh" ? "zh-CN" : "en-US";
+}
 
 const tradesStore = useTradesStore();
 const uiPreferencesStore = useUiPreferencesStore();
@@ -544,6 +546,40 @@ const availableYears = computed(() => {
     return years;
 });
 
+const yearSummaryTitle = computed(() => {
+    void locale.value;
+    return s("{year} Year Summary").replace("{year}", String(selectedYear.value));
+});
+
+const monthlyTrendTitle = computed(() => {
+    void locale.value;
+    const unit = showRValue.value ? s("R-Value") : s("P&L");
+    return s("Monthly {unit} Trend").replace("{unit}", unit);
+});
+
+const rValueToggleLabel = computed(() => {
+    void locale.value;
+    return showRValue.value
+        ? s("Show P&L ({symbol})").replace("{symbol}", currencySymbol.value)
+        : s("Show R-Value");
+});
+
+function displayMonthName(month) {
+    void locale.value;
+    if (!month?.month) return month?.monthName || "";
+    return new Intl.DateTimeFormat(getDisplayLocale(), { month: "long" }).format(
+        new Date(selectedYear.value, month.month - 1, 1),
+    );
+}
+
+function chartMonthLabel(month) {
+    void locale.value;
+    if (!month?.month) return "";
+    return new Intl.DateTimeFormat(getDisplayLocale(), { month: "short" }).format(
+        new Date(selectedYear.value, month.month - 1, 1),
+    );
+}
+
 // Computed property for total R-values per month
 const monthlyTotalRValues = computed(() => {
     return monthlyData.value.map((month) => {
@@ -561,6 +597,12 @@ watch(selectedYear, (newYear) => {
 // Watch for global account filter changes
 watch(selectedAccount, () => {
     loadMonthlyData();
+});
+
+watch(locale, () => {
+    if (monthlyData.value.length > 0) {
+        renderCharts();
+    }
 });
 
 const toggleRValue = () => {
@@ -603,8 +645,9 @@ const loadMonthlyData = async () => {
         }
     } catch (err) {
         console.error("[ERROR] Failed to load monthly performance:", err);
-        error.value =
-            "Failed to load monthly performance data. Please try again.";
+        error.value = s(
+            "Failed to load monthly performance data. Please try again.",
+        );
     } finally {
         loading.value = false;
         initialLoading.value = false;
@@ -641,9 +684,7 @@ const createPnLChart = () => {
     }
 
     const ctx = pnlChartCanvas.value.getContext("2d");
-    const labels = monthlyData.value.map((m) =>
-        m.monthName.trim().substring(0, 3),
-    );
+    const labels = monthlyData.value.map((m) => chartMonthLabel(m));
 
     // Use R-values or P&L based on toggle
     const data = showRValue.value
@@ -668,7 +709,7 @@ const createPnLChart = () => {
             labels,
             datasets: [
                 {
-                    label: showRValue.value ? "Monthly R-Value" : "Monthly P&L",
+                    label: showRValue.value ? s("Monthly R-Value") : s("Monthly P&L"),
                     data,
                     backgroundColor: colors,
                     borderColor: colors.map((c) => c.replace("0.8", "1")),
@@ -688,8 +729,14 @@ const createPnLChart = () => {
                     callbacks: {
                         label: (context) =>
                             showRValue.value
-                                ? `R-Value: ${context.raw.toFixed(2)}R`
-                                : `P&L: ${formatCurrency(context.raw)}`,
+                                ? s("R-Value: {value}R").replace(
+                                      "{value}",
+                                      context.raw.toFixed(2),
+                                  )
+                                : s("P&L: {value}").replace(
+                                      "{value}",
+                                      formatCurrency(context.raw),
+                                  ),
                     },
                 },
             },
@@ -724,9 +771,7 @@ const createWinRateChart = () => {
     }
 
     const ctx = winRateChartCanvas.value.getContext("2d");
-    const labels = monthlyData.value.map((m) =>
-        m.monthName.trim().substring(0, 3),
-    );
+    const labels = monthlyData.value.map((m) => chartMonthLabel(m));
     const data = monthlyData.value.map((m) => m.metrics.winRate);
 
     console.log("[CHARTS] Win Rate data:", { labels, data });
@@ -737,7 +782,7 @@ const createWinRateChart = () => {
             labels,
             datasets: [
                 {
-                    label: "Win Rate %",
+                    label: s("Win Rate %"),
                     data,
                     borderColor: "rgb(59, 130, 246)",
                     backgroundColor: "rgba(59, 130, 246, 0.1)",
@@ -759,7 +804,10 @@ const createWinRateChart = () => {
                 tooltip: {
                     callbacks: {
                         label: (context) =>
-                            `Win Rate: ${context.raw.toFixed(1)}%`,
+                            s("Win Rate: {value}%").replace(
+                                "{value}",
+                                context.raw.toFixed(1),
+                            ),
                     },
                 },
             },

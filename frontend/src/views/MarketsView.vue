@@ -2,9 +2,9 @@
     <div class="content-wrapper py-8">
         <!-- Header -->
         <div class="mb-8">
-            <h1 class="heading-page mb-2">Watchlists</h1>
+            <h1 class="heading-page mb-2">{{ s('Watchlists') }}</h1>
             <p class="text-gray-600 dark:text-gray-400">
-                Track stocks, monitor market data, and create price alerts
+                {{ s('Track stocks, monitor market data, and create price alerts') }}
             </p>
         </div>
 
@@ -15,9 +15,9 @@
             :total-steps="3"
             :next-step="3"
             tour-type="pro"
-            title="Watchlists & Price Alerts"
-            description="Track your favorite symbols and get notified when price targets are hit."
-            cta-label="Next: Trade Management"
+            :title="s('Watchlists & Price Alerts')"
+            :description="s('Track your favorite symbols and get notified when price targets are hit.')"
+            :cta-label="s('Next: Trade Management')"
             cta-route="trade-management"
         />
 
@@ -25,7 +25,7 @@
         <ProUpgradePrompt
             v-if="!authLoading && !isProUser"
             variant="card"
-            description="Watchlists and price alerts are available for Pro users only."
+            :description="s('Watchlists and price alerts are available for Pro users only.')"
         />
 
         <!-- Tabs for Pro Users -->
@@ -55,7 +55,7 @@
                                 d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
                             ></path>
                         </svg>
-                        Watchlists
+                        {{ s('Watchlists') }}
                     </button>
                     <button
                         @click="activeTab = 'alerts'"
@@ -71,7 +71,7 @@
                             :size="20"
                             classes="inline mr-2"
                         />
-                        Price Alerts
+                        {{ s('Price Alerts') }}
                     </button>
                 </nav>
             </div>
@@ -79,7 +79,7 @@
             <!-- Watchlists Tab Content -->
             <div v-show="activeTab === 'watchlists'">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="heading-section">Your Watchlists</h2>
+                    <h2 class="heading-section">{{ s('Your Watchlists') }}</h2>
                     <button
                         @click="showCreateWatchlistModal = true"
                         class="btn-primary"
@@ -97,7 +97,7 @@
                                 d="M12 4v16m8-8H4"
                             ></path>
                         </svg>
-                        Create Watchlist
+                        {{ s('Create Watchlist') }}
                     </button>
                 </div>
 
@@ -131,7 +131,7 @@
                                     v-if="watchlist.is_default"
                                     class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200"
                                 >
-                                    Default
+                                    {{ s('Default') }}
                                 </span>
                             </div>
                             <p
@@ -143,22 +143,22 @@
                             <div
                                 class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400"
                             >
-                                <span>{{ watchlist.item_count }} symbols</span>
-                                <span>{{ watchlist.alert_count }} alerts</span>
+                                <span>{{ watchlist.item_count }} {{ s('symbols') }}</span>
+                                <span>{{ watchlist.alert_count }} {{ s('alerts') }}</span>
                             </div>
                             <div class="mt-4 flex space-x-2">
                                 <button
                                     @click.stop="editWatchlist(watchlist)"
                                     class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 text-sm font-medium"
                                 >
-                                    Edit
+                                    {{ s('Edit') }}
                                 </button>
                                 <button
                                     @click.stop="deleteWatchlist(watchlist)"
                                     v-if="!watchlist.is_default"
                                     class="btn-danger"
                                 >
-                                    Delete
+                                    {{ s('Delete') }}
                                 </button>
                             </div>
                         </div>
@@ -183,17 +183,17 @@
                     <h3
                         class="mt-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                        No watchlists
+                        {{ s('No watchlists') }}
                     </h3>
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                        Get started by creating your first watchlist.
+                        {{ s('Get started by creating your first watchlist.') }}
                     </p>
                     <div class="mt-6">
                         <button
                             @click="showCreateWatchlistModal = true"
                             class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700"
                         >
-                            Create Watchlist
+                            {{ s('Create Watchlist') }}
                         </button>
                     </div>
                 </div>
@@ -204,13 +204,13 @@
                 <div
                     class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6"
                 >
-                    <h2 class="heading-section">Your Price Alerts</h2>
+                    <h2 class="heading-section">{{ s('Your Price Alerts') }}</h2>
                     <button
                         @click="showCreateAlertModal = true"
                         class="mt-4 sm:mt-0 btn-primary"
                     >
                         <MdiIcon :icon="mdiBell" :size="16" classes="mr-2" />
-                        Create Alert
+                        {{ s('Create Alert') }}
                     </button>
                 </div>
 
@@ -231,7 +231,7 @@
                             <span
                                 class="text-sm text-gray-700 dark:text-gray-300"
                             >
-                                {{ marketStatus.status }}
+                                {{ marketStatusLabel }}
                             </span>
                             <span
                                 v-if="
@@ -240,7 +240,7 @@
                                 "
                                 class="text-xs text-gray-500 dark:text-gray-400"
                             >
-                                (Opens {{ marketStatus.nextOpen }})
+                                {{ s('(Opens {time})').replace('{time}', marketStatus.nextOpen) }}
                             </span>
                             <span
                                 v-else-if="
@@ -248,7 +248,7 @@
                                 "
                                 class="text-xs text-gray-500 dark:text-gray-400"
                             >
-                                (Closes {{ marketStatus.closesAt }})
+                                {{ s('(Closes {time})').replace('{time}', marketStatus.closesAt) }}
                             </span>
                         </div>
                     </div>
@@ -272,7 +272,7 @@
                             @click="requestBrowserNotifications"
                             class="text-sm text-primary-600 hover:text-primary-700 font-medium"
                         >
-                            Enable browser notifications
+                            {{ s('Enable browser notifications') }}
                         </button>
                     </div>
                     <div
@@ -282,7 +282,7 @@
                         <h4
                             class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                         >
-                            Recent Alerts
+                            {{ s('Recent Alerts') }}
                         </h4>
                         <div class="space-y-1">
                             <div
@@ -306,26 +306,26 @@
                         <label
                             for="symbolFilter"
                             class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                            >Symbol:</label
+                            >{{ s('Symbol:') }}</label
                         >
                         <SymbolAutocomplete
                             id="symbolFilter"
                             v-model="filters.symbol"
-                            placeholder="Filter by symbol"
+                            :placeholder="s('Filter by symbol')"
                         />
                     </div>
                     <div class="flex items-center space-x-2">
                         <label
                             class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                            >Status:</label
+                            >{{ s('Status:') }}</label
                         >
                         <select v-model="filters.activeOnly" class="input">
-                            <option value="true">Active Only</option>
-                            <option value="false">All Alerts</option>
+                            <option value="true">{{ s('Active Only') }}</option>
+                            <option value="false">{{ s('All Alerts') }}</option>
                         </select>
                     </div>
                     <button @click="loadAlerts" class="btn-secondary">
-                        Refresh
+                        {{ s('Refresh') }}
                     </button>
                 </div>
 
@@ -353,42 +353,42 @@
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Symbol
+                                        {{ s('Symbol') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Alert Type
+                                        {{ s('Alert Type') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Target
+                                        {{ s('Target') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Current Price
+                                        {{ s('Current Price') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Status
+                                        {{ s('Status') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Notifications
+                                        {{ s('Notifications') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Created
+                                        {{ s('Created') }}
                                     </th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Actions
+                                        {{ s('Actions') }}
                                     </th>
                                 </tr>
                             </thead>
@@ -407,8 +407,8 @@
                                     <td
                                         class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100"
                                     >
-                                        <span class="capitalize">{{
-                                            alert.alert_type.replace("_", " ")
+                                        <span>{{
+                                            alertTypeLabel(alert.alert_type)
                                         }}</span>
                                     </td>
                                     <td
@@ -429,7 +429,7 @@
                                                 ? formatPrice(
                                                       alert.current_price,
                                                   )
-                                                : "N/A"
+                                                : s('N/A')
                                         }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
@@ -440,7 +440,7 @@
                                             "
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
                                         >
-                                            Active
+                                            {{ s('Active') }}
                                         </span>
                                         <span
                                             v-else-if="
@@ -449,7 +449,7 @@
                                             "
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400"
                                         >
-                                            Triggered (Repeat)
+                                            {{ s('Triggered (Repeat)') }}
                                         </span>
                                         <span
                                             v-else-if="
@@ -458,13 +458,13 @@
                                             "
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800"
                                         >
-                                            Triggered
+                                            {{ s('Triggered') }}
                                         </span>
                                         <span
                                             v-else
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
                                         >
-                                            Inactive
+                                            {{ s('Inactive') }}
                                         </span>
                                     </td>
                                     <td
@@ -473,7 +473,7 @@
                                         <div class="flex space-x-1">
                                             <span
                                                 v-if="alert.email_enabled"
-                                                title="Email enabled"
+                                                :title="s('Email enabled')"
                                                 class="text-primary-500"
                                                 >✉</span
                                             >
@@ -481,14 +481,14 @@
                                                 v-if="alert.browser_enabled"
                                                 :icon="mdiBell"
                                                 :size="16"
-                                                title="Browser enabled"
+                                                :title="s('Browser enabled')"
                                                 classes="text-green-500"
                                             />
                                             <MdiIcon
                                                 v-if="alert.repeat_enabled"
                                                 :icon="mdiRepeat"
                                                 :size="16"
-                                                title="Repeat enabled"
+                                                :title="s('Repeat enabled')"
                                                 classes="text-purple-500"
                                             />
                                         </div>
@@ -505,19 +505,19 @@
                                             @click="editAlert(alert)"
                                             class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
                                         >
-                                            Edit
+                                            {{ s('Edit') }}
                                         </button>
                                         <button
                                             @click="testAlert(alert)"
                                             class="text-green-700 hover:text-green-800 dark:text-green-500 dark:hover:text-green-400"
                                         >
-                                            Test
+                                            {{ s('Test') }}
                                         </button>
                                         <button
                                             @click="deleteAlert(alert)"
                                             class="text-red-600 hover:text-red-900"
                                         >
-                                            Delete
+                                            {{ s('Delete') }}
                                         </button>
                                     </td>
                                 </tr>
@@ -544,17 +544,17 @@
                     <h3
                         class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                     >
-                        No price alerts
+                        {{ s('No price alerts') }}
                     </h3>
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                        Get started by creating your first price alert.
+                        {{ s('Get started by creating your first price alert.') }}
                     </p>
                     <div class="mt-6">
                         <button
                             @click="showCreateAlertModal = true"
                             class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700"
                         >
-                            Create Alert
+                            {{ s('Create Alert') }}
                         </button>
                     </div>
                 </div>
@@ -578,8 +578,8 @@
                     >
                         {{
                             editingWatchlist
-                                ? "Edit Watchlist"
-                                : "Create New Watchlist"
+                                ? s('Edit Watchlist')
+                                : s('Create New Watchlist')
                         }}
                     </h3>
                     <form @submit.prevent="saveWatchlist">
@@ -587,7 +587,7 @@
                             <label
                                 for="name"
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                >Name</label
+                                >{{ s('Name') }}</label
                             >
                             <input
                                 id="name"
@@ -595,21 +595,21 @@
                                 type="text"
                                 required
                                 class="input dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                placeholder="Enter watchlist name"
+                                :placeholder="s('Enter watchlist name')"
                             />
                         </div>
                         <div class="mb-4">
                             <label
                                 for="description"
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                >Description (optional)</label
+                                >{{ s('Description (optional)') }}</label
                             >
                             <textarea
                                 id="description"
                                 v-model="watchlistForm.description"
                                 rows="3"
                                 class="input dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                placeholder="Enter description"
+                                :placeholder="s('Enter description')"
                             ></textarea>
                         </div>
                         <div class="mb-6">
@@ -621,7 +621,7 @@
                                 />
                                 <span
                                     class="ml-2 text-sm text-gray-700 dark:text-gray-300"
-                                    >Set as default watchlist</span
+                                    >{{ s('Set as default watchlist') }}</span
                                 >
                             </label>
                         </div>
@@ -631,7 +631,7 @@
                                 @click="cancelEditWatchlist"
                                 class="btn-secondary"
                             >
-                                Cancel
+                                {{ s('Cancel') }}
                             </button>
                             <button
                                 type="submit"
@@ -640,10 +640,10 @@
                             >
                                 {{
                                     savingWatchlist
-                                        ? "Saving..."
+                                        ? s('Saving...')
                                         : editingWatchlist
-                                          ? "Update"
-                                          : "Create"
+                                          ? s('Update')
+                                          : s('Create')
                                 }}
                             </button>
                         </div>
@@ -669,8 +669,8 @@
                     >
                         {{
                             editingAlert
-                                ? "Edit Price Alert"
-                                : "Create New Price Alert"
+                                ? s('Edit Price Alert')
+                                : s('Create New Price Alert')
                         }}
                     </h3>
                     <form @submit.prevent="saveAlert">
@@ -679,7 +679,7 @@
                                 <label
                                     for="symbol"
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                    >Symbol</label
+                                    >{{ s('Symbol') }}</label
                                 >
                                 <SymbolAutocomplete
                                     id="symbol"
@@ -692,7 +692,7 @@
                                 <label
                                     for="alertType"
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                    >Alert Type</label
+                                    >{{ s('Alert Type') }}</label
                                 >
                                 <select
                                     id="alertType"
@@ -700,10 +700,10 @@
                                     required
                                     class="input"
                                 >
-                                    <option value="above">Price Above</option>
-                                    <option value="below">Price Below</option>
+                                    <option value="above">{{ s('Price Above') }}</option>
+                                    <option value="below">{{ s('Price Below') }}</option>
                                     <option value="change_percent">
-                                        % Change
+                                        {{ s('% Change') }}
                                     </option>
                                 </select>
                             </div>
@@ -716,7 +716,7 @@
                             <label
                                 for="targetPrice"
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                >Target Price ($)</label
+                                >{{ s('Target Price ($)') }}</label
                             >
                             <input
                                 id="targetPrice"
@@ -737,7 +737,7 @@
                             <label
                                 for="changePercent"
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                >Change Percentage (%)</label
+                                >{{ s('Change Percentage (%)') }}</label
                             >
                             <input
                                 id="changePercent"
@@ -746,14 +746,14 @@
                                 step="0.1"
                                 required
                                 class="input"
-                                placeholder="5.0 (for ±5%)"
+                                :placeholder="s('5.0 (for ±5%)')"
                             />
                         </div>
 
                         <div class="mb-4">
                             <label
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3"
-                                >Notification Methods</label
+                                >{{ s('Notification Methods') }}</label
                             >
                             <div class="space-y-2">
                                 <label class="flex items-center">
@@ -764,7 +764,7 @@
                                     />
                                     <span
                                         class="ml-2 text-sm text-gray-700 dark:text-gray-300"
-                                        >Email notifications</span
+                                        >{{ s('Email notifications') }}</span
                                     >
                                 </label>
                                 <label class="flex items-center">
@@ -775,7 +775,7 @@
                                     />
                                     <span
                                         class="ml-2 text-sm text-gray-700 dark:text-gray-300"
-                                        >Browser notifications</span
+                                        >{{ s('Browser notifications') }}</span
                                     >
                                 </label>
                                 <label class="flex items-center">
@@ -786,8 +786,7 @@
                                     />
                                     <span
                                         class="ml-2 text-sm text-gray-700 dark:text-gray-300"
-                                        >Repeat alerts (re-trigger after 1
-                                        hour)</span
+                                        >{{ s('Repeat alerts (re-trigger after 1 hour)') }}</span
                                     >
                                 </label>
                             </div>
@@ -799,7 +798,7 @@
                                 @click="cancelEditAlert"
                                 class="btn-secondary"
                             >
-                                Cancel
+                                {{ s('Cancel') }}
                             </button>
                             <button
                                 type="submit"
@@ -808,10 +807,10 @@
                             >
                                 {{
                                     savingAlert
-                                        ? "Saving..."
+                                        ? s('Saving...')
                                         : editingAlert
-                                          ? "Update"
-                                          : "Create"
+                                          ? s('Update')
+                                          : s('Create')
                                 }}
                             </button>
                         </div>
@@ -824,6 +823,8 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { tSentence } from "@/i18n";
 import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 import { useUiPreferencesStore } from "@/stores/uiPreferences";
@@ -843,8 +844,20 @@ const authStore = useAuthStore();
 const uiPreferencesStore = useUiPreferencesStore();
 const { showSuccess, showError, showCriticalError, showConfirmation } =
     useNotification();
+const { locale } = useI18n();
+const s = (text) => tSentence(text, { context: "metrics" });
+void locale;
 const { isConnected, notifications, requestNotificationPermission } =
     usePriceAlertNotifications();
+
+function alertTypeLabel(type) {
+    const labels = {
+        above: s("Price Above"),
+        below: s("Price Below"),
+        change_percent: s("% Change"),
+    };
+    return labels[type] || type;
+}
 
 // Tab state - load from localStorage
 const savedTab = localStorage.getItem("marketsTab");
@@ -869,6 +882,7 @@ const savingAlert = ref(false);
 const showCreateAlertModal = ref(false);
 const editingAlert = ref(null);
 const marketStatus = ref(getMarketStatus());
+const marketStatusLabel = computed(() => s(marketStatus.value.status));
 // Load filters from localStorage
 const savedFilters = localStorage.getItem("marketsFilters");
 const filters = ref(
@@ -936,7 +950,7 @@ const loadWatchlists = async () => {
         watchlists.value = response.data.data;
     } catch (error) {
         console.error("Error loading watchlists:", error);
-        showCriticalError("Error", "Failed to load watchlists");
+        showCriticalError(s("Error"), s("Failed to load watchlists"));
     } finally {
         loadingWatchlists.value = false;
     }
@@ -957,16 +971,19 @@ const editWatchlist = (watchlist) => {
 
 const deleteWatchlist = async (watchlist) => {
     showConfirmation(
-        "Delete Watchlist",
-        `Are you sure you want to delete "${watchlist.name}"? This action cannot be undone.`,
+        s("Delete Watchlist"),
+        s('Are you sure you want to delete "{name}"? This action cannot be undone.').replace(
+            "{name}",
+            watchlist.name,
+        ),
         async () => {
             try {
                 await api.delete(`/watchlists/${watchlist.id}`);
                 await loadWatchlists();
-                showSuccess("Success", "Watchlist deleted successfully");
+                showSuccess(s("Success"), s("Watchlist deleted successfully"));
             } catch (error) {
                 console.error("Error deleting watchlist:", error);
-                showCriticalError("Error", "Failed to delete watchlist");
+                showCriticalError(s("Error"), s("Failed to delete watchlist"));
             }
         },
     );
@@ -981,17 +998,17 @@ const saveWatchlist = async () => {
                 `/watchlists/${editingWatchlist.value.id}`,
                 watchlistForm.value,
             );
-            showSuccess("Success", "Watchlist updated successfully");
+            showSuccess(s("Success"), s("Watchlist updated successfully"));
         } else {
             await api.post("/watchlists", watchlistForm.value);
-            showSuccess("Success", "Watchlist created successfully");
+            showSuccess(s("Success"), s("Watchlist created successfully"));
         }
 
         cancelEditWatchlist();
         await loadWatchlists();
     } catch (error) {
         console.error("Error saving watchlist:", error);
-        showCriticalError("Error", "Failed to save watchlist");
+        showCriticalError(s("Error"), s("Failed to save watchlist"));
     } finally {
         savingWatchlist.value = false;
     }
@@ -1027,7 +1044,7 @@ const loadAlerts = async () => {
         alerts.value = response.data.data;
     } catch (error) {
         console.error("Error loading alerts:", error);
-        showCriticalError("Error", "Failed to load price alerts");
+        showCriticalError(s("Error"), s("Failed to load price alerts"));
     } finally {
         loadingAlerts.value = false;
     }
@@ -1048,16 +1065,19 @@ const editAlert = (alert) => {
 
 const deleteAlert = async (alert) => {
     showConfirmation(
-        "Delete Price Alert",
-        `Are you sure you want to delete the price alert for ${alert.symbol}?`,
+        s("Delete Price Alert"),
+        s("Are you sure you want to delete the price alert for {symbol}?").replace(
+            "{symbol}",
+            alert.symbol,
+        ),
         async () => {
             try {
                 await api.delete(`/price-alerts/${alert.id}`);
                 await loadAlerts();
-                showSuccess("Success", "Price alert deleted");
+                showSuccess(s("Success"), s("Price alert deleted"));
             } catch (error) {
                 console.error("Error deleting alert:", error);
-                showCriticalError("Error", "Failed to delete alert");
+                showCriticalError(s("Error"), s("Failed to delete alert"));
             }
         },
     );
@@ -1066,10 +1086,10 @@ const deleteAlert = async (alert) => {
 const testAlert = async (alert) => {
     try {
         await api.post(`/price-alerts/${alert.id}/test`);
-        showSuccess("Success", "Test alert sent");
+        showSuccess(s("Success"), s("Test alert sent"));
     } catch (error) {
         console.error("Error testing alert:", error);
-        showCriticalError("Error", "Failed to send test alert");
+        showCriticalError(s("Error"), s("Failed to send test alert"));
     }
 };
 
@@ -1082,10 +1102,10 @@ const saveAlert = async () => {
                 `/price-alerts/${editingAlert.value.id}`,
                 alertForm.value,
             );
-            showSuccess("Success", "Price alert updated");
+            showSuccess(s("Success"), s("Price alert updated"));
         } else {
             await api.post("/price-alerts", alertForm.value);
-            showSuccess("Success", "Price alert created");
+            showSuccess(s("Success"), s("Price alert created"));
         }
 
         cancelEditAlert();
@@ -1097,7 +1117,7 @@ const saveAlert = async () => {
             error.response?.data?.message ||
             error.message ||
             "Failed to save alert";
-        showCriticalError("Error", message);
+        showCriticalError(s("Error"), s(message));
     } finally {
         savingAlert.value = false;
     }
@@ -1144,20 +1164,22 @@ const getConnectionStatusColor = () => {
 
 const getConnectionStatusText = () => {
     if (!marketStatus.value.isOpen) {
-        return "Notifications paused (market closed)";
+        return s("Notifications paused (market closed)");
     }
-    return `Real-time notifications: ${isConnected.value ? "Connected" : "Disconnected"}`;
+    return isConnected.value
+        ? s("Real-time notifications: Connected")
+        : s("Real-time notifications: Disconnected");
 };
 
 const requestBrowserNotifications = async () => {
     const granted = await requestNotificationPermission();
     notificationPermissionGranted.value = granted;
     if (granted) {
-        showSuccess("Success", "Browser notifications enabled!");
+        showSuccess(s("Success"), s("Browser notifications enabled!"));
     } else {
         showError(
-            "Permission Denied",
-            "Please enable notifications in your browser settings",
+            s("Permission Denied"),
+            s("Please enable notifications in your browser settings"),
         );
     }
 };

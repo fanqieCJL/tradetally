@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-      <h3 class="text-lg font-medium text-gray-900 dark:text-white">Trade Summary</h3>
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('Trade Summary') }}</h3>
       <router-link
         :to="{ name: 'trade-detail', params: { id: trade.id } }"
         class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 border border-primary-300 dark:border-primary-600 rounded-md hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors"
@@ -10,7 +10,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
         </svg>
-        View Details
+        {{ s('View Details') }}
       </router-link>
     </div>
 
@@ -18,7 +18,7 @@
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
         <!-- Entry Price -->
         <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Entry Price</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{{ s('Entry Price') }}</div>
           <div class="text-lg font-semibold text-gray-900 dark:text-white">
             {{ formatCurrency(trade.entry_price) }}
           </div>
@@ -26,7 +26,7 @@
 
         <!-- Exit Price -->
         <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Exit Price</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{{ s('Exit Price') }}</div>
           <div class="text-lg font-semibold" :class="pnlClass">
             {{ formatCurrency(trade.exit_price) }}
           </div>
@@ -35,8 +35,8 @@
         <!-- Stop Loss (Editable) -->
         <div>
           <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
-            Stop Loss
-            <button v-if="!editingStopLoss" type="button" @click="startEditingStopLoss" class="ml-1 text-primary-500 hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded" aria-label="Edit stop loss">(edit)</button>
+            {{ s('Stop Loss') }}
+            <button v-if="!editingStopLoss" type="button" @click="startEditingStopLoss" class="ml-1 text-primary-500 hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded" :aria-label="s('Edit stop loss')">{{ s('(edit)') }}</button>
           </div>
           <div v-if="editingStopLoss" class="space-y-2">
             <div class="relative">
@@ -56,10 +56,10 @@
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
-                Save
+                {{ s('Save') }}
               </button>
               <button @click="cancelEditingStopLoss" class="text-xs px-2 py-1 text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200">
-                Cancel
+                {{ s('Cancel') }}
               </button>
             </div>
           </div>
@@ -68,7 +68,7 @@
               {{ formatCurrency(trade.stop_loss) }}
             </div>
             <div class="text-xs text-gray-500 dark:text-gray-400">
-              {{ formatPercent(stopLossPercent) }} from entry
+              {{ formatPercent(stopLossPercent) }} {{ s('from entry') }}
             </div>
           </div>
         </div>
@@ -78,8 +78,8 @@
           <!-- TP1 (from take_profit field only when NO take_profit_targets exist - neither in DB nor locally) -->
           <div v-if="!hasMultipleTpTargets && editableTakeProfitTargets.length === 0">
             <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
-              Take Profit (TP1)
-              <button v-if="!editingTakeProfit" type="button" @click="startEditingTakeProfit" class="ml-1 text-primary-500 hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded" aria-label="Edit take profit">(edit)</button>
+              {{ s('Take Profit (TP1)') }}
+              <button v-if="!editingTakeProfit" type="button" @click="startEditingTakeProfit" class="ml-1 text-primary-500 hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded" :aria-label="s('Edit take profit')">{{ s('(edit)') }}</button>
             </div>
             <div v-if="editingTakeProfit" class="space-y-2">
               <div class="flex items-center gap-2">
@@ -91,7 +91,7 @@
                     type="number"
                     step="0.01"
                     class="w-full pl-6 pr-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
-                    placeholder="Price"
+                    :placeholder="s('Price')"
                     @keyup.enter="saveTakeProfit"
                     @keyup.escape="cancelEditingTakeProfit"
                   />
@@ -102,8 +102,8 @@
                   step="1"
                   min="1"
                   class="w-14 px-1 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
-                  placeholder="Qty"
-                  title="Number of shares"
+                  :placeholder="s('Qty')"
+                  :title="s('Number of shares')"
                   @keyup.enter="saveTakeProfit"
                   @keyup.escape="cancelEditingTakeProfit"
                 />
@@ -113,10 +113,10 @@
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-                  Save
+                  {{ s('Save') }}
                 </button>
                 <button @click="cancelEditingTakeProfit" class="text-xs px-2 py-1 text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200">
-                  Cancel
+                  {{ s('Cancel') }}
                 </button>
               </div>
             </div>
@@ -127,12 +127,12 @@
                   <span v-if="tp1R" class="text-sm font-medium ml-1">({{ tp1R }}R)</span>
                 </div>
                 <div class="text-xs text-gray-500 dark:text-gray-400">
-                  <span v-if="tp1Qty">{{ tp1Qty }} shares · </span>
-                  {{ formatPercent(takeProfitPercent) }} from entry
+                  <span v-if="tp1Qty">{{ tp1Qty }} {{ s('shares') }} · </span>
+                  {{ formatPercent(takeProfitPercent) }} {{ s('from entry') }}
                 </div>
               </div>
               <div v-else class="text-lg text-gray-400 dark:text-gray-500">
-                Not set
+                {{ s('Not set') }}
               </div>
             </div>
           </div>
@@ -146,12 +146,12 @@
                 ({{ calculateTargetR(target.price) }}R)
               </span>
               <span v-if="target.status === 'hit'" :class="`${getTargetStatusClass('hit')} ml-2`">
-                Hit
+                {{ s('Hit') }}
               </span>
               <button
                 @click="removeTakeProfitTarget(index)"
                 class="p-0.5 text-gray-400 hover:text-red-600 dark:hover:text-red-400 ml-auto"
-                title="Remove target"
+                :title="s('Remove target')"
               >
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -166,7 +166,7 @@
                   type="number"
                   step="0.01"
                   class="w-full pl-5 pr-2 py-0.5 text-sm border border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
-                  placeholder="Price"
+                  :placeholder="s('Price')"
                   @focus="isEditingTargets = true"
                   @blur="handleTargetBlur"
                   @keyup.enter="saveTakeProfitTargets"
@@ -178,8 +178,8 @@
                 step="1"
                 min="1"
                 class="w-14 px-1 py-0.5 text-sm border border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
-                placeholder="Qty"
-                title="Number of shares"
+                :placeholder="s('Qty')"
+                :title="s('Number of shares')"
                 @focus="isEditingTargets = true"
                 @blur="handleTargetBlur"
                 @keyup.enter="saveTakeProfitTargets"
@@ -195,7 +195,7 @@
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
-            Add Target
+            {{ s('Add Target') }}
           </button>
         </div>
       </div>
@@ -210,18 +210,18 @@
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
         <!-- Risk Amount -->
         <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Risk Amount</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{{ s('Risk Amount') }}</div>
           <div class="text-lg font-semibold text-gray-900 dark:text-white">
             {{ formatCurrency(analysis.risk_amount) }}
           </div>
           <div class="text-xs text-gray-500 dark:text-gray-400">
-            {{ formatCurrency(analysis.risk_per_share) }} per share
+            {{ formatCurrency(analysis.risk_per_share) }} {{ s('per share') }}
           </div>
         </div>
 
         <!-- Actual P&L -->
         <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Actual P&L</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{{ s('Actual P&L') }}</div>
           <div class="text-lg font-semibold" :class="pnlClass">
             {{ formatCurrency(analysis.actual_pl_amount) }}
           </div>
@@ -232,29 +232,29 @@
 
         <!-- Target P&L -->
         <div v-if="potentialPL !== null">
-          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Target P&L</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{{ s('Target P&L') }}</div>
           <div class="text-lg font-semibold text-primary-600 dark:text-primary-400">
             {{ formatCurrency(potentialPL) }}
           </div>
           <div class="text-xs text-gray-500 dark:text-gray-400">
-            If held to target
+            {{ s('If held to target') }}
           </div>
         </div>
         <div v-else>
-          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Target P&L</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{{ s('Target P&L') }}</div>
           <div class="text-lg text-gray-400 dark:text-gray-500">
-            N/A
+            {{ s('N/A') }}
           </div>
         </div>
 
         <!-- Risk:Reward -->
         <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Risk:Reward</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{{ s('Risk:Reward') }}</div>
           <div class="text-lg font-semibold text-gray-900 dark:text-white">
             {{ riskRewardActual }}
           </div>
           <div v-if="riskRewardPlanned" class="text-xs text-gray-500 dark:text-gray-400">
-            Planned: {{ riskRewardPlanned }}
+            {{ s('Planned') }}: {{ riskRewardPlanned }}
           </div>
         </div>
       </div>
@@ -264,21 +264,21 @@
 
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
         <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Symbol</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{{ s('Symbol') }}</div>
           <div class="text-lg font-semibold text-gray-900 dark:text-white">{{ trade.symbol }}</div>
         </div>
         <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Side</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{{ s('Side') }}</div>
           <div class="text-lg font-semibold capitalize" :class="trade.side === 'long' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
-            {{ trade.side }}
+            {{ s(trade.side) }}
           </div>
         </div>
         <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Quantity</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{{ s('Quantity') }}</div>
           <div class="text-lg font-semibold text-gray-900 dark:text-white">{{ trade.quantity }}</div>
         </div>
         <div>
-          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Trade Date & Time</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{{ s('Trade Date & Time') }}</div>
           <div class="text-lg font-semibold text-gray-900 dark:text-white">{{ formatDateWithTime(trade) }}</div>
         </div>
       </div>
@@ -296,20 +296,20 @@
       <div v-show="analysis?.management_r !== null && analysis?.management_r !== undefined" class="border-t border-gray-200 dark:border-gray-700 mt-6 pt-6">
         <div class="flex items-center justify-between p-4 rounded-lg" :class="getManagementRBgClass">
           <div>
-            <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Trade Management Impact</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{{ s('Trade Management Impact') }}</div>
             <div class="text-lg font-semibold" :class="getManagementRTextClass">
               {{ analysis?.management_r >= 0 ? '+' : '' }}{{ analysis?.management_r }}R
             </div>
           </div>
           <div class="text-sm text-gray-600 dark:text-gray-400 text-right max-w-xs">
             <span v-if="analysis?.management_r > 0">
-              Good management - captured more R than planned
+              {{ s('Good management - captured more R than planned') }}
             </span>
             <span v-else-if="analysis?.management_r < 0">
-              Poor management - missed planned R target
+              {{ s('Poor management - missed planned R target') }}
             </span>
             <span v-else>
-              Matched plan exactly
+              {{ s('Matched plan exactly') }}
             </span>
           </div>
         </div>
@@ -320,6 +320,8 @@
 
 <script setup>
 import { ref, computed, nextTick, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import { format } from 'date-fns'
 import api from '@/services/api'
 import { useUserTimezone } from '@/composables/useUserTimezone'
@@ -328,6 +330,9 @@ import TargetHitFirstIndicator from './TargetHitFirstIndicator.vue'
 
 const { formatDateTime: formatDateTimeTz } = useUserTimezone()
 const { formatCurrency, currencySymbol } = useCurrencyFormatter()
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
 
 const props = defineProps({
   trade: {

@@ -7,7 +7,7 @@
     >
       <div class="flex items-center justify-center py-8">
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mr-3"></div>
-        <span class="text-gray-600 dark:text-gray-400">Loading financial data...</span>
+        <span class="text-gray-600 dark:text-gray-400">{{ s('Loading financial data...') }}</span>
       </div>
     </div>
 
@@ -17,9 +17,9 @@
       ref="calculatorCardRef"
       class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6"
     >
-      <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Stock Valuation Calculator</h2>
+      <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-2">{{ s('Stock Valuation Calculator') }}</h2>
       <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
-        Review historical metrics and enter your assumptions to calculate fair value. Each calculation is saved automatically below.
+        {{ s('Review historical metrics and enter your assumptions to calculate fair value. Each calculation is saved automatically below.') }}
       </p>
 
       <DCFCalculator
@@ -52,16 +52,16 @@
           d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
         />
       </svg>
-      <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">DCF Valuation Calculator</h3>
+      <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">{{ s('DCF Valuation Calculator') }}</h3>
       <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-        Enter a stock symbol above to calculate fair value, or pick one of your saved valuations below.
+        {{ s('Enter a stock symbol above to calculate fair value, or pick one of your saved valuations below.') }}
       </p>
     </div>
 
     <!-- Saved Valuations -->
     <div v-if="sortedValuations.length > 0" class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6">
       <div class="flex items-center justify-between mb-1">
-        <h2 class="text-lg font-medium text-gray-900 dark:text-white">Saved Valuations</h2>
+        <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('Saved Valuations') }}</h2>
         <label
           v-if="symbol"
           class="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 cursor-pointer"
@@ -71,11 +71,11 @@
             v-model="showAllSymbols"
             class="rounded text-primary-600 focus:ring-primary-500 mr-2"
           />
-          Show all symbols
+          {{ s('Show all symbols') }}
         </label>
       </div>
       <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-        Click any saved valuation to load its assumptions and fair-value results. Selecting a different symbol switches the analyzer to that stock.
+        {{ s('Click any saved valuation to load its assumptions and fair-value results. Selecting a different symbol switches the analyzer to that stock.') }}
       </p>
 
       <!-- Search -->
@@ -83,7 +83,7 @@
         <input
           v-model="searchQuery"
           type="text"
-          placeholder="Search by symbol or notes..."
+          :placeholder="s('Search by symbol or notes...')"
           class="w-full pl-10 pr-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
         />
         <svg
@@ -106,7 +106,7 @@
         v-if="filteredValuations.length === 0"
         class="text-center py-6 text-sm text-gray-500 dark:text-gray-400"
       >
-        No saved valuations match your filters.
+        {{ s('No saved valuations match your filters.') }}
       </div>
 
       <SavedValuationsList
@@ -124,7 +124,7 @@
         class="mt-4 flex items-center justify-between text-sm"
       >
         <div class="text-gray-500 dark:text-gray-400">
-          Showing {{ pageStart }}-{{ pageEnd }} of {{ filteredValuations.length }}
+          {{ paginationRangeLabel }}
         </div>
         <div class="flex items-center gap-2">
           <button
@@ -132,17 +132,17 @@
             :disabled="currentPage === 1"
             class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700"
           >
-            Previous
+            {{ s('Previous') }}
           </button>
           <span class="text-gray-600 dark:text-gray-300">
-            Page {{ currentPage }} of {{ totalPages }}
+            {{ paginationPageLabel }}
           </span>
           <button
             @click="currentPage = Math.min(totalPages, currentPage + 1)"
             :disabled="currentPage === totalPages"
             class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700"
           >
-            Next
+            {{ s('Next') }}
           </button>
         </div>
       </div>
@@ -152,6 +152,8 @@
 
 <script setup>
 import { ref, computed, watch, nextTick, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import { useInvestmentsStore } from '@/stores/investments'
 import { useNotification } from '@/composables/useNotification'
 import DCFCalculator from './DCFCalculator.vue'
@@ -180,6 +182,9 @@ const emit = defineEmits(['select-symbol', 'pending-consumed'])
 
 const store = useInvestmentsStore()
 const { showSuccess, showError } = useNotification()
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
 
 const PAGE_SIZE = 10
 
@@ -247,6 +252,19 @@ const pageStart = computed(() => {
 
 const pageEnd = computed(() => Math.min(currentPage.value * PAGE_SIZE, filteredValuations.value.length))
 
+const paginationRangeLabel = computed(() =>
+  s('Showing {start}-{end} of {total}')
+    .replace('{start}', String(pageStart.value))
+    .replace('{end}', String(pageEnd.value))
+    .replace('{total}', String(filteredValuations.value.length))
+)
+
+const paginationPageLabel = computed(() =>
+  s('Page {page} of {totalPages}')
+    .replace('{page}', String(currentPage.value))
+    .replace('{totalPages}', String(totalPages.value))
+)
+
 // Reset to page 1 whenever the filtered set changes so the user isn't stranded
 // on an empty page after toggling filters or searching.
 watch([showAllSymbols, searchQuery, () => props.symbol], () => {
@@ -309,7 +327,7 @@ async function handleCalculate(inputs) {
   try {
     await store.calculateDCF(props.symbol, inputs)
   } catch (err) {
-    showError('Calculation Failed', err.message || 'Failed to calculate DCF')
+    showError(s('Calculation Failed'), s(err.message || 'Failed to calculate DCF'))
   }
 }
 
@@ -322,12 +340,12 @@ async function handleSave(data) {
     }
 
     const saved = await store.saveValuation(data)
-    showSuccess('Analysis Saved', 'Your valuation was saved automatically')
+    showSuccess(s('Analysis Saved'), s('Your valuation was saved automatically'))
     if (saved?.id) {
       loadedValuationId.value = saved.id
     }
   } catch (err) {
-    showError('Save Failed', err.message || 'Failed to save valuation')
+    showError(s('Save Failed'), s(err.message || 'Failed to save valuation'))
   }
 }
 
@@ -451,9 +469,9 @@ async function handleDeleteValuation(id) {
     if (loadedValuationId.value === id) {
       loadedValuationId.value = null
     }
-    showSuccess('Valuation Deleted', 'The valuation has been deleted')
+    showSuccess(s('Valuation Deleted'), s('The valuation has been deleted'))
   } catch (err) {
-    showError('Delete Failed', err.message || 'Failed to delete valuation')
+    showError(s('Delete Failed'), s(err.message || 'Failed to delete valuation'))
   }
 }
 </script>

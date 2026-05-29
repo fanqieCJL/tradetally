@@ -3,22 +3,21 @@
     <!-- Results Count and Sort -->
     <div class="flex items-center justify-between mb-4">
       <p class="text-sm text-gray-600 dark:text-gray-400">
-        <span class="font-medium text-gray-900 dark:text-white">{{ pagination.total }}</span>
-        {{ pagination.total === 1 ? 'stock' : 'stocks' }} match{{ pagination.total === 1 ? 'es' : '' }} criteria
+        {{ resultsCountLabel }}
       </p>
 
       <div class="flex items-center space-x-2">
-        <label class="text-sm text-gray-500 dark:text-gray-400">Sort by:</label>
+        <label class="text-sm text-gray-500 dark:text-gray-400">{{ s('Sort by:') }}</label>
         <select
           :value="sortBy"
           @change="handleSortChange"
           class="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md focus:ring-primary-500 focus:border-primary-500"
         >
-          <option value="pillars_passed">Pillars Passed</option>
-          <option value="symbol">Symbol</option>
-          <option value="company_name">Company</option>
-          <option value="current_price">Price</option>
-          <option value="market_cap">Market Cap</option>
+          <option value="pillars_passed">{{ s('Pillars Passed') }}</option>
+          <option value="symbol">{{ s('Symbol') }}</option>
+          <option value="company_name">{{ s('Company') }}</option>
+          <option value="current_price">{{ s('Price') }}</option>
+          <option value="market_cap">{{ s('Market Cap') }}</option>
         </select>
       </div>
     </div>
@@ -29,23 +28,22 @@
         <thead class="bg-gray-50 dark:bg-gray-700">
           <tr>
             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-              Symbol
+              {{ s('Symbol') }}
             </th>
             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden sm:table-cell">
-              Company
+              {{ s('Company') }}
             </th>
             <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-              Price
+              {{ s('Price') }}
             </th>
             <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-              Pass
+              {{ s('Pass') }}
             </th>
-            <!-- Pillar columns -->
             <th
               v-for="pillar in 8"
               :key="pillar"
               class="px-2 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden lg:table-cell"
-              :title="pillarNames[pillar]"
+              :title="pillarName(pillar)"
             >
               {{ pillar }}
             </th>
@@ -90,7 +88,6 @@
                 {{ stock.pillarsPassed }}/8
               </span>
             </td>
-            <!-- Pillar pass/fail indicators -->
             <td
               v-for="pillar in 8"
               :key="pillar"
@@ -121,7 +118,7 @@
     <!-- Pagination -->
     <div v-if="pagination.totalPages > 1" class="mt-4 flex items-center justify-between">
       <p class="text-sm text-gray-500 dark:text-gray-400">
-        Page {{ pagination.page }} of {{ pagination.totalPages }}
+        {{ pageLabel }}
       </p>
       <div class="flex items-center space-x-2">
         <button
@@ -129,14 +126,14 @@
           :disabled="pagination.page <= 1"
           class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700"
         >
-          Previous
+          {{ s('Previous') }}
         </button>
         <button
           @click="goToPage(pagination.page + 1)"
           :disabled="pagination.page >= pagination.totalPages"
           class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700"
         >
-          Next
+          {{ s('Next') }}
         </button>
       </div>
     </div>
@@ -147,13 +144,13 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
       <p class="mt-2 text-gray-500 dark:text-gray-400">
-        No stocks match your selected criteria
+        {{ s('No stocks match your selected criteria') }}
       </p>
       <button
         @click="clearFilters"
         class="mt-3 text-primary-600 dark:text-primary-400 hover:underline text-sm"
       >
-        Clear all filters
+        {{ s('Clear all filters') }}
       </button>
     </div>
   </div>
@@ -161,18 +158,39 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import { useRouter } from 'vue-router'
 import { useScannerStore } from '@/stores/scanner'
 import StockLogo from '@/components/common/StockLogo.vue'
 
 const router = useRouter()
 const scannerStore = useScannerStore()
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
 
 const results = computed(() => scannerStore.scanResults)
 const pagination = computed(() => scannerStore.pagination)
 const loading = computed(() => scannerStore.loading)
 const sortBy = computed(() => scannerStore.sortBy)
-const pillarNames = scannerStore.pillarNames
+
+const resultsCountLabel = computed(() => {
+  void locale.value
+  const total = pagination.value.total
+  const key = total === 1 ? '{total} stock matches criteria' : '{total} stocks match criteria'
+  return s(key).replace('{total}', String(total))
+})
+
+const pageLabel = computed(() =>
+  s('Page {page} of {totalPages}')
+    .replace('{page}', String(pagination.value.page))
+    .replace('{totalPages}', String(pagination.value.totalPages))
+)
+
+function pillarName(pillar) {
+  return s(scannerStore.pillarNames[pillar])
+}
 
 function handleSortChange(event) {
   scannerStore.setSort(event.target.value)

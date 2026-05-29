@@ -3,20 +3,20 @@
         <!-- Page Header + Stats -->
         <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-6">
             <div>
-                <h1 class="heading-page">User Management</h1>
+                <h1 class="heading-page">{{ s('User Management') }}</h1>
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    {{ statistics.totalUsers || totalUsers }} total users &middot; {{ activeUserCount }} active &middot; {{ pendingApprovalCount }} pending &middot; {{ proUserCount }} pro
+                    {{ pageSubtitle }}
                 </p>
             </div>
             <div class="flex flex-wrap gap-2">
-                <button @click="applyFilters" class="btn-primary">Apply Filters</button>
-                <button @click="resetFilters" class="btn-secondary">Reset</button>
+                <button @click="applyFilters" class="btn-primary">{{ s('Apply Filters') }}</button>
+                <button @click="resetFilters" class="btn-secondary">{{ s('Reset') }}</button>
                 <button
                     @click="exportUsersToCSV"
                     :disabled="loading || users.length === 0"
                     class="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    Export CSV
+                    {{ s('Export CSV') }}
                 </button>
             </div>
         </div>
@@ -36,7 +36,7 @@
             <div v-if="loading" class="flex justify-end mb-2">
                 <div class="flex items-center space-x-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-gray-200 dark:border-gray-700">
                     <div class="animate-spin rounded-full h-4 w-4 border-2 border-primary-600 border-t-transparent"></div>
-                    <span class="text-xs text-gray-600 dark:text-gray-400">Updating...</span>
+                    <span class="text-xs text-gray-600 dark:text-gray-400">{{ s('Updating...') }}</span>
                 </div>
             </div>
 
@@ -46,7 +46,7 @@
                 <div class="border-b border-gray-200 dark:border-gray-700 px-4 py-3 sm:px-6">
                     <div class="grid gap-3 items-end grid-cols-2 md:grid-cols-3 xl:grid-cols-7">
                         <div class="col-span-2 md:col-span-3 xl:col-span-1">
-                            <label class="label">Search</label>
+                            <label class="label">{{ s('Search') }}</label>
                             <div class="relative">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -57,7 +57,7 @@
                                     v-model="searchQuery"
                                     @input="handleSearch"
                                     type="text"
-                                    placeholder="Name, email..."
+                                    :placeholder="s('Name, email...')"
                                     class="input pl-9 pr-8"
                                 />
                                 <button
@@ -72,47 +72,47 @@
                             </div>
                         </div>
                         <div>
-                            <label class="label">Role</label>
+                            <label class="label">{{ s('Role') }}</label>
                             <select v-model="filters.role" class="input">
-                                <option value="all">All roles</option>
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
-                                <option value="owner">Owner</option>
+                                <option value="all">{{ s('All roles') }}</option>
+                                <option value="user">{{ s('User') }}</option>
+                                <option value="admin">{{ s('Admin') }}</option>
+                                <option value="owner">{{ s('Owner') }}</option>
                             </select>
                         </div>
                         <div>
-                            <label class="label">Status</label>
+                            <label class="label">{{ s('Status') }}</label>
                             <select v-model="filters.status" class="input">
-                                <option value="all">All statuses</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                                <option value="pending_approval">Pending</option>
-                                <option value="unverified">Unverified</option>
+                                <option value="all">{{ s('All statuses') }}</option>
+                                <option value="active">{{ s('Active') }}</option>
+                                <option value="inactive">{{ s('Inactive') }}</option>
+                                <option value="pending_approval">{{ s('Pending') }}</option>
+                                <option value="unverified">{{ s('Unverified') }}</option>
                             </select>
                         </div>
                         <div>
-                            <label class="label">Tier</label>
+                            <label class="label">{{ s('Tier') }}</label>
                             <select v-model="filters.tier" class="input">
-                                <option value="all">All tiers</option>
-                                <option value="free">Free</option>
-                                <option value="pro">Pro</option>
-                                <option value="trial">Trial</option>
+                                <option value="all">{{ s('All tiers') }}</option>
+                                <option value="free">{{ s('Free') }}</option>
+                                <option value="pro">{{ s('Pro') }}</option>
+                                <option value="trial">{{ s('Trial') }}</option>
                             </select>
                         </div>
                         <div>
-                            <label class="label">Marketing</label>
+                            <label class="label">{{ s('Marketing') }}</label>
                             <select v-model="filters.marketing" class="input">
-                                <option value="all">All</option>
-                                <option value="subscribed">Subscribed</option>
-                                <option value="unsubscribed">Unsubscribed</option>
+                                <option value="all">{{ s('All') }}</option>
+                                <option value="subscribed">{{ s('Subscribed') }}</option>
+                                <option value="unsubscribed">{{ s('Unsubscribed') }}</option>
                             </select>
                         </div>
                         <div>
-                            <label class="label">Joined From</label>
+                            <label class="label">{{ s('Joined From') }}</label>
                             <input v-model="filters.joinedFrom" type="date" class="input" />
                         </div>
                         <div>
-                            <label class="label">Joined To</label>
+                            <label class="label">{{ s('Joined To') }}</label>
                             <input v-model="filters.joinedTo" type="date" class="input" />
                         </div>
                     </div>
@@ -121,8 +121,8 @@
                 <!-- Result Summary Bar -->
                 <div class="border-b border-gray-200 dark:border-gray-700 px-4 py-2 sm:px-6">
                     <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                        <span>Showing {{ startIndex }}-{{ endIndex }} of {{ totalUsers }}<span v-if="activeFiltersCount > 0"> ({{ activeFiltersCount }} filter{{ activeFiltersCount === 1 ? "" : "s" }})</span></span>
-                        <span>{{ formatNumber(pageTradeCount) }} trades &middot; {{ formatNumber(pageImportCount) }} imports &middot; {{ recentlyActiveCount }} active this week</span>
+                        <span>{{ resultsSummary }}</span>
+                        <span>{{ pageActivitySummary }}</span>
                     </div>
                 </div>
 
@@ -131,13 +131,13 @@
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-700">
                             <tr>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">User</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Role / Tier</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Last Active</th>
-                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Imports</th>
-                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Trades</th>
-                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ s('User') }}</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ s('Role / Tier') }}</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ s('Status') }}</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ s('Last Active') }}</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ s('Imports') }}</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ s('Trades') }}</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ s('Actions') }}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -171,14 +171,14 @@
                                             :disabled="isUpdating || (user.role === 'admin' && adminCount <= 1)"
                                             class="input py-1 px-2 text-xs w-20 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
-                                            <option value="user">User</option>
-                                            <option value="admin">Admin</option>
+                                            <option value="user">{{ s('User') }}</option>
+                                            <option value="admin">{{ s('Admin') }}</option>
                                         </select>
                                         <span :class="getTierBadgeClass(getUserDisplayTier(user))" class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium">
-                                            {{ getUserDisplayTier(user) }}
+                                            {{ labelTier(getUserDisplayTier(user)) }}
                                         </span>
                                         <span v-if="user.role === 'owner'" class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/20 dark:text-primary-400">
-                                            owner
+                                            {{ s('owner') }}
                                         </span>
                                     </div>
                                 </td>
@@ -188,15 +188,15 @@
                                     <div class="flex flex-wrap gap-1 max-w-[220px]">
                                         <span :class="user.is_active ? successPillClass : dangerPillClass" class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs font-medium">
                                             <MdiIcon :icon="user.is_active ? mdiCheckCircle : mdiCloseCircle" :size="12" />
-                                            {{ user.is_active ? "Active" : "Inactive" }}
+                                            {{ user.is_active ? s("Active") : s("Inactive") }}
                                         </span>
                                         <span :class="user.is_verified ? successPillClass : warnPillClass" class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs font-medium">
                                             <MdiIcon :icon="user.is_verified ? mdiCheckCircle : mdiCloseCircle" :size="12" />
-                                            {{ user.is_verified ? "Verified" : "Unverified" }}
+                                            {{ user.is_verified ? s("Verified") : s("Unverified") }}
                                         </span>
                                         <span :class="user.admin_approved ? successPillClass : pendingPillClass" class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs font-medium">
                                             <MdiIcon :icon="user.admin_approved ? mdiCheckCircle : mdiCloseCircle" :size="12" />
-                                            {{ user.admin_approved ? "Approved" : "Pending" }}
+                                            {{ user.admin_approved ? s("Approved") : s("Pending") }}
                                         </span>
                                         <button
                                             @click="toggleMarketingConsent(user)"
@@ -205,7 +205,7 @@
                                             class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs font-medium transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
                                         >
                                             <MdiIcon :icon="user.marketing_consent ? mdiCheckCircle : mdiCloseCircle" :size="12" />
-                                            Mktg
+                                            {{ s('Mktg') }}
                                         </button>
                                     </div>
                                 </td>
@@ -213,13 +213,13 @@
                                 <!-- Last Active -->
                                 <td class="px-4 py-3 whitespace-nowrap">
                                     <p class="text-sm text-gray-900 dark:text-white">{{ formatRelativeTime(user.last_active_at) }}</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">Joined {{ formatDate(user.created_at) }}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ s('Joined {date}').replace('{date}', formatDate(user.created_at)) }}</p>
                                 </td>
 
                                 <!-- Imports -->
                                 <td class="px-4 py-3 text-right whitespace-nowrap">
                                     <p class="text-sm font-medium text-gray-900 dark:text-white">{{ formatNumber(user.import_count) }}</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ formatNumber(user.trades_imported_count) }} rows</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ formatNumber(user.trades_imported_count) }} {{ s('rows') }}</p>
                                 </td>
 
                                 <!-- Trades -->
@@ -236,7 +236,7 @@
                                             :disabled="isUpdating"
                                             class="px-2 py-1 rounded text-xs font-medium text-primary-700 hover:bg-primary-50 transition disabled:opacity-50 dark:text-primary-400 dark:hover:bg-primary-900/20"
                                         >
-                                            Verify
+                                            {{ s('Verify') }}
                                         </button>
                                         <button
                                             v-if="!user.admin_approved"
@@ -244,7 +244,7 @@
                                             :disabled="isUpdating"
                                             class="px-2 py-1 rounded text-xs font-medium text-green-700 hover:bg-green-50 transition disabled:opacity-50 dark:text-green-400 dark:hover:bg-green-900/20"
                                         >
-                                            Approve
+                                            {{ s('Approve') }}
                                         </button>
                                         <button
                                             v-if="!user.admin_approved ? false : !user.is_active"
@@ -252,7 +252,7 @@
                                             :disabled="isUpdating || (user.role === 'admin' && adminCount <= 1 && user.is_active)"
                                             class="px-2 py-1 rounded text-xs font-medium text-green-700 hover:bg-green-50 transition disabled:opacity-50 dark:text-green-400 dark:hover:bg-green-900/20"
                                         >
-                                            Activate
+                                            {{ s('Activate') }}
                                         </button>
                                         <button
                                             v-if="user.is_active && user.admin_approved"
@@ -260,21 +260,21 @@
                                             :disabled="isUpdating || (user.role === 'admin' && adminCount <= 1 && user.is_active)"
                                             class="px-2 py-1 rounded text-xs font-medium text-yellow-700 hover:bg-yellow-50 transition disabled:opacity-50 dark:text-yellow-400 dark:hover:bg-yellow-900/20"
                                         >
-                                            Deactivate
+                                            {{ s('Deactivate') }}
                                         </button>
                                         <button
                                             @click="openTierModal(user)"
                                             :disabled="isUpdating"
                                             class="px-2 py-1 rounded text-xs font-medium text-violet-700 hover:bg-violet-50 transition disabled:opacity-50 dark:text-violet-400 dark:hover:bg-violet-900/20"
                                         >
-                                            Tier
+                                            {{ s('Tier') }}
                                         </button>
                                         <button
                                             @click="confirmDeleteUser(user)"
                                             :disabled="isUpdating || user.id === currentUserId || (user.role === 'admin' && adminCount <= 1)"
                                             class="px-2 py-1 rounded text-xs font-medium text-red-700 hover:bg-red-50 transition disabled:opacity-50 dark:text-red-400 dark:hover:bg-red-900/20"
                                         >
-                                            Delete
+                                            {{ s('Delete') }}
                                         </button>
                                     </div>
                                 </td>
@@ -282,8 +282,8 @@
 
                             <tr v-if="users.length === 0">
                                 <td colspan="7" class="px-4 py-12 text-center">
-                                    <p class="text-base font-medium text-gray-700 dark:text-gray-200">No users match the current filters.</p>
-                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Reset the filter set or broaden the date range.</p>
+                                    <p class="text-base font-medium text-gray-700 dark:text-gray-200">{{ s('No users match the current filters.') }}</p>
+                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ s('Reset the filter set or broaden the date range.') }}</p>
                                 </td>
                             </tr>
                         </tbody>
@@ -292,14 +292,14 @@
 
                 <!-- Pagination -->
                 <div class="flex flex-col gap-3 border-t border-gray-200 dark:border-gray-700 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-                    <div class="text-sm text-gray-600 dark:text-gray-300">Page {{ currentPage }} of {{ totalPages }}</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-300">{{ s('Page {current} of {total}').replace('{current}', String(currentPage)).replace('{total}', String(totalPages)) }}</div>
                     <div class="flex items-center gap-1">
                         <button
                             @click="prevPage"
                             :disabled="currentPage === 1"
                             class="btn-secondary py-1.5 px-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            Prev
+                            {{ s('Prev') }}
                         </button>
                         <button
                             v-for="page in visiblePages"
@@ -316,7 +316,7 @@
                             :disabled="currentPage === totalPages"
                             class="btn-secondary py-1.5 px-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            Next
+                            {{ s('Next') }}
                         </button>
                     </div>
                 </div>
@@ -337,7 +337,7 @@
                 This permanently removes the user and their related data. The action cannot be undone.
             </p>
             <div class="mt-5 flex justify-end gap-3">
-                <button @click="showDeleteConfirm = false" class="btn-secondary">Cancel</button>
+                <button @click="showDeleteConfirm = false" class="btn-secondary">{{ s('Cancel') }}</button>
                 <button @click="deleteUser" :disabled="isUpdating" class="btn-danger disabled:opacity-50 disabled:cursor-not-allowed">
                     {{ isUpdating ? "Deleting..." : "Delete User" }}
                 </button>
@@ -350,8 +350,8 @@
         <div class="w-full max-w-2xl rounded-lg bg-white dark:bg-gray-800 p-6 shadow-xl max-h-[90vh] overflow-y-auto">
             <div class="flex items-start justify-between gap-4">
                 <div>
-                    <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tier Controls</p>
-                    <h3 class="mt-1 text-xl font-semibold text-gray-900 dark:text-white">Manage {{ selectedUser?.username }}</h3>
+                    <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ s('Tier Controls') }}</p>
+                    <h3 class="mt-1 text-xl font-semibold text-gray-900 dark:text-white">{{ s('Manage {username}').replace('{username}', selectedUser?.username || '') }}</h3>
                 </div>
                 <button @click="closeTierModal" class="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-200 transition">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -364,68 +364,68 @@
                 <!-- Tier Info Cards -->
                 <div class="grid gap-3 md:grid-cols-3">
                     <div class="rounded-md bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 p-3">
-                        <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Current Tier</p>
+                        <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ s('Current Tier') }}</p>
                         <div class="mt-2 flex items-center gap-2">
                             <span :class="getTierBadgeClass(tierInfo.tier)" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
-                                {{ tierInfo.tier }}
+                                {{ labelTier(tierInfo.tier) }}
                             </span>
-                            <span v-if="tierInfo.override" class="text-xs font-medium text-amber-600 dark:text-amber-400">Override active</span>
+                            <span v-if="tierInfo.override" class="text-xs font-medium text-amber-600 dark:text-amber-400">{{ s('Override active') }}</span>
                         </div>
                     </div>
 
                     <div v-if="tierInfo.subscription && tierInfo.subscription.status === 'active'" class="rounded-md bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 p-3">
-                        <p class="text-xs font-medium text-green-700 dark:text-green-300 uppercase tracking-wider">Subscription</p>
-                        <p class="mt-2 text-sm font-medium text-green-800 dark:text-green-200">Active</p>
-                        <p class="mt-0.5 text-xs text-green-700 dark:text-green-300">Renews {{ formatDate(tierInfo.subscription.current_period_end) }}</p>
+                        <p class="text-xs font-medium text-green-700 dark:text-green-300 uppercase tracking-wider">{{ s('Subscription') }}</p>
+                        <p class="mt-2 text-sm font-medium text-green-800 dark:text-green-200">{{ s('Active') }}</p>
+                        <p class="mt-0.5 text-xs text-green-700 dark:text-green-300">{{ s('Renews {date}').replace('{date}', formatDate(tierInfo.subscription.current_period_end)) }}</p>
                     </div>
 
                     <div v-if="selectedUser && (selectedUser.role === 'admin' || selectedUser.role === 'owner')" class="rounded-md bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-700 p-3">
-                        <p class="text-xs font-medium text-primary-700 dark:text-primary-300 uppercase tracking-wider">Role Bonus</p>
-                        <p class="mt-2 text-sm font-medium text-primary-800 dark:text-primary-200">Admins keep Pro by default</p>
+                        <p class="text-xs font-medium text-primary-700 dark:text-primary-300 uppercase tracking-wider">{{ s('Role Bonus') }}</p>
+                        <p class="mt-2 text-sm font-medium text-primary-800 dark:text-primary-200">{{ s('Admins keep Pro by default') }}</p>
                     </div>
                 </div>
 
                 <!-- Override Info -->
                 <div v-if="tierInfo.override" class="rounded-md bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 p-3">
                     <p class="text-sm font-medium text-amber-800 dark:text-amber-200">
-                        Override: {{ tierInfo.override.tier }}
-                        <span v-if="tierInfo.override.expires_at"> until {{ formatDate(tierInfo.override.expires_at) }}</span>
+                        {{ s('Override: {tier}').replace('{tier}', labelTier(tierInfo.override.tier)) }}
+                        <span v-if="tierInfo.override.expires_at">{{ s(' until {date}').replace('{date}', formatDate(tierInfo.override.expires_at)) }}</span>
                     </p>
-                    <p v-if="tierInfo.override.reason" class="mt-0.5 text-xs text-amber-700 dark:text-amber-300">Reason: {{ tierInfo.override.reason }}</p>
-                    <p v-if="tierInfo.override.created_by_username" class="mt-0.5 text-xs text-amber-700 dark:text-amber-300">Set by: {{ tierInfo.override.created_by_username }}</p>
+                    <p v-if="tierInfo.override.reason" class="mt-0.5 text-xs text-amber-700 dark:text-amber-300">{{ s('Reason: {reason}').replace('{reason}', tierInfo.override.reason) }}</p>
+                    <p v-if="tierInfo.override.created_by_username" class="mt-0.5 text-xs text-amber-700 dark:text-amber-300">{{ s('Set by: {username}').replace('{username}', tierInfo.override.created_by_username) }}</p>
                 </div>
 
                 <!-- Override Controls -->
                 <div class="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
                     <div class="card card-body">
-                        <p class="text-sm font-semibold text-gray-900 dark:text-white">Set tier override</p>
+                        <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ s('Set tier override') }}</p>
                         <div class="mt-3 space-y-3">
                             <select v-model="overrideTier" class="input">
-                                <option value="free">Free</option>
-                                <option value="pro">Pro</option>
+                                <option value="free">{{ s('Free') }}</option>
+                                <option value="pro">{{ s('Pro') }}</option>
                             </select>
                             <input v-model="overrideExpiry" type="date" class="input" />
-                            <input v-model="overrideReason" type="text" placeholder="Reason for override" class="input" />
+                            <input v-model="overrideReason" type="text" :placeholder="s('Reason for override')" class="input" />
                             <button @click="setTierOverride" :disabled="isUpdating" class="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed">
-                                Set Override
+                                {{ s('Set Override') }}
                             </button>
                         </div>
                     </div>
 
                     <div class="space-y-3">
                         <div class="card card-body">
-                            <p class="text-sm font-semibold text-gray-900 dark:text-white">Trial access</p>
-                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Grant a 14-day Pro trial with a dated override.</p>
+                            <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ s('Trial access') }}</p>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ s('Grant a 14-day Pro trial with a dated override.') }}</p>
                             <button @click="grant14DayTrial" :disabled="isUpdating" class="btn-primary mt-3 w-full disabled:opacity-50 disabled:cursor-not-allowed">
-                                Grant Trial
+                                {{ s('Grant Trial') }}
                             </button>
                         </div>
 
                         <div v-if="tierInfo.override" class="rounded-lg border border-red-200 dark:border-red-700 p-4">
-                            <p class="text-sm font-semibold text-gray-900 dark:text-white">Remove override</p>
-                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Revert the user to their base tier rules.</p>
+                            <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ s('Remove override') }}</p>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ s('Revert the user to their base tier rules.') }}</p>
                             <button @click="removeTierOverride" :disabled="isUpdating" class="btn-danger mt-3 w-full disabled:opacity-50 disabled:cursor-not-allowed">
-                                Remove Override
+                                {{ s('Remove Override') }}
                             </button>
                         </div>
                     </div>
@@ -437,14 +437,33 @@
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import api from "@/services/api";
 import { useNotification } from "@/composables/useNotification";
 import { useAuthStore } from "@/stores/auth";
+import { tSentence } from "@/i18n";
 import MdiIcon from "@/components/MdiIcon.vue";
 import { mdiCheckCircle, mdiCloseCircle } from "@mdi/js";
 
+const { locale } = useI18n();
+const s = (text) => tSentence(text, { context: "metrics" });
+void locale;
+
 const { showError, showSuccess } = useNotification();
 const authStore = useAuthStore();
+
+function labelTier(tier) {
+  const key = String(tier || "free").toLowerCase();
+  if (key === "pro") return s("Pro");
+  if (key === "trial") return s("Trial");
+  if (key === "free") return s("Free");
+  if (key === "owner") return s("owner");
+  return tier;
+}
+
+function localeTag() {
+  return locale.value === "zh" ? "zh-CN" : "en-US";
+}
 
 const users = ref([]);
 const loading = ref(true);
@@ -503,6 +522,35 @@ const activeUserCount = computed(() => statistics.value.activeUsers || 0);
 const pendingApprovalCount = computed(() => statistics.value.pendingApproval || 0);
 const unverifiedCount = computed(() => statistics.value.unverified || 0);
 const proUserCount = computed(() => statistics.value.proUsers || 0);
+
+const pageSubtitle = computed(() =>
+  s("{total} total users · {active} active · {pending} pending · {pro} pro")
+    .replace("{total}", String(statistics.value.totalUsers || totalUsers.value))
+    .replace("{active}", String(activeUserCount.value))
+    .replace("{pending}", String(pendingApprovalCount.value))
+    .replace("{pro}", String(proUserCount.value)),
+);
+
+const resultsSummary = computed(() => {
+  let text = s("Showing {start}-{end} of {total}")
+    .replace("{start}", String(startIndex.value))
+    .replace("{end}", String(endIndex.value))
+    .replace("{total}", String(totalUsers.value));
+  if (activeFiltersCount.value > 0) {
+    text +=
+      activeFiltersCount.value === 1
+        ? s(" ({count} filter)").replace("{count}", String(activeFiltersCount.value))
+        : s(" ({count} filters)").replace("{count}", String(activeFiltersCount.value));
+  }
+  return text;
+});
+
+const pageActivitySummary = computed(() =>
+  s("{trades} trades · {imports} imports · {activeWeek} active this week")
+    .replace("{trades}", formatNumber(pageTradeCount.value))
+    .replace("{imports}", formatNumber(pageImportCount.value))
+    .replace("{activeWeek}", String(recentlyActiveCount.value)),
+);
 
 const activeFiltersCount = computed(() =>
     [
@@ -607,15 +655,15 @@ function getTierBadgeClass(tier) {
 }
 
 function formatNumber(value) {
-    return new Intl.NumberFormat("en-US").format(Number(value || 0));
+    return new Intl.NumberFormat(localeTag()).format(Number(value || 0));
 }
 
 function formatDate(dateString) {
-    if (!dateString) return "N/A";
+    if (!dateString) return s("N/A");
     const date = new Date(dateString);
-    if (Number.isNaN(date.getTime())) return "N/A";
+    if (Number.isNaN(date.getTime())) return s("N/A");
 
-    return date.toLocaleDateString("en-US", {
+    return date.toLocaleDateString(localeTag(), {
         year: "numeric",
         month: "short",
         day: "numeric",
@@ -623,11 +671,11 @@ function formatDate(dateString) {
 }
 
 function formatDateTime(dateString) {
-    if (!dateString) return "Never";
+    if (!dateString) return s("Never");
     const date = new Date(dateString);
-    if (Number.isNaN(date.getTime())) return "Never";
+    if (Number.isNaN(date.getTime())) return s("Never");
 
-    return date.toLocaleString("en-US", {
+    return date.toLocaleString(localeTag(), {
         year: "numeric",
         month: "short",
         day: "numeric",
@@ -637,13 +685,13 @@ function formatDateTime(dateString) {
 }
 
 function formatRelativeTime(dateString) {
-    if (!dateString) return "Never";
+    if (!dateString) return s("Never");
 
     const date = new Date(dateString);
-    if (Number.isNaN(date.getTime())) return "Never";
+    if (Number.isNaN(date.getTime())) return s("Never");
 
     const deltaMs = date.getTime() - Date.now();
-    const formatter = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+    const formatter = new Intl.RelativeTimeFormat(localeTag(), { numeric: "auto" });
     const minutes = Math.round(deltaMs / (1000 * 60));
     const hours = Math.round(deltaMs / (1000 * 60 * 60));
     const days = Math.round(deltaMs / (1000 * 60 * 60 * 24));
@@ -725,8 +773,8 @@ async function fetchUsers(page = 1) {
               }
             : statistics.value;
     } catch (err) {
-        error.value = err.response?.data?.error || "Failed to load users";
-        showError("Error", error.value);
+        error.value = err.response?.data?.error || s("Failed to load users");
+        showError(s("Error"), error.value);
     } finally {
         loading.value = false;
         initialLoading.value = false;
@@ -798,11 +846,11 @@ async function updateUserRole(user, newRole) {
         });
 
         await refreshUsersAndStats();
-        showSuccess("Success", response.data.message);
+        showSuccess(s("Success"), response.data.message);
     } catch (err) {
         showError(
-            "Error",
-            err.response?.data?.error || "Failed to update user role",
+            s("Error"),
+            err.response?.data?.error || s("Failed to update user role"),
         );
     } finally {
         isUpdating.value = false;
@@ -817,11 +865,11 @@ async function toggleUserStatus(user) {
         });
 
         await refreshUsersAndStats();
-        showSuccess("Success", response.data.message);
+        showSuccess(s("Success"), response.data.message);
     } catch (err) {
         showError(
-            "Error",
-            err.response?.data?.error || "Failed to update user status",
+            s("Error"),
+            err.response?.data?.error || s("Failed to update user status"),
         );
     } finally {
         isUpdating.value = false;
@@ -839,11 +887,11 @@ async function toggleMarketingConsent(user) {
         );
 
         await refreshUsersAndStats();
-        showSuccess("Success", response.data.message);
+        showSuccess(s("Success"), response.data.message);
     } catch (err) {
         showError(
-            "Error",
-            err.response?.data?.error || "Failed to update marketing consent",
+            s("Error"),
+            err.response?.data?.error || s("Failed to update marketing consent"),
         );
     } finally {
         isUpdating.value = false;
@@ -856,11 +904,11 @@ async function verifyUser(user) {
         const response = await api.post(`/users/admin/users/${user.id}/verify`);
 
         await refreshUsersAndStats();
-        showSuccess("Success", response.data.message);
+        showSuccess(s("Success"), response.data.message);
     } catch (err) {
         showError(
-            "Error",
-            err.response?.data?.error || "Failed to verify user",
+            s("Error"),
+            err.response?.data?.error || s("Failed to verify user"),
         );
     } finally {
         isUpdating.value = false;
@@ -873,11 +921,11 @@ async function approveUser(user) {
         const response = await api.post(`/users/admin/users/${user.id}/approve`);
 
         await refreshUsersAndStats();
-        showSuccess("Success", response.data.message);
+        showSuccess(s("Success"), response.data.message);
     } catch (err) {
         showError(
-            "Error",
-            err.response?.data?.error || "Failed to approve user",
+            s("Error"),
+            err.response?.data?.error || s("Failed to approve user"),
         );
     } finally {
         isUpdating.value = false;
@@ -904,13 +952,13 @@ async function deleteUser() {
                 : currentPage.value;
 
         await refreshUsersAndStats(nextPage);
-        showSuccess("Success", response.data.message);
+        showSuccess(s("Success"), response.data.message);
         showDeleteConfirm.value = false;
         userToDelete.value = null;
     } catch (err) {
         showError(
-            "Error",
-            err.response?.data?.error || "Failed to delete user",
+            s("Error"),
+            err.response?.data?.error || s("Failed to delete user"),
         );
     } finally {
         isUpdating.value = false;
@@ -940,7 +988,7 @@ async function exportUsersToCSV() {
         const allUsers = response.data.users || [];
 
         if (allUsers.length === 0) {
-            showError("No Data", "No users to export");
+            showError(s("No Data"), s("No users to export"));
             return;
         }
 
@@ -970,11 +1018,11 @@ async function exportUsersToCSV() {
             user.email,
             user.full_name || "",
             user.role,
-            getUserDisplayTier(user),
-            user.is_active ? "Active" : "Inactive",
-            user.is_verified ? "Yes" : "No",
-            user.admin_approved ? "Yes" : "No",
-            user.marketing_consent ? "Yes" : "No",
+            labelTier(getUserDisplayTier(user)),
+            user.is_active ? s("Active") : s("Inactive"),
+            user.is_verified ? s("Yes") : s("No"),
+            user.admin_approved ? s("Yes") : s("No"),
+            user.marketing_consent ? s("Yes") : s("No"),
             user.created_at ? new Date(user.created_at).toISOString() : "",
             user.last_login_at ? new Date(user.last_login_at).toISOString() : "",
             user.last_import_at ? new Date(user.last_import_at).toISOString() : "",
@@ -1019,14 +1067,17 @@ async function exportUsersToCSV() {
         URL.revokeObjectURL(url);
 
         showSuccess(
-            "Export Complete",
-            `Exported ${allUsers.length} users to CSV`,
+            s("Export Complete"),
+            s("Exported {count} users to CSV").replace(
+                "{count}",
+                String(allUsers.length),
+            ),
         );
     } catch (err) {
         console.error("Export failed:", err);
         showError(
-            "Export Failed",
-            err.response?.data?.error || "Failed to export users",
+            s("Export Failed"),
+            err.response?.data?.error || s("Failed to export users"),
         );
     } finally {
         loading.value = false;
@@ -1054,7 +1105,7 @@ async function fetchTierInfo(userId) {
         tierInfo.value = response.data;
     } catch (err) {
         console.error("Failed to fetch tier info:", err);
-        showError("Error", "Failed to fetch tier information");
+        showError(s("Error"), s("Failed to fetch tier information"));
     }
 }
 
@@ -1075,13 +1126,13 @@ async function setTierOverride() {
         await fetchTierInfo(selectedUser.value.id);
         await refreshUsersAndStats();
         showSuccess(
-            "Success",
-            response.data.message || "Tier override set successfully",
+            s("Success"),
+            response.data.message || s("Tier override set successfully"),
         );
     } catch (err) {
         showError(
-            "Error",
-            err.response?.data?.error || "Failed to set tier override",
+            s("Error"),
+            err.response?.data?.error || s("Failed to set tier override"),
         );
     } finally {
         isUpdating.value = false;
@@ -1101,17 +1152,17 @@ async function grant14DayTrial() {
             {
                 tier: "pro",
                 expiresAt: trialEnd.toISOString(),
-                reason: "14-day Pro trial",
+                reason: s("14-day Pro trial"),
             },
         );
 
         await fetchTierInfo(selectedUser.value.id);
         await refreshUsersAndStats();
-        showSuccess("Success", "14-day Pro trial granted successfully");
+        showSuccess(s("Success"), s("14-day Pro trial granted successfully"));
     } catch (err) {
         showError(
-            "Error",
-            err.response?.data?.error || "Failed to grant trial",
+            s("Error"),
+            err.response?.data?.error || s("Failed to grant trial"),
         );
     } finally {
         isUpdating.value = false;
@@ -1130,13 +1181,13 @@ async function removeTierOverride() {
         await fetchTierInfo(selectedUser.value.id);
         await refreshUsersAndStats();
         showSuccess(
-            "Success",
-            response.data.message || "Tier override removed successfully",
+            s("Success"),
+            response.data.message || s("Tier override removed successfully"),
         );
     } catch (err) {
         showError(
-            "Error",
-            err.response?.data?.error || "Failed to remove tier override",
+            s("Error"),
+            err.response?.data?.error || s("Failed to remove tier override"),
         );
     } finally {
         isUpdating.value = false;

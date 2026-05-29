@@ -11,63 +11,48 @@
       </div>
       <div class="text-right">
         <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ analysis.pillarsPassed }}/8</p>
-        <p class="text-sm text-gray-500 dark:text-gray-400">Pillars Passed</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400">{{ s('Pillars Passed') }}</p>
       </div>
     </div>
 
     <!-- Pillars Grid -->
     <div class="p-6">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <!-- Pillar 1 -->
         <PillarBadge
           :passed="analysis.pillars.pillar1.passed"
           :name="analysis.pillars.pillar1.name"
           :value="formatPillarValue(analysis.pillars.pillar1)"
         />
-
-        <!-- Pillar 2 -->
         <PillarBadge
           :passed="analysis.pillars.pillar2.passed"
           :name="analysis.pillars.pillar2.name"
           :value="analysis.pillars.pillar2.displayValue || formatPillarValue(analysis.pillars.pillar2)"
         />
-
-        <!-- Pillar 3 -->
         <PillarBadge
           :passed="analysis.pillars.pillar3.passed"
           :name="analysis.pillars.pillar3.name"
           :value="analysis.pillars.pillar3.displayValue || formatPillarValue(analysis.pillars.pillar3)"
         />
-
-        <!-- Pillar 4 -->
         <PillarBadge
           :passed="analysis.pillars.pillar4.passed"
           :name="analysis.pillars.pillar4.name"
-          :value="analysis.pillars.pillar4.displayValue || (analysis.pillars.pillar4.passed ? 'Growing' : 'Declining')"
+          :value="analysis.pillars.pillar4.displayValue || growthLabel(analysis.pillars.pillar4.passed)"
         />
-
-        <!-- Pillar 5 -->
         <PillarBadge
           :passed="analysis.pillars.pillar5.passed"
           :name="analysis.pillars.pillar5.name"
-          :value="analysis.pillars.pillar5.displayValue || (analysis.pillars.pillar5.passed ? 'Growing' : 'Declining')"
+          :value="analysis.pillars.pillar5.displayValue || growthLabel(analysis.pillars.pillar5.passed)"
         />
-
-        <!-- Pillar 6 -->
         <PillarBadge
           :passed="analysis.pillars.pillar6.passed"
           :name="analysis.pillars.pillar6.name"
           :value="analysis.pillars.pillar6.displayValue || formatPillarValue(analysis.pillars.pillar6)"
         />
-
-        <!-- Pillar 7 -->
         <PillarBadge
           :passed="analysis.pillars.pillar7.passed"
           :name="analysis.pillars.pillar7.name"
           :value="analysis.pillars.pillar7.displayValue || formatPillarValue(analysis.pillars.pillar7)"
         />
-
-        <!-- Pillar 8 -->
         <PillarBadge
           :passed="analysis.pillars.pillar8.passed"
           :name="analysis.pillars.pillar8.name"
@@ -87,19 +72,19 @@
           @click="$emit('view-details', analysis)"
           class="text-sm text-primary-600 hover:text-primary-800"
         >
-          View Details
+          {{ s('View Details') }}
         </button>
         <button
           @click="$emit('add-to-watchlist', analysis)"
           class="text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
         >
-          Add to Watchlist
+          {{ s('Add to Watchlist') }}
         </button>
         <button
           @click="$emit('add-to-holdings', analysis)"
           class="text-sm text-green-600 hover:text-green-800"
         >
-          Add to Holdings
+          {{ s('Add to Holdings') }}
         </button>
       </div>
     </div>
@@ -107,6 +92,8 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import PillarBadge from './PillarBadge.vue'
 
 defineProps({
@@ -118,12 +105,19 @@ defineProps({
 
 defineEmits(['view-details', 'add-to-holdings', 'add-to-watchlist'])
 
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
+
+function growthLabel(passed) {
+  return passed ? s('Growing') : s('Declining')
+}
+
 function formatPillarValue(pillar) {
-  // Always return a number - use 0 as fallback if value is null/undefined
-  const value = pillar.value !== null && pillar.value !== undefined 
-    ? pillar.value 
+  const value = pillar.value !== null && pillar.value !== undefined
+    ? pillar.value
     : 0
-  
+
   if (typeof value === 'number') {
     return value.toFixed(2)
   }

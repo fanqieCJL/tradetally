@@ -329,7 +329,9 @@ const NAV_TEXT_KEYS = {
   Pricing: 'nav.pricing',
   Features: 'nav.features',
   FAQ: 'nav.faq',
-  Compare: 'nav.compare'
+  Compare: 'nav.compare',
+  Admin: 'nav.admin',
+  'User Management': 'nav.userManagement'
 }
 
 const currentLanguageLabel = computed(() => (locale.value === 'zh' ? '中' : 'EN'))
@@ -474,9 +476,20 @@ const publicNavigation = computed(() => {
     )
   }
 
+  const translateNavName = (name) =>
+    NAV_TEXT_KEYS[name] ? t(NAV_TEXT_KEYS[name]) : name
+
   return nav.map((item) => ({
     ...item,
-    name: NAV_TEXT_KEYS[item.name] ? t(NAV_TEXT_KEYS[item.name]) : item.name
+    name: translateNavName(item.name),
+    ...(item.items
+      ? {
+          items: item.items.map((sub) => ({
+            ...sub,
+            name: translateNavName(sub.name),
+          })),
+        }
+      : {}),
   }))
 })
 
@@ -524,9 +537,20 @@ const navigation = computed(() => {
     })
   }
 
+  const translateNavName = (name) =>
+    NAV_TEXT_KEYS[name] ? t(NAV_TEXT_KEYS[name]) : name
+
   return nav.map((item) => ({
     ...item,
-    name: NAV_TEXT_KEYS[item.name] ? t(NAV_TEXT_KEYS[item.name]) : item.name
+    name: translateNavName(item.name),
+    ...(item.items
+      ? {
+          items: item.items.map((sub) => ({
+            ...sub,
+            name: translateNavName(sub.name),
+          })),
+        }
+      : {}),
   }))
 })
 

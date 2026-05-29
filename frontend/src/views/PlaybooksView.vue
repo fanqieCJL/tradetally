@@ -2,24 +2,24 @@
   <div class="content-wrapper py-8 space-y-8">
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h1 class="heading-page">Playbooks</h1>
+        <h1 class="heading-page">{{ s('Playbooks') }}</h1>
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-          Define structured setups, review trades against them, and measure plan adherence.
+          {{ s('Define structured setups, review trades against them, and measure plan adherence.') }}
         </p>
       </div>
       <div class="flex gap-3">
         <button @click="resetForm" class="btn-secondary">
-          New Playbook
+          {{ s('New Playbook') }}
         </button>
         <button @click="loadData" class="btn-primary" :disabled="loading">
-          {{ loading ? 'Refreshing...' : 'Refresh' }}
+          {{ loading ? s('Refreshing...') : s('Refresh') }}
         </button>
       </div>
     </div>
 
     <div v-if="loading && playbooks.length === 0" class="card">
       <div class="card-body py-12 text-center text-gray-500 dark:text-gray-400">
-        Loading playbooks...
+        {{ s('Loading playbooks...') }}
       </div>
     </div>
 
@@ -28,12 +28,12 @@
         <div class="card">
           <div class="card-body">
             <div class="flex items-center justify-between mb-4">
-              <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Saved Playbooks</h2>
-              <span class="text-sm text-gray-500 dark:text-gray-400">{{ playbooks.length }} total</span>
+              <h2 class="text-lg font-semibold text-gray-900 dark:text-white">{{ s('Saved Playbooks') }}</h2>
+              <span class="text-sm text-gray-500 dark:text-gray-400">{{ s('{count} total').replace('{count}', String(playbooks.length)) }}</span>
             </div>
 
             <div v-if="playbooks.length === 0" class="rounded-lg border border-dashed border-gray-300 dark:border-gray-700 p-6 text-sm text-gray-500 dark:text-gray-400">
-              No structured playbooks yet. Create one to start scoring trades against a defined setup.
+              {{ s('No structured playbooks yet. Create one to start scoring trades against a defined setup.') }}
             </div>
 
             <div v-else class="space-y-3">
@@ -56,7 +56,7 @@
                           ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
                           : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'"
                       >
-                        {{ playbook.isActive ? 'Active' : 'Archived' }}
+                        {{ playbook.isActive ? s('Active') : s('Archived') }}
                       </span>
                     </div>
                     <p v-if="playbook.description" class="mt-1 text-sm text-gray-600 dark:text-gray-400">
@@ -70,20 +70,20 @@
                         {{ formatEnum(playbook.timeframe) }}
                       </span>
                       <span class="rounded-full bg-gray-100 px-2 py-1 text-gray-700 dark:bg-gray-700 dark:text-gray-200">
-                        {{ playbook.checklistItems.length }} checklist item{{ playbook.checklistItems.length === 1 ? '' : 's' }}
+                        {{ checklistItemsLabel(playbook.checklistItems.length) }}
                       </span>
                       <span v-if="playbook.requireStopLoss" class="rounded-full bg-orange-100 px-2 py-1 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300">
-                        Stop required
+                        {{ s('Stop required') }}
                       </span>
                       <span v-if="playbook.minimumTargetR !== null" class="rounded-full bg-blue-100 px-2 py-1 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
-                        Min {{ Number(playbook.minimumTargetR).toFixed(1) }}R
+                        {{ minRLabel(playbook.minimumTargetR) }}
                       </span>
                     </div>
                   </div>
 
                   <div class="text-right text-xs text-gray-500 dark:text-gray-400">
-                    <div>{{ playbookAnalyticsMap[playbook.id]?.reviewed_trade_count || 0 }} reviews</div>
-                    <div>{{ playbookAnalyticsMap[playbook.id]?.adherence_average || '0.00' }} avg adherence</div>
+                    <div>{{ reviewsLabel(playbookAnalyticsMap[playbook.id]?.reviewed_trade_count || 0) }}</div>
+                    <div>{{ avgAdherenceLabel(playbookAnalyticsMap[playbook.id]?.adherence_average || '0.00') }}</div>
                   </div>
                 </div>
               </button>
@@ -94,27 +94,27 @@
         <div class="card">
           <div class="card-body">
             <div class="flex items-center justify-between mb-4">
-              <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Adherence Analytics</h2>
+              <h2 class="text-lg font-semibold text-gray-900 dark:text-white">{{ s('Adherence Analytics') }}</h2>
               <router-link to="/trades" class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400">
-                Review trades
+                {{ s('Review trades') }}
               </router-link>
             </div>
 
             <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
               <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-                <div class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Active playbooks</div>
+                <div class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ s('Active playbooks') }}</div>
                 <div class="mt-2 text-2xl font-semibold text-gray-900 dark:text-white">{{ analytics.overview.active_playbook_count || 0 }}</div>
               </div>
               <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-                <div class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Reviewed trades</div>
+                <div class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ s('Reviewed trades') }}</div>
                 <div class="mt-2 text-2xl font-semibold text-gray-900 dark:text-white">{{ analytics.overview.reviewed_trade_count || 0 }}</div>
               </div>
               <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-                <div class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Avg adherence</div>
+                <div class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ s('Avg adherence') }}</div>
                 <div class="mt-2 text-2xl font-semibold text-gray-900 dark:text-white">{{ analytics.overview.adherence_average || '0.00' }}</div>
               </div>
               <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-                <div class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Followed vs broken</div>
+                <div class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ s('Followed vs broken') }}</div>
                 <div class="mt-2 text-sm font-semibold text-gray-900 dark:text-white">
                   {{ analytics.overview.followed_trade_count || 0 }} / {{ analytics.overview.broken_trade_count || 0 }}
                 </div>
@@ -125,12 +125,12 @@
               <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead>
                   <tr class="text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                    <th class="py-3 pr-4">Playbook</th>
-                    <th class="py-3 pr-4">Reviewed</th>
-                    <th class="py-3 pr-4">Win Rate</th>
-                    <th class="py-3 pr-4">Profit Factor</th>
-                    <th class="py-3 pr-4">Avg R</th>
-                    <th class="py-3">Adherence</th>
+                    <th class="py-3 pr-4">{{ s('Playbook') }}</th>
+                    <th class="py-3 pr-4">{{ s('Reviewed') }}</th>
+                    <th class="py-3 pr-4">{{ s('Win Rate') }}</th>
+                    <th class="py-3 pr-4">{{ s('Profit Factor') }}</th>
+                    <th class="py-3 pr-4">{{ s('Avg R') }}</th>
+                    <th class="py-3">{{ s('Adherence') }}</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 dark:divide-gray-800 text-sm text-gray-700 dark:text-gray-300">
@@ -147,7 +147,7 @@
             </div>
 
             <div v-if="analytics.recentTrades.length > 0" class="mt-6">
-              <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Recent Reviews</h3>
+              <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">{{ s('Recent Reviews') }}</h3>
               <div class="space-y-3">
                 <div
                   v-for="review in analytics.recentTrades"
@@ -163,7 +163,7 @@
                   <div class="text-right">
                     <div class="font-semibold text-gray-900 dark:text-white">{{ Number(review.adherence_score || 0).toFixed(2) }}</div>
                     <div :class="review.followed_plan ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
-                      {{ review.followed_plan ? 'Followed plan' : 'Broke plan' }}
+                      {{ review.followed_plan ? s('Followed plan') : s('Broke plan') }}
                     </div>
                   </div>
                 </div>
@@ -178,10 +178,10 @@
           <div class="flex items-center justify-between">
             <div>
               <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
-                {{ form.id ? 'Edit Playbook' : 'Create Playbook' }}
+                {{ form.id ? s('Edit Playbook') : s('Create Playbook') }}
               </h2>
               <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Set a checklist and a few hard rules that should always hold for this setup.
+                {{ s('Set a checklist and a few hard rules that should always hold for this setup.') }}
               </p>
             </div>
             <div class="flex items-center gap-3">
@@ -191,10 +191,10 @@
                 @click="archivePlaybook({ id: form.id, name: form.name })"
                 class="text-sm text-red-600 hover:text-red-700 dark:text-red-400"
               >
-                Archive
+                {{ s('Archive') }}
               </button>
               <button v-if="form.id" @click="resetForm" class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-                Clear
+                {{ s('Clear') }}
               </button>
             </div>
           </div>
@@ -202,65 +202,65 @@
           <form @submit.prevent="savePlaybook" class="space-y-6">
             <div class="grid gap-4 md:grid-cols-2">
               <div class="md:col-span-2">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('Name') }}</label>
                 <input v-model="form.name" type="text" class="input" maxlength="120" required />
               </div>
               <div class="md:col-span-2">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('Description') }}</label>
                 <textarea v-model="form.description" rows="3" class="input"></textarea>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Market</label>
-                <input v-model="form.market" type="text" class="input" placeholder="Small caps, options, etc." maxlength="50" />
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('Market') }}</label>
+                <input v-model="form.market" type="text" class="input" :placeholder="s('Small caps, options, etc.')" maxlength="50" />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Side</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('Side') }}</label>
                 <select v-model="form.side" class="input">
-                  <option value="both">Both</option>
-                  <option value="long">Long</option>
-                  <option value="short">Short</option>
+                  <option value="both">{{ s('Both') }}</option>
+                  <option value="long">{{ s('long') }}</option>
+                  <option value="short">{{ s('short') }}</option>
                 </select>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Timeframe</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('Timeframe') }}</label>
                 <select v-model="form.timeframe" class="input">
-                  <option value="">Any</option>
-                  <option value="scalper">Scalper</option>
-                  <option value="day_trading">Day Trading</option>
-                  <option value="swing">Swing</option>
-                  <option value="position">Position</option>
+                  <option value="">{{ s('Any') }}</option>
+                  <option value="scalper">{{ s('Scalper') }}</option>
+                  <option value="day_trading">{{ s('Day Trading') }}</option>
+                  <option value="swing">{{ s('Swing') }}</option>
+                  <option value="position">{{ s('Position') }}</option>
                 </select>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Minimum Target R</label>
-                <input v-model.number="form.minimumTargetR" type="number" min="0" step="0.25" class="input" placeholder="Optional" />
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('Minimum Target R') }}</label>
+                <input v-model.number="form.minimumTargetR" type="number" min="0" step="0.25" class="input" :placeholder="s('Optional')" />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Required Strategy</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('Required Strategy') }}</label>
                 <input v-model="form.requiredStrategy" type="text" class="input" maxlength="100" />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Required Setup</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('Required Setup') }}</label>
                 <input v-model="form.requiredSetup" type="text" class="input" maxlength="100" />
               </div>
               <div class="md:col-span-2">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Required Tags</label>
-                <input v-model="requiredTagsInput" type="text" class="input" placeholder="Comma-separated tags" />
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('Required Tags') }}</label>
+                <input v-model="requiredTagsInput" type="text" class="input" :placeholder="s('Comma-separated tags')" />
               </div>
               <label class="inline-flex items-center gap-3 rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-3 md:col-span-2">
                 <input v-model="form.requireStopLoss" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
-                <span class="text-sm text-gray-700 dark:text-gray-300">Require stop loss for a passing review</span>
+                <span class="text-sm text-gray-700 dark:text-gray-300">{{ s('Require stop loss for a passing review') }}</span>
               </label>
             </div>
 
             <div>
               <div class="flex items-center justify-between mb-3">
                 <div>
-                  <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Checklist</h3>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">These items are scored directly before hard-rule penalties are applied.</p>
+                  <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{{ s('Checklist') }}</h3>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">{{ s('These items are scored directly before hard-rule penalties are applied.') }}</p>
                 </div>
                 <button type="button" @click="addChecklistItem" class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400">
-                  Add item
+                  {{ s('Add item') }}
                 </button>
               </div>
 
@@ -272,20 +272,20 @@
                 >
                   <div class="grid gap-3 md:grid-cols-[1fr_120px_120px_auto]">
                     <div>
-                      <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Label</label>
+                      <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ s('Label') }}</label>
                       <input v-model="item.label" type="text" class="input" maxlength="255" required />
                     </div>
                     <div>
-                      <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Weight</label>
+                      <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{{ s('Weight') }}</label>
                       <input v-model.number="item.weight" type="number" min="0.25" step="0.25" class="input" required />
                     </div>
                     <label class="inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 mt-6">
                       <input v-model="item.isRequired" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
-                      Required
+                      {{ s('Required') }}
                     </label>
                     <div class="flex items-end justify-end">
                       <button type="button" @click="removeChecklistItem(index)" class="text-sm text-red-600 hover:text-red-700 dark:text-red-400">
-                        Remove
+                        {{ s('Remove') }}
                       </button>
                     </div>
                   </div>
@@ -295,10 +295,10 @@
 
             <div class="flex items-center justify-between gap-3 border-t border-gray-200 dark:border-gray-700 pt-4">
               <p class="text-sm text-gray-500 dark:text-gray-400">
-                Hard rules evaluate side, timeframe, stop loss, minimum target R, and optional strategy/setup/tag matching.
+                {{ s('Hard rules evaluate side, timeframe, stop loss, minimum target R, and optional strategy/setup/tag matching.') }}
               </p>
               <button type="submit" class="btn-primary" :disabled="saving">
-                {{ saving ? 'Saving...' : (form.id ? 'Save Playbook' : 'Create Playbook') }}
+                {{ saving ? s('Saving...') : (form.id ? s('Save Playbook') : s('Create Playbook')) }}
               </button>
             </div>
           </form>
@@ -310,8 +310,14 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import api from '@/services/api'
 import { useNotification } from '@/composables/useNotification'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
 
 const { showSuccess, showError, showConfirmation } = useNotification()
 
@@ -325,6 +331,16 @@ const analytics = ref({
 })
 const selectedPlaybookId = ref(null)
 const requiredTagsInput = ref('')
+
+const ENUM_LABELS = {
+  both: 'Both',
+  long: 'long',
+  short: 'short',
+  scalper: 'Scalper',
+  day_trading: 'Day Trading',
+  swing: 'Swing',
+  position: 'Position'
+}
 
 let checklistLocalId = 0
 
@@ -359,6 +375,24 @@ const playbookAnalyticsMap = computed(() => {
     return map
   }, {})
 })
+
+function checklistItemsLabel(count) {
+  return count === 1
+    ? s('1 checklist item')
+    : s('{count} checklist items').replace('{count}', String(count))
+}
+
+function reviewsLabel(count) {
+  return s('{count} reviews').replace('{count}', String(count))
+}
+
+function avgAdherenceLabel(score) {
+  return s('{score} avg adherence').replace('{score}', score)
+}
+
+function minRLabel(r) {
+  return s('Min {r}R').replace('{r}', Number(r).toFixed(1))
+}
 
 function resetForm() {
   selectedPlaybookId.value = null
@@ -434,7 +468,7 @@ async function loadData() {
     }
   } catch (error) {
     console.error('Failed to load playbooks:', error)
-    showError('Error', 'Failed to load playbooks')
+    showError(s('Error'), s('Failed to load playbooks'))
   } finally {
     loading.value = false
   }
@@ -442,7 +476,7 @@ async function loadData() {
 
 async function savePlaybook() {
   if (!form.name.trim()) {
-    showError('Validation', 'Playbook name is required')
+    showError(s('Validation'), s('Playbook name is required'))
     return
   }
 
@@ -456,7 +490,7 @@ async function savePlaybook() {
     .filter(item => item.label)
 
   if (checklistItems.length === 0) {
-    showError('Validation', 'Add at least one checklist item')
+    showError(s('Validation'), s('Add at least one checklist item'))
     return
   }
 
@@ -482,17 +516,17 @@ async function savePlaybook() {
 
     if (form.id) {
       await api.put(`/playbooks/${form.id}`, payload)
-      showSuccess('Success', 'Playbook updated')
+      showSuccess(s('Success'), s('Playbook updated'))
     } else {
       const response = await api.post('/playbooks', payload)
       selectedPlaybookId.value = response.data.playbook?.id || null
-      showSuccess('Success', 'Playbook created')
+      showSuccess(s('Success'), s('Playbook created'))
     }
 
     await loadData()
   } catch (error) {
     console.error('Failed to save playbook:', error)
-    showError('Error', error.response?.data?.error || 'Failed to save playbook')
+    showError(s('Error'), s(error.response?.data?.error || 'Failed to save playbook'))
   } finally {
     saving.value = false
   }
@@ -500,33 +534,35 @@ async function savePlaybook() {
 
 function archivePlaybook(playbook) {
   showConfirmation(
-    'Archive Playbook',
-    `Archive "${playbook.name}"? It will stay in analytics and existing reviews but won’t be selectable for new reviews.`,
+    s('Archive Playbook'),
+    s('Archive "{name}"? It will stay in analytics and existing reviews but won’t be selectable for new reviews.').replace('{name}', playbook.name),
     async () => {
       try {
         await api.delete(`/playbooks/${playbook.id}`)
-        showSuccess('Success', 'Playbook archived')
+        showSuccess(s('Success'), s('Playbook archived'))
         if (selectedPlaybookId.value === playbook.id) {
           resetForm()
         }
         await loadData()
       } catch (error) {
         console.error('Failed to archive playbook:', error)
-        showError('Error', error.response?.data?.error || 'Failed to archive playbook')
+        showError(s('Error'), s(error.response?.data?.error || 'Failed to archive playbook'))
       }
     }
   )
 }
 
 function formatEnum(value) {
-  return String(value || '')
+  if (!value) return ''
+  if (ENUM_LABELS[value]) return s(ENUM_LABELS[value])
+  return String(value)
     .split('_')
     .map(part => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ')
 }
 
 function formatDate(value) {
-  if (!value) return 'N/A'
+  if (!value) return s('N/A')
   return new Date(value).toLocaleDateString()
 }
 

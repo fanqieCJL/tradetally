@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
       <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">
-        Take Profit Targets
+        {{ s('Take Profit Targets') }}
       </h4>
       <button
         v-if="targets.length < maxTargets"
@@ -14,7 +14,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
-        Add Target
+        {{ s('Add Target') }}
       </button>
     </div>
 
@@ -25,21 +25,21 @@
         @click="setQuickTargets('single')"
         class="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600"
       >
-        Single Target
+        {{ s('Single Target') }}
       </button>
       <button
         type="button"
         @click="setQuickTargets('equal-split')"
         class="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600"
       >
-        Equal Split (2 TPs)
+        {{ s('Equal Split (2 TPs)') }}
       </button>
       <button
         type="button"
         @click="setQuickTargets('pyramid')"
         class="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600"
       >
-        Pyramid Out (3 TPs)
+        {{ s('Pyramid Out (3 TPs)') }}
       </button>
     </div>
 
@@ -56,26 +56,26 @@
             v-if="target.status === 'hit'"
             class="px-2 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
           >
-            Hit
+            {{ s('Hit') }}
           </span>
           <span
             v-else-if="target.status === 'cancelled'"
             class="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400"
           >
-            Cancelled
+            {{ s('Cancelled') }}
           </span>
           <span
             v-else
             class="px-2 py-0.5 text-xs font-medium rounded-full bg-primary-100 text-primary-800 dark:bg-primary-900/30 dark:text-primary-400"
           >
-            Pending
+            {{ s('Pending') }}
           </span>
           <!-- Remove Button -->
           <button
             type="button"
             @click="removeTarget(index)"
             class="text-gray-400 hover:text-red-500 dark:hover:text-red-400"
-            title="Remove target"
+            :title="s('Remove target')"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -89,7 +89,7 @@
         <!-- Price -->
         <div>
           <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">
-            Target Price
+            {{ s('Target Price') }}
           </label>
           <div class="relative">
             <span class="absolute left-2 top-1.5 text-gray-500 dark:text-gray-400 text-sm">{{ currencySymbol }}</span>
@@ -110,7 +110,7 @@
         <!-- Quantity -->
         <div>
           <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">
-            Quantity
+            {{ s('Quantity') }}
           </label>
           <input
             v-model="target.quantity"
@@ -141,7 +141,7 @@
     <!-- Quantity Summary -->
     <div v-if="targets.length > 0 && tradeQuantity" class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg text-sm">
       <span class="text-gray-600 dark:text-gray-400">
-        Total Quantity Allocated:
+        {{ s('Total Quantity Allocated:') }}
       </span>
       <span :class="[
         'font-medium',
@@ -149,14 +149,14 @@
       ]">
         {{ totalAllocatedQuantity }} / {{ tradeQuantity }}
         <span v-if="quantityDifference !== 0" class="text-xs">
-          ({{ quantityDifference > 0 ? '+' : '' }}{{ quantityDifference }} {{ quantityDifference > 0 ? 'over' : 'remaining' }})
+          ({{ quantityDifference > 0 ? '+' : '' }}{{ quantityDifference }} {{ quantityDifference > 0 ? s('over') : s('remaining') }})
         </span>
       </span>
     </div>
 
     <!-- R-Multiple Preview -->
     <div v-if="targets.length > 0 && stopLoss" class="p-3 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
-      <div class="text-xs text-primary-700 dark:text-primary-300 font-medium mb-2">R-Multiple Preview</div>
+      <div class="text-xs text-primary-700 dark:text-primary-300 font-medium mb-2">{{ s('R-Multiple Preview') }}</div>
       <div class="space-y-1">
         <div v-for="(target, index) in targets" :key="target.id" class="flex justify-between text-sm">
           <span class="text-gray-600 dark:text-gray-400">TP{{ index + 1 }} ({{ formatCurrency(target.price) }}):</span>
@@ -165,7 +165,7 @@
           </span>
         </div>
         <div v-if="targets.length > 1" class="flex justify-between text-sm pt-2 border-t border-primary-200 dark:border-primary-700 mt-2">
-          <span class="text-gray-700 dark:text-gray-300 font-medium">Weighted Avg:</span>
+          <span class="text-gray-700 dark:text-gray-300 font-medium">{{ s('Weighted Avg:') }}</span>
           <span class="font-bold text-primary-600 dark:text-primary-400">
             {{ calculateWeightedR() }}R
           </span>
@@ -177,7 +177,13 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
 
 const { formatCurrency, currencySymbol } = useCurrencyFormatter()
 
@@ -294,9 +300,9 @@ function validateTarget(index) {
   const price = parseFloat(target.price)
 
   if (isLong.value && price <= entryPrice.value) {
-    target.error = 'Must be above entry price'
+    target.error = s('Must be above entry price')
   } else if (!isLong.value && price >= entryPrice.value) {
-    target.error = 'Must be below entry price'
+    target.error = s('Must be below entry price')
   } else {
     target.error = ''
   }

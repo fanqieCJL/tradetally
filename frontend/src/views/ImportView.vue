@@ -2,16 +2,16 @@
   <div class="content-wrapper py-8">
     <div class="mb-8 flex items-start justify-between">
       <div>
-        <h1 class="heading-page">Import Trades</h1>
+        <h1 class="heading-page">{{ s('Import Trades') }}</h1>
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-          Import your trades from CSV files exported from major brokers.
+          {{ s('Import your trades from CSV files exported from major brokers.') }}
         </p>
       </div>
       <router-link to="/broker-sync" class="mt-1 btn-secondary inline-flex items-center gap-2">
         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
         </svg>
-        Broker Sync
+        {{ s('Broker Sync') }}
       </router-link>
     </div>
 
@@ -21,9 +21,9 @@
       :step="2"
       :total-steps="5"
       :next-step="3"
-      title="Import Your Trades"
-      description="When you're ready, upload a CSV from your broker or use Broker Sync. Auto-Detect handles the format for you."
-      cta-label="Next: Trading Journal"
+      :title="s('Import Your Trades')"
+      :description="s('When you\'re ready, upload a CSV from your broker or use Broker Sync. Auto-Detect handles the format for you.')"
+      :cta-label="s('Next: Trading Journal')"
       cta-route="diary"
     />
 
@@ -34,8 +34,8 @@
             <DocumentTextIcon class="h-4 w-4 text-primary-600 dark:text-primary-400" />
           </div>
           <div class="min-w-0 flex-1">
-            <h2 class="text-sm font-semibold text-gray-900 dark:text-white">CSV import guide</h2>
-            <p class="text-xs text-gray-500 dark:text-gray-400">Pick your broker for export instructions, or stick with Auto-Detect.</p>
+            <h2 class="text-sm font-semibold text-gray-900 dark:text-white">{{ s('CSV import guide') }}</h2>
+            <p class="text-xs text-gray-500 dark:text-gray-400">{{ s('Pick your broker for export instructions, or stick with Auto-Detect.') }}</p>
           </div>
         </div>
 
@@ -81,7 +81,7 @@
           <div class="bg-gray-50 p-5 dark:bg-gray-900/40">
             <div class="mb-2 flex items-center gap-2">
               <ExclamationTriangleIcon class="h-4 w-4 flex-shrink-0 text-primary-500 dark:text-primary-400" />
-              <span class="text-[11px] font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-300">Heads up</span>
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-300">{{ s('Heads up') }}</span>
             </div>
             <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
               {{ activeBrokerGuide.warning }}
@@ -109,19 +109,19 @@
               >
                 <div v-if="isAnalyzingFile" class="space-y-3 text-center">
                   <div class="animate-spin mx-auto h-12 w-12 rounded-full border-4 border-primary-200 border-t-primary-600"></div>
-                  <p class="text-base font-medium text-gray-900 dark:text-white">Analyzing file...</p>
-                  <p class="text-sm text-gray-500 dark:text-gray-400">Checking headers and row count</p>
+                  <p class="text-base font-medium text-gray-900 dark:text-white">{{ s('Analyzing file...') }}</p>
+                  <p class="text-sm text-gray-500 dark:text-gray-400">{{ s('Checking headers and row count') }}</p>
                 </div>
                 <div v-else class="space-y-2 text-center">
                   <ArrowUpTrayIcon class="mx-auto h-16 w-16 text-gray-400" />
-                  <p class="text-base font-medium text-gray-900 dark:text-white">Drop your broker CSV here</p>
+                  <p class="text-base font-medium text-gray-900 dark:text-white">{{ s('Drop your broker CSV here') }}</p>
                   <div class="flex text-sm text-gray-600 dark:text-gray-400">
                     <label
                       for="file-upload"
                       class="relative cursor-pointer rounded-md font-medium text-primary-600 hover:text-primary-500"
                       @click.stop
                     >
-                      <span>Browse files</span>
+                      <span>{{ s('Browse files') }}</span>
                       <input
                         id="file-upload"
                         ref="fileInput"
@@ -131,48 +131,48 @@
                         @change="handleFileSelect"
                       />
                     </label>
-                    <p class="pl-1">or drag and drop</p>
+                    <p class="pl-1">{{ s('or drag and drop') }}</p>
                   </div>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">CSV files only (up to 50MB)</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">{{ s('CSV files only (up to 50MB)') }}</p>
                 </div>
               </div>
               <div v-if="selectedFile" class="mt-2 flex items-center justify-between">
                 <p class="text-sm text-gray-900 dark:text-white">
-                  Selected: {{ selectedFile.name }} ({{ formatFileSize(selectedFile.size) }})
+                  {{ s('Selected:') }} {{ selectedFile.name }} ({{ formatFileSize(selectedFile.size) }})
                 </p>
                 <button
                   type="button"
                   class="text-sm text-gray-400 hover:text-red-500 transition-colors"
                   @click.prevent="clearSelectedFile"
                 >
-                  Clear
+                  {{ s('Clear') }}
                 </button>
               </div>
             </div>
 
             <div>
-              <label for="broker" class="label">Broker Format</label>
+              <label for="broker" class="label">{{ s('Broker Format') }}</label>
               <select id="broker" v-model="selectedBroker" required class="input">
-                <option value="auto">Auto-Detect (Recommended)</option>
-                <option disabled>--- Or select your broker ---</option>
-                <option value="generic">Generic CSV</option>
-                <option value="lightspeed">Lightspeed Trader</option>
-                <option value="schwab">Charles Schwab</option>
-                <option value="thinkorswim">ThinkorSwim</option>
-                <option value="ibkr">Interactive Brokers</option>
-                <option value="captrader">CapTrader</option>
-                <option value="webull">Webull</option>
-                <option value="etrade">E*TRADE</option>
-                <option value="firstrade">Firstrade (Alpha)</option>
-                <option value="papermoney">PaperMoney</option>
-                <option value="tradervue">TraderVue</option>
-                <option value="tradingview">TradingView</option>
-                <option value="avatrade">AvaTrade</option>
-                <option value="tradovate">Tradovate</option>
-                <option value="questrade">Questrade</option>
-                <option value="tradestation">TradeStation</option>
-                <option value="tastytrade">Tastytrade</option>
-                <optgroup v-if="customMappings.length > 0" label="Custom Importers">
+                <option value="auto">{{ s('Auto-Detect (Recommended)') }}</option>
+                <option disabled>{{ s('--- Or select your broker ---') }}</option>
+                <option value="generic">{{ s('Generic CSV') }}</option>
+                <option value="lightspeed">{{ s('Lightspeed Trader') }}</option>
+                <option value="schwab">{{ s('Charles Schwab') }}</option>
+                <option value="thinkorswim">{{ s('ThinkorSwim') }}</option>
+                <option value="ibkr">{{ s('Interactive Brokers') }}</option>
+                <option value="captrader">{{ s('CapTrader') }}</option>
+                <option value="webull">{{ s('Webull') }}</option>
+                <option value="etrade">{{ s('E*TRADE') }}</option>
+                <option value="firstrade">{{ s('Firstrade (Alpha)') }}</option>
+                <option value="papermoney">{{ s('PaperMoney') }}</option>
+                <option value="tradervue">{{ s('TraderVue') }}</option>
+                <option value="tradingview">{{ s('TradingView') }}</option>
+                <option value="avatrade">{{ s('AvaTrade') }}</option>
+                <option value="tradovate">{{ s('Tradovate') }}</option>
+                <option value="questrade">{{ s('Questrade') }}</option>
+                <option value="tradestation">{{ s('TradeStation') }}</option>
+                <option value="tastytrade">{{ s('Tastytrade') }}</option>
+                <optgroup v-if="customMappings.length > 0" :label="s('Custom Importers')">
                   <option
                     v-for="mapping in customMappings"
                     :key="mapping.id"
@@ -183,30 +183,30 @@
                 </optgroup>
               </select>
               <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                We'll automatically detect your broker from the CSV file. Select a specific broker only if auto-detection doesn't work.
+                {{ s('We\'ll automatically detect your broker from the CSV file. Select a specific broker only if auto-detection doesn\'t work.') }}
               </p>
             </div>
 
             <!-- Account Selection (only shown if user has defined accounts) -->
             <div v-if="requiresAccountSelection">
-              <label for="account" class="label">Trading Account</label>
+              <label for="account" class="label">{{ s('Trading Account') }}</label>
               <select id="account" v-model="selectedAccountId" class="input">
-                <option :value="null">Select account...</option>
+                <option :value="null">{{ s('Select account...') }}</option>
                 <option v-for="account in accounts" :key="account.id" :value="account.id">
                   {{ account.name }}{{ account.identifier ? ` (${redactAccountId(account.identifier)})` : '' }}{{ account.broker ? ` - ${formatBrokerName(account.broker)}` : '' }}
                 </option>
-                <option value="none">None (different broker/account)</option>
+                <option value="none">{{ s('None (different broker/account)') }}</option>
               </select>
               <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Select a trading account to associate with this import, or choose "None" if importing from a different broker.
-                <router-link to="/accounts" class="text-primary-600 hover:text-primary-500">Manage accounts</router-link>
+                {{ s('Select a trading account to associate with this import, or choose "None" if importing from a different broker.') }}
+                <router-link to="/accounts" class="text-primary-600 hover:text-primary-500">{{ s('Manage accounts') }}</router-link>
               </p>
             </div>
 
             <div v-if="selectedFile" class="rounded-2xl border border-gray-200 bg-gray-50/80 p-4 dark:border-gray-700 dark:bg-gray-900/50">
               <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div>
-                  <p class="text-sm font-semibold text-gray-900 dark:text-white">Pre-import check</p>
+                  <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ s('Pre-import check') }}</p>
                   <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     {{ fileReadinessMessage }}
                   </p>
@@ -216,44 +216,44 @@
                   class="self-start text-sm font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400"
                   @click="analyzeSelectedFile(selectedFile)"
                 >
-                  Re-check file
+                  {{ s('Re-check file') }}
                 </button>
               </div>
 
               <div v-if="isAnalyzingFile" class="mt-4 rounded-xl border border-primary-200 bg-primary-50 px-4 py-3 text-sm text-primary-700 dark:border-primary-800 dark:bg-primary-900/20 dark:text-primary-300">
-                Analyzing headers and estimating trade count...
+                {{ s('Analyzing headers and estimating trade count...') }}
               </div>
 
               <div v-else class="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 <div class="rounded-xl bg-white p-3 shadow-sm ring-1 ring-gray-200 dark:bg-gray-800 dark:ring-gray-700">
-                  <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Estimated rows</p>
+                  <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ s('Estimated rows') }}</p>
                   <p class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
-                    {{ fileAnalysis.rowCount !== null ? fileAnalysis.rowCount.toLocaleString() : 'Unknown' }}
+                    {{ fileAnalysis.rowCount !== null ? fileAnalysis.rowCount.toLocaleString() : s('Unknown') }}
                   </p>
                 </div>
                 <div class="rounded-xl bg-white p-3 shadow-sm ring-1 ring-gray-200 dark:bg-gray-800 dark:ring-gray-700">
-                  <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Format check</p>
+                  <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ s('Format check') }}</p>
                   <p class="mt-1 text-sm font-semibold" :class="fileAnalysis.formatDetected ? 'text-green-700 dark:text-green-400' : 'text-yellow-700 dark:text-yellow-400'">
-                    {{ fileAnalysis.formatDetected ? 'Recognized' : 'Needs review' }}
+                    {{ fileAnalysis.formatDetected ? s('Recognized') : s('Needs review') }}
                   </p>
                   <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                    {{ fileAnalysis.detectedBroker ? formatBrokerName(fileAnalysis.detectedBroker) : 'We may need column mapping.' }}
+                    {{ fileAnalysis.detectedBroker ? formatBrokerName(fileAnalysis.detectedBroker) : s('We may need column mapping.') }}
                   </p>
                 </div>
                 <div class="rounded-xl bg-white p-3 shadow-sm ring-1 ring-gray-200 dark:bg-gray-800 dark:ring-gray-700">
-                  <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Import mode</p>
+                  <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ s('Import mode') }}</p>
                   <p class="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{{ selectedBrokerLabel }}</p>
                   <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ brokerRecommendation }}</p>
                 </div>
                 <div class="rounded-xl bg-white p-3 shadow-sm ring-1 ring-gray-200 dark:bg-gray-800 dark:ring-gray-700">
-                  <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Account</p>
+                  <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ s('Account') }}</p>
                   <p class="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{{ accountReadinessLabel }}</p>
                   <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ accountReadinessMessage }}</p>
                 </div>
               </div>
 
               <div v-if="displayedHeaderPreview.length > 0" class="mt-4">
-                <p class="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">Detected columns</p>
+                <p class="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ s('Detected columns') }}</p>
                 <div class="mt-2 flex flex-wrap gap-2">
                   <span
                     v-for="header in displayedHeaderPreview"
@@ -266,7 +266,7 @@
                     v-if="fileAnalysis.headers.length > displayedHeaderPreview.length"
                     class="rounded-full bg-primary-50 px-3 py-1 text-xs text-primary-700 ring-1 ring-primary-200 dark:bg-primary-900/20 dark:text-primary-300 dark:ring-primary-800"
                   >
-                    +{{ fileAnalysis.headers.length - displayedHeaderPreview.length }} more
+                    +{{ fileAnalysis.headers.length - displayedHeaderPreview.length }} {{ s('more') }}
                   </span>
                 </div>
               </div>
@@ -294,7 +294,7 @@
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <span v-if="loading">Importing...</span>
+                <span v-if="loading">{{ s('Importing...') }}</span>
                 <span v-else>{{ importButtonLabel }}</span>
               </button>
             </div>
@@ -308,9 +308,9 @@
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center space-x-3">
               <h3 class="heading-card">
-                Import History
+                {{ s('Import History') }}
                 <span v-if="pagination.total > 0" class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                  ({{ importHistory.length }} of {{ pagination.total }})
+                  ({{ importHistory.length }} {{ s('of') }} {{ pagination.total }})
                 </span>
               </h3>
               <button
@@ -319,7 +319,7 @@
                 class="px-3 py-1 bg-red-600 text-white text-sm rounded-md hover:bg-red-700 disabled:opacity-50"
                 :disabled="bulkDeleting"
               >
-                Delete Selected ({{ selectedImportIds.size }})
+                {{ s('Delete Selected ({count})').replace('{count}', String(selectedImportIds.size)) }}
               </button>
             </div>
             <div class="flex items-center space-x-3">
@@ -331,10 +331,10 @@
                   @change="toggleSelectAll"
                   class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500"
                 />
-                <span>Select All</span>
+                <span>{{ s('Select All') }}</span>
               </label>
               <button @click="fetchLogs" class="btn-secondary text-sm">
-                View Logs
+                {{ s('View Logs') }}
               </button>
             </div>
           </div>
@@ -367,9 +367,9 @@
                     </span>
                   </div>
                   <p v-if="importLog.status === 'completed'" class="text-sm text-gray-500 dark:text-gray-400">
-                    {{ importLog.trades_imported }} imported
+                    {{ importLog.trades_imported }} {{ s('imported') }}
                     <span v-if="importLog.trades_failed > 0">
-                      • {{ importLog.trades_failed }} failed
+                      • {{ importLog.trades_failed }} {{ s('failed') }}
                     </span>
                   </p>
                 </div>
@@ -378,7 +378,7 @@
                   class="text-red-600 hover:text-red-500 text-sm"
                   :disabled="deleting"
                 >
-                  Delete
+                  {{ s('Delete') }}
                 </button>
               </div>
             </div>
@@ -390,7 +390,7 @@
               @click="loadMoreHistory"
               class="btn-secondary text-sm"
             >
-              Load More ({{ pagination.total - importHistory.length }} remaining)
+              {{ s('Load More ({count} remaining)').replace('{count}', String(pagination.total - importHistory.length)) }}
             </button>
           </div>
         </div>
@@ -400,12 +400,12 @@
       <div v-if="customMappings.length > 0" class="card">
         <div class="card-body">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="heading-card">Custom Importers</h3>
+            <h3 class="heading-card">{{ s('Custom Importers') }}</h3>
             <button
               @click="showCustomMappings = !showCustomMappings"
               class="flex items-center space-x-2 text-sm text-primary-600 dark:text-primary-400 hover:text-primary-500"
             >
-              <span>{{ showCustomMappings ? 'Hide' : 'Show' }} Importers</span>
+              <span>{{ showCustomMappings ? s('Hide Importers') : s('Show Importers') }}</span>
               <svg
                 class="w-4 h-4 transition-transform duration-200"
                 :class="{ 'rotate-180': showCustomMappings }"
@@ -420,7 +420,7 @@
 
           <div v-if="showCustomMappings" class="space-y-3">
             <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
-              Manage your custom CSV importers. These appear in the broker format dropdown for quick reuse.
+              {{ s('Manage your custom CSV importers. These appear in the broker format dropdown for quick reuse.') }}
             </p>
 
             <div
@@ -436,12 +436,12 @@
                   {{ mapping.description }}
                 </p>
                 <div class="flex items-center gap-4 mt-2 text-xs text-gray-500 dark:text-gray-400">
-                  <span v-if="mapping.use_count > 0">Used {{ mapping.use_count }} time{{ mapping.use_count !== 1 ? 's' : '' }}</span>
-                  <span v-if="mapping.last_used_at">Last used {{ formatDate(mapping.last_used_at) }}</span>
-                  <span v-else>Never used</span>
+                  <span v-if="mapping.use_count > 0">{{ mapping.use_count === 1 ? s('Used {count} time').replace('{count}', String(mapping.use_count)) : s('Used {count} times').replace('{count}', String(mapping.use_count)) }}</span>
+                  <span v-if="mapping.last_used_at">{{ s('Last used') }} {{ formatDate(mapping.last_used_at) }}</span>
+                  <span v-else>{{ s('Never used') }}</span>
                 </div>
                 <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                  <span class="font-medium">Columns:</span>
+                  <span class="font-medium">{{ s('Columns:') }}</span>
                   {{ mapping.symbol_column }}, {{ mapping.quantity_column }}, {{ mapping.entry_price_column }}
                   <span v-if="mapping.side_column">, {{ mapping.side_column }}</span>
                 </div>
@@ -451,7 +451,7 @@
                 @click="confirmDeleteMapping(mapping)"
                 :disabled="deletingMappingId === mapping.id"
                 class="ml-4 text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                title="Delete importer"
+                :title="s('Delete importer')"
               >
                 <XMarkIcon class="h-5 w-5" />
               </button>
@@ -465,14 +465,14 @@
         <div class="card-body">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-3">
-              <h3 class="heading-card">CUSIP Symbol Mappings</h3>
+              <h3 class="heading-card">{{ s('CUSIP Symbol Mappings') }}</h3>
               <div class="flex items-center gap-2">
                 <button
                   @click="showAllMappingsModal = true"
                   class="btn-secondary text-sm"
                 >
                   <Cog6ToothIcon class="h-5 w-5 sm:mr-2" />
-                  <span class="hidden sm:inline">Manage All</span>
+                  <span class="hidden sm:inline">{{ s('Manage All') }}</span>
                 </button>
                 <button
                   v-if="unmappedCusipsCount > 0"
@@ -480,7 +480,7 @@
                   class="btn-yellow text-sm"
                 >
                   <ExclamationTriangleIcon class="h-5 w-5 sm:mr-2" />
-                  <span class="hidden sm:inline">{{ unmappedCusipsCount }} Unmapped</span>
+                  <span class="hidden sm:inline">{{ s('{count} Unmapped').replace('{count}', String(unmappedCusipsCount)) }}</span>
                   <span class="sm:hidden">{{ unmappedCusipsCount }}</span>
                 </button>
               </div>
@@ -489,7 +489,7 @@
               @click="showCusipManagement = !showCusipManagement"
               class="flex items-center space-x-2 text-sm text-primary-600 dark:text-primary-400 hover:text-primary-500"
             >
-              <span>{{ showCusipManagement ? 'Hide' : 'Show' }}</span>
+              <span>{{ showCusipManagement ? s('Hide') : s('Show') }}</span>
               <svg
                 class="w-4 h-4 transition-transform duration-200"
                 :class="{ 'rotate-180': showCusipManagement }"
@@ -508,10 +508,12 @@
                 <ExclamationTriangleIcon class="h-5 w-5 text-yellow-600 dark:text-yellow-400 mr-2" />
                 <div class="text-sm">
                   <span class="font-medium text-yellow-800 dark:text-yellow-200">
-                    {{ unmappedCusipsCount }} unmapped CUSIP{{ unmappedCusipsCount !== 1 ? 's' : '' }} found in your trades
+                    {{ unmappedCusipsCount === 1
+                      ? s('{count} unmapped CUSIP found in your trades').replace('{count}', String(unmappedCusipsCount))
+                      : s('{count} unmapped CUSIPs found in your trades').replace('{count}', String(unmappedCusipsCount)) }}
                   </span>
                   <p class="text-yellow-700 dark:text-yellow-300 mt-1">
-                    These trades may not appear when filtering by ticker symbol. Click "Unmapped" to resolve them.
+                    {{ s('These trades may not appear when filtering by ticker symbol. Click "Unmapped" to resolve them.') }}
                   </p>
                 </div>
               </div>
@@ -520,10 +522,10 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <!-- Add New Mapping -->
               <div>
-                <h4 class="font-medium text-gray-900 dark:text-white mb-3">Add CUSIP Mapping</h4>
+                <h4 class="font-medium text-gray-900 dark:text-white mb-3">{{ s('Add CUSIP Mapping') }}</h4>
                 <div class="space-y-3">
                   <div>
-                    <label for="cusip" class="label">CUSIP (9 characters)</label>
+                    <label for="cusip" class="label">{{ s('CUSIP (9 characters)') }}</label>
                     <input
                       id="cusip"
                       v-model="cusipForm.cusip"
@@ -534,7 +536,7 @@
                     />
                   </div>
                   <div>
-                    <label for="ticker" class="label">Ticker Symbol</label>
+                    <label for="ticker" class="label">{{ s('Ticker Symbol') }}</label>
                     <input
                       id="ticker"
                       v-model="cusipForm.ticker"
@@ -548,18 +550,18 @@
                     :disabled="!cusipForm.cusip || !cusipForm.ticker || cusipLoading"
                     class="btn-primary w-full"
                   >
-                    <span v-if="cusipLoading">Adding...</span>
-                    <span v-else>Add Mapping</span>
+                    <span v-if="cusipLoading">{{ s('Adding...') }}</span>
+                    <span v-else>{{ s('Add Mapping') }}</span>
                   </button>
                 </div>
               </div>
 
               <!-- Lookup Existing -->
               <div>
-                <h4 class="font-medium text-gray-900 dark:text-white mb-3">Lookup CUSIP</h4>
+                <h4 class="font-medium text-gray-900 dark:text-white mb-3">{{ s('Lookup CUSIP') }}</h4>
                 <div class="space-y-3">
                   <div>
-                    <label for="lookupCusip" class="label">CUSIP to Lookup</label>
+                    <label for="lookupCusip" class="label">{{ s('CUSIP to Lookup') }}</label>
                     <input
                       id="lookupCusip"
                       v-model="lookupForm.cusip"
@@ -574,8 +576,8 @@
                     :disabled="!lookupForm.cusip || cusipLoading"
                     class="btn-primary w-full"
                   >
-                    <span v-if="cusipLoading">Looking up...</span>
-                    <span v-else>Lookup</span>
+                    <span v-if="cusipLoading">{{ s('Looking up...') }}</span>
+                    <span v-else>{{ s('Lookup') }}</span>
                   </button>
                   <div v-if="lookupResult" class="p-3 rounded-md" :class="[
                     lookupResult.found ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20'
@@ -587,11 +589,11 @@
                         {{ lookupResult.cusip }} → {{ lookupResult.ticker }}
                       </span>
                       <span v-else>
-                        CUSIP {{ lookupResult.cusip }} not found
+                        {{ s('CUSIP {cusip} not found').replace('{cusip}', lookupResult.cusip) }}
                       </span>
                     </p>
                     <div v-if="lookupResult.found" class="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                      Source: {{ lookupResult.source }} • {{ lookupResult.verified ? 'Verified' : 'Unverified' }}
+                      {{ s('Source') }}: {{ lookupResult.source }} • {{ lookupResult.verified ? s('Verified') : s('Unverified') }}
                     </div>
                   </div>
                 </div>
@@ -605,12 +607,12 @@
       <div class="card">
         <div class="card-body">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="heading-card">Supported CSV Formats</h3>
+            <h3 class="heading-card">{{ s('Supported CSV Formats') }}</h3>
             <button
               @click="showFormats = !showFormats"
               class="flex items-center space-x-2 text-sm text-primary-600 dark:text-primary-400 hover:text-primary-500"
             >
-              <span>{{ showFormats ? 'Hide' : 'Show' }} Formats</span>
+              <span>{{ showFormats ? s('Hide Formats') : s('Show Formats') }}</span>
               <svg 
                 class="w-4 h-4 transition-transform duration-200"
                 :class="{ 'rotate-180': showFormats }"
@@ -624,222 +626,27 @@
           </div>
           
           <div v-if="showFormats" class="space-y-6">
-            <div>
-              <h4 class="font-medium text-gray-900 dark:text-white">Generic CSV</h4>
+            <div v-for="format in importCsvFormats" :key="format.id">
+              <h4 class="font-medium text-gray-900 dark:text-white">{{ s(format.title) }}</h4>
               <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Use this format if your broker isn't listed or for custom CSV files. Supports comma, semicolon, or tab separators.
+                {{ s(format.description) }}
               </p>
               <div class="bg-gray-50 dark:bg-gray-800 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                Symbol,Date,Entry Price,Exit Price,Quantity,Side,Commission,Fees<br>
-                AAPL,2024-01-15,150.25,155.50,100,long,1.00,0.50<br>
-                TSLA,2024-01-16,200.00,,50,short,1.00,0.50
+                <template v-for="(block, blockIndex) in format.blocks" :key="blockIndex">
+                  <strong v-if="block.heading">{{ s(block.heading) }}</strong>
+                  <br v-if="block.heading" />
+                  <template v-for="(line, lineIndex) in block.lines" :key="lineIndex">
+                    {{ line }}<br v-if="lineIndex < block.lines.length - 1 || blockIndex < format.blocks.length - 1" />
+                  </template>
+                  <br v-if="blockIndex < format.blocks.length - 1 && format.blocks.length > 1" />
+                </template>
               </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                <strong>Alternative column names:</strong> Symbol/symbol, Date/Trade Date, Entry Price/Buy Price/Price, Exit Price/Sell Price, Quantity/Shares/Size, Side/Direction/Type, Commission/Fees
-              </p>
-            </div>
-
-            <div>
-              <h4 class="font-medium text-gray-900 dark:text-white">Lightspeed Trader</h4>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Export from Lightspeed's "Reports" > "Trade Blotter" section as CSV.
-              </p>
-              <div class="bg-gray-50 dark:bg-gray-800 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                Symbol,Trade Date,Price,Qty,Side,Commission Amount,Execution Time,Trade Number<br>
-                AAPL,02/03/2025,150.25,100,B,1.00,09:30,12345<br>
-                AAPL,02/03/2025,155.50,100,S,1.00,14:30,12346
-              </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                <strong>Required columns:</strong> Symbol, Trade Date, Price, Qty, Side (B/S), Commission Amount. Optional: Execution Time, Buy/Sell, Security Type, fee columns (FeeSEC, FeeMF, etc.)
-              </p>
-            </div>
-
-            <div>
-              <h4 class="font-medium text-gray-900 dark:text-white">Charles Schwab</h4>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Supports both completed trades export and transaction history. Tab-separated files are automatically detected.
-              </p>
-              <div class="bg-gray-50 dark:bg-gray-800 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                <strong>Completed Trades:</strong><br>
-                Symbol,Opened Date,Closed Date,Quantity,Cost Per Share,Proceeds Per Share,Gain/Loss ($)<br>
-                AAPL,01/15/2024,01/15/2024,100,150.25,155.50,525.00<br><br>
-                <strong>Transaction History:</strong><br>
-                Date,Action,Symbol,Description,Quantity,Price,Fees & Comm,Amount<br>
-                01/15/2024,Buy,AAPL,Buy,100,150.25,1.00,15026.00<br>
-                01/15/2024,Sell,AAPL,Sell,100,155.50,1.00,15549.00
-              </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                <strong>Supports both formats:</strong> Completed trades with P&L or individual transactions. Auto-detects format and delimiter.
-              </p>
-            </div>
-
-            <div>
-              <h4 class="font-medium text-gray-900 dark:text-white">ThinkorSwim</h4>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Export from ThinkorSwim's "Account Statement" section. Only processes trade (TRD) records.
-              </p>
-              <div class="bg-gray-50 dark:bg-gray-800 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                DATE,TIME,TYPE,REF #,DESCRIPTION,Commissions & Fees,Misc Fees<br>
-                01/15/2024,09:30:00,TRD,12345,"BOT +100 AAPL @150.25",1.00,0.00<br>
-                01/15/2024,10:45:00,TRD,12346,"SOLD -100 AAPL @155.50",1.00,0.00
-              </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                <strong>Required columns:</strong> DATE, TIME, TYPE (must be "TRD"), REF #, DESCRIPTION (BOT/SOLD format). Optional: Commissions & Fees, Misc Fees
-              </p>
-            </div>
-
-            <div>
-              <h4 class="font-medium text-gray-900 dark:text-white">Interactive Brokers</h4>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Supports both Activity Statement and Trade Confirmation exports. Also supports Flex Query exports.
-              </p>
-              <div class="bg-gray-50 dark:bg-gray-800 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                <strong>Activity Statement:</strong><br>
-                Symbol,Date/Time,Quantity,Price,Commission,Fees<br>
-                AAPL,2024-01-15 09:30:00,100,150.25,-1.00,0.00<br>
-                AAPL,2024-01-15 10:45:00,-100,155.50,-1.00,0.00<br><br>
-                <strong>Trade Confirmation:</strong><br>
-                Symbol,UnderlyingSymbol,Strike,Expiry,Put/Call,Quantity,Multiplier,Buy/Sell,Date/Time,Price,Commission<br>
-                AAPL,,,,,,BUY,20240115;093000,150.25,-1.00
-              </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                <strong>Activity Statement:</strong> Symbol, Date/Time or DateTime, Quantity (positive=buy, negative=sell), Price. <strong>Trade Confirmation:</strong> Symbol, Buy/Sell, Date/Time, Price, UnderlyingSymbol, Strike, Expiry, Put/Call, Multiplier.
-              </p>
-            </div>
-
-            <div>
-              <h4 class="font-medium text-gray-900 dark:text-white">Webull</h4>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Export from Webull's "Orders" > "Options Orders" history. Supports options trading with automatic roundtrip trade detection.
-              </p>
-              <div class="bg-gray-50 dark:bg-gray-800 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                Name,Symbol,Side,Status,Filled,Total Qty,Price,Avg Price,Time-in-Force,Placed Time,Filled Time<br>
-                SPY251114C00672000,SPY251114C00672000,Buy,Filled,3,3,1.82,1.82,DAY,11/14/2025 11:10:02 EST,11/14/2025 11:10:02 EST<br>
-                SPY251114C00672000,SPY251114C00672000,Sell,Filled,3,3,2.87,2.87,DAY,11/14/2025 11:31:56 EST,11/14/2025 11:31:56 EST
-              </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                <strong>Required columns:</strong> Symbol, Side, Status, Filled, Avg Price, Filled Time. Automatically parses option symbols (format: SPY251114C00672000).
-              </p>
-            </div>
-
-            <div>
-              <h4 class="font-medium text-gray-900 dark:text-white">E*TRADE</h4>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Export from E*TRADE's transaction history.
-              </p>
-              <div class="bg-gray-50 dark:bg-gray-800 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                Symbol,Transaction Date,Transaction Type,Quantity,Price,Commission,Fees<br>
-                AAPL,01/15/2024,Buy,100,150.25,1.00,0.00<br>
-                AAPL,01/15/2024,Sell,100,155.50,1.00,0.00
-              </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                <strong>Required columns:</strong> Symbol, Transaction Date, Transaction Type (Buy/Sell), Quantity, Price. Optional: Commission, Fees
-              </p>
-            </div>
-
-            <div>
-              <h4 class="font-medium text-gray-900 dark:text-white">PaperMoney</h4>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Export from ThinkorSwim's PaperMoney platform. Filled orders are treated as actual executed trades for analysis and tracking.
-              </p>
-              <div class="bg-gray-50 dark:bg-gray-800 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                Filled Orders<br>
-                ,,Exec Time,Spread,Side,Qty,Pos Effect,Symbol,Exp,Strike,Type,Price,Net Price,Price Improvement,Order Type<br>
-                ,,9/19/25 13:24:32,STOCK,SELL,-100,TO CLOSE,FATN,,,STOCK,9.86,9.86,.00,MKT<br>
-                ,,9/19/25 13:22:37,STOCK,BUY,+100,TO OPEN,FATN,,,STOCK,9.63,9.63,.00,MKT
-              </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                <strong>Required columns:</strong> Exec Time, Side, Qty, Symbol, Price. Filled orders are processed as real trades and grouped into round-trip positions with P&L calculations.
-              </p>
-            </div>
-
-            <div>
-              <h4 class="font-medium text-gray-900 dark:text-white">TradingView</h4>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Export filled orders from TradingView's paper or live trading. Supports futures contracts with leverage detection.
-              </p>
-              <div class="bg-gray-50 dark:bg-gray-800 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                Symbol,Side,Type,Qty,Fill Price,Commission,Placing Time,Closing Time,Order ID,Leverage<br>
-                CME_MINI:NQ1!,Buy,Market,1,25297,,2026-02-25 23:37:36,2026-02-25 23:37:36,2796864834,20:1<br>
-                CME_MINI:NQ1!,Sell,Limit,1,25419,,2026-02-25 23:38:50,2026-02-26 05:31:17,2796872396,
-              </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                <strong>Required columns:</strong> Symbol, Side, Fill Price, Order ID. Optional: Status (if present, only "Filled" rows are imported), Qty, Type, Leverage, Commission, Placing Time/Closing Time.
-              </p>
-            </div>
-
-            <div>
-              <h4 class="font-medium text-gray-900 dark:text-white">Tradovate</h4>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Export order history from Tradovate. Supports futures contracts with automatic contract month/year parsing and point value calculations.
-              </p>
-              <div class="bg-gray-50 dark:bg-gray-800 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                Contract,Product,Product Description,B/S,Status,Filled Qty,Avg Fill Price,Fill Time,Order ID<br>
-                MESZ5,MES,Micro E-mini S&P 500,Buy,Filled,1,6025.50,11/25/2025 09:38:24,12345<br>
-                MESZ5,MES,Micro E-mini S&P 500,Sell,Filled,1,6030.75,11/25/2025 10:15:10,12346
-              </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                <strong>Required columns:</strong> Contract, Product, B/S, Filled Qty (or filledQty), Avg Fill Price (or avgPrice), Fill Time. Optional: Order ID, Status, Product Description.
-              </p>
-            </div>
-
-            <div>
-              <h4 class="font-medium text-gray-900 dark:text-white">Questrade</h4>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Export trade executions from Questrade. Supports stocks and options with automatic option symbol parsing.
-              </p>
-              <div class="bg-gray-50 dark:bg-gray-800 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                Symbol,Action,Fill qty,Fill price,Exec time,Account,Currency,Commission<br>
-                AAPL,Buy,100,150.25,16 Dec 2025 09:30:15 AM,ABC123,USD,4.95<br>
-                AAPL,Sell,100,155.50,16 Dec 2025 02:15:30 PM,ABC123,USD,4.95
-              </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                <strong>Required columns:</strong> Symbol, Action (Buy/Sell/BTO/STC/BTC/STO), Fill qty, Fill price, Exec time. Optional: Account, Currency, Commission. Date format: DD Mon YYYY HH:MM:SS AM/PM.
-              </p>
-            </div>
-
-            <div>
-              <h4 class="font-medium text-gray-900 dark:text-white">TradeStation</h4>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Export transaction history from TradeStation. Supports both equity and options trades with detailed fee breakdown.
-              </p>
-              <div class="bg-gray-50 dark:bg-gray-800 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                Account,T/D,S/D,Currency,Type,Side,Symbol,Qty,Price,Exec Time,Comm,SEC,TAF,NSCC,Nasdaq,ECN Remove,ECN Add,Gross Proceeds,Net Proceeds<br>
-                ABC123,01/15/25,01/17/25,USD,E,B,AAPL,100,150.50,09:30:15,4.95,0.01,0.01,0.01,0.00,0.00,0.00,15050.00,15045.02<br>
-                ABC123,01/15/25,01/17/25,USD,E,S,AAPL,100,152.25,14:20:30,4.95,0.01,0.01,0.01,0.00,0.00,0.00,15225.00,15220.02
-              </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                <strong>Required columns:</strong> Account, T/D, S/D, Side, Symbol, Qty, Price, Exec Time, Gross Proceeds or Net Proceeds. All fee columns (Comm, SEC, TAF, NSCC, Nasdaq, ECN Remove, ECN Add) are automatically summed.
-              </p>
-            </div>
-
-            <div>
-              <h4 class="font-medium text-gray-900 dark:text-white">Tastytrade</h4>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Export transaction history from Tastytrade. Supports stocks, options, and futures with OCC option symbol parsing.
-              </p>
-              <div class="bg-gray-50 dark:bg-gray-800 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                Date,Type,Action,Symbol,Instrument Type,Quantity,Average Price,Root Symbol,Underlying Symbol,Expiration Date,Strike Price,Call or Put,Multiplier,Commissions,Fees<br>
-                2026-02-18T09:30:00-0500,Trade,BTO,IBM 260220C00265000,Option,5,2.15,IBM,IBM,2/20/26,265.00,Call,100,5.00,0.70<br>
-                2026-02-18T14:15:00-0500,Trade,STC,IBM 260220C00265000,Option,5,3.40,IBM,IBM,2/20/26,265.00,Call,100,5.00,0.70
-              </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                <strong>Required columns:</strong> Type (must be "Trade"), Action (Buy/Sell/BTO/STC/BTC/STO), Symbol, Instrument Type, Quantity, Average Price, Root Symbol, Underlying Symbol, Call or Put. Optional: Date, Expiration Date, Strike Price, Multiplier, Commissions, Fees.
-              </p>
-            </div>
-
-            <div>
-              <h4 class="font-medium text-gray-900 dark:text-white">TradingView Performance</h4>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Export performance data from TradingView. Contains completed trades with calculated P&L.
-              </p>
-              <div class="bg-gray-50 dark:bg-gray-800 rounded-md p-3 text-xs font-mono overflow-x-auto">
-                symbol,buyFillId,sellFillId,qty,buyPrice,sellPrice,pnl,boughtTimestamp,soldTimestamp,duration<br>
-                AAPL,fill_001,fill_002,100,150.50,152.25,175.00,1736950800000,1736961600000,3h<br>
-                TSLA,fill_003,fill_004,50,225.75,220.50,-262.50,1736954400000,1736965200000,2h 40m
-              </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                <strong>Required columns:</strong> symbol, qty, buyPrice, sellPrice, boughtTimestamp, soldTimestamp. Timestamps are Unix milliseconds.
+              <p
+                v-for="(note, noteIndex) in format.footnotes"
+                :key="noteIndex"
+                class="text-xs text-gray-500 dark:text-gray-400 mt-2"
+              >
+                <strong>{{ s(note.bold) }}</strong> {{ s(note.text) }}
               </p>
             </div>
           </div>
@@ -1243,13 +1050,28 @@ import { useNotification } from '@/composables/useNotification'
 import { format } from 'date-fns'
 import { formatTradeDate } from '@/utils/date'
 import { useUserTimezone } from '@/composables/useUserTimezone'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import { ArrowUpTrayIcon, XMarkIcon, ExclamationTriangleIcon, Cog6ToothIcon, MagnifyingGlassIcon, DocumentTextIcon } from '@heroicons/vue/24/outline'
 import { useAnalytics } from '@/composables/useAnalytics'
 import api from '@/services/api'
 import { useGrowthBook } from '@/composables/useGrowthBook'
 import { useNotificationCenter } from '@/composables/useNotificationCenter'
+import { importCsvFormats } from '@/data/importCsvFormats'
 
 const { formatDateTime: formatDateTimeTz } = useUserTimezone()
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
+
+function translateGuide(guide) {
+  return {
+    title: s(guide.title),
+    badge: s(guide.badge),
+    steps: guide.steps.map((step) => s(step)),
+    warning: s(guide.warning),
+  }
+}
 // Lazy-load modal components - only parsed/executed when first shown
 const UnmappedCusipsModal = defineAsyncComponent(() => import('@/components/cusip/UnmappedCusipsModal.vue'))
 const AllCusipMappingsModal = defineAsyncComponent(() => import('@/components/cusip/AllCusipMappingsModal.vue'))
@@ -1403,14 +1225,14 @@ let activeFileAnalysisId = 0
 // exposure event only fires for users who actually see the empty state.
 const showDemoDataCta = ref(false)
 
-const popularBrokerOptions = [
-  { value: 'auto', label: 'Auto-Detect' },
-  { value: 'schwab', label: 'Schwab' },
-  { value: 'thinkorswim', label: 'thinkorswim' },
-  { value: 'ibkr', label: 'IBKR' },
-  { value: 'tradovate', label: 'Tradovate' },
-  { value: 'tradingview', label: 'TradingView' }
-]
+const popularBrokerOptions = computed(() => [
+  { value: 'auto', label: s('Auto-Detect') },
+  { value: 'schwab', label: s('Schwab') },
+  { value: 'thinkorswim', label: s('thinkorswim') },
+  { value: 'ibkr', label: s('IBKR') },
+  { value: 'tradovate', label: s('Tradovate') },
+  { value: 'tradingview', label: s('TradingView') },
+])
 
 const brokerGuides = {
   auto: {
@@ -1539,27 +1361,27 @@ const activeBrokerGuide = computed(() => {
   if (selectedBroker.value?.startsWith('custom:')) {
     return {
       title: selectedBrokerLabel.value,
-      badge: 'Saved importer',
+      badge: s('Saved importer'),
       steps: [
-        'Use your saved column mapping for this broker or spreadsheet.',
-        'Upload a CSV with the same column layout as the mapping.',
-        'If the broker changed its export format, create a new mapping.'
+        s('Use your saved column mapping for this broker or spreadsheet.'),
+        s('Upload a CSV with the same column layout as the mapping.'),
+        s('If the broker changed its export format, create a new mapping.'),
       ],
-      warning: 'Saved importers work best when the column headers stay exactly the same.'
+      warning: s('Saved importers work best when the column headers stay exactly the same.'),
     }
   }
 
-  return brokerGuides[selectedBroker.value] || brokerGuides.auto
+  return translateGuide(brokerGuides[selectedBroker.value] || brokerGuides.auto)
 })
 
 const selectedBrokerLabel = computed(() => {
   if (selectedBroker.value?.startsWith('custom:')) {
     const mapping = customMappings.value.find(item => `custom:${item.id}` === selectedBroker.value)
-    return mapping?.mapping_name || 'Custom Importer'
+    return mapping?.mapping_name || s('Custom Importer')
   }
 
-  if (selectedBroker.value === 'auto') return 'Auto-Detect'
-  if (selectedBroker.value === 'generic') return 'Generic CSV'
+  if (selectedBroker.value === 'auto') return s('Auto-Detect')
+  if (selectedBroker.value === 'generic') return s('Generic CSV')
 
   return formatBrokerName(selectedBroker.value)
 })
@@ -1568,54 +1390,57 @@ const displayedHeaderPreview = computed(() => fileAnalysis.value.headers.slice(0
 
 const brokerRecommendation = computed(() => {
   if (!selectedFile.value) {
-    return 'Upload a file to see guidance.'
+    return s('Upload a file to see guidance.')
   }
 
   if (selectedBroker.value === 'auto') {
     return fileAnalysis.value.detectedBroker
-      ? `We can probably route this as ${formatBrokerName(fileAnalysis.value.detectedBroker)}.`
-      : 'Best for first-time imports and supported brokers.'
+      ? s('We can probably route this as {broker}.').replace('{broker}', formatBrokerName(fileAnalysis.value.detectedBroker))
+      : s('Best for first-time imports and supported brokers.')
   }
 
   if (!fileAnalysis.value.detectedBroker) {
-    return 'If this is a custom export, Generic CSV is the safer choice.'
+    return s('If this is a custom export, Generic CSV is the safer choice.')
   }
 
   if (selectedBroker.value !== 'generic' && selectedBroker.value !== fileAnalysis.value.detectedBroker) {
-    return `Headers look closer to ${formatBrokerName(fileAnalysis.value.detectedBroker)}.`
+    return s('Headers look closer to {broker}.').replace('{broker}', formatBrokerName(fileAnalysis.value.detectedBroker))
   }
 
-  return 'Selected format matches the file we inspected.'
+  return s('Selected format matches the file we inspected.')
 })
 
 const accountReadinessLabel = computed(() => {
-  if (!requiresAccountSelection.value) return 'Optional'
-  if (selectedAccountId.value === 'none') return 'No account'
-  if (selectedAccountId.value !== null) return 'Assigned'
-  return 'Needs selection'
+  if (!requiresAccountSelection.value) return s('Optional')
+  if (selectedAccountId.value === 'none') return s('No account')
+  if (selectedAccountId.value !== null) return s('Assigned')
+  return s('Needs selection')
 })
 
 const accountReadinessMessage = computed(() => {
-  if (!requiresAccountSelection.value) return 'This import can continue without selecting an account.'
-  if (selectedAccountId.value === 'none') return 'Trades will be imported without linking to an existing account.'
-  if (selectedAccountId.value !== null) return 'Trades will be attached to your selected account.'
-  return 'Pick an account before starting import.'
+  if (!requiresAccountSelection.value) return s('This import can continue without selecting an account.')
+  if (selectedAccountId.value === 'none') return s('Trades will be imported without linking to an existing account.')
+  if (selectedAccountId.value !== null) return s('Trades will be attached to your selected account.')
+  return s('Pick an account before starting import.')
 })
 
 const fileReadinessMessage = computed(() => {
-  if (!selectedFile.value) return 'Upload a CSV file to start.'
-  if (isAnalyzingFile.value) return 'Analyzing your file before import.'
-  if (!fileAnalysis.value.headers.length) return 'We could not read headers from this file yet.'
-  if (!fileAnalysis.value.formatDetected) return 'This file may need Generic CSV or column mapping.'
-  return `This file looks import-ready${fileAnalysis.value.detectedBroker ? ` for ${formatBrokerName(fileAnalysis.value.detectedBroker)}` : ''}.`
+  if (!selectedFile.value) return s('Upload a CSV file to start.')
+  if (isAnalyzingFile.value) return s('Analyzing your file before import.')
+  if (!fileAnalysis.value.headers.length) return s('We could not read headers from this file yet.')
+  if (!fileAnalysis.value.formatDetected) return s('This file may need Generic CSV or column mapping.')
+  if (fileAnalysis.value.detectedBroker) {
+    return s('This file looks import-ready for {broker}.').replace('{broker}', formatBrokerName(fileAnalysis.value.detectedBroker))
+  }
+  return s('This file looks import-ready.')
 })
 
 const importButtonLabel = computed(() => {
   if (fileAnalysis.value.rowCount && fileAnalysis.value.rowCount > 0) {
-    return `Import ~${fileAnalysis.value.rowCount.toLocaleString()} Trades`
+    return s('Import ~{count} Trades').replace('{count}', fileAnalysis.value.rowCount.toLocaleString())
   }
 
-  return 'Import Trades'
+  return s('Import Trades')
 })
 
 function runWhenIdle(callback, timeout = 1500) {
@@ -1657,10 +1482,10 @@ function formatDate(date) {
 function formatBrokerName(broker) {
   const brokerLabels = {
     schwab: 'Charles Schwab',
-    thinkorswim: 'thinkorswim',
+    thinkorswim: 'ThinkorSwim',
     ibkr: 'Interactive Brokers',
     captrader: 'CapTrader',
-    lightspeed: 'Lightspeed',
+    lightspeed: 'Lightspeed Trader',
     webull: 'Webull',
     etrade: 'E*TRADE',
     firstrade: 'Firstrade',
@@ -1673,9 +1498,10 @@ function formatBrokerName(broker) {
     questrade: 'Questrade',
     tradestation: 'TradeStation',
     tastytrade: 'Tastytrade',
-    other: 'Other'
+    other: 'Other',
   }
-  return brokerLabels[broker] || broker
+  const label = brokerLabels[broker]
+  return label ? s(label) : broker
 }
 
 function redactAccountId(accountId) {
@@ -1752,13 +1578,13 @@ function getStatusClass(status) {
 function getStatusText(status) {
   switch (status) {
     case 'completed':
-      return 'Completed'
+      return s('Completed')
     case 'failed':
-      return 'Failed'
+      return s('Failed')
     case 'processing':
-      return 'Processing'
+      return s('Processing')
     default:
-      return 'Pending'
+      return s('Pending')
   }
 }
 
@@ -2154,7 +1980,7 @@ async function handleImport() {
 
   loading.value = true
   error.value = null
-  importStage.value = 'Validating file...'
+  importStage.value = s('Validating file...')
   track('import_started', {
     broker: selectedBroker.value,
     file_name: selectedFile.value.name,
@@ -2270,11 +2096,13 @@ async function handleImport() {
       console.log(`[IMPORT] Known format detected, proceeding with import`)
     }
 
-    importStage.value = `Uploading and processing${tradeCount ? ` ~${tradeCount} trades` : ''}...`
+    importStage.value = tradeCount
+      ? s('Uploading and processing ~{count} trades...').replace('{count}', String(tradeCount))
+      : s('Uploading and processing...')
     const result = await tradesStore.importTrades(selectedFile.value, broker, mappingId, accountIdToSend)
     console.log('Import result:', result)
-    importStage.value = 'Processing trades...'
-    showSuccess('Import Started', `Import has been queued. Import ID: ${result.importId}`)
+    importStage.value = s('Processing trades...')
+    showSuccess(s('Import Started'), s('Import has been queued. Import ID: {id}').replace('{id}', String(result.importId)))
     track('import_queued', {
       broker,
       mapping_id: mappingId,
@@ -2345,18 +2173,18 @@ async function handleImport() {
         } else {
           error.value = 'Could not parse CSV headers. Please check your file format.'
           trackImportValidationFailed('headers_unreadable', { error_message: errorMessage })
-          showError('Import Failed', error.value)
+          showError(s('Import Failed'), error.value)
         }
       } catch (parseErr) {
         console.error('Error parsing CSV headers:', parseErr)
         error.value = errorMessage
-        showError('Import Failed', error.value)
+        showError(s('Import Failed'), error.value)
       }
     }
     else {
       error.value = errorMessage
       trackImportValidationFailed('import_error', { error_message: errorMessage })
-      showError('Import Failed', error.value)
+      showError(s('Import Failed'), error.value)
     }
   } finally {
     loading.value = false
@@ -2407,7 +2235,7 @@ async function handleKeepBrokerSelected(selectedBrokerValue) {
   // by temporarily setting a flag
   loading.value = true
   error.value = null
-  importStage.value = 'Uploading and processing...'
+  importStage.value = s('Uploading and processing...')
 
   try {
     // Extract mapping ID if custom mapping is selected
@@ -2427,7 +2255,7 @@ async function handleKeepBrokerSelected(selectedBrokerValue) {
 
     const result = await tradesStore.importTrades(selectedFile.value, broker, mappingId, accountIdToSend)
     console.log('Import result:', result)
-    importStage.value = 'Processing trades...'
+    importStage.value = s('Processing trades...')
     showSuccess('Import Started', `Import has been queued. Import ID: ${result.importId}`)
     track('import_queued', {
       broker,
@@ -2456,7 +2284,7 @@ async function handleKeepBrokerSelected(selectedBrokerValue) {
     console.error('Import error:', err)
     const errorMessage = err.response?.data?.error || err.message || 'Import failed'
     error.value = errorMessage
-    showError('Import Failed', error.value)
+    showError(s('Import Failed'), error.value)
   } finally {
     loading.value = false
     importStage.value = ''
@@ -3379,14 +3207,14 @@ async function handleMappingSaved(mapping) {
 
   loading.value = true
   error.value = null
-  importStage.value = 'Uploading and processing with custom mapping...'
+  importStage.value = s('Uploading and processing with custom mapping...')
 
   try {
     // Import with the mapping ID (convert "none" to null)
     const accountIdToSend = selectedAccountId.value === 'none' ? null : selectedAccountId.value
     const result = await tradesStore.importTrades(currentMappingFile.value, 'generic', mapping.id, accountIdToSend)
     console.log('Import result:', result)
-    importStage.value = 'Processing trades...'
+    importStage.value = s('Processing trades...')
     showSuccess('Import Started', `Import has been queued. Import ID: ${result.importId}`)
     track('import_queued', {
       broker: 'generic',
@@ -3415,7 +3243,7 @@ async function handleMappingSaved(mapping) {
     const errorMessage = err.response?.data?.error || err.message || 'Import failed'
     error.value = errorMessage
     trackImportValidationFailed('custom_mapping_import_error', { error_message: errorMessage })
-    showError('Import Failed', error.value)
+    showError(s('Import Failed'), error.value)
   } finally {
     loading.value = false
     importStage.value = ''

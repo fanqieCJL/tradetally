@@ -3,7 +3,7 @@
         <div class="mb-8">
             <h1 class="heading-page">{{ s("App Settings") }}</h1>
             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Configure your application preferences and AI provider settings.
+                {{ s('Configure your application preferences and AI provider settings.') }}
             </p>
         </div>
 
@@ -21,7 +21,7 @@
                         'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors',
                     ]"
                 >
-                    {{ tab.label }}
+                    {{ s(tab.label) }}
                 </button>
             </nav>
         </div>
@@ -36,13 +36,12 @@
                         <h3
                             class="text-lg font-medium text-gray-900 dark:text-white mb-6"
                         >
-                            Analytics Preferences
+                            {{ s('Analytics Preferences') }}
                         </h3>
                         <p
                             class="text-sm text-gray-600 dark:text-gray-400 mb-6"
                         >
-                            Customize how your trading analytics are calculated
-                            and displayed.
+                            {{ s('Customize how your trading analytics are calculated and displayed.') }}
                         </p>
 
                         <form
@@ -51,7 +50,7 @@
                         >
                             <div>
                                 <label for="statisticsCalculation" class="label"
-                                    >Statistics Calculation Method</label
+                                    >{{ s('Statistics Calculation Method') }}</label
                                 >
                                 <select
                                     id="statisticsCalculation"
@@ -61,31 +60,25 @@
                                     class="input"
                                 >
                                     <option value="average">
-                                        Average (Mean)
+                                        {{ s('Average (Mean)') }}
                                     </option>
-                                    <option value="median">Median</option>
+                                    <option value="median">{{ s('Median') }}</option>
                                 </select>
                                 <p
                                     class="mt-1 text-sm text-gray-500 dark:text-gray-400"
                                 >
-                                    Choose whether to use averages or medians
-                                    for calculations like Average P&L, Average
-                                    Win, Average Loss, etc. Medians are less
-                                    affected by outliers and may provide a more
-                                    representative view of typical performance.
+                                    {{ s('Choose whether to use averages or medians for calculations like Average P&L, Average Win, Average Loss, etc. Medians are less affected by outliers and may provide a more representative view of typical performance.') }}
                                     <span
                                         class="block mt-2 text-primary-600 dark:text-primary-400 font-medium"
                                     >
-                                        Note: Changes take effect immediately
-                                        and will update labels throughout the
-                                        application.
+                                        {{ s('Note: Changes take effect immediately and will update labels throughout the application.') }}
                                     </span>
                                 </p>
                             </div>
 
                             <div>
                                 <label for="displayCurrency" class="label"
-                                    >Display Currency</label
+                                    >{{ s('Display Currency') }}</label
                                 >
                                 <select
                                     id="displayCurrency"
@@ -105,12 +98,7 @@
                                 <p
                                     class="mt-1 text-sm text-gray-500 dark:text-gray-400"
                                 >
-                                    Changes the currency symbol displayed for
-                                    P&L, prices, and commissions. This is a
-                                    cosmetic setting only — values are not
-                                    converted using a foreign exchange rate.
-                                    Market data (watchlist prices, stock
-                                    quotes) remains in USD.
+                                    {{ s('Changes the currency symbol displayed for P&L, prices, and commissions. This is a cosmetic setting only — values are not converted using a foreign exchange rate. Market data (watchlist prices, stock quotes) remains in USD.') }}
                                 </p>
                             </div>
 
@@ -122,15 +110,12 @@
                                         for="autoCloseExpiredOptions"
                                         class="block text-sm font-medium text-gray-900 dark:text-white"
                                     >
-                                        Auto-Close Expired Options
+                                        {{ s('Auto-Close Expired Options') }}
                                     </label>
                                     <p
                                         class="mt-1 text-sm text-gray-600 dark:text-gray-400"
                                     >
-                                        Automatically close expired options
-                                        positions with appropriate P&L (Long:
-                                        -100%, Short: +100%). The system checks
-                                        hourly for expired options.
+                                        {{ s('Automatically close expired options positions with appropriate P&L (Long: -100%, Short: +100%). The system checks hourly for expired options.') }}
                                     </p>
                                 </div>
                                 <div class="ml-4 flex-shrink-0">
@@ -165,37 +150,27 @@
 
                             <div>
                                 <label for="defaultStopLossType" class="label"
-                                    >Default Stop Loss Type</label
+                                    >{{ s('Default Stop Loss Type') }}</label
                                 >
                                 <select
                                     id="defaultStopLossType"
                                     v-model="analyticsForm.defaultStopLossType"
                                     class="input"
                                 >
-                                    <option value="percent">Percentage</option>
+                                    <option value="percent">{{ s('Percentage') }}</option>
                                     <option value="dollar">
-                                        Dollar amount
+                                        {{ s('Dollar amount') }}
                                     </option>
                                     <option value="lod">
-                                        Low of Day (LoD)
+                                        {{ s('Low of Day (LoD)') }}
                                     </option>
                                 </select>
                                 <p
                                     class="mt-1 text-sm text-gray-500 dark:text-gray-400"
                                 >
-                                    <strong>Percentage:</strong> Use a fixed
-                                    percentage below/above entry price.
-                                    <br />
-                                    <strong>Dollar amount:</strong> Use a fixed
-                                    risk per trade in dollars (e.g., $100 or
-                                    $150 per trade).
-                                    <br />
-                                    <strong>Low of Day (LoD):</strong> Use the
-                                    low price of the entry day
-                                    (Qullamaggie-style swing trades). Uses Low
-                                    of Day for long positions and High of Day
-                                    for short positions.
-                                </p>
+                                    <strong>{{ s('Percentage:') }}</strong>{{ s('Use a fixed percentage below/above entry price.') }}<br />
+                                    <strong>{{ s('Dollar amount:') }}</strong>{{ s('Use a fixed risk per trade in dollars (e.g., $100 or $150 per trade).') }}<br />
+                                    <strong>{{ s('Low of Day (LoD):') }}</strong>{{ s('Use the low price of the entry day (Qullamaggie-style swing trades). Uses Low of Day for long positions and High of Day for short positions.') }}</p>
                             </div>
 
                             <div
@@ -205,7 +180,7 @@
                                 "
                             >
                                 <label for="defaultStopLoss" class="label"
-                                    >Default Stop Loss Percentage</label
+                                    >{{ s('Default Stop Loss Percentage') }}</label
                                 >
                                 <div class="mt-1 relative rounded-md shadow-sm">
                                     <input
@@ -231,19 +206,9 @@
                                 </div>
                                 <p
                                     class="mt-1 text-sm text-gray-500 dark:text-gray-400"
-                                >
-                                    Automatically apply this stop loss
-                                    percentage to all new and imported trades.
-                                    Leave empty to not set a default. For long
-                                    positions, the stop loss will be below entry
-                                    price. For short positions, it will be above
-                                    entry price.
-                                    <span
+                                >{{ s('Automatically apply this stop loss percentage to all new and imported trades. Leave empty to not set a default. For long positions, the stop loss will be below entry price. For short positions, it will be above entry price.') }}<span
                                         class="block mt-2 text-primary-600 dark:text-primary-400 font-medium"
-                                    >
-                                        Example: 2% stop loss on a $100 long
-                                        entry = $98 stop loss price
-                                    </span>
+                                    >{{ s('Example: 2% stop loss on a $100 long entry = $98 stop loss price') }}</span>
                                 </p>
                             </div>
 
@@ -282,27 +247,15 @@
                                 </div>
                                 <p
                                     class="mt-1 text-sm text-gray-500 dark:text-gray-400"
-                                >
-                                    Automatically apply this dollar risk per
-                                    trade to all new and imported trades. Leave
-                                    empty to not set a default. The stop loss
-                                    price is calculated from entry and quantity:
-                                    for a long, stop = entry - (dollars /
-                                    quantity); for a short, stop = entry +
-                                    (dollars / quantity).
-                                    <span
+                                >{{ s('Automatically apply this dollar risk per trade to all new and imported trades. Leave empty to not set a default. The stop loss price is calculated from entry and quantity: for a long, stop = entry - (dollars / quantity); for a short, stop = entry + (dollars / quantity).') }}<span
                                         class="block mt-2 text-primary-600 dark:text-primary-400 font-medium"
-                                    >
-                                        Example: $100 stop loss on 50 shares =
-                                        $2 per share risk, so a $100 long entry
-                                        becomes $98 stop loss
-                                    </span>
+                                    >{{ s('Example: $100 stop loss on 50 shares = $2 per share risk, so a $100 long entry becomes $98 stop loss') }}</span>
                                 </p>
                             </div>
 
                             <div>
                                 <label for="defaultTakeProfit" class="label"
-                                    >Default Take Profit Percentage</label
+                                    >{{ s('Default Take Profit Percentage') }}</label
                                 >
                                 <div class="mt-1 relative rounded-md shadow-sm">
                                     <input
@@ -328,19 +281,9 @@
                                 </div>
                                 <p
                                     class="mt-1 text-sm text-gray-500 dark:text-gray-400"
-                                >
-                                    Automatically apply this take profit
-                                    percentage to all new and imported trades.
-                                    Leave empty to not set a default. For long
-                                    positions, the take profit will be above
-                                    entry price. For short positions, it will be
-                                    below entry price.
-                                    <span
+                                >{{ s('Automatically apply this take profit percentage to all new and imported trades. Leave empty to not set a default. For long positions, the take profit will be above entry price. For short positions, it will be below entry price.') }}<span
                                         class="block mt-2 text-primary-600 dark:text-primary-400 font-medium"
-                                    >
-                                        Example: 6% take profit on a $100 long
-                                        entry = $106 take profit price
-                                    </span>
+                                    >{{ s('Example: 6% take profit on a $100 long entry = $106 take profit price') }}</span>
                                 </p>
                             </div>
 
@@ -357,7 +300,7 @@
                                         <div
                                             class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
                                         ></div>
-                                        Saving...
+                                        {{ s('Saving...') }}
                                     </span>
                                     <span v-else>{{ s("Save Analytics Settings") }}</span>
                                 </button>
@@ -372,14 +315,11 @@
                         <h3
                             class="text-lg font-medium text-gray-900 dark:text-white mb-6"
                         >
-                            Privacy Settings
+                            {{ s('Privacy Settings') }}
                         </h3>
                         <p
                             class="text-sm text-gray-600 dark:text-gray-400 mb-6"
-                        >
-                            Control who can see your trading activity and
-                            profile information.
-                        </p>
+                        >{{ s('Control who can see your trading activity and profile information.') }}</p>
 
                         <form
                             @submit.prevent="updatePrivacySettings"
@@ -393,17 +333,11 @@
                                         for="publicProfile"
                                         class="block text-sm font-medium text-gray-900 dark:text-white"
                                     >
-                                        Public Profile
+                                        {{ s('Public Profile') }}
                                     </label>
                                     <p
                                         class="mt-1 text-sm text-gray-600 dark:text-gray-400"
-                                    >
-                                        Allow others to view your public trades.
-                                        When enabled, trades marked as "public"
-                                        will be visible to all users. Your
-                                        username and avatar will also be visible
-                                        on public trades.
-                                    </p>
+                                    >{{ s('Allow others to view your public trades. When enabled, trades marked as "public" will be visible to all users. Your username and avatar will also be visible on public trades.') }}</p>
                                 </div>
                                 <div class="ml-4 flex-shrink-0">
                                     <button
@@ -448,7 +382,7 @@
                                         <div
                                             class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
                                         ></div>
-                                        Saving...
+                                        {{ s('Saving...') }}
                                     </span>
                                     <span v-else>{{ s("Save Privacy Settings") }}</span>
                                 </button>
@@ -463,30 +397,21 @@
                         <h3
                             class="text-lg font-medium text-gray-900 dark:text-white mb-6"
                         >
-                            Broker Sync
+                            {{ s('Broker Sync') }}
                         </h3>
                         <p
                             class="text-sm text-gray-600 dark:text-gray-400 mb-6"
-                        >
-                            Connect your brokerage accounts (Interactive
-                            Brokers, Charles Schwab) to automatically sync
-                            trades. Each user can configure their own broker
-                            connections and auto-sync settings.
-                        </p>
+                        >{{ s('Connect your brokerage accounts (Interactive Brokers, Charles Schwab) to automatically sync trades. Each user can configure their own broker connections and auto-sync settings.') }}</p>
 
                         <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                             <h4
                                 class="text-sm font-medium text-gray-900 dark:text-white mb-2"
                             >
-                                Automated Trade Syncing
+                                {{ s('Automated Trade Syncing') }}
                             </h4>
                             <p
                                 class="text-sm text-gray-600 dark:text-gray-400 mb-4"
-                            >
-                                Set up automatic daily syncing of your trades
-                                from connected brokers. Configure sync
-                                frequency, time, and manage your connections.
-                            </p>
+                            >{{ s('Set up automatic daily syncing of your trades from connected brokers. Configure sync frequency, time, and manage your connections.') }}</p>
                             <div class="flex justify-end">
                                 <router-link
                                     to="/broker-sync"
@@ -505,7 +430,7 @@
                                             d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
                                         />
                                     </svg>
-                                    Manage Broker Sync
+                                    {{ s('Manage Broker Sync') }}
                                 </router-link>
                             </div>
                         </div>
@@ -518,28 +443,21 @@
                         <h3
                             class="text-lg font-medium text-gray-900 dark:text-white mb-6"
                         >
-                            API Documentation
+                            {{ s('API Documentation') }}
                         </h3>
                         <p
                             class="text-sm text-gray-600 dark:text-gray-400 mb-6"
-                        >
-                            Access comprehensive API documentation for
-                            integrating with TradeTally programmatically.
-                        </p>
+                        >{{ s('Access comprehensive API documentation for integrating with TradeTally programmatically.') }}</p>
 
                         <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                             <h4
                                 class="text-sm font-medium text-gray-900 dark:text-white mb-2"
                             >
-                                Interactive API Explorer
+                                {{ s('Interactive API Explorer') }}
                             </h4>
                             <p
                                 class="text-sm text-gray-600 dark:text-gray-400 mb-4"
-                            >
-                                Browse all available API endpoints, test
-                                requests, and view response schemas using our
-                                Swagger documentation.
-                            </p>
+                            >{{ s('Browse all available API endpoints, test requests, and view response schemas using our Swagger documentation.') }}</p>
                             <div class="flex justify-end">
                                 <a
                                     :href="getApiDocsUrl()"
@@ -552,7 +470,7 @@
                                         :size="16"
                                         class="mr-2"
                                     />
-                                    Open API Docs
+                                    {{ s('Open API Docs') }}
                                 </a>
                             </div>
                         </div>
@@ -565,7 +483,7 @@
                         <h3
                             class="text-lg font-medium text-gray-900 dark:text-white mb-6"
                         >
-                            About TradeTally
+                            {{ s('About TradeTally') }}
                         </h3>
 
                         <div class="space-y-4">
@@ -577,12 +495,12 @@
                                     <p
                                         class="text-sm font-medium text-gray-900 dark:text-white"
                                     >
-                                        Current Version
+                                        {{ s('Current Version') }}
                                     </p>
                                     <p
                                         class="text-sm text-gray-500 dark:text-gray-400"
                                     >
-                                        Your installed version
+                                        {{ s('Your installed version') }}
                                     </p>
                                 </div>
                                 <span
@@ -599,15 +517,15 @@
                                     <p
                                         class="text-sm font-medium text-gray-900 dark:text-white"
                                     >
-                                        Latest Version
+                                        {{ s('Latest Version') }}
                                     </p>
                                     <p
                                         class="text-sm text-gray-500 dark:text-gray-400"
                                     >
                                         {{
                                             versionStore.updateAvailable
-                                                ? "Update available"
-                                                : "You are up to date"
+                                                ? s("Update available")
+                                                : s("You are up to date")
                                         }}
                                     </p>
                                 </div>
@@ -629,7 +547,7 @@
                                         v-if="versionStore.updateAvailable"
                                         class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/20 dark:text-primary-400"
                                     >
-                                        New
+                                        {{ s('New') }}
                                     </span>
                                 </div>
                             </div>
@@ -652,16 +570,12 @@
                                             >
                                                 {{
                                                     versionStore.releaseName ||
-                                                    "New version available"
+                                                    s("New version available")
                                                 }}
                                             </p>
                                             <p
                                                 class="text-sm text-primary-700 dark:text-primary-300 mt-1"
-                                            >
-                                                A new version is available.
-                                                Visit the release page for
-                                                upgrade instructions.
-                                            </p>
+                                            >{{ s('A new version is available. Visit the release page for upgrade instructions.') }}</p>
                                             <div class="mt-3">
                                                 <a
                                                     :href="
@@ -671,7 +585,7 @@
                                                     rel="noopener noreferrer"
                                                     class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                                                 >
-                                                    View Release Notes
+                                                    {{ s('View Release Notes') }}
                                                     <ArrowTopRightOnSquareIcon
                                                         class="ml-2 h-4 w-4"
                                                     />
@@ -696,11 +610,11 @@
                                         <div
                                             class="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"
                                         ></div>
-                                        Checking...
+                                        {{ s('Checking...') }}
                                     </span>
                                     <span v-else class="flex items-center">
                                         <ArrowPathIcon class="h-4 w-4 mr-2" />
-                                        Check for Updates
+                                        {{ s('Check for Updates') }}
                                     </span>
                                 </button>
                                 <p
@@ -724,27 +638,18 @@
                         <h3
                             class="text-lg font-medium text-gray-900 dark:text-white mb-6"
                         >
-                            AI Provider Settings
+                            {{ s('AI Provider Settings') }}
                         </h3>
                         <p
                             class="text-sm text-gray-600 dark:text-gray-400 mb-6"
-                        >
-                            Configure which AI provider to use for analytics
-                            recommendations and CUSIP lookups.
-                            <span
+                        >{{ s('Configure which AI provider to use for analytics recommendations and CUSIP lookups.') }}<span
                                 v-if="authStore.user?.role === 'admin'"
                                 class="block mt-2 text-primary-600 dark:text-primary-400 font-medium"
-                            >
-                                Note: As an admin, you can also configure
-                                default settings for all users below.
-                            </span>
+                            >{{ s('Note: As an admin, you can also configure default settings for all users below.') }}</span>
                             <span
                                 v-else
                                 class="block mt-2 text-primary-600 dark:text-primary-400 font-medium"
-                            >
-                                Note: If you leave these settings empty,
-                                admin-configured defaults will be used.
-                            </span>
+                            >{{ s('Note: If you leave these settings empty, admin-configured defaults will be used.') }}</span>
                         </p>
 
                         <form
@@ -754,7 +659,7 @@
                             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                 <div>
                                     <label for="aiProvider" class="label"
-                                        >AI Provider</label
+                                        >{{ s('AI Provider') }}</label
                                     >
                                     <select
                                         id="aiProvider"
@@ -763,34 +668,31 @@
                                         @change="onProviderChange"
                                     >
                                         <option value="gemini">
-                                            Google Gemini
+                                            {{ s('Google Gemini') }}
                                         </option>
                                         <option value="claude">
-                                            Anthropic Claude
+                                            {{ s('Anthropic Claude') }}
                                         </option>
-                                        <option value="openai">OpenAI</option>
-                                        <option value="ollama">Ollama</option>
+                                        <option value="openai">{{ s('OpenAI') }}</option>
+                                        <option value="ollama">{{ s('Ollama') }}</option>
                                         <option value="lmstudio">
-                                            LM Studio
+                                            {{ s('LM Studio') }}
                                         </option>
                                         <option value="perplexity">
-                                            Perplexity AI
+                                            {{ s('Perplexity AI') }}
                                         </option>
                                         <option value="local">
-                                            Local/Custom
+                                            {{ s('Local/Custom') }}
                                         </option>
                                     </select>
                                     <p
                                         class="mt-1 text-sm text-gray-500 dark:text-gray-400"
-                                    >
-                                        Choose your preferred AI provider for
-                                        analytics and CUSIP resolution.
-                                    </p>
+                                    >{{ s('Choose your preferred AI provider for analytics and CUSIP resolution.') }}</p>
                                 </div>
 
                                 <div>
                                     <label for="aiModel" class="label"
-                                        >Model (Optional)</label
+                                        >{{ s('Model (Optional)') }}</label
                                     >
                                     <input
                                         id="aiModel"
@@ -801,10 +703,7 @@
                                     />
                                     <p
                                         class="mt-1 text-sm text-gray-500 dark:text-gray-400"
-                                    >
-                                        Specific model to use. Leave blank for
-                                        default.
-                                    </p>
+                                    >{{ s('Specific model to use. Leave blank for default.') }}</p>
                                 </div>
                             </div>
 
@@ -815,7 +714,7 @@
                                     aiForm.provider === 'lmstudio'
                                 "
                             >
-                                <label for="aiUrl" class="label">API URL</label>
+                                <label for="aiUrl" class="label">{{ s('API URL') }}</label>
                                 <input
                                     id="aiUrl"
                                     v-model="aiForm.url"
@@ -835,15 +734,15 @@
                                 >
                                     {{
                                         aiForm.provider === "ollama"
-                                            ? "Ollama server URL"
-                                            : "Custom AI API endpoint URL"
+                                            ? s("Ollama server URL")
+                                            : s("Custom AI API endpoint URL")
                                     }}
                                 </p>
                             </div>
 
                             <div v-if="aiForm.provider !== 'local'">
                                 <label for="aiApiKey" class="label"
-                                    >API Key</label
+                                    >{{ s('API Key') }}</label
                                 >
                                 <input
                                     id="aiApiKey"
@@ -877,7 +776,7 @@
                                         <div
                                             class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
                                         ></div>
-                                        Saving...
+                                        {{ s('Saving...') }}
                                     </span>
                                     <span v-else>{{ s("Save AI Settings") }}</span>
                                 </button>
@@ -892,15 +791,11 @@
                         <h3
                             class="text-lg font-medium text-gray-900 dark:text-white mb-6"
                         >
-                            CUSIP Resolution AI Provider
+                            {{ s('CUSIP Resolution AI Provider') }}
                         </h3>
                         <p
                             class="text-sm text-gray-600 dark:text-gray-400 mb-6"
-                        >
-                            Optionally configure a separate AI provider
-                            specifically for CUSIP resolution. If not
-                            configured, the main AI provider above will be used.
-                        </p>
+                        >{{ s('Optionally configure a separate AI provider specifically for CUSIP resolution. If not configured, the main AI provider above will be used.') }}</p>
 
                         <form
                             @submit.prevent="updateCusipAISettings"
@@ -918,7 +813,7 @@
                                     for="useMainProviderForCusip"
                                     class="ml-2 text-sm text-gray-700 dark:text-gray-300"
                                 >
-                                    Use main AI provider for CUSIP resolution
+                                    {{ s('Use main AI provider for CUSIP resolution') }}
                                 </label>
                             </div>
 
@@ -933,7 +828,7 @@
                                         <label
                                             for="cusipAiProvider"
                                             class="label"
-                                            >CUSIP AI Provider</label
+                                            >{{ s('CUSIP AI Provider') }}</label
                                         >
                                         <select
                                             id="cusipAiProvider"
@@ -942,32 +837,32 @@
                                             @change="onCusipProviderChange"
                                         >
                                             <option value="gemini">
-                                                Google Gemini
+                                                {{ s('Google Gemini') }}
                                             </option>
                                             <option value="claude">
-                                                Anthropic Claude
+                                                {{ s('Anthropic Claude') }}
                                             </option>
                                             <option value="openai">
-                                                OpenAI
+                                                {{ s('OpenAI') }}
                                             </option>
                                             <option value="ollama">
-                                                Ollama
+                                                {{ s('Ollama') }}
                                             </option>
                                             <option value="lmstudio">
-                                                LM Studio
+                                                {{ s('LM Studio') }}
                                             </option>
                                             <option value="perplexity">
-                                                Perplexity AI
+                                                {{ s('Perplexity AI') }}
                                             </option>
                                             <option value="local">
-                                                Local/Custom
+                                                {{ s('Local/Custom') }}
                                             </option>
                                         </select>
                                     </div>
 
                                     <div>
                                         <label for="cusipAiModel" class="label"
-                                            >Model (Optional)</label
+                                            >{{ s('Model (Optional)') }}</label
                                         >
                                         <input
                                             id="cusipAiModel"
@@ -989,7 +884,7 @@
                                     "
                                 >
                                     <label for="cusipAiUrl" class="label"
-                                        >API URL</label
+                                        >{{ s('API URL') }}</label
                                     >
                                     <input
                                         id="cusipAiUrl"
@@ -1010,7 +905,7 @@
 
                                 <div v-if="cusipAiForm.provider !== 'local'">
                                     <label for="cusipAiApiKey" class="label"
-                                        >API Key</label
+                                        >{{ s('API Key') }}</label
                                     >
                                     <input
                                         id="cusipAiApiKey"
@@ -1042,7 +937,7 @@
                                         <div
                                             class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
                                         ></div>
-                                        Saving...
+                                        {{ s('Saving...') }}
                                     </span>
                                     <span v-else>{{ s("Save CUSIP AI Settings") }}</span>
                                 </button>
@@ -1057,15 +952,11 @@
                         <h3
                             class="text-lg font-medium text-gray-900 dark:text-white mb-6"
                         >
-                            Admin AI Provider Settings
+                            {{ s('Admin AI Provider Settings') }}
                         </h3>
                         <p
                             class="text-sm text-gray-600 dark:text-gray-400 mb-6"
-                        >
-                            Configure default AI provider settings for all
-                            users. Users can override these settings for their
-                            own accounts.
-                        </p>
+                        >{{ s('Configure default AI provider settings for all users. Users can override these settings for their own accounts.') }}</p>
 
                         <form
                             @submit.prevent="updateAdminAISettings"
@@ -1074,7 +965,7 @@
                             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                 <div>
                                     <label for="adminAiProvider" class="label"
-                                        >Default AI Provider</label
+                                        >{{ s('Default AI Provider') }}</label
                                     >
                                     <select
                                         id="adminAiProvider"
@@ -1083,21 +974,21 @@
                                         @change="onAdminProviderChange"
                                     >
                                         <option value="gemini">
-                                            Google Gemini
+                                            {{ s('Google Gemini') }}
                                         </option>
                                         <option value="claude">
-                                            Anthropic Claude
+                                            {{ s('Anthropic Claude') }}
                                         </option>
-                                        <option value="openai">OpenAI</option>
-                                        <option value="ollama">Ollama</option>
+                                        <option value="openai">{{ s('OpenAI') }}</option>
+                                        <option value="ollama">{{ s('Ollama') }}</option>
                                         <option value="lmstudio">
-                                            LM Studio
+                                            {{ s('LM Studio') }}
                                         </option>
                                         <option value="perplexity">
-                                            Perplexity AI
+                                            {{ s('Perplexity AI') }}
                                         </option>
                                         <option value="local">
-                                            Local/Custom
+                                            {{ s('Local/Custom') }}
                                         </option>
                                     </select>
                                     <p
@@ -1110,7 +1001,7 @@
 
                                 <div>
                                     <label for="adminAiModel" class="label"
-                                        >Default Model (Optional)</label
+                                        >{{ s('Default Model (Optional)') }}</label
                                     >
                                     <input
                                         id="adminAiModel"
@@ -1123,10 +1014,7 @@
                                     />
                                     <p
                                         class="mt-1 text-sm text-gray-500 dark:text-gray-400"
-                                    >
-                                        Default model to use. Leave blank for
-                                        provider default.
-                                    </p>
+                                    >{{ s('Default model to use. Leave blank for provider default.') }}</p>
                                 </div>
                             </div>
 
@@ -1138,7 +1026,7 @@
                                 "
                             >
                                 <label for="adminAiUrl" class="label"
-                                    >Default API URL</label
+                                    >{{ s('Default API URL') }}</label
                                 >
                                 <input
                                     id="adminAiUrl"
@@ -1158,19 +1046,19 @@
                                 <p
                                     class="mt-1 text-sm text-gray-500 dark:text-gray-400"
                                 >
-                                    Default
+                                    {{ s('Default') }}
                                     {{
                                         adminAiForm.provider === "ollama"
-                                            ? "Ollama server URL"
-                                            : "custom AI API endpoint URL"
+                                            ? s("Ollama server URL")
+                                            : s("custom AI API endpoint URL")
                                     }}
-                                    for all users.
+                                    {{ s('for all users.') }}
                                 </p>
                             </div>
 
                             <div v-if="adminAiForm.provider !== 'local'">
                                 <label for="adminAiApiKey" class="label"
-                                    >Default API Key</label
+                                    >{{ s('Default API Key') }}</label
                                 >
                                 <input
                                     id="adminAiApiKey"
@@ -1204,7 +1092,7 @@
                                         <div
                                             class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
                                         ></div>
-                                        Saving...
+                                        {{ s('Saving...') }}
                                     </span>
                                     <span v-else>{{ s("Save Admin AI Settings") }}</span>
                                 </button>
@@ -1219,15 +1107,11 @@
                         <h3
                             class="text-lg font-medium text-gray-900 dark:text-white mb-6"
                         >
-                            Admin CUSIP AI Provider Settings
+                            {{ s('Admin CUSIP AI Provider Settings') }}
                         </h3>
                         <p
                             class="text-sm text-gray-600 dark:text-gray-400 mb-6"
-                        >
-                            Configure default CUSIP resolution AI provider for
-                            all users. If not set, the main admin AI provider
-                            will be used.
-                        </p>
+                        >{{ s('Configure default CUSIP resolution AI provider for all users. If not set, the main admin AI provider will be used.') }}</p>
 
                         <form
                             @submit.prevent="updateAdminCusipAISettings"
@@ -1244,10 +1128,7 @@
                                 <label
                                     for="adminUseMainProviderForCusip"
                                     class="ml-2 text-sm text-gray-700 dark:text-gray-300"
-                                >
-                                    Use main admin AI provider for CUSIP
-                                    resolution
-                                </label>
+                                >{{ s('Use main admin AI provider for CUSIP resolution') }}</label>
                             </div>
 
                             <div
@@ -1261,7 +1142,7 @@
                                         <label
                                             for="adminCusipAiProvider"
                                             class="label"
-                                            >Default CUSIP AI Provider</label
+                                            >{{ s('Default CUSIP AI Provider') }}</label
                                         >
                                         <select
                                             id="adminCusipAiProvider"
@@ -1270,25 +1151,25 @@
                                             @change="onAdminCusipProviderChange"
                                         >
                                             <option value="gemini">
-                                                Google Gemini
+                                                {{ s('Google Gemini') }}
                                             </option>
                                             <option value="claude">
-                                                Anthropic Claude
+                                                {{ s('Anthropic Claude') }}
                                             </option>
                                             <option value="openai">
-                                                OpenAI
+                                                {{ s('OpenAI') }}
                                             </option>
                                             <option value="ollama">
-                                                Ollama
+                                                {{ s('Ollama') }}
                                             </option>
                                             <option value="lmstudio">
-                                                LM Studio
+                                                {{ s('LM Studio') }}
                                             </option>
                                             <option value="perplexity">
-                                                Perplexity AI
+                                                {{ s('Perplexity AI') }}
                                             </option>
                                             <option value="local">
-                                                Local/Custom
+                                                {{ s('Local/Custom') }}
                                             </option>
                                         </select>
                                     </div>
@@ -1297,7 +1178,7 @@
                                         <label
                                             for="adminCusipAiModel"
                                             class="label"
-                                            >Default Model (Optional)</label
+                                            >{{ s('Default Model (Optional)') }}</label
                                         >
                                         <input
                                             id="adminCusipAiModel"
@@ -1320,7 +1201,7 @@
                                     "
                                 >
                                     <label for="adminCusipAiUrl" class="label"
-                                        >Default API URL</label
+                                        >{{ s('Default API URL') }}</label
                                     >
                                     <input
                                         id="adminCusipAiUrl"
@@ -1346,7 +1227,7 @@
                                     <label
                                         for="adminCusipAiApiKey"
                                         class="label"
-                                        >Default API Key</label
+                                        >{{ s('Default API Key') }}</label
                                     >
                                     <input
                                         id="adminCusipAiApiKey"
@@ -1378,10 +1259,10 @@
                                         <div
                                             class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
                                         ></div>
-                                        Saving...
+                                        {{ s('Saving...') }}
                                     </span>
                                     <span v-else
-                                        >Save Admin CUSIP AI Settings</span
+                                        >{{ s('Save Admin CUSIP AI Settings') }}</span
                                     >
                                 </button>
                             </div>
@@ -1398,16 +1279,11 @@
                         <h3
                             class="text-lg font-medium text-gray-900 dark:text-white mb-4"
                         >
-                            Trading Accounts
+                            {{ s('Trading Accounts') }}
                         </h3>
                         <p
                             class="text-sm text-gray-600 dark:text-gray-400 mb-6"
-                        >
-                            Manage your brokerage accounts to associate trades
-                            with specific accounts during import. Accounts help
-                            you track performance across different brokers and
-                            account types.
-                        </p>
+                        >{{ s('Manage your brokerage accounts to associate trades with specific accounts during import. Accounts help you track performance across different brokers and account types.') }}</p>
                         <router-link
                             to="/accounts"
                             class="btn-primary inline-flex items-center"
@@ -1425,7 +1301,7 @@
                                     d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
                                 />
                             </svg>
-                            Manage Accounts
+                            {{ s('Manage Accounts') }}
                         </router-link>
                     </div>
                 </div>
@@ -1436,17 +1312,11 @@
                         <h3
                             class="text-lg font-medium text-gray-900 dark:text-white mb-4"
                         >
-                            Quality Grading Weights
+                            {{ s('Quality Grading Weights') }}
                         </h3>
                         <p
                             class="text-sm text-gray-600 dark:text-gray-400 mb-6"
-                        >
-                            Customize how much each metric contributes to your
-                            trade quality score. Weights must sum to 100%.
-                            Quality scores are calculated based on news
-                            sentiment, gap from previous close, relative volume,
-                            float, and price range.
-                        </p>
+                        >{{ s('Customize how much each metric contributes to your trade quality score. Weights must sum to 100%. Quality scores are calculated based on news sentiment, gap from previous close, relative volume, float, and price range.') }}</p>
 
                         <form
                             @submit.prevent="updateQualityWeights"
@@ -1462,7 +1332,7 @@
                                         <label
                                             for="newsWeight"
                                             class="label text-sm"
-                                            >News Sentiment</label
+                                            >{{ s('News Sentiment') }}</label
                                         >
                                         <span
                                             class="text-sm font-medium text-gray-900 dark:text-white"
@@ -1482,10 +1352,7 @@
                                     />
                                     <p
                                         class="mt-1 text-xs text-gray-500 dark:text-gray-400"
-                                    >
-                                        Weight for news sentiment analysis
-                                        (bullish/bearish market sentiment)
-                                    </p>
+                                    >{{ s('Weight for news sentiment analysis (bullish/bearish market sentiment)') }}</p>
                                 </div>
 
                                 <!-- Gap Weight -->
@@ -1496,7 +1363,7 @@
                                         <label
                                             for="gapWeight"
                                             class="label text-sm"
-                                            >Gap from Previous Close</label
+                                            >{{ s('Gap from Previous Close') }}</label
                                         >
                                         <span
                                             class="text-sm font-medium text-gray-900 dark:text-white"
@@ -1514,10 +1381,7 @@
                                     />
                                     <p
                                         class="mt-1 text-xs text-gray-500 dark:text-gray-400"
-                                    >
-                                        Weight for gap percentage from previous
-                                        day's close
-                                    </p>
+                                    >{{ s('Weight for gap percentage from previous day\'s close') }}</p>
                                 </div>
 
                                 <!-- Relative Volume Weight -->
@@ -1528,7 +1392,7 @@
                                         <label
                                             for="relativeVolumeWeight"
                                             class="label text-sm"
-                                            >Relative Volume</label
+                                            >{{ s('Relative Volume') }}</label
                                         >
                                         <span
                                             class="text-sm font-medium text-gray-900 dark:text-white"
@@ -1550,10 +1414,7 @@
                                     />
                                     <p
                                         class="mt-1 text-xs text-gray-500 dark:text-gray-400"
-                                    >
-                                        Weight for volume compared to 10-day
-                                        average
-                                    </p>
+                                    >{{ s('Weight for volume compared to 10-day average') }}</p>
                                 </div>
 
                                 <!-- Float Weight -->
@@ -1564,7 +1425,7 @@
                                         <label
                                             for="floatWeight"
                                             class="label text-sm"
-                                            >Float (Shares Outstanding)</label
+                                            >{{ s('Float (Shares Outstanding)') }}</label
                                         >
                                         <span
                                             class="text-sm font-medium text-gray-900 dark:text-white"
@@ -1586,10 +1447,7 @@
                                     />
                                     <p
                                         class="mt-1 text-xs text-gray-500 dark:text-gray-400"
-                                    >
-                                        Weight for number of shares outstanding
-                                        (lower float is better)
-                                    </p>
+                                    >{{ s('Weight for number of shares outstanding (lower float is better)') }}</p>
                                 </div>
 
                                 <!-- Price Range Weight -->
@@ -1600,7 +1458,7 @@
                                         <label
                                             for="priceRangeWeight"
                                             class="label text-sm"
-                                            >Price Range</label
+                                            >{{ s('Price Range') }}</label
                                         >
                                         <span
                                             class="text-sm font-medium text-gray-900 dark:text-white"
@@ -1622,10 +1480,7 @@
                                     />
                                     <p
                                         class="mt-1 text-xs text-gray-500 dark:text-gray-400"
-                                    >
-                                        Weight for stock price range ($2-20 is
-                                        ideal)
-                                    </p>
+                                    >{{ s('Weight for stock price range ($2-20 is ideal)') }}</p>
                                 </div>
                             </div>
 
@@ -1647,7 +1502,7 @@
                                                 : 'text-red-800 dark:text-red-200'
                                         "
                                     >
-                                        Total Weight:
+                                        {{ s('Total Weight:') }}
                                     </span>
                                     <span
                                         class="text-lg font-bold"
@@ -1664,7 +1519,7 @@
                                     v-if="weightsTotal !== 100"
                                     class="text-xs text-red-600 dark:text-red-400 mt-1"
                                 >
-                                    Weights must sum to exactly 100%
+                                    {{ s('Weights must sum to exactly 100%') }}
                                 </p>
                             </div>
 
@@ -1674,7 +1529,7 @@
                                     @click="resetQualityWeights"
                                     class="btn-secondary"
                                 >
-                                    Reset to Defaults
+                                    {{ s('Reset to Defaults') }}
                                 </button>
                                 <button
                                     type="submit"
@@ -1691,9 +1546,9 @@
                                         <div
                                             class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
                                         ></div>
-                                        Saving...
+                                        {{ s('Saving...') }}
                                     </span>
-                                    <span v-else>Update Quality Weights</span>
+                                    <span v-else>{{ s('Update Quality Weights') }}</span>
                                 </button>
                             </div>
                         </form>
@@ -1706,14 +1561,11 @@
                         <h3
                             class="text-lg font-medium text-gray-900 dark:text-white mb-6"
                         >
-                            Trade Import Settings
+                            {{ s('Trade Import Settings') }}
                         </h3>
                         <p
                             class="text-sm text-gray-600 dark:text-gray-400 mb-6"
-                        >
-                            Configure how executions are grouped when importing
-                            trades from broker CSV files.
-                        </p>
+                        >{{ s('Configure how executions are grouped when importing trades from broker CSV files.') }}</p>
 
                         <form
                             @submit.prevent="updateTradeImportSettings"
@@ -1736,23 +1588,18 @@
                                         for="enableTradeGrouping"
                                         class="text-sm font-medium text-gray-700 dark:text-gray-300"
                                     >
-                                        Enable Trade Grouping
+                                        {{ s('Enable Trade Grouping') }}
                                     </label>
                                     <p
                                         class="text-sm text-gray-500 dark:text-gray-400 mt-1"
-                                    >
-                                        When enabled, multiple executions within
-                                        the specified time gap will be grouped
-                                        into a single trade. This is useful for
-                                        scaling in/out of positions.
-                                    </p>
+                                    >{{ s('When enabled, multiple executions within the specified time gap will be grouped into a single trade. This is useful for scaling in/out of positions.') }}</p>
                                 </div>
                             </div>
 
                             <!-- Time Gap Setting -->
                             <div v-if="tradeImportForm.enableTradeGrouping">
                                 <label for="tradeGroupingTimeGap" class="label"
-                                    >Time Gap for Grouping (minutes)</label
+                                    >{{ s('Time Gap for Grouping (minutes)') }}</label
                                 >
                                 <input
                                     id="tradeGroupingTimeGap"
@@ -1767,12 +1614,7 @@
                                 />
                                 <p
                                     class="mt-1 text-sm text-gray-500 dark:text-gray-400"
-                                >
-                                    Maximum time gap (in minutes) between
-                                    executions to group them into the same
-                                    trade. Default is 60 minutes (1 hour),
-                                    following TradeSviz industry standard.
-                                </p>
+                                >{{ s('Maximum time gap (in minutes) between executions to group them into the same trade. Default is 60 minutes (1 hour), following TradeSviz industry standard.') }}</p>
                             </div>
 
                             <div class="flex justify-end">
@@ -1788,9 +1630,9 @@
                                         <div
                                             class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
                                         ></div>
-                                        Saving...
+                                        {{ s('Saving...') }}
                                     </span>
-                                    <span v-else>Update Import Settings</span>
+                                    <span v-else>{{ s('Update Import Settings') }}</span>
                                 </button>
                             </div>
                         </form>
@@ -1803,16 +1645,11 @@
                         <h3
                             class="text-lg font-medium text-gray-900 dark:text-white mb-4"
                         >
-                            Broker Commission & Fee Settings
+                            {{ s('Broker Commission & Fee Settings') }}
                         </h3>
                         <p
                             class="text-sm text-gray-600 dark:text-gray-400 mb-6"
-                        >
-                            Configure default commission and fee rates for
-                            brokers that don't include this data in their CSV
-                            exports (e.g., Tradovate). These rates will be
-                            automatically applied during import.
-                        </p>
+                        >{{ s('Configure default commission and fee rates for brokers that don\'t include this data in their CSV exports (e.g., Tradovate). These rates will be automatically applied during import.') }}</p>
 
                         <!-- Existing Broker Settings -->
                         <div
@@ -1840,7 +1677,7 @@
                                             v-else
                                             class="px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300 rounded"
                                         >
-                                            All Instruments
+                                            {{ s('All Instruments') }}
                                         </span>
                                         <span
                                             class="text-xs text-gray-500 dark:text-gray-400"
@@ -1916,7 +1753,7 @@
                                         @click="editBrokerFee(setting)"
                                         class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
                                         title="Edit"
-                                        aria-label="Edit broker fee"
+                                        :aria-label="s('Edit broker fee')"
                                     >
                                         <svg
                                             class="h-5 w-5"
@@ -1964,8 +1801,8 @@
                             >
                                 {{
                                     editingBrokerFee
-                                        ? "Edit Broker Fees"
-                                        : "Add Broker Fees"
+                                        ? s("Edit Broker Fees")
+                                        : s("Add Broker Fees")
                                 }}
                             </h4>
 
@@ -1978,7 +1815,7 @@
                                 >
                                     <div>
                                         <label for="brokerName" class="label"
-                                            >Broker</label
+                                            >{{ s('Broker') }}</label
                                         >
                                         <select
                                             id="brokerName"
@@ -1987,42 +1824,42 @@
                                             :disabled="editingBrokerFee"
                                         >
                                             <option value="">
-                                                Select a broker
+                                                {{ s('Select a broker') }}
                                             </option>
                                             <option value="avatrade">
-                                                AvaTrade
+                                                {{ s('AvaTrade') }}
                                             </option>
                                             <option value="tradovate">
-                                                Tradovate
+                                                {{ s('Tradovate') }}
                                             </option>
                                             <option value="ninjatrader">
-                                                NinjaTrader
+                                                {{ s('NinjaTrader') }}
                                             </option>
                                             <option value="thinkorswim">
-                                                ThinkorSwim
+                                                {{ s('ThinkorSwim') }}
                                             </option>
                                             <option value="ibkr">
-                                                Interactive Brokers
+                                                {{ s('Interactive Brokers') }}
                                             </option>
                                             <option value="schwab">
-                                                Charles Schwab
+                                                {{ s('Charles Schwab') }}
                                             </option>
                                             <option value="lightspeed">
-                                                Lightspeed
+                                                {{ s('Lightspeed') }}
                                             </option>
                                             <option value="webull">
-                                                Webull
+                                                {{ s('Webull') }}
                                             </option>
                                             <option value="etrade">
-                                                E*TRADE
+                                                {{ s('E*TRADE') }}
                                             </option>
-                                            <option value="other">Other</option>
+                                            <option value="other">{{ s('Other') }}</option>
                                         </select>
                                     </div>
 
                                     <div>
                                         <label for="instrument" class="label"
-                                            >Instrument (optional)</label
+                                            >{{ s('Instrument (optional)') }}</label
                                         >
                                         <input
                                             type="text"
@@ -2030,21 +1867,18 @@
                                             v-model="brokerFeeForm.instrument"
                                             class="input uppercase"
                                             :disabled="editingBrokerFee"
-                                            placeholder="e.g., MES, NQ, ES (leave blank for all)"
+                                            :placeholder="s('e.g., MES, NQ, ES (leave blank for all)')"
                                         />
                                         <p
                                             class="mt-1 text-xs text-gray-500 dark:text-gray-400"
-                                        >
-                                            Leave blank to set default fees for
-                                            all instruments with this broker
-                                        </p>
+                                        >{{ s('Leave blank to set default fees for all instruments with this broker') }}</p>
                                     </div>
 
                                     <div>
                                         <label
                                             for="commissionPerContract"
                                             class="label"
-                                            >Commission per Contract</label
+                                            >{{ s('Commission per Contract') }}</label
                                         >
                                         <div class="relative">
                                             <span
@@ -2066,7 +1900,7 @@
 
                                     <div>
                                         <label for="exchangeFee" class="label"
-                                            >Exchange Fee per Contract</label
+                                            >{{ s('Exchange Fee per Contract') }}</label
                                         >
                                         <div class="relative">
                                             <span
@@ -2087,13 +1921,13 @@
                                         <p
                                             class="mt-1 text-xs text-gray-500 dark:text-gray-400"
                                         >
-                                            CME, CBOT, etc.
+                                            {{ s('CME, CBOT, etc.') }}
                                         </p>
                                     </div>
 
                                     <div>
                                         <label for="nfaFee" class="label"
-                                            >NFA Fee per Contract</label
+                                            >{{ s('NFA Fee per Contract') }}</label
                                         >
                                         <div class="relative">
                                             <span
@@ -2114,13 +1948,13 @@
                                         <p
                                             class="mt-1 text-xs text-gray-500 dark:text-gray-400"
                                         >
-                                            Typically $0.02/contract
+                                            {{ s('Typically $0.02/contract') }}
                                         </p>
                                     </div>
 
                                     <div>
                                         <label for="clearingFee" class="label"
-                                            >Clearing Fee per Contract</label
+                                            >{{ s('Clearing Fee per Contract') }}</label
                                         >
                                         <div class="relative">
                                             <span
@@ -2142,7 +1976,7 @@
 
                                     <div>
                                         <label for="platformFee" class="label"
-                                            >Platform Fee per Contract</label
+                                            >{{ s('Platform Fee per Contract') }}</label
                                         >
                                         <div class="relative">
                                             <span
@@ -2165,14 +1999,14 @@
 
                                 <div>
                                     <label for="feeNotes" class="label"
-                                        >Notes (optional)</label
+                                        >{{ s('Notes (optional)') }}</label
                                     >
                                     <input
                                         type="text"
                                         id="feeNotes"
                                         v-model="brokerFeeForm.notes"
                                         class="input"
-                                        placeholder="e.g., Micro E-mini rates, updated Jan 2025"
+                                        :placeholder="s('e.g., Micro E-mini rates, updated Jan 2025')"
                                     />
                                 </div>
 
@@ -2185,8 +2019,7 @@
                                     >
                                         <span
                                             class="text-sm text-blue-800 dark:text-blue-200"
-                                            >Total fees per contract per
-                                            side:</span
+                                            >{{ s('Total fees per contract per side:') }}</span
                                         >
                                         <span
                                             class="text-lg font-bold text-blue-900 dark:text-blue-100"
@@ -2201,14 +2034,14 @@
                                     <p
                                         class="text-xs text-blue-700 dark:text-blue-300 mt-1"
                                     >
-                                        For a round-trip trade, total fees = ${{
+                                        {{ s('For a round-trip trade, total fees =') }} ${{
                                             (
                                                 calculateTotalFees(
                                                     brokerFeeForm,
                                                 ) * 2
                                             ).toFixed(6)
                                         }}
-                                        per contract
+                                        {{ s('per contract') }}
                                     </p>
                                 </div>
 
@@ -2219,7 +2052,7 @@
                                         @click="cancelEditBrokerFee"
                                         class="btn-secondary"
                                     >
-                                        Cancel
+                                        {{ s('Cancel') }}
                                     </button>
                                     <button
                                         type="submit"
@@ -2236,15 +2069,15 @@
                                             <div
                                                 class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
                                             ></div>
-                                            Saving...
+                                            {{ s('Saving...') }}
                                         </span>
                                         <span v-else
                                             >{{
                                                 editingBrokerFee
-                                                    ? "Update"
-                                                    : "Add"
+                                                    ? s("Update")
+                                                    : s("Add")
                                             }}
-                                            Broker Fees</span
+                                            {{ s("Broker Fees") }}</span
                                         >
                                     </button>
                                 </div>
@@ -2259,38 +2092,29 @@
                         <h3
                             class="text-lg font-medium text-gray-900 dark:text-white mb-4"
                         >
-                            Trade Enrichment
+                            {{ s('Trade Enrichment') }}
                         </h3>
                         <p
                             class="text-sm text-gray-600 dark:text-gray-400 mb-6"
-                        >
-                            Enrich your existing trades with additional data and
-                            analytics. This process runs in the background and
-                            may take a few minutes depending on the number of
-                            trades.
-                        </p>
+                        >{{ s('Enrich your existing trades with additional data and analytics. This process runs in the background and may take a few minutes depending on the number of trades.') }}</p>
 
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
                                 <p
                                     class="text-sm font-medium text-gray-900 dark:text-white"
                                 >
-                                    Comprehensive Trade Enrichment
+                                    {{ s('Comprehensive Trade Enrichment') }}
                                 </p>
                                 <p
                                     class="text-xs text-gray-500 dark:text-gray-400 mt-1"
                                 >
-                                    Enriches trades with:
+                                    {{ s('Enriches trades with:') }}
                                 </p>
                                 <ul
                                     class="text-xs text-gray-500 dark:text-gray-400 mt-2 space-y-1 ml-4 list-disc"
                                 >
-                                    <li>News events and sentiment analysis</li>
-                                    <li>
-                                        Quality grading based on stock metrics
-                                        (float, volume, price range, gap,
-                                        sentiment)
-                                    </li>
+                                    <li>{{ s('News events and sentiment analysis') }}</li>
+                                    <li>{{ s('Quality grading based on stock metrics (float, volume, price range, gap, sentiment)') }}</li>
                                 </ul>
                             </div>
                             <button
@@ -2305,9 +2129,9 @@
                                     <div
                                         class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
                                     ></div>
-                                    Processing...
+                                    {{ s('Processing...') }}
                                 </span>
-                                <span v-else>Enrich Trades</span>
+                                <span v-else>{{ s('Enrich Trades') }}</span>
                             </button>
                         </div>
 
@@ -2320,7 +2144,7 @@
                                     : 'bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200'
                             "
                         >
-                            <p class="text-sm">{{ enrichmentMessage }}</p>
+                            <p class="text-sm">{{ s(enrichmentMessage) }}</p>
                         </div>
                     </div>
                 </div>
@@ -2334,15 +2158,11 @@
                         <h3
                             class="text-lg font-medium text-gray-900 dark:text-white mb-6"
                         >
-                            Data Export & Import
+                            {{ s('Data Export & Import') }}
                         </h3>
                         <p
                             class="text-sm text-gray-600 dark:text-gray-400 mb-6"
-                        >
-                            Export all your trading data, settings, and trading
-                            profile as a JSON file. You can also import
-                            previously exported data.
-                        </p>
+                        >{{ s('Export all your trading data, settings, and trading profile as a JSON file. You can also import previously exported data.') }}</p>
 
                         <div class="space-y-6">
                             <!-- Export Section -->
@@ -2351,16 +2171,11 @@
                                     <h4
                                         class="text-sm font-medium text-gray-900 dark:text-white mb-3"
                                     >
-                                        Export Your Data
+                                        {{ s('Export Your Data') }}
                                     </h4>
                                     <p
                                         class="text-sm text-gray-600 dark:text-gray-400 mb-4"
-                                    >
-                                        Download a complete backup of your
-                                        TradeTally data including trades, diary
-                                        entries, playbook entries, settings,
-                                        tags, and equity history.
-                                    </p>
+                                    >{{ s('Download a complete backup of your TradeTally data including trades, diary entries, playbook entries, settings, tags, and equity history.') }}</p>
                                 </div>
                                 <button
                                     @click="exportUserData"
@@ -2374,7 +2189,7 @@
                                         <div
                                             class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
                                         ></div>
-                                        Preparing Export...
+                                        {{ s('Preparing Export...') }}
                                     </span>
                                     <span v-else class="flex items-center">
                                         <svg
@@ -2390,7 +2205,7 @@
                                                 d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                                             ></path>
                                         </svg>
-                                        Export All Data
+                                        {{ s('Export All Data') }}
                                     </span>
                                 </button>
                             </div>
@@ -2403,17 +2218,11 @@
                                     <h4
                                         class="text-sm font-medium text-gray-900 dark:text-white mb-3"
                                     >
-                                        Export Trades to CSV
+                                        {{ s('Export Trades to CSV') }}
                                     </h4>
                                     <p
                                         class="text-sm text-gray-600 dark:text-gray-400 mb-4"
-                                    >
-                                        Export all your trades to a CSV file
-                                        with generic headers compatible with
-                                        Excel, Google Sheets, and other trading
-                                        journals. Exports all trades with full
-                                        details.
-                                    </p>
+                                    >{{ s('Export all your trades to a CSV file with generic headers compatible with Excel, Google Sheets, and other trading journals. Exports all trades with full details.') }}</p>
                                 </div>
                                 <button
                                     @click="exportTradesToCSV"
@@ -2427,7 +2236,7 @@
                                         <div
                                             class="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600 mr-2"
                                         ></div>
-                                        Exporting...
+                                        {{ s('Exporting...') }}
                                     </span>
                                     <span v-else class="flex items-center">
                                         <svg
@@ -2443,7 +2252,7 @@
                                                 d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                                             ></path>
                                         </svg>
-                                        Export Trades CSV
+                                        {{ s('Export Trades CSV') }}
                                     </span>
                                 </button>
                             </div>
@@ -2456,15 +2265,11 @@
                                     <h4
                                         class="text-sm font-medium text-gray-900 dark:text-white mb-3"
                                     >
-                                        Import Data
+                                        {{ s('Import Data') }}
                                     </h4>
                                     <p
                                         class="text-sm text-gray-600 dark:text-gray-400 mb-4"
-                                    >
-                                        Import previously exported TradeTally
-                                        data. This will merge with your existing
-                                        data without duplicating trades.
-                                    </p>
+                                    >{{ s('Import previously exported TradeTally data. This will merge with your existing data without duplicating trades.') }}</p>
                                 </div>
                                 <div class="flex-shrink-0">
                                     <input
@@ -2491,7 +2296,7 @@
                                                 d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
                                             ></path>
                                         </svg>
-                                        Choose File
+                                        {{ s('Choose File') }}
                                     </button>
                                 </div>
                             </div>
@@ -2504,7 +2309,7 @@
                                 <span
                                     class="text-sm text-gray-600 dark:text-gray-400 truncate mr-4"
                                 >
-                                    Selected: {{ selectedFile.name }}
+                                    {{ s('Selected:') }} {{ selectedFile.name }}
                                 </span>
                                 <button
                                     @click="importUserData"
@@ -2518,7 +2323,7 @@
                                         <div
                                             class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
                                         ></div>
-                                        Importing...
+                                        {{ s('Importing...') }}
                                     </span>
                                     <span v-else class="flex items-center">
                                         <svg
@@ -2534,7 +2339,7 @@
                                                 d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                                             ></path>
                                         </svg>
-                                        Import Data
+                                        {{ s('Import Data') }}
                                     </span>
                                 </button>
                             </div>
@@ -2555,6 +2360,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import { useI18n } from "vue-i18n";
 import { useAuthStore } from "@/stores/auth";
 import { useVersionStore } from "@/stores/version";
 import { useNotification } from "@/composables/useNotification";
@@ -2569,7 +2375,9 @@ import {
 import LogsViewer from "@/components/admin/LogsViewer.vue";
 import { tSentence } from "@/i18n";
 
+const { locale } = useI18n();
 const s = (text) => tSentence(text, { context: "settings" });
+void locale;
 
 const authStore = useAuthStore();
 const versionStore = useVersionStore();
@@ -2729,21 +2537,21 @@ function getApiDocsUrl() {
 function getModelPlaceholder() {
     switch (aiForm.value.provider) {
         case "gemini":
-            return "e.g., gemini-1.5-pro";
+            return s("e.g., gemini-1.5-pro");
         case "claude":
-            return "e.g., claude-3-5-sonnet";
+            return s("e.g., claude-3-5-sonnet");
         case "openai":
-            return "e.g., gpt-4o";
+            return s("e.g., gpt-4o");
         case "ollama":
-            return "e.g., llama3.1";
+            return s("e.g., llama3.1");
         case "lmstudio":
-            return "e.g., local-model (auto-detected)";
+            return s("e.g., local-model (auto-detected)");
         case "perplexity":
-            return "e.g., sonar";
+            return s("e.g., sonar");
         case "local":
-            return "e.g., custom-model";
+            return s("e.g., custom-model");
         default:
-            return "Model name";
+            return s("Model name");
     }
 }
 
@@ -2771,21 +2579,21 @@ function getApiKeyPlaceholder() {
 function getApiKeyHelp() {
     switch (aiForm.value.provider) {
         case "gemini":
-            return "Get your API key from Google AI Studio";
+            return s("Get your API key from Google AI Studio");
         case "claude":
-            return "Get your API key from Anthropic Console";
+            return s("Get your API key from Anthropic Console");
         case "openai":
-            return "Get your API key from OpenAI Dashboard";
+            return s("Get your API key from OpenAI Dashboard");
         case "ollama":
-            return "API key is optional for Ollama";
+            return s("API key is optional for Ollama");
         case "perplexity":
-            return "Get your API key from Perplexity AI Settings";
+            return s("Get your API key from Perplexity AI Settings");
         case "lmstudio":
-            return "API key is optional for LM Studio";
+            return s("API key is optional for LM Studio");
         case "local":
-            return "Enter your custom API key if required";
+            return s("Enter your custom API key if required");
         default:
-            return "Enter your API key";
+            return s("Enter your API key");
     }
 }
 
@@ -2807,7 +2615,7 @@ async function loadAISettings() {
         };
     } catch (error) {
         console.error("Failed to load AI settings:", error);
-        showError("Error", "Failed to load AI settings");
+        showError(s("Error"), s("Failed to load AI settings"));
     }
 }
 
@@ -2820,12 +2628,12 @@ async function updateAISettings() {
             aiApiUrl: aiForm.value.url,
             aiModel: aiForm.value.model,
         });
-        showSuccess("Success", "AI provider settings updated successfully");
+        showSuccess(s("Success"), s("AI provider settings updated successfully"));
     } catch (error) {
         console.error("Failed to update AI settings:", error);
         showError(
-            "Error",
-            error.response?.data?.error || "Failed to update AI settings",
+            s("Error"),
+            error.response?.data?.error || s("Failed to update AI settings"),
         );
     } finally {
         aiLoading.value = false;
@@ -2836,34 +2644,34 @@ async function updateAISettings() {
 function getCusipModelPlaceholder() {
     switch (cusipAiForm.value.provider) {
         case "gemini":
-            return "e.g., gemini-1.5-pro";
+            return s("e.g., gemini-1.5-pro");
         case "claude":
-            return "e.g., claude-3-5-sonnet-20241022";
+            return s("e.g., claude-3-5-sonnet-20241022");
         case "openai":
-            return "e.g., gpt-4o";
+            return s("e.g., gpt-4o");
         case "ollama":
-            return "e.g., llama3.2";
+            return s("e.g., llama3.2");
         case "perplexity":
-            return "e.g., llama-3.1-sonar-large-128k-online";
+            return s("e.g., llama-3.1-sonar-large-128k-online");
         case "lmstudio":
-            return "e.g., local-model";
+            return s("e.g., local-model");
         default:
-            return "Model name";
+            return s("Model name");
     }
 }
 
 function getCusipApiKeyPlaceholder() {
     switch (cusipAiForm.value.provider) {
         case "gemini":
-            return "Your Google AI API key";
+            return s("Your Google AI API key");
         case "claude":
-            return "Your Anthropic API key";
+            return s("Your Anthropic API key");
         case "openai":
-            return "Your OpenAI API key";
+            return s("Your OpenAI API key");
         case "perplexity":
-            return "Your Perplexity API key";
+            return s("Your Perplexity API key");
         default:
-            return "API key (if required)";
+            return s("API key (if required)");
     }
 }
 
@@ -2908,14 +2716,14 @@ async function updateCusipAISettings() {
             useMainProvider: cusipAiForm.value.useMainProvider,
         });
         showSuccess(
-            "Success",
-            "CUSIP AI provider settings updated successfully",
+            s("Success"),
+            s("CUSIP AI provider settings updated successfully"),
         );
     } catch (error) {
         console.error("Failed to update CUSIP AI settings:", error);
         showError(
-            "Error",
-            error.response?.data?.error || "Failed to update CUSIP AI settings",
+            s("Error"),
+            error.response?.data?.error || s("Failed to update CUSIP AI settings"),
         );
     } finally {
         cusipAiLoading.value = false;
@@ -2977,13 +2785,13 @@ async function updateAnalyticsSettings() {
         });
         // Re-fetch user so the auth store picks up the new display_currency
         await authStore.fetchUser();
-        showSuccess("Success", "Analytics preferences updated successfully");
+        showSuccess(s("Success"), s("Analytics preferences updated successfully"));
     } catch (error) {
         console.error("Failed to update analytics settings:", error);
         showError(
-            "Error",
+            s("Error"),
             error.response?.data?.error ||
-                "Failed to update analytics settings",
+                s("Failed to update analytics settings"),
         );
     } finally {
         analyticsLoading.value = false;
@@ -3016,12 +2824,12 @@ async function updatePrivacySettings() {
         // Refresh user data to update settings in auth store
         await authStore.fetchUser();
 
-        showSuccess("Success", "Privacy settings updated successfully");
+        showSuccess(s("Success"), s("Privacy settings updated successfully"));
     } catch (error) {
         console.error("Failed to update privacy settings:", error);
         showError(
-            "Error",
-            error.response?.data?.error || "Failed to update privacy settings",
+            s("Error"),
+            error.response?.data?.error || s("Failed to update privacy settings"),
         );
     } finally {
         privacyLoading.value = false;
@@ -3055,13 +2863,13 @@ async function updateTradeImportSettings() {
             tradeGroupingTimeGapMinutes:
                 tradeImportForm.value.tradeGroupingTimeGapMinutes,
         });
-        showSuccess("Success", "Trade import settings updated successfully");
+        showSuccess(s("Success"), s("Trade import settings updated successfully"));
     } catch (error) {
         console.error("Failed to update trade import settings:", error);
         showError(
-            "Error",
+            s("Error"),
             error.response?.data?.error ||
-                "Failed to update trade import settings",
+                s("Failed to update trade import settings"),
         );
     } finally {
         tradeImportLoading.value = false;
@@ -3129,7 +2937,7 @@ function resetBrokerFeeForm() {
 
 async function saveBrokerFee() {
     if (!brokerFeeForm.value.broker) {
-        showError("Error", "Please select a broker");
+        showError(s("Error"), s("Please select a broker"));
         return;
     }
 
@@ -3137,16 +2945,19 @@ async function saveBrokerFee() {
     try {
         await api.post("/settings/broker-fees", brokerFeeForm.value);
         showSuccess(
-            "Success",
-            `Broker fee settings for ${brokerFeeForm.value.broker} saved successfully`,
+            s("Success"),
+            s("Broker fee settings for {broker} saved successfully").replace(
+                "{broker}",
+                brokerFeeForm.value.broker,
+            ),
         );
         await loadBrokerFeeSettings();
         cancelEditBrokerFee();
     } catch (error) {
         console.error("Failed to save broker fee settings:", error);
         showError(
-            "Error",
-            error.response?.data?.error || "Failed to save broker fee settings",
+            s("Error"),
+            error.response?.data?.error || s("Failed to save broker fee settings"),
         );
     } finally {
         brokerFeeLoading.value = false;
@@ -3155,19 +2966,19 @@ async function saveBrokerFee() {
 
 function deleteBrokerFee(id) {
     showDangerConfirmation(
-        "Delete Broker Fee",
-        "Are you sure you want to delete this broker fee configuration?",
+        s("Delete Broker Fee"),
+        s("Are you sure you want to delete this broker fee configuration?"),
         async () => {
             try {
                 await api.delete(`/settings/broker-fees/${id}`);
-                showSuccess("Success", "Broker fee settings deleted");
+                showSuccess(s("Success"), s("Broker fee settings deleted"));
                 await loadBrokerFeeSettings();
             } catch (error) {
                 console.error("Failed to delete broker fee settings:", error);
                 showError(
-                    "Error",
+                    s("Error"),
                     error.response?.data?.error ||
-                        "Failed to delete broker fee settings",
+                        s("Failed to delete broker fee settings"),
                 );
             }
         },
@@ -3203,12 +3014,12 @@ async function updateQualityWeights() {
             float: qualityWeightsForm.value.float,
             priceRange: qualityWeightsForm.value.priceRange,
         });
-        showSuccess("Success", "Quality grading weights updated successfully");
+        showSuccess(s("Success"), s("Quality grading weights updated successfully"));
     } catch (error) {
         console.error("Failed to update quality weights:", error);
         showError(
-            "Error",
-            error.response?.data?.error || "Failed to update quality weights",
+            s("Error"),
+            error.response?.data?.error || s("Failed to update quality weights"),
         );
     } finally {
         qualityWeightsLoading.value = false;
@@ -3237,7 +3048,7 @@ async function fetchAdminAISettings() {
         };
     } catch (error) {
         console.error("Failed to fetch admin AI settings:", error);
-        showError("Error", "Failed to load admin AI settings");
+        showError(s("Error"), s("Failed to load admin AI settings"));
     }
 }
 
@@ -3251,14 +3062,14 @@ async function updateAdminAISettings() {
             aiModel: adminAiForm.value.model,
         });
         showSuccess(
-            "Success",
-            "Admin AI provider settings updated successfully",
+            s("Success"),
+            s("Admin AI provider settings updated successfully"),
         );
     } catch (error) {
         console.error("Failed to update admin AI settings:", error);
         showError(
-            "Error",
-            error.response?.data?.error || "Failed to update admin AI settings",
+            s("Error"),
+            error.response?.data?.error || s("Failed to update admin AI settings"),
         );
     } finally {
         adminAiLoading.value = false;
@@ -3283,43 +3094,43 @@ function getAdminModelPlaceholder() {
         case "ollama":
             return "llama3.1";
         case "lmstudio":
-            return "local-model (auto-detected)";
+            return s("local-model (auto-detected)");
         case "perplexity":
             return "sonar";
         case "local":
-            return "custom-model";
+            return s("custom-model");
         default:
-            return "Leave blank for default";
+            return s("Leave blank for default");
     }
 }
 
 function getAdminApiKeyPlaceholder() {
     switch (adminAiForm.value.provider) {
         case "gemini":
-            return "Enter Google Gemini API key";
+            return s("Enter Google Gemini API key");
         case "claude":
-            return "Enter Anthropic Claude API key";
+            return s("Enter Anthropic Claude API key");
         case "openai":
-            return "Enter OpenAI API key";
+            return s("Enter OpenAI API key");
         case "ollama":
-            return "Optional: Enter Ollama API key";
+            return s("Optional: Enter Ollama API key");
         default:
-            return "Enter API key";
+            return s("Enter API key");
     }
 }
 
 function getAdminApiKeyHelp() {
     switch (adminAiForm.value.provider) {
         case "gemini":
-            return "Get your free API key at: https://aistudio.google.com/app/apikey";
+            return s("Get your free API key at: https://aistudio.google.com/app/apikey");
         case "claude":
-            return "Get your API key at: https://console.anthropic.com/";
+            return s("Get your API key at: https://console.anthropic.com/");
         case "openai":
-            return "Get your API key at: https://platform.openai.com/api-keys";
+            return s("Get your API key at: https://platform.openai.com/api-keys");
         case "ollama":
-            return "API key is optional for Ollama. Leave blank if not needed.";
+            return s("API key is optional for Ollama. Leave blank if not needed.");
         default:
-            return "API key for your chosen provider";
+            return s("API key for your chosen provider");
     }
 }
 
@@ -3350,15 +3161,15 @@ async function updateAdminCusipAISettings() {
             useMainProvider: adminCusipAiForm.value.useMainProvider,
         });
         showSuccess(
-            "Success",
-            "Admin CUSIP AI provider settings updated successfully",
+            s("Success"),
+            s("Admin CUSIP AI provider settings updated successfully"),
         );
     } catch (error) {
         console.error("Failed to update admin CUSIP AI settings:", error);
         showError(
-            "Error",
+            s("Error"),
             error.response?.data?.error ||
-                "Failed to update admin CUSIP AI settings",
+                s("Failed to update admin CUSIP AI settings"),
         );
     } finally {
         adminCusipAiLoading.value = false;
@@ -3391,28 +3202,28 @@ function getAdminCusipModelPlaceholder() {
         case "ollama":
             return "llama3.1";
         case "lmstudio":
-            return "local-model (auto-detected)";
+            return s("local-model (auto-detected)");
         case "perplexity":
             return "sonar";
         case "local":
-            return "custom-model";
+            return s("custom-model");
         default:
-            return "Leave blank for default";
+            return s("Leave blank for default");
     }
 }
 
 function getAdminCusipApiKeyPlaceholder() {
     switch (adminCusipAiForm.value.provider) {
         case "gemini":
-            return "Enter Google Gemini API key";
+            return s("Enter Google Gemini API key");
         case "claude":
-            return "Enter Anthropic Claude API key";
+            return s("Enter Anthropic Claude API key");
         case "openai":
-            return "Enter OpenAI API key";
+            return s("Enter OpenAI API key");
         case "ollama":
-            return "Optional: Enter Ollama API key";
+            return s("Optional: Enter Ollama API key");
         default:
-            return "Enter API key";
+            return s("Enter API key");
     }
 }
 
@@ -3441,14 +3252,14 @@ async function exportUserData() {
         window.URL.revokeObjectURL(url);
 
         showSuccess(
-            "Export Complete",
-            "Your data has been exported successfully",
+            s("Export Complete"),
+            s("Your data has been exported successfully"),
         );
     } catch (error) {
         console.error("Export failed:", error);
         showError(
-            "Export Failed",
-            error.response?.data?.error || "Failed to export user data",
+            s("Export Failed"),
+            error.response?.data?.error || s("Failed to export user data"),
         );
     } finally {
         exportLoading.value = false;
@@ -3483,14 +3294,14 @@ async function exportTradesToCSV() {
         window.URL.revokeObjectURL(url);
 
         showSuccess(
-            "Export Complete",
-            "Your trades have been exported to CSV successfully",
+            s("Export Complete"),
+            s("Your trades have been exported to CSV successfully"),
         );
     } catch (error) {
         console.error("CSV export failed:", error);
         showError(
-            "Export Failed",
-            error.response?.data?.error || "Failed to export trades to CSV",
+            s("Export Failed"),
+            error.response?.data?.error || s("Failed to export trades to CSV"),
         );
     } finally {
         csvExportLoading.value = false;
@@ -3506,7 +3317,7 @@ function handleFileSelect(event) {
 
 async function importUserData() {
     if (!selectedFile.value) {
-        showError("No File Selected", "Please select a file to import");
+        showError(s("No File Selected"), s("Please select a file to import"));
         return;
     }
 
@@ -3523,8 +3334,11 @@ async function importUserData() {
 
         const { tradesAdded, tagsAdded, equityAdded } = response.data;
         showSuccess(
-            "Import Complete",
-            `Successfully imported ${tradesAdded} trades, ${tagsAdded} tags, and ${equityAdded} equity records`,
+            s("Import Complete"),
+            s("Successfully imported {trades} trades, {tags} tags, and {equity} equity records")
+                .replace("{trades}", String(tradesAdded))
+                .replace("{tags}", String(tagsAdded))
+                .replace("{equity}", String(equityAdded)),
         );
 
         // Clear the selected file
@@ -3535,8 +3349,8 @@ async function importUserData() {
     } catch (error) {
         console.error("Import failed:", error);
         showError(
-            "Import Failed",
-            error.response?.data?.error || "Failed to import user data",
+            s("Import Failed"),
+            error.response?.data?.error || s("Failed to import user data"),
         );
     } finally {
         importLoading.value = false;
@@ -3556,21 +3370,24 @@ async function enrichTrades() {
 
         if (response.data.tradesQueued > 0) {
             showSuccess(
-                "Enrichment Started",
-                `Processing ${response.data.tradesQueued} trades in the background. This may take a few minutes.`,
+                s("Enrichment Started"),
+                s("Processing {count} trades in the background. This may take a few minutes.").replace(
+                    "{count}",
+                    String(response.data.tradesQueued),
+                ),
             );
         } else {
             showSuccess(
-                "All Set",
-                "All your trades are already enriched with news data!",
+                s("All Set"),
+                s("All your trades are already enriched with news data!"),
             );
         }
     } catch (error) {
         console.error("Enrichment failed:", error);
         enrichmentSuccess.value = false;
         enrichmentMessage.value =
-            error.response?.data?.error || "Failed to start enrichment process";
-        showError("Enrichment Failed", enrichmentMessage.value);
+            error.response?.data?.error || s("Failed to start enrichment process");
+        showError(s("Enrichment Failed"), enrichmentMessage.value);
     } finally {
         enrichmentLoading.value = false;
     }

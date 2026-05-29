@@ -4,9 +4,9 @@
     <div class="mb-8">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 class="heading-page">Partial Exit Analytics</h1>
+          <h1 class="heading-page">{{ s('Partial Exit Analytics') }}</h1>
           <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            Analyze how each partial exit level performs across your trades.
+            {{ s('Analyze how each partial exit level performs across your trades.') }}
           </p>
         </div>
       </div>
@@ -21,23 +21,23 @@
         <div class="mt-4 border-t border-gray-200 dark:border-gray-700 pt-4">
           <div class="flex flex-wrap items-center gap-4">
             <div class="flex items-center gap-2">
-              <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Min Partials:</label>
+              <label class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ s('Min Partials:') }}</label>
               <select v-model="minPartials" @change="loadData" class="input text-sm w-20">
-                <option value="">Any</option>
+                <option value="">{{ s('Any') }}</option>
                 <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
               </select>
             </div>
             <div class="flex items-center gap-2">
-              <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Max Partials:</label>
+              <label class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ s('Max Partials:') }}</label>
               <select v-model="maxPartials" @change="loadData" class="input text-sm w-20">
-                <option value="">Any</option>
+                <option value="">{{ s('Any') }}</option>
                 <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
               </select>
             </div>
             <div class="flex items-center gap-2">
-              <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Min Eligible Trades:</label>
+              <label class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ s('Min Eligible Trades:') }}</label>
               <select v-model="minEligibleTrades" class="input text-sm w-20">
-                <option :value="0">Any</option>
+                <option :value="0">{{ s('Any') }}</option>
                 <option v-for="n in [2, 3, 5, 10, 15, 20, 25, 50]" :key="n" :value="n">{{ n }}</option>
               </select>
             </div>
@@ -53,7 +53,7 @@
 
     <div v-else-if="error" class="card p-8 text-center">
       <p class="text-danger mb-4">{{ error }}</p>
-      <button @click="loadData" class="btn-primary">Retry</button>
+      <button @click="loadData" class="btn-primary">{{ s('Retry') }}</button>
     </div>
 
     <!-- Content -->
@@ -62,7 +62,7 @@
       <div v-if="loading" class="absolute top-0 right-0 z-10">
         <div class="flex items-center space-x-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-gray-200 dark:border-gray-700">
           <div class="animate-spin rounded-full h-4 w-4 border-2 border-primary-600 border-t-transparent"></div>
-          <span class="text-xs text-gray-600 dark:text-gray-400">Updating...</span>
+          <span class="text-xs text-gray-600 dark:text-gray-400">{{ s('Updating...') }}</span>
         </div>
       </div>
 
@@ -70,24 +70,22 @@
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
         <div class="card p-4 text-center">
           <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ analytics.total_trades }}</div>
-          <div class="text-sm text-gray-600 dark:text-gray-400">Trades Analyzed</div>
+          <div class="text-sm text-gray-600 dark:text-gray-400">{{ s('Trades Analyzed') }}</div>
         </div>
         <div class="card p-4 text-center">
           <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ analytics.max_partials }}</div>
-          <div class="text-sm text-gray-600 dark:text-gray-400">Max Partial Levels</div>
+          <div class="text-sm text-gray-600 dark:text-gray-400">{{ s('Max Partial Levels') }}</div>
         </div>
         <div class="card p-4 text-center">
           <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ filteredPartials.length }}</div>
-          <div class="text-sm text-gray-600 dark:text-gray-400">Partial Indices</div>
+          <div class="text-sm text-gray-600 dark:text-gray-400">{{ s('Partial Indices') }}</div>
         </div>
       </div>
 
       <!-- No data state -->
       <div v-if="filteredPartials.length === 0" class="card p-8 text-center">
         <p class="text-gray-500 dark:text-gray-400">
-          {{ analytics.partials?.length > 0 && minEligibleTrades > 0
-            ? `No partial levels have ${minEligibleTrades}+ eligible trades. Try lowering the threshold.`
-            : 'No partial exit data found. This analysis requires trades with at least 2 exit executions.' }}
+          {{ noDataMessage }}
         </p>
       </div>
 
@@ -98,37 +96,37 @@
             <thead class="bg-gray-50 dark:bg-gray-700">
               <tr>
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Partial
+                  {{ s('Partial') }}
                 </th>
                 <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Eligible
+                  {{ s('Eligible') }}
                 </th>
                 <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Abs. Hit %
+                  {{ s('Abs. Hit %') }}
                 </th>
                 <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Cond. Hit %
+                  {{ s('Cond. Hit %') }}
                 </th>
                 <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Profitable
+                  {{ s('Profitable') }}
                 </th>
                 <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  BE/Scratch
+                  {{ s('BE/Scratch') }}
                 </th>
                 <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Loss
+                  {{ s('Loss') }}
                 </th>
                 <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Avg Exit (pts)
+                  {{ s('Avg Exit (pts)') }}
                 </th>
                 <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Avg Exit Profit (pts)
+                  {{ s('Avg Exit Profit (pts)') }}
                 </th>
                 <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Avg R
+                  {{ s('Avg R') }}
                 </th>
                 <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                  Avg SL (pts)
+                  {{ s('Avg SL (pts)') }}
                 </th>
               </tr>
             </thead>
@@ -148,7 +146,7 @@
                       v-if="partial.is_last"
                       class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-600 dark:text-gray-300"
                     >
-                      last
+                      {{ s('last') }}
                     </span>
                   </div>
                 </td>
@@ -210,9 +208,9 @@
 
       <!-- Info note -->
       <div class="mt-4 text-xs text-gray-500 dark:text-gray-400 space-y-1">
-        <p>Abs. Hit % = trades where this partial was profitable / total trades analyzed.</p>
-        <p>Cond. Hit % = trades where this partial was profitable given the previous partial was also profitable.</p>
-        <p>Only trades with 2+ exit executions are included. Trades without stop_loss show "--" for R and Avg SL columns.</p>
+        <p>{{ s('Abs. Hit % = trades where this partial was profitable / total trades analyzed.') }}</p>
+        <p>{{ s('Cond. Hit % = trades where this partial was profitable given the previous partial was also profitable.') }}</p>
+        <p>{{ s('Only trades with 2+ exit executions are included. Trades without stop_loss show "--" for R and Avg SL columns.') }}</p>
       </div>
     </div>
   </div>
@@ -220,9 +218,14 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import api from '@/services/api'
 import TradeFilters from '@/components/trades/TradeFilters.vue'
 import { useGlobalAccountFilter } from '@/composables/useGlobalAccountFilter'
+import { tSentence } from '@/i18n'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
 
 const { selectedAccount } = useGlobalAccountFilter()
 
@@ -239,6 +242,15 @@ const filteredPartials = computed(() => {
   if (!analytics.value.partials) return []
   if (minEligibleTrades.value <= 0) return analytics.value.partials
   return analytics.value.partials.filter(p => p.eligible_trades >= minEligibleTrades.value)
+})
+
+const noDataMessage = computed(() => {
+  void locale.value
+  if (analytics.value.partials?.length > 0 && minEligibleTrades.value > 0) {
+    return s('No partial levels have {count}+ eligible trades. Try lowering the threshold.')
+      .replace('{count}', String(minEligibleTrades.value))
+  }
+  return s('No partial exit data found. This analysis requires trades with at least 2 exit executions.')
 })
 
 const handleFilter = (newFilters) => {
@@ -265,7 +277,10 @@ const loadData = async () => {
     analytics.value = response.data
   } catch (err) {
     console.error('[PARTIAL-EXIT] Error loading data:', err)
-    error.value = err.response?.data?.error || 'Failed to load partial exit analytics'
+    const serverError = err.response?.data?.error
+    error.value = serverError
+      ? s(serverError)
+      : s('Failed to load partial exit analytics')
   } finally {
     loading.value = false
     initialLoading.value = false

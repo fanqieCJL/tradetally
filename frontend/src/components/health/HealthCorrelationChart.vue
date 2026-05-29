@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="flex items-center justify-between mb-6">
         <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-          Health-Trading Correlations
+          {{ s('Health-Trading Correlations') }}
         </h3>
         <div class="flex items-center space-x-2">
           <select
@@ -11,20 +11,20 @@
             @change="updateChart"
             class="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md px-3 py-2"
           >
-            <option value="heart_rate">Heart Rate</option>
-            <option value="sleep_score">Sleep Quality</option>
-            <option value="sleep_hours">Sleep Hours</option>
-            <option value="stress_level">Stress Level</option>
+            <option value="heart_rate">{{ s('Heart Rate') }}</option>
+            <option value="sleep_score">{{ s('Sleep Quality') }}</option>
+            <option value="sleep_hours">{{ s('Sleep Hours') }}</option>
+            <option value="stress_level">{{ s('Stress Level') }}</option>
           </select>
           <select
             v-model="selectedPeriod"
             @change="loadCorrelationData"
             class="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md px-3 py-2"
           >
-            <option value="7">Last 7 Days</option>
-            <option value="30">Last 30 Days</option>
-            <option value="90">Last 90 Days</option>
-            <option value="all">All Time</option>
+            <option value="7">{{ s('Last 7 Days') }}</option>
+            <option value="30">{{ s('Last 30 Days') }}</option>
+            <option value="90">{{ s('Last 90 Days') }}</option>
+            <option value="all">{{ s('All Time') }}</option>
           </select>
           <label class="flex items-center text-sm text-gray-700 dark:text-gray-300">
             <input
@@ -33,7 +33,7 @@
               @change="updateChart"
               class="mr-2 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500"
             />
-            Remove Outliers
+            {{ s('Remove Outliers') }}
           </label>
         </div>
       </div>
@@ -47,20 +47,18 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
         </svg>
         <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-          No health data available for correlation analysis
+          {{ s('No health data available for correlation analysis') }}
         </p>
       </div>
 
       <div v-else>
-        <!-- Scatter Plot Chart -->
         <div class="mb-6">
           <canvas ref="scatterChart" height="300"></canvas>
         </div>
 
-        <!-- Correlation Statistics -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-            <div class="text-xs text-gray-500 dark:text-gray-400">Correlation Coefficient</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">{{ s('Correlation Coefficient') }}</div>
             <div class="text-xl font-semibold" :class="getCorrelationClass(statistics.correlation)">
               {{ statistics.correlation.toFixed(3) }}
             </div>
@@ -68,32 +66,31 @@
               {{ getCorrelationStrength(statistics.correlation) }}
             </div>
           </div>
-          
+
           <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-            <div class="text-xs text-gray-500 dark:text-gray-400">Average P&L Impact</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">{{ s('Average P&L Impact') }}</div>
             <div class="text-xl font-semibold" :class="statistics.avgImpact >= 0 ? 'text-green-600' : 'text-red-600'">
               ${{ Math.abs(statistics.avgImpact).toFixed(2) }}
             </div>
             <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              Per {{ getMetricUnit(selectedMetric) }}
+              {{ s('Per {unit}').replace('{unit}', getMetricUnit(selectedMetric)) }}
             </div>
           </div>
 
           <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-            <div class="text-xs text-gray-500 dark:text-gray-400">Win Rate Impact</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">{{ s('Win Rate Impact') }}</div>
             <div class="text-xl font-semibold" :class="statistics.winRateImpact >= 0 ? 'text-green-600' : 'text-red-600'">
               {{ statistics.winRateImpact > 0 ? '+' : '' }}{{ statistics.winRateImpact.toFixed(1) }}%
             </div>
             <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              When {{ getMetricCondition(selectedMetric) }}
+              {{ s('When {condition}').replace('{condition}', getMetricCondition(selectedMetric)) }}
             </div>
           </div>
         </div>
 
-        <!-- Insights -->
         <div v-if="insights.length > 0" class="space-y-3">
-          <h4 class="text-sm font-medium text-gray-900 dark:text-white">Key Insights</h4>
-          <div v-for="(insight, index) in insights" :key="index" 
+          <h4 class="text-sm font-medium text-gray-900 dark:text-white">{{ s('Key Insights') }}</h4>
+          <div v-for="(insight, index) in insights" :key="index"
                class="p-3 rounded-lg border"
                :class="getInsightClass(insight.type)">
             <div class="flex items-start">
@@ -120,13 +117,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch, nextTick } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Chart, registerables } from 'chart.js'
+import { tSentence } from '@/i18n'
 import api from '@/services/api'
 
 Chart.register(...registerables)
 
-const props = defineProps({
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+
+defineProps({
   userId: String
 })
 
@@ -166,36 +168,23 @@ function getTradeHealthValue(trade, field) {
 async function loadCorrelationData() {
   loading.value = true
   try {
-    // Get trades with health data for the selected period
     const endDate = new Date()
     const params = {
       endDate: endDate.toISOString().split('T')[0],
       limit: 1000
     }
 
-    // Only add startDate if not "All Time"
     if (selectedPeriod.value !== 'all') {
       const startDate = new Date()
       startDate.setDate(startDate.getDate() - parseInt(selectedPeriod.value))
       params.startDate = startDate.toISOString().split('T')[0]
     }
 
-    const response = await api.get('/trades', {
-      params: params
-    })
-    
-    console.log('Total trades loaded:', response.data.trades.length)
-    console.log('First trade sample:', response.data.trades[0])
+    const response = await api.get('/trades', { params })
 
-    // Filter trades with health data
     const tradesWithHealth = response.data.trades.filter(trade => {
       return getTradeHealthValue(trade, selectedMetric.value) !== null
     })
-
-    console.log('Trades with health data:', tradesWithHealth.length)
-    if (tradesWithHealth.length > 0) {
-      console.log('First trade with health:', tradesWithHealth[0])
-    }
 
     correlationData.value = tradesWithHealth.map(trade => ({
       date: trade.trade_date,
@@ -208,75 +197,37 @@ async function loadCorrelationData() {
       symbol: trade.symbol,
       side: trade.side
     }))
-
   } catch (error) {
     console.error('Error loading correlation data:', error)
   } finally {
     loading.value = false
-
-    // Calculate statistics and generate insights after data is loaded
     calculateStatistics()
     generateInsights()
-
-    // Wait for DOM to render the canvas (after loading becomes false)
     await nextTick()
     updateChart()
   }
 }
 
 function calculateStatistics() {
-  console.log('[Stats] calculateStatistics called', {
-    correlationDataLength: correlationData.value.length,
-    selectedMetric: selectedMetric.value
-  })
-
   if (correlationData.value.length < 2) {
     statistics.value = { correlation: 0, avgImpact: 0, winRateImpact: 0 }
     return
   }
 
   const metric = selectedMetric.value
-
-  // Filter out null/undefined values for the selected metric AND pnl
   const validData = correlationData.value.filter(d =>
     d[metric] !== null && d[metric] !== undefined && !isNaN(d[metric]) &&
     d.pnl !== null && d.pnl !== undefined && !isNaN(parseFloat(d.pnl))
   )
 
-  console.log('[Stats] Valid data for metric', {
-    metric,
-    validDataLength: validData.length,
-    sampleData: validData.slice(0, 3).map(d => ({
-      metric: d[metric],
-      pnl: d.pnl,
-      pnlType: typeof d.pnl
-    }))
-  })
-
   if (validData.length < 2) {
-    console.log('[Stats] Not enough valid data')
     statistics.value = { correlation: 0, avgImpact: 0, winRateImpact: 0 }
     return
   }
 
   const values = validData.map(d => parseFloat(d[metric]))
-  const pnls = validData.map(d => {
-    const parsed = parseFloat(d.pnl)
-    if (isNaN(parsed)) {
-      console.error('[Stats] NaN PnL detected:', d.pnl, 'Type:', typeof d.pnl, 'Full trade:', d)
-    }
-    return parsed
-  })
+  const pnls = validData.map(d => parseFloat(d.pnl))
 
-  console.log('[Stats] Parsed values', {
-    valuesLength: values.length,
-    pnlsLength: pnls.length,
-    sampleValues: values.slice(0, 5),
-    samplePnls: pnls.slice(0, 5),
-    nanCount: pnls.filter(p => isNaN(p)).length
-  })
-
-  // Calculate Pearson correlation coefficient
   const n = values.length
   const sumX = values.reduce((a, b) => a + b, 0)
   const sumY = pnls.reduce((a, b) => a + b, 0)
@@ -284,53 +235,28 @@ function calculateStatistics() {
   const sumX2 = values.reduce((total, x) => total + x * x, 0)
   const sumY2 = pnls.reduce((total, y) => total + y * y, 0)
 
-  console.log('[Stats] Correlation calculation inputs', {
-    n, sumX, sumY, sumXY, sumX2, sumY2
-  })
-
   const numerator = n * sumXY - sumX * sumY
   const denominator = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY))
   const correlation = numerator / denominator
 
-  console.log('[Stats] Correlation result', {
-    numerator,
-    denominator,
-    correlation,
-    isNaN: isNaN(correlation)
-  })
-
   statistics.value.correlation = isNaN(correlation) ? 0 : correlation
-  
-  // Calculate average impact
+
   const avgMetric = sumX / n
   const highMetric = validData.filter(d => parseFloat(d[metric]) > avgMetric)
   const lowMetric = validData.filter(d => parseFloat(d[metric]) <= avgMetric)
-
-  console.log('[Stats] Metric groups', {
-    avgMetric,
-    highMetricLength: highMetric.length,
-    lowMetricLength: lowMetric.length
-  })
 
   const avgHighPnL = highMetric.length > 0 ?
     highMetric.reduce((sum, d) => sum + parseFloat(d.pnl), 0) / highMetric.length : 0
   const avgLowPnL = lowMetric.length > 0 ?
     lowMetric.reduce((sum, d) => sum + parseFloat(d.pnl), 0) / lowMetric.length : 0
 
-  console.log('[Stats] Average P&L calculation', {
-    avgHighPnL,
-    avgLowPnL,
-    impact: avgHighPnL - avgLowPnL
-  })
-
   statistics.value.avgImpact = avgHighPnL - avgLowPnL
 
-  // Calculate win rate impact
   const highWinRate = highMetric.length > 0 ?
     (highMetric.filter(d => parseFloat(d.pnl) > 0).length / highMetric.length) * 100 : 0
   const lowWinRate = lowMetric.length > 0 ?
     (lowMetric.filter(d => parseFloat(d.pnl) > 0).length / lowMetric.length) * 100 : 0
-  
+
   statistics.value.winRateImpact = highWinRate - lowWinRate
 }
 
@@ -338,99 +264,76 @@ function generateInsights() {
   insights.value = []
   const metric = selectedMetric.value
   const correlation = statistics.value.correlation
-  
-  // Strong correlation insights
+  const metricLabel = getMetricLabel(metric)
+
   if (Math.abs(correlation) > 0.5) {
-    const direction = correlation > 0 ? 'positive' : 'negative'
-    const metricLabel = getMetricLabel(metric)
-    
+    const direction = correlation > 0 ? s('positive') : s('negative')
     insights.value.push({
       type: correlation > 0 ? 'positive' : 'warning',
-      message: `Strong ${direction} correlation detected between ${metricLabel} and trading performance`,
-      recommendation: correlation > 0 ? 
-        `Maintain healthy ${metricLabel} levels for better trading outcomes` :
-        `Monitor ${metricLabel} levels as they may negatively impact your trading`
+      message: s('Strong {direction} correlation detected between {metric} and trading performance')
+        .replace('{direction}', direction)
+        .replace('{metric}', metricLabel),
+      recommendation: correlation > 0 ?
+        s('Maintain healthy {metric} levels for better trading outcomes').replace('{metric}', metricLabel) :
+        s('Monitor {metric} levels as they may negatively impact your trading').replace('{metric}', metricLabel)
     })
   }
-  
-  // Specific metric insights
+
   if (metric === 'sleep_hours') {
     const avgSleep = correlationData.value.reduce((sum, d) => sum + d.sleep_hours, 0) / correlationData.value.length
     if (avgSleep < 6) {
       insights.value.push({
         type: 'warning',
-        message: 'Your average sleep duration is below recommended levels',
-        recommendation: 'Aim for 7-9 hours of sleep for optimal trading performance'
+        message: s('Your average sleep duration is below recommended levels'),
+        recommendation: s('Aim for 7-9 hours of sleep for optimal trading performance')
       })
     }
   }
-  
+
   if (metric === 'heart_rate') {
     const highHR = correlationData.value.filter(d => d.heart_rate > 85)
     if (highHR.length > correlationData.value.length * 0.3) {
       insights.value.push({
         type: 'warning',
-        message: 'Elevated heart rate detected in over 30% of trades',
-        recommendation: 'Consider stress management techniques before trading'
+        message: s('Elevated heart rate detected in over 30% of trades'),
+        recommendation: s('Consider stress management techniques before trading')
       })
     }
   }
-  
-  // Win rate impact insight
+
   if (Math.abs(statistics.value.winRateImpact) > 10) {
+    const condition = getMetricCondition(metric)
+    const impact = Math.abs(statistics.value.winRateImpact).toFixed(1)
+    const messageKey = statistics.value.winRateImpact > 0
+      ? '{condition} shows {impact}% higher win rate'
+      : '{condition} shows {impact}% lower win rate'
     insights.value.push({
       type: statistics.value.winRateImpact > 0 ? 'positive' : 'warning',
-      message: `${getMetricCondition(metric)} shows ${Math.abs(statistics.value.winRateImpact).toFixed(1)}% ${statistics.value.winRateImpact > 0 ? 'higher' : 'lower'} win rate`,
-      recommendation: statistics.value.winRateImpact > 0 ? 
-        `Continue maintaining good ${getMetricLabel(metric)} habits` :
-        `Improve ${getMetricLabel(metric)} to potentially increase win rate`
+      message: s(messageKey).replace('{condition}', condition).replace('{impact}', impact),
+      recommendation: statistics.value.winRateImpact > 0 ?
+        s('Continue maintaining good {metric} habits').replace('{metric}', metricLabel) :
+        s('Improve {metric} to potentially increase win rate').replace('{metric}', metricLabel)
     })
   }
 }
 
 function removeOutliersFromData(data) {
-  if (data.length < 4) return data // Need at least 4 points for IQR
+  if (data.length < 4) return data
 
-  // Calculate IQR for P&L values
   const pnlValues = data.map(d => d.y).sort((a, b) => a - b)
   const q1Index = Math.floor(pnlValues.length * 0.25)
   const q3Index = Math.floor(pnlValues.length * 0.75)
   const q1 = pnlValues[q1Index]
   const q3 = pnlValues[q3Index]
   const iqr = q3 - q1
-
-  // Define outlier bounds (1.5 * IQR is standard)
   const lowerBound = q1 - 1.5 * iqr
   const upperBound = q3 + 1.5 * iqr
 
-  console.log('[Chart] Outlier detection', {
-    q1, q3, iqr, lowerBound, upperBound,
-    beforeCount: data.length
-  })
-
-  // Filter out outliers
-  const filtered = data.filter(d => d.y >= lowerBound && d.y <= upperBound)
-
-  console.log('[Chart] After outlier removal:', {
-    afterCount: filtered.length,
-    removed: data.length - filtered.length
-  })
-
-  return filtered
+  return data.filter(d => d.y >= lowerBound && d.y <= upperBound)
 }
 
 function updateChart() {
-  console.log('[Chart] updateChart called', {
-    hasCanvasRef: !!scatterChart.value,
-    correlationDataLength: correlationData.value.length,
-    selectedMetric: selectedMetric.value,
-    removeOutliers: removeOutliers.value
-  })
-
-  if (!scatterChart.value) {
-    console.error('[Chart] Canvas ref not available!')
-    return
-  }
+  if (!scatterChart.value) return
 
   const ctx = scatterChart.value.getContext('2d')
 
@@ -439,29 +342,27 @@ function updateChart() {
   }
 
   const metric = selectedMetric.value
-
-  // Filter out any null/undefined values for the selected metric
   const validData = correlationData.value.filter(d =>
     d[metric] !== null && d[metric] !== undefined && !isNaN(d[metric])
   )
-
-  console.log(`[Chart] Metric: ${metric}, Valid data points: ${validData.length}/${correlationData.value.length}`)
 
   let data = validData.map(d => ({
     x: parseFloat(d[metric]),
     y: parseFloat(d.pnl)
   }))
 
-  // Remove outliers if checkbox is enabled
   if (removeOutliers.value) {
     data = removeOutliersFromData(data)
   }
-  
+
+  const metricLabel = getMetricLabel(metric)
+  const metricUnit = getMetricUnit(metric)
+
   chartInstance = new Chart(ctx, {
     type: 'scatter',
     data: {
       datasets: [{
-        label: 'Trades',
+        label: s('Trades'),
         data: data,
         backgroundColor: data.map(d => d.y >= 0 ? 'rgba(34, 197, 94, 0.5)' : 'rgba(239, 68, 68, 0.5)'),
         borderColor: data.map(d => d.y >= 0 ? 'rgb(34, 197, 94)' : 'rgb(239, 68, 68)'),
@@ -474,15 +375,16 @@ function updateChart() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: {
-          display: false
-        },
+        legend: { display: false },
         tooltip: {
           callbacks: {
             label: function(context) {
               return [
-                `${getMetricLabel(metric)}: ${context.parsed.x.toFixed(1)} ${getMetricUnit(metric)}`,
-                `P&L: $${context.parsed.y.toFixed(2)}`
+                s('{metric}: {value} {unit}')
+                  .replace('{metric}', metricLabel)
+                  .replace('{value}', context.parsed.x.toFixed(1))
+                  .replace('{unit}', metricUnit),
+                s('P&L: ${value}').replace('{value}', context.parsed.y.toFixed(2))
               ]
             }
           }
@@ -492,13 +394,13 @@ function updateChart() {
         x: {
           title: {
             display: true,
-            text: `${getMetricLabel(metric)} (${getMetricUnit(metric)})`
+            text: `${metricLabel} (${metricUnit})`
           }
         },
         y: {
           title: {
             display: true,
-            text: 'P&L ($)'
+            text: s('P&L ($)')
           }
         }
       }
@@ -506,22 +408,21 @@ function updateChart() {
   })
 }
 
-// Helper functions
 function getMetricLabel(metric) {
   const labels = {
-    heart_rate: 'Heart Rate',
-    sleep_score: 'Sleep Quality',
-    sleep_hours: 'Sleep Duration',
-    stress_level: 'Stress Level'
+    heart_rate: s('Heart Rate'),
+    sleep_score: s('Sleep Quality'),
+    sleep_hours: s('Sleep Duration'),
+    stress_level: s('Stress Level')
   }
   return labels[metric] || metric
 }
 
 function getMetricUnit(metric) {
   const units = {
-    heart_rate: 'BPM',
-    sleep_score: 'Score',
-    sleep_hours: 'Hours',
+    heart_rate: s('BPM'),
+    sleep_score: s('Score'),
+    sleep_hours: s('Hours'),
     stress_level: '%'
   }
   return units[metric] || ''
@@ -529,12 +430,12 @@ function getMetricUnit(metric) {
 
 function getMetricCondition(metric) {
   const conditions = {
-    heart_rate: 'Higher heart rate',
-    sleep_score: 'Better sleep quality',
-    sleep_hours: 'More sleep',
-    stress_level: 'Higher stress'
+    heart_rate: s('Higher heart rate'),
+    sleep_score: s('Better sleep quality'),
+    sleep_hours: s('More sleep'),
+    stress_level: s('Higher stress')
   }
-  return conditions[metric] || 'Higher values'
+  return conditions[metric] || s('Higher values')
 }
 
 function getCorrelationClass(correlation) {
@@ -546,10 +447,10 @@ function getCorrelationClass(correlation) {
 
 function getCorrelationStrength(correlation) {
   const abs = Math.abs(correlation)
-  if (abs > 0.7) return 'Strong correlation'
-  if (abs > 0.4) return 'Moderate correlation'
-  if (abs > 0.2) return 'Weak correlation'
-  return 'No correlation'
+  if (abs > 0.7) return s('Strong correlation')
+  if (abs > 0.4) return s('Moderate correlation')
+  if (abs > 0.2) return s('Weak correlation')
+  return s('No correlation')
 }
 
 function getInsightClass(type) {
@@ -561,15 +462,18 @@ function getInsightClass(type) {
   return classes[type] || classes.info
 }
 
-// Lifecycle
 onMounted(async () => {
-  // Wait for canvas to be rendered
   await nextTick()
   loadCorrelationData()
 })
 
 watch(selectedMetric, () => {
   calculateStatistics()
+  generateInsights()
+  updateChart()
+})
+
+watch(locale, () => {
   generateInsights()
   updateChart()
 })

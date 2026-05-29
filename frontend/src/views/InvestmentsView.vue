@@ -3,9 +3,9 @@
         <!-- Header -->
         <div class="flex items-center justify-between mb-8">
             <div>
-                <h1 class="heading-page">Investments</h1>
+                <h1 class="heading-page">{{ s('Investments') }}</h1>
                 <p class="text-gray-600 dark:text-gray-400 mt-1">
-                    Analyze stocks and track your portfolio
+                    {{ s('Analyze stocks and track your portfolio') }}
                 </p>
             </div>
             <button
@@ -26,7 +26,7 @@
                         d="M12 4v16m8-8H4"
                     ></path>
                 </svg>
-                Add Position
+                {{ s('Add Position') }}
             </button>
         </div>
 
@@ -42,7 +42,7 @@
                             : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300',
                     ]"
                 >
-                    Stock Screener
+                    {{ s('Stock Screener') }}
                 </button>
                 <button
                     @click="activeTab = 'holdings'"
@@ -53,7 +53,7 @@
                             : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300',
                     ]"
                 >
-                    Holdings
+                    {{ s('Holdings') }}
                     <span
                         v-if="investmentsStore.holdingCount > 0"
                         class="ml-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 py-0.5 px-2 rounded-full text-xs"
@@ -70,7 +70,7 @@
                             : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300',
                     ]"
                 >
-                    Stock Scanner
+                    {{ s('Stock Scanner') }}
                 </button>
             </nav>
         </div>
@@ -85,7 +85,7 @@
                     <div class="flex-1">
                         <SymbolAutocomplete
                             v-model="searchSymbol"
-                            placeholder="Enter stock symbol (e.g., AAPL, MSFT, GOOGL)"
+                            :placeholder="s('Enter stock symbol (e.g., AAPL, MSFT, GOOGL)')"
                             input-class="w-full py-3 text-base"
                             @select="onScreenerSelect"
                         />
@@ -98,9 +98,9 @@
                         class="btn-primary px-6 py-3"
                     >
                         <span v-if="investmentsStore.analysisLoading"
-                            >Analyzing...</span
+                            >{{ s('Analyzing...') }}</span
                         >
-                        <span v-else>Analyze</span>
+                        <span v-else>{{ s('Analyze') }}</span>
                     </button>
                 </div>
             </div>
@@ -164,7 +164,7 @@
                     <h2
                         class="text-lg font-medium text-gray-900 dark:text-white"
                     >
-                        Recent Searches
+                        {{ s('Recent Searches') }}
                     </h2>
                     <button
                         @click="showFavoritesOnly = !showFavoritesOnly"
@@ -177,8 +177,8 @@
                     >
                         {{
                             showFavoritesOnly
-                                ? "Showing Favorites"
-                                : "Show Favorites"
+                                ? s('Showing Favorites')
+                                : s('Show Favorites')
                         }}
                     </button>
                 </div>
@@ -259,11 +259,10 @@
                 <h3
                     class="mt-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                    No analysis yet
+                    {{ s('No analysis yet') }}
                 </h3>
                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    Enter a stock symbol above to analyze using the 8 Pillars
-                    methodology.
+                    {{ s('Enter a stock symbol above to analyze using the 8 Pillars methodology.') }}
                 </p>
             </div>
         </div>
@@ -277,7 +276,7 @@
             >
                 <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4">
                     <p class="text-sm text-gray-500 dark:text-gray-400">
-                        Total Value
+                        {{ s('Total Value') }}
                     </p>
                     <p class="text-2xl font-bold text-gray-900 dark:text-white">
                         {{
@@ -287,7 +286,7 @@
                 </div>
                 <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4">
                     <p class="text-sm text-gray-500 dark:text-gray-400">
-                        Unrealized P&L
+                        {{ s('Unrealized P&L') }}
                     </p>
                     <p
                         :class="[
@@ -304,7 +303,7 @@
                 </div>
                 <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4">
                     <p class="text-sm text-gray-500 dark:text-gray-400">
-                        Total Dividends
+                        {{ s('Total Dividends') }}
                     </p>
                     <p class="text-2xl font-bold text-green-600">
                         {{ formatCurrency(investmentsStore.totalDividends) }}
@@ -312,7 +311,7 @@
                 </div>
                 <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4">
                     <p class="text-sm text-gray-500 dark:text-gray-400">
-                        Positions
+                        {{ s('Positions') }}
                     </p>
                     <p class="text-2xl font-bold text-gray-900 dark:text-white">
                         {{ investmentsStore.holdingCount }}
@@ -331,7 +330,7 @@
                     <h2
                         class="text-lg font-medium text-gray-900 dark:text-white"
                     >
-                        Your Holdings
+                        {{ s('Your Holdings') }}
                     </h2>
                     <button
                         @click="refreshPrices"
@@ -340,8 +339,8 @@
                     >
                         {{
                             investmentsStore.loading
-                                ? "Refreshing..."
-                                : "Refresh Prices"
+                                ? s('Refreshing...')
+                                : s('Refresh Prices')
                         }}
                     </button>
                 </div>
@@ -354,37 +353,37 @@
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
                                 >
-                                    Symbol
+                                    {{ s('Symbol') }}
                                 </th>
                                 <th
                                     class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
                                 >
-                                    Shares
+                                    {{ s('Shares') }}
                                 </th>
                                 <th
                                     class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
                                 >
-                                    Avg Cost
+                                    {{ s('Avg Cost') }}
                                 </th>
                                 <th
                                     class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
                                 >
-                                    Current
+                                    {{ s('Current') }}
                                 </th>
                                 <th
                                     class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
                                 >
-                                    Value
+                                    {{ s('Value') }}
                                 </th>
                                 <th
                                     class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
                                 >
-                                    P&L
+                                    {{ s('P&L') }}
                                 </th>
                                 <th
                                     class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
                                 >
-                                    Actions
+                                    {{ s('Actions') }}
                                 </th>
                             </tr>
                         </thead>
@@ -410,17 +409,13 @@
                                             v-if="holding.source === 'trades'"
                                             class="ml-2 inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
                                         >
-                                            Open Trade
+                                            {{ s('Open Trade') }}
                                         </span>
                                     </div>
                                     <div
                                         class="text-xs text-gray-500 dark:text-gray-400"
                                     >
-                                        {{
-                                            holding.source === "trades"
-                                                ? `${holding.lotCount} trade(s)`
-                                                : `${holding.lotCount} lot(s)`
-                                        }}
+                                        {{ lotCountLabel(holding) }}
                                         <span
                                             v-if="holding.brokers"
                                             class="ml-1"
@@ -448,7 +443,7 @@
                                                 holding.totalSharesTraded,
                                             )
                                         }}
-                                        traded)
+                                        {{ s('traded') }})
                                     </div>
                                 </td>
                                 <td
@@ -466,7 +461,7 @@
                                             ? formatCurrency(
                                                   holding.currentPrice,
                                               )
-                                            : "N/A"
+                                            : naLabel
                                     }}
                                 </td>
                                 <td
@@ -477,7 +472,7 @@
                                             ? formatCurrency(
                                                   holding.currentValue,
                                               )
-                                            : "N/A"
+                                            : naLabel
                                     }}
                                 </td>
                                 <td
@@ -505,7 +500,7 @@
                                         >
                                     </span>
                                     <span v-else class="text-gray-400"
-                                        >N/A</span
+                                        >{{ naLabel }}</span
                                     >
                                 </td>
                                 <td
@@ -516,7 +511,7 @@
                                         @click="viewHolding(holding)"
                                         class="text-primary-600 hover:text-primary-900"
                                     >
-                                        View
+                                        {{ s('View') }}
                                     </button>
                                     <router-link
                                         v-else
@@ -529,20 +524,20 @@
                                         }"
                                         class="text-primary-600 hover:text-primary-900"
                                     >
-                                        View Trades
+                                        {{ s('View Trades') }}
                                     </router-link>
                                     <button
                                         @click="analyzeHolding(holding.symbol)"
                                         class="text-indigo-600 hover:text-indigo-900"
                                     >
-                                        Analyze
+                                        {{ s('Analyze') }}
                                     </button>
                                     <button
                                         v-if="holding.source !== 'trades'"
                                         @click="confirmDeleteHolding(holding)"
                                         class="text-red-600 hover:text-red-900"
                                     >
-                                        Delete
+                                        {{ s('Delete') }}
                                     </button>
                                 </td>
                             </tr>
@@ -572,17 +567,17 @@
                 <h3
                     class="mt-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                    No holdings yet
+                    {{ s('No holdings yet') }}
                 </h3>
                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    Start tracking your long-term investments.
+                    {{ s('Start tracking your long-term investments.') }}
                 </p>
                 <div class="mt-6">
                     <button
                         @click="showAddHoldingModal = true"
                         class="btn-primary"
                     >
-                        Add Your First Position
+                        {{ s('Add Your First Position') }}
                     </button>
                 </div>
             </div>
@@ -602,13 +597,12 @@
                             <h2
                                 class="text-lg font-medium text-gray-900 dark:text-white"
                             >
-                                8 Pillars Stock Scanner
+                                {{ s('8 Pillars Stock Scanner') }}
                             </h2>
                             <p
                                 class="text-sm text-gray-500 dark:text-gray-400 mt-1"
                             >
-                                Find US stocks that pass the 8 Pillars value
-                                investing criteria
+                                {{ s('Find US stocks that pass the 8 Pillars value investing criteria') }}
                             </p>
                         </div>
                         <ScanStatusBadge />
@@ -650,13 +644,12 @@
                         <h3
                             class="mt-2 text-sm font-medium text-gray-900 dark:text-white"
                         >
-                            No scan data available
+                            {{ s('No scan data available') }}
                         </h3>
                         <p
                             class="mt-1 text-sm text-gray-500 dark:text-gray-400"
                         >
-                            Stock scans run quarterly. Admins can trigger a scan
-                            manually.
+                            {{ s('Stock scans run quarterly. Admins can trigger a scan manually.') }}
                         </p>
                     </div>
 
@@ -682,7 +675,7 @@
                     <div class="flex-1">
                         <SymbolAutocomplete
                             v-model="analyzerSymbol"
-                            placeholder="Enter stock symbol to analyze (e.g., AAPL, MSFT)"
+                            :placeholder="s('Enter stock symbol to analyze (e.g., AAPL, MSFT)')"
                             input-class="w-full py-3 text-base"
                             @select="onAnalyzerSelect"
                         />
@@ -692,8 +685,8 @@
                         :disabled="!analyzerSymbol || analyzerLoading"
                         class="btn-primary px-6 py-3"
                     >
-                        <span v-if="analyzerLoading">Loading...</span>
-                        <span v-else>Analyze</span>
+                        <span v-if="analyzerLoading">{{ s('Loading...') }}</span>
+                        <span v-else>{{ s('Analyze') }}</span>
                     </button>
                 </div>
             </div>
@@ -724,7 +717,7 @@
                     </div>
                     <div class="text-right">
                         <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Current Price
+                            {{ s('Current Price') }}
                         </p>
                         <p
                             class="text-2xl font-bold text-gray-900 dark:text-white"
@@ -734,7 +727,7 @@
                                     ? formatCurrency(
                                           analyzerStockInfo.currentPrice,
                                       )
-                                    : "N/A"
+                                    : naLabel
                             }}
                         </p>
                     </div>
@@ -771,22 +764,20 @@
                 <h3
                     class="text-lg font-medium text-gray-900 dark:text-white mb-4"
                 >
-                    Delete Holding
+                    {{ s('Delete Holding') }}
                 </h3>
                 <p class="text-gray-600 dark:text-gray-400 mb-6">
-                    Are you sure you want to delete your
-                    {{ holdingToDelete.symbol }} position? This will also delete
-                    all lots and dividend history.
+                    {{ deleteHoldingMessage }}
                 </p>
                 <div class="flex justify-end space-x-3">
                     <button
                         @click="holdingToDelete = null"
                         class="btn-secondary"
                     >
-                        Cancel
+                        {{ s('Cancel') }}
                     </button>
                     <button @click="deleteHolding" class="btn-danger">
-                        Delete
+                        {{ s('Delete') }}
                     </button>
                 </div>
             </div>
@@ -803,7 +794,7 @@
                 <h3
                     class="text-lg font-medium text-gray-900 dark:text-white mb-4"
                 >
-                    Add {{ symbolToAddToWatchlist }} to Watchlist
+                    {{ watchlistModalTitle }}
                 </h3>
 
                 <!-- Loading State -->
@@ -819,13 +810,13 @@
                     class="text-center py-4"
                 >
                     <p class="text-gray-600 dark:text-gray-400 mb-4">
-                        You don't have any watchlists yet.
+                        {{ s("You don't have any watchlists yet.") }}
                     </p>
                     <router-link
                         to="/watchlists"
                         class="text-primary-600 hover:text-primary-800"
                     >
-                        Create your first watchlist
+                        {{ s('Create your first watchlist') }}
                     </router-link>
                 </div>
 
@@ -853,12 +844,12 @@
                             >
                             <span
                                 class="ml-2 text-sm text-gray-500 dark:text-gray-400"
-                                >({{ watchlist.item_count }} symbols)</span
+                                >({{ watchlist.item_count }} {{ s('symbols') }})</span
                             >
                             <span
                                 v-if="watchlist.is_default"
                                 class="ml-2 text-xs text-primary-600 dark:text-primary-400"
-                                >Default</span
+                                >{{ s('Default') }}</span
                             >
                         </div>
                     </label>
@@ -866,7 +857,7 @@
 
                 <div class="flex justify-end space-x-3">
                     <button @click="closeWatchlistModal" class="btn-secondary">
-                        Cancel
+                        {{ s('Cancel') }}
                     </button>
                     <button
                         v-if="watchlists.length > 0"
@@ -875,7 +866,7 @@
                         class="btn-primary"
                     >
                         {{
-                            addingToWatchlist ? "Adding..." : "Add to Watchlist"
+                            addingToWatchlist ? s('Adding...') : s('Add to Watchlist')
                         }}
                     </button>
                 </div>
@@ -886,6 +877,8 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { tSentence } from "@/i18n";
 import { useRouter, useRoute } from "vue-router";
 import { useInvestmentsStore } from "@/stores/investments";
 import { useNotification } from "@/composables/useNotification";
@@ -908,6 +901,9 @@ const route = useRoute();
 const investmentsStore = useInvestmentsStore();
 const scannerStore = useScannerStore();
 const { showSuccess, showError } = useNotification();
+const { locale } = useI18n();
+const s = (text) => tSentence(text, { context: "metrics" });
+void locale;
 
 // Valid tab names
 const validTabs = ["screener", "holdings", "scanner"];
@@ -937,12 +933,34 @@ const addingToWatchlist = ref(false);
 // DCF analyzer state (now part of screener flow)
 const pendingValuationId = ref(null);
 
+const naLabel = computed(() => s("N/A"));
+
 const filteredSearchHistory = computed(() => {
     if (showFavoritesOnly.value) {
         return investmentsStore.searchHistory.filter((h) => h.isFavorite);
     }
     return investmentsStore.searchHistory;
 });
+
+const deleteHoldingMessage = computed(() => {
+    if (!holdingToDelete.value) return "";
+    return s(
+        "Are you sure you want to delete your {symbol} position? This will also delete all lots and dividend history.",
+    ).replace("{symbol}", holdingToDelete.value.symbol);
+});
+
+const watchlistModalTitle = computed(() =>
+    s("Add {symbol} to Watchlist").replace(
+        "{symbol}",
+        symbolToAddToWatchlist.value,
+    ),
+);
+
+function lotCountLabel(holding) {
+    const key =
+        holding.source === "trades" ? "{count} trade(s)" : "{count} lot(s)";
+    return s(key).replace("{count}", String(holding.lotCount));
+}
 
 onMounted(async () => {
     const promises = [
@@ -1109,7 +1127,7 @@ async function loadWatchlists() {
         }
     } catch (error) {
         console.error("Error loading watchlists:", error);
-        showError("Error", "Failed to load watchlists");
+        showError(s("Error"), s("Failed to load watchlists"));
     } finally {
         watchlistsLoading.value = false;
     }
@@ -1127,8 +1145,10 @@ async function addToWatchlist() {
             watchlists.value.find((w) => w.id === selectedWatchlistId.value)
                 ?.name || "watchlist";
         showSuccess(
-            "Added to Watchlist",
-            `${symbolToAddToWatchlist.value} has been added to ${watchlistName}`,
+            s("Added to Watchlist"),
+            s("{symbol} has been added to {watchlist}")
+                .replace("{symbol}", symbolToAddToWatchlist.value)
+                .replace("{watchlist}", watchlistName),
         );
         closeWatchlistModal();
     } catch (error) {
@@ -1137,11 +1157,14 @@ async function addToWatchlist() {
             error.response?.data?.error?.includes("already in this watchlist")
         ) {
             showError(
-                "Already in Watchlist",
-                `${symbolToAddToWatchlist.value} is already in this watchlist`,
+                s("Already in Watchlist"),
+                s("{symbol} is already in this watchlist").replace(
+                    "{symbol}",
+                    symbolToAddToWatchlist.value,
+                ),
             );
         } else {
-            showError("Error", "Failed to add symbol to watchlist");
+            showError(s("Error"), s("Failed to add symbol to watchlist"));
         }
     } finally {
         addingToWatchlist.value = false;
@@ -1149,7 +1172,7 @@ async function addToWatchlist() {
 }
 
 function formatCurrency(value) {
-    if (value === null || value === undefined) return "N/A";
+    if (value === null || value === undefined) return s("N/A");
     return new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -1158,7 +1181,7 @@ function formatCurrency(value) {
 }
 
 function formatNumber(value) {
-    if (value === null || value === undefined) return "N/A";
+    if (value === null || value === undefined) return s("N/A");
     return new Intl.NumberFormat("en-US", {
         minimumFractionDigits: 0,
         maximumFractionDigits: 4,

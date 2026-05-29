@@ -3,11 +3,11 @@
     <!-- Header -->
     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
       <div class="flex items-center justify-between">
-        <h2 class="text-lg font-medium text-gray-900 dark:text-white">Financial Statements</h2>
+        <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('Financial Statements') }}</h2>
 
         <!-- Annual/Quarterly Toggle -->
         <div class="flex items-center space-x-2">
-          <span class="text-sm text-gray-500 dark:text-gray-400">Period:</span>
+          <span class="text-sm text-gray-500 dark:text-gray-400">{{ s('Period:') }}</span>
           <div class="inline-flex rounded-md shadow-sm">
             <button
               @click="frequency = 'annual'"
@@ -18,7 +18,7 @@
                   : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
               ]"
             >
-              Annual
+              {{ s('Annual') }}
             </button>
             <button
               @click="frequency = 'quarterly'"
@@ -29,7 +29,7 @@
                   : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
               ]"
             >
-              Quarterly
+              {{ s('Quarterly') }}
             </button>
           </div>
         </div>
@@ -40,7 +40,7 @@
     <div class="border-b border-gray-200 dark:border-gray-700">
       <nav class="flex -mb-px px-6">
         <button
-          v-for="tab in tabs"
+          v-for="tab in localizedTabs"
           :key="tab.id"
           @click="activeTab = tab.id"
           :class="[
@@ -69,31 +69,27 @@
         </svg>
         <p class="mt-2 text-gray-500 dark:text-gray-400">{{ error }}</p>
         <button @click="loadData" class="mt-3 text-primary-600 hover:text-primary-800 text-sm">
-          Try Again
+          {{ s('Try Again') }}
         </button>
       </div>
 
       <!-- Content -->
       <div v-else>
-        <!-- Balance Sheet -->
         <BalanceSheetTable
           v-if="activeTab === 'balance-sheet' && balanceSheetData"
           :data="balanceSheetData"
         />
 
-        <!-- Income Statement -->
         <IncomeStatementTable
           v-else-if="activeTab === 'income-statement' && incomeStatementData"
           :data="incomeStatementData"
         />
 
-        <!-- Cash Flow -->
         <CashFlowTable
           v-else-if="activeTab === 'cash-flow' && cashFlowData"
           :data="cashFlowData"
         />
 
-        <!-- SEC Filings -->
         <SECFilingsSection
           v-else-if="activeTab === 'filings' && filingsData"
           :filings="filingsData.filings"
@@ -103,12 +99,11 @@
           :sec-edgar-10q-url="filingsData.secEdgar10QUrl"
         />
 
-        <!-- No Data State -->
         <div v-else-if="!loading" class="text-center py-8 text-gray-500 dark:text-gray-400">
           <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          <p class="mt-2">No data available</p>
+          <p class="mt-2">{{ s('No data available') }}</p>
         </div>
       </div>
     </div>
@@ -116,7 +111,9 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import { useInvestmentsStore } from '@/stores/investments'
 import BalanceSheetTable from './BalanceSheetTable.vue'
 import IncomeStatementTable from './IncomeStatementTable.vue'
@@ -131,13 +128,20 @@ const props = defineProps({
 })
 
 const investmentsStore = useInvestmentsStore()
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
 
-const tabs = [
-  { id: 'balance-sheet', name: 'Balance Sheet' },
-  { id: 'income-statement', name: 'Income Statement' },
-  { id: 'cash-flow', name: 'Cash Flow' },
-  { id: 'filings', name: '10-K / 10-Q Filings' }
+const tabDefs = [
+  { id: 'balance-sheet', nameKey: 'Balance Sheet' },
+  { id: 'income-statement', nameKey: 'Income Statement' },
+  { id: 'cash-flow', nameKey: 'Cash Flow' },
+  { id: 'filings', nameKey: '10-K / 10-Q Filings' }
 ]
+
+const localizedTabs = computed(() =>
+  tabDefs.map((tab) => ({ id: tab.id, name: s(tab.nameKey) }))
+)
 
 const activeTab = ref('balance-sheet')
 const frequency = ref('annual')
@@ -154,7 +158,6 @@ onMounted(() => {
 })
 
 watch(() => props.symbol, () => {
-  // Reset data when symbol changes
   balanceSheetData.value = null
   incomeStatementData.value = null
   cashFlowData.value = null
@@ -167,7 +170,6 @@ watch(activeTab, () => {
 })
 
 watch(frequency, () => {
-  // Reset statement data when frequency changes (filings don't depend on frequency)
   balanceSheetData.value = null
   incomeStatementData.value = null
   cashFlowData.value = null
@@ -177,7 +179,6 @@ watch(frequency, () => {
 async function loadData() {
   if (!props.symbol) return
 
-  // Check if data is already loaded for current tab
   if (activeTab.value === 'balance-sheet' && balanceSheetData.value) return
   if (activeTab.value === 'income-statement' && incomeStatementData.value) return
   if (activeTab.value === 'cash-flow' && cashFlowData.value) return
@@ -188,28 +189,28 @@ async function loadData() {
 
   try {
     switch (activeTab.value) {
-      case 'balance-sheet':
+      case 'balance-sheet': {
         const bsResponse = await investmentsStore.getBalanceSheet(props.symbol, frequency.value)
         balanceSheetData.value = bsResponse?.data || []
         break
-
-      case 'income-statement':
+      }
+      case 'income-statement': {
         const isResponse = await investmentsStore.getIncomeStatement(props.symbol, frequency.value)
         incomeStatementData.value = isResponse?.data || []
         break
-
-      case 'cash-flow':
+      }
+      case 'cash-flow': {
         const cfResponse = await investmentsStore.getCashFlow(props.symbol, frequency.value)
         cashFlowData.value = cfResponse?.data || []
         break
-
+      }
       case 'filings':
         filingsData.value = await investmentsStore.getFilings(props.symbol)
         break
     }
   } catch (err) {
     console.error('Failed to load financial data:', err)
-    error.value = err.response?.data?.error || 'Failed to load financial data'
+    error.value = s(err.response?.data?.error || 'Failed to load financial data')
   } finally {
     loading.value = false
   }

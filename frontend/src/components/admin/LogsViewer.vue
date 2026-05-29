@@ -2,21 +2,21 @@
   <div class="space-y-4">
     <!-- Header -->
     <div class="flex items-center justify-between">
-      <h3 class="text-lg font-medium text-gray-900 dark:text-white">System Logs</h3>
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('System Logs') }}</h3>
       <div class="flex items-center space-x-3">
         <!-- Log limit selector -->
         <div class="flex items-center space-x-2">
-          <label class="text-sm text-gray-700 dark:text-gray-300">Show:</label>
+          <label class="text-sm text-gray-700 dark:text-gray-300">{{ s('Show:') }}</label>
           <select
             v-model="logLimit"
             @change="handleLimitChange"
             class="text-sm rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-primary-500 focus:border-primary-500"
           >
-            <option :value="50">50 logs</option>
-            <option :value="100">100 logs</option>
-            <option :value="200">200 logs</option>
-            <option :value="500">500 logs</option>
-            <option :value="1000">1000 logs</option>
+            <option :value="50">{{ s('50 logs') }}</option>
+            <option :value="100">{{ s('100 logs') }}</option>
+            <option :value="200">{{ s('200 logs') }}</option>
+            <option :value="500">{{ s('500 logs') }}</option>
+            <option :value="1000">{{ s('1000 logs') }}</option>
           </select>
         </div>
 
@@ -27,7 +27,7 @@
             v-model="autoRefresh"
             class="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
           />
-          <span class="text-gray-700 dark:text-gray-300">Auto-refresh (5s)</span>
+          <span class="text-gray-700 dark:text-gray-300">{{ s('Auto-refresh (5s)') }}</span>
         </label>
 
         <!-- Refresh button -->
@@ -36,8 +36,8 @@
           :disabled="loading"
           class="btn-secondary text-sm"
         >
-          <span v-if="loading">Refreshing...</span>
-          <span v-else>Refresh</span>
+          <span v-if="loading">{{ s('Refreshing...') }}</span>
+          <span v-else>{{ s('Refresh') }}</span>
         </button>
       </div>
     </div>
@@ -48,7 +48,7 @@
         v-model="searchQuery"
         @input="debouncedSearch"
         type="text"
-        placeholder="Search logs..."
+        :placeholder="s('Search logs...')"
         class="input pr-10"
       />
       <div class="absolute inset-y-0 right-0 flex items-center pr-3">
@@ -60,7 +60,7 @@
 
     <!-- Log level filters -->
     <div class="flex items-center space-x-2">
-      <span class="text-sm text-gray-600 dark:text-gray-400">Filter:</span>
+      <span class="text-sm text-gray-600 dark:text-gray-400">{{ s('Filter:') }}</span>
       <button
         v-for="level in logLevels"
         :key="level"
@@ -85,11 +85,11 @@
           style="max-height: 600px"
         >
           <div v-if="loading && !logs.length" class="text-center py-8 text-gray-400">
-            Loading logs...
+            {{ s('Loading logs...') }}
           </div>
 
           <div v-else-if="!logs.length" class="text-center py-8 text-gray-400">
-            No logs found
+            {{ s('No logs found') }}
           </div>
 
           <div v-else class="space-y-1">
@@ -113,7 +113,7 @@
 
           <!-- Loading more indicator -->
           <div v-if="loading && logs.length" class="text-center py-4 text-gray-400">
-            Loading more logs...
+            {{ s('Loading more logs...') }}
           </div>
         </div>
 
@@ -121,12 +121,12 @@
         <div class="border-t border-gray-200 dark:border-gray-700 px-4 py-3 bg-gray-50 dark:bg-gray-800">
           <div class="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
             <div class="space-x-4">
-              <span>Total: {{ logs.length }}</span>
-              <span>Filtered: {{ filteredLogs.length }}</span>
-              <span v-if="searchQuery">Matches: {{ searchMatchCount }}</span>
+              <span>{{ s('Total:') }} {{ logs.length }}</span>
+              <span>{{ s('Filtered:') }} {{ filteredLogs.length }}</span>
+              <span v-if="searchQuery">{{ s('Matches:') }} {{ searchMatchCount }}</span>
             </div>
             <div v-if="lastUpdate" class="text-gray-500">
-              Last update: {{ formatTime(lastUpdate) }}
+              {{ s('Last update:') }} {{ formatRelativeTime(lastUpdate) }}
             </div>
           </div>
         </div>
@@ -137,8 +137,14 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import api from '@/services/api'
 import { useUserTimezone } from '@/composables/useUserTimezone'
+import { tSentence } from '@/i18n'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'settings' })
+void locale
 
 const { formatTime: formatTimeTz } = useUserTimezone()
 
@@ -296,14 +302,13 @@ function debouncedSearch() {
   }, 300)
 }
 
-// Format time for display
-function formatTime(date) {
+function formatRelativeTime(date) {
   const now = new Date()
   const diff = Math.floor((now - date) / 1000)
 
-  if (diff < 10) return 'just now'
-  if (diff < 60) return `${diff}s ago`
-  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`
+  if (diff < 10) return s('just now')
+  if (diff < 60) return s('{seconds}s ago').replace('{seconds}', String(diff))
+  if (diff < 3600) return s('{minutes}m ago').replace('{minutes}', String(Math.floor(diff / 60)))
 
   return formatTimeTz(date)
 }

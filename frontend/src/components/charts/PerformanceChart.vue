@@ -5,11 +5,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Chart, registerables } from 'chart.js'
 import { format } from 'date-fns'
+import { zhCN, enUS } from 'date-fns/locale'
+import { tSentence, i18n } from '@/i18n'
 
 Chart.register(...registerables)
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
 
 const props = defineProps({
   data: {
@@ -25,10 +31,24 @@ const props = defineProps({
 const chartCanvas = ref(null)
 let chart = null
 
+const dateFnsLocale = computed(() => (i18n.global.locale.value === 'zh' ? zhCN : enUS))
+
+const dailyLabel = computed(() => {
+  void locale.value
+  return props.rValueMode ? s('Daily R-Multiple') : s('Daily P&L')
+})
+
+const cumulativeLabel = computed(() => {
+  void locale.value
+  return props.rValueMode ? s('Cumulative R-Multiple') : s('Cumulative P&L')
+})
+
 function createChart() {
   if (chart) {
     chart.destroy()
   }
+
+  if (!chartCanvas.value || props.data.length === 0) return
 
   const isDark = document.documentElement.classList.contains('dark')
   const textColor = isDark ? '#E5E7EB' : '#374151'
@@ -36,9 +56,8 @@ function createChart() {
 
   const ctx = chartCanvas.value.getContext('2d')
 
-  const labels = props.data.map(d => format(new Date(d.period), 'MMM dd'))
+  const labels = props.data.map(d => format(new Date(d.period), 'MMM dd', { locale: dateFnsLocale.value }))
 
-  // Use R-value data if in R-value mode, otherwise use P&L data
   const dailyData = props.rValueMode
     ? props.data.map(d => d.r_value || 0)
     : props.data.map(d => d.pnl)
@@ -47,16 +66,13 @@ function createChart() {
     ? props.data.map(d => d.cumulative_r_value || 0)
     : props.data.map(d => d.cumulative_pnl)
 
-  const dailyLabel = props.rValueMode ? 'Daily R-Multiple' : 'Daily P&L'
-  const cumulativeLabel = props.rValueMode ? 'Cumulative R-Multiple' : 'Cumulative P&L'
-
   chart = new Chart(ctx, {
     type: 'line',
     data: {
       labels,
       datasets: [
         {
-          label: dailyLabel,
+          label: dailyLabel.value,
           data: dailyData,
           borderColor: '#3B82F6',
           backgroundColor: 'rgba(59, 130, 246, 0.1)',
@@ -64,7 +80,7 @@ function createChart() {
           yAxisID: 'y'
         },
         {
-          label: cumulativeLabel,
+          label: cumulativeLabel.value,
           data: cumulativeData,
           borderColor: '#10B981',
           backgroundColor: 'rgba(16, 185, 129, 0.1)',
@@ -136,6 +152,12 @@ watch(() => props.data, () => {
 }, { deep: true })
 
 watch(() => props.rValueMode, () => {
+  if (props.data.length > 0) {
+    createChart()
+  }
+})
+
+watch(locale, () => {
   if (props.data.length > 0) {
     createChart()
   }

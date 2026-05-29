@@ -1,9 +1,9 @@
 <template>
   <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-      <h3 class="text-lg font-medium text-gray-900 dark:text-white">R-Multiple Analysis</h3>
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('R-Multiple Analysis') }}</h3>
       <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-        Compare actual performance vs potential based on your risk parameters
+        {{ s('Compare actual performance vs potential based on your risk parameters') }}
       </p>
     </div>
 
@@ -12,42 +12,42 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 mb-6">
         <!-- Actual R -->
         <div class="r-multiple-card flex flex-col min-h-[5rem] p-3 sm:p-4 rounded-lg" :class="getActualRClass">
-          <div class="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 shrink-0 truncate">Actual R (Net)</div>
+          <div class="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 shrink-0 truncate">{{ s('Actual R (Net)') }}</div>
           <div class="text-xl sm:text-2xl md:text-3xl font-bold truncate" :class="analysis.actual_r >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
             {{ formatR(analysis.actual_r) }}
           </div>
           <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 truncate shrink-0">
-            {{ analysis.actual_r >= 0 ? 'Profit' : 'Loss' }} of {{ formatCurrency(analysis.actual_pl_amount) }}
+            {{ analysis.actual_r >= 0 ? s('Profit') : s('Loss') }} {{ formatCurrency(analysis.actual_pl_amount) }}
           </div>
         </div>
 
         <!-- Target R -->
         <div v-if="effectiveTargetR !== null" class="r-multiple-card flex flex-col min-h-[5rem] p-3 sm:p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
           <div class="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 shrink-0 truncate">
-            Target R (Net)
-            <span v-if="showWeightedAverageHint" class="text-xs font-normal">(weighted avg)</span>
+            {{ s('Target R (Net)') }}
+            <span v-if="showWeightedAverageHint" class="text-xs font-normal">{{ s('(weighted avg)') }}</span>
           </div>
           <div class="text-xl sm:text-2xl md:text-3xl font-bold truncate text-primary-600 dark:text-primary-400">
             {{ formatR(effectiveTargetR) }}
           </div>
           <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 truncate shrink-0">
-            Potential: {{ formatCurrency(effectivePotentialPL) }}
+            {{ s('Potential') }}: {{ formatCurrency(effectivePotentialPL) }}
           </div>
         </div>
         <div v-else class="r-multiple-card flex flex-col min-h-[5rem] p-3 sm:p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-          <div class="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 shrink-0">Target R (Net)</div>
+          <div class="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 shrink-0">{{ s('Target R (Net)') }}</div>
           <div class="text-xl sm:text-2xl font-medium text-gray-400 dark:text-gray-500 truncate">
-            Not Set
+            {{ s('Not Set') }}
           </div>
           <div class="text-xs sm:text-sm text-gray-500 dark:text-gray-500 mt-1 shrink-0">
-            Set take profit to see target R
+            {{ s('Set take profit to see target R') }}
           </div>
         </div>
 
         <!-- Management R (when target hit analysis is set) -->
         <div v-if="analysis.management_r !== null && analysis.management_r !== undefined" class="r-multiple-card flex flex-col min-h-[5rem] p-3 sm:p-4 rounded-lg" :class="getManagementRClass">
           <div class="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 shrink-0 truncate">
-            Management Impact
+            {{ s('Management Impact') }}
           </div>
           <div class="text-xl sm:text-2xl md:text-3xl font-bold truncate" :class="getManagementRTextClass">
             {{ formatR(analysis.management_r) }}
@@ -59,7 +59,7 @@
         <!-- R Lost/Gained (when no target hit analysis) -->
         <div v-else-if="effectiveRLost !== null" class="r-multiple-card flex flex-col min-h-[5rem] p-3 sm:p-4 rounded-lg" :class="getRLostClass">
           <div class="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 shrink-0 truncate">
-            {{ effectiveRLost > 0 ? 'R Left on Table' : (effectiveRLost === 0 ? 'Target Hit' : 'R Exceeded') }}
+            {{ rLostTitle }}
           </div>
           <div class="text-xl sm:text-2xl md:text-3xl font-bold truncate" :class="getRLostTextClass">
             {{ formatR(Math.abs(effectiveRLost)) }}
@@ -69,19 +69,19 @@
           </div>
         </div>
         <div v-else class="r-multiple-card flex flex-col min-h-[5rem] p-3 sm:p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-          <div class="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 shrink-0">R Comparison</div>
+          <div class="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 shrink-0">{{ s('R Comparison') }}</div>
           <div class="text-xl sm:text-2xl font-medium text-gray-400 dark:text-gray-500 truncate">
-            N/A
+            {{ s('N/A') }}
           </div>
           <div class="text-xs sm:text-sm text-gray-500 dark:text-gray-500 mt-1 shrink-0">
-            Requires take profit target
+            {{ s('Requires take profit target') }}
           </div>
         </div>
       </div>
 
       <!-- Visual Bar Comparison -->
       <div v-if="effectiveTargetR !== null" class="mb-6">
-        <div class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Performance vs Target</div>
+        <div class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ s('Performance vs Target') }}</div>
         <div class="relative h-8 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
           <!-- Target bar (background) -->
           <div
@@ -97,10 +97,10 @@
           <!-- Labels -->
           <div class="absolute inset-0 flex items-center justify-between px-4">
             <span class="text-xs font-medium text-gray-700 dark:text-gray-200">
-              Actual: {{ formatR(analysis.actual_r) }}
+              {{ s('Actual') }}: {{ formatR(analysis.actual_r) }}
             </span>
             <span class="text-xs font-medium text-gray-700 dark:text-gray-200">
-              Target: {{ formatR(effectiveTargetR) }}
+              {{ s('Target') }}: {{ formatR(effectiveTargetR) }}
             </span>
           </div>
         </div>
@@ -122,7 +122,7 @@
           </div>
           <div>
             <div class="font-medium" :class="getAssessmentTextClass">
-              {{ analysis.management_score.label }}
+              {{ s(analysis.management_score.label) }}
             </div>
             <div class="text-sm text-gray-600 dark:text-gray-400">
               {{ getAssessmentDescription }}
@@ -136,9 +136,14 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'
 
 const { formatSignedCurrency } = useCurrencyFormatter()
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
 
 const props = defineProps({
   analysis: {
@@ -259,6 +264,15 @@ const effectiveRLost = computed(() => {
   return Math.round((effectiveTargetR.value - props.analysis.actual_r) * 100) / 100
 })
 
+const rLostTitle = computed(() => {
+  void locale.value
+  const lost = effectiveRLost.value
+  if (lost === null) return ''
+  if (lost > 0) return s('R Left on Table')
+  if (lost === 0) return s('Target Hit')
+  return s('R Exceeded')
+})
+
 const showWeightedAverageHint = computed(() => {
   return weightedAverageR.value !== null
 })
@@ -300,15 +314,12 @@ const getRLostTextClass = computed(() => {
 })
 
 const getRLostDescription = computed(() => {
+  void locale.value
   const rLost = effectiveRLost.value
   if (rLost === null) return ''
-  if (rLost > 0) {
-    return 'Exited before reaching target'
-  }
-  if (rLost === 0) {
-    return 'You stuck to your plans'
-  }
-  return 'Exceeded target - excellent management!'
+  if (rLost > 0) return s('Exited before reaching target')
+  if (rLost === 0) return s('You stuck to your plans')
+  return s('Exceeded target - excellent management!')
 })
 
 // Management R styling and description (based on target hit analysis)
@@ -331,27 +342,24 @@ const getManagementRTextClass = computed(() => {
 })
 
 const getManagementRDescription = computed(() => {
+  void locale.value
   const mgmtR = props.analysis.management_r
   if (mgmtR === null || mgmtR === undefined) return ''
 
-  // Check if SL or TP was hit first based on the trade data
   const targetHitFirst = props.trade?.manual_target_hit_first
 
   if (targetHitFirst === 'stop_loss') {
-    // SL hit first means management saved them from -1R
     if (mgmtR > 0) {
-      return `Management saved ${formatR(mgmtR)} by moving SL`
+      return s('Management saved {r} by moving SL').replace('{r}', formatR(mgmtR))
     }
-    return 'SL was hit first - management reduced losses'
-  } else if (targetHitFirst === 'take_profit') {
-    // TP hit first
-    if (mgmtR >= 0) {
-      return 'Exceeded target despite management'
-    }
-    return `Left ${formatR(Math.abs(mgmtR))} on table by trailing too soon`
+    return s('SL was hit first - management reduced losses')
+  }
+  if (targetHitFirst === 'take_profit') {
+    if (mgmtR >= 0) return s('Exceeded target despite management')
+    return s('Left {r} on table by trailing too soon').replace('{r}', formatR(Math.abs(mgmtR)))
   }
 
-  return mgmtR >= 0 ? 'Positive management impact' : 'Left R on table'
+  return mgmtR >= 0 ? s('Positive management impact') : s('Left R on table')
 })
 
 const getAssessmentClass = computed(() => {
@@ -387,86 +395,89 @@ const getAssessmentDescription = computed(() => {
   const actualR = props.analysis.actual_r
   const targetR = effectiveTargetR.value
   const targetHitFirst = props.trade?.manual_target_hit_first
+  const actual = formatR(actualR)
+  const target = formatR(targetR)
 
-  // Check if they hit exactly their target (within small tolerance for floating point)
   const hitExactTarget = targetR !== null && Math.abs(actualR - targetR) < 0.01
-  // Check if they hit exactly their stop loss (-1R)
   const hitExactStopLoss = Math.abs(actualR - (-1)) < 0.01
-  // Check if they took a loss but less than planned risk (between -1R and 0)
   const reducedLoss = actualR < 0 && actualR > -1
 
-  // When TP hit first is selected, use TP-specific messages
+  const msg = (key, replacements = {}) => {
+    let text = s(key)
+    for (const [k, v] of Object.entries(replacements)) {
+      text = text.replace(`{${k}}`, v)
+    }
+    return text
+  }
+
   if (targetHitFirst === 'take_profit') {
     if (actualR >= targetR && targetR !== null) {
-      return `You captured ${formatR(actualR)} vs your ${formatR(targetR)} target - excellent execution!`
+      return msg('You captured {actual} vs your {target} target - excellent execution!', { actual, target })
     }
     if (actualR > 0 && targetR !== null) {
-      return `You exited at ${formatR(actualR)} before reaching your ${formatR(targetR)} target.`
+      return msg('You exited at {actual} before reaching your {target} target.', { actual, target })
     }
     if (actualR === 0) {
-      return `Trade closed at breakeven despite TP being hit first.`
+      return s('Trade closed at breakeven despite TP being hit first.')
     }
-    // Loss with TP hit first - they trailed too tight or exited early after TP1
     if (targetR !== null) {
-      return `Trade reversed to ${formatR(actualR)} after TP was hit - consider locking in profits.`
+      return msg('Trade reversed to {actual} after TP was hit - consider locking in profits.', { actual })
     }
-    return `Trade ended at ${formatR(actualR)} after initial target area was reached.`
+    return msg('Trade ended at {actual} after initial target area was reached.', { actual })
   }
 
-  // When SL hit first is selected, use SL-specific messages
   if (targetHitFirst === 'stop_loss') {
     if (hitExactStopLoss) {
-      return `You hit your stop loss exactly at -1R - you stuck to your plans.`
+      return s('You hit your stop loss exactly at -1R - you stuck to your plans.')
     }
     if (reducedLoss) {
-      return `You reduced your planned loss by exiting at ${formatR(actualR)} instead of -1R.`
+      return msg('You reduced your planned loss by exiting at {actual} instead of -1R.', { actual })
     }
     if (actualR > 0) {
-      return `You managed to exit with ${formatR(actualR)} profit despite SL being hit first.`
+      return msg('You managed to exit with {actual} profit despite SL being hit first.', { actual })
     }
-    return `SL was hit first - loss of ${formatR(actualR)}.`
+    return msg('SL was hit first - loss of {actual}.', { actual })
   }
 
-  // Default behavior when no target hit analysis is set
   switch (score) {
     case 'exceeded':
       if (hitExactTarget) {
-        return `You hit your ${formatR(targetR)} target exactly - you stuck to your plans.`
+        return msg('You hit your {target} target exactly - you stuck to your plans.', { target })
       }
-      return `You captured ${formatR(actualR)} vs your ${formatR(targetR)} target - you let your winner run!`
+      return msg('You captured {actual} vs your {target} target - you let your winner run!', { actual, target })
     case 'near_target':
       if (hitExactTarget) {
-        return `You hit your ${formatR(targetR)} target exactly - you stuck to your plans.`
+        return msg('You hit your {target} target exactly - you stuck to your plans.', { target })
       }
-      return `You captured most of your target R - solid trade management.`
+      return s('You captured most of your target R - solid trade management.')
     case 'partial':
-      return `You captured about half of your target R - consider letting winners run longer.`
+      return s('You captured about half of your target R - consider letting winners run longer.')
     case 'early_exit':
-      return `You exited early with a small profit - work on holding to target.`
+      return s('You exited early with a small profit - work on holding to target.')
     case 'excellent':
-      return `Great R-Multiple achieved without a defined target.`
+      return s('Great R-Multiple achieved without a defined target.')
     case 'good':
-      return `Solid profit relative to risk taken.`
+      return s('Solid profit relative to risk taken.')
     case 'breakeven':
-      return `Trade closed at breakeven - no damage, no gain.`
+      return s('Trade closed at breakeven - no damage, no gain.')
     case 'stopped_out':
       if (hitExactStopLoss) {
-        return `You hit your stop loss exactly at -1R - you stuck to your plans.`
+        return s('You hit your stop loss exactly at -1R - you stuck to your plans.')
       }
       if (reducedLoss) {
-        return `You reduced your planned loss by exiting at ${formatR(actualR)} instead of -1R.`
+        return msg('You reduced your planned loss by exiting at {actual} instead of -1R.', { actual })
       }
-      return `Stopped out at planned risk level - this is proper risk management.`
+      return s('Stopped out at planned risk level - this is proper risk management.')
     case 'loss':
       if (hitExactStopLoss) {
-        return `You hit your stop loss exactly at -1R - you stuck to your plans.`
+        return s('You hit your stop loss exactly at -1R - you stuck to your plans.')
       }
       if (reducedLoss) {
-        return `You reduced your planned loss by exiting at ${formatR(actualR)} instead of -1R.`
+        return msg('You reduced your planned loss by exiting at {actual} instead of -1R.', { actual })
       }
-      return `Loss exceeded planned risk - review your stop loss placement.`
+      return s('Loss exceeded planned risk - review your stop loss placement.')
     default:
-      return `Trade management analysis complete.`
+      return s('Trade management analysis complete.')
   }
 })
 

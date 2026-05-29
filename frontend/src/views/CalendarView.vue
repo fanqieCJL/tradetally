@@ -6,16 +6,16 @@
       :step="5"
       :total-steps="5"
       :next-step="6"
-      title="Performance Calendar"
-      description="See your P&L at a glance. Green days, red days, and everything in between."
-      cta-label="Done"
+      :title="s('Performance Calendar')"
+      :description="s('See your P&L at a glance. Green days, red days, and everything in between.')"
+      :cta-label="s('Done')"
     />
 
     <div class="mb-8 flex justify-between items-center">
       <div>
-        <h1 class="heading-page">Trading Calendar</h1>
+        <h1 class="heading-page">{{ s('Trading Calendar') }}</h1>
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-          View your trading performance by date
+          {{ s('View your trading performance by date') }}
         </p>
       </div>
       
@@ -28,7 +28,7 @@
             ? 'bg-primary-600 text-white hover:bg-primary-700'
             : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'"
         >
-          {{ showRValue ? `Show P&L (${currencySymbol})` : 'Show R-Value' }}
+          {{ showRValue ? s('Show P&L ({symbol})').replace('{symbol}', currencySymbol) : s('Show R-Value') }}
         </button>
 
         <!-- Year Navigation -->
@@ -53,7 +53,7 @@
       <div v-if="loading" class="absolute top-0 right-0 z-10">
         <div class="flex items-center space-x-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-gray-200 dark:border-gray-700">
           <div class="animate-spin rounded-full h-4 w-4 border-2 border-primary-600 border-t-transparent"></div>
-          <span class="text-xs text-gray-600 dark:text-gray-400">Updating...</span>
+          <span class="text-xs text-gray-600 dark:text-gray-400">{{ s('Updating...') }}</span>
         </div>
       </div>
       <!-- Expanded Month View -->
@@ -62,13 +62,13 @@
           <div class="card-body">
             <div class="mb-6 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
               <div class="flex items-center space-x-2">
-                <button @click="changeMonth(-1)" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" title="Previous month">
+                <button @click="changeMonth(-1)" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" :title="s('Previous month')">
                   <ChevronLeftIcon class="h-5 w-5" />
                 </button>
                 <h2 class="heading-section min-w-[180px] text-center">
-                  {{ format(expandedMonth, 'MMMM yyyy') }}
+                  {{ formatWithLocale(expandedMonth, 'MMMM yyyy') }}
                 </h2>
-                <button @click="changeMonth(1)" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" title="Next month">
+                <button @click="changeMonth(1)" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" :title="s('Next month')">
                   <ChevronRightIcon class="h-5 w-5" />
                 </button>
               </div>
@@ -77,59 +77,57 @@
                   <div class="card card-mobile-safe min-w-[210px] border-l-4 border-l-primary-500">
                     <div class="card-body">
                       <dt class="text-data-secondary truncate">
-                        {{ format(expandedMonth, 'MMMM') }} {{ showRValue ? 'R-Value' : 'P&L' }}
+                        {{ formatWithLocale(expandedMonth, 'MMMM') }} {{ showRValue ? s('R-Value') : s('P&L') }}
                       </dt>
                       <dd class="mt-1 text-xl sm:text-2xl lg:text-3xl font-semibold whitespace-nowrap" :class="monthlyTotal >= 0 ? 'text-green-600' : 'text-red-600'">
                         {{ showRValue ? formatRValue(monthlyTotal) : formatCurrency(monthlyTotal) }}
                       </dd>
                       <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                        {{ showRValue ? 'Performance in R' : 'Net profit and loss' }}
+                        {{ showRValue ? s('Performance in R') : s('Net profit and loss') }}
                       </div>
                     </div>
                   </div>
                   <div class="card card-mobile-safe min-w-[210px] border-l-4 border-l-sky-500">
                     <div class="card-body">
                       <dt class="text-data-secondary truncate">
-                        Avg Initial Risk
+                        {{ s('Avg Initial Risk') }}
                       </dt>
                       <dd class="mt-1 text-xl sm:text-2xl lg:text-3xl font-semibold whitespace-nowrap text-gray-900 dark:text-white">
-                        {{ monthlyRiskTradeCount > 0 ? formatCurrency(monthlyAvgRiskAmount) : 'N/A' }}
+                        {{ monthlyRiskTradeCount > 0 ? formatCurrency(monthlyAvgRiskAmount) : s('N/A') }}
                       </dd>
                       <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                        {{ monthlyRiskTradeCount > 0
-                          ? `${monthlyRiskTradeCount} ${monthlyRiskTradeCount === 1 ? 'trade' : 'trades'} with stop loss`
-                          : 'No stop-loss data this month' }}
+                        {{ monthlyRiskSubtitle }}
                       </div>
                     </div>
                   </div>
                   <div class="card card-mobile-safe min-w-[210px] border-l-4 border-l-amber-500">
                     <div class="card-body">
                       <dt class="text-data-secondary truncate">
-                        Year To Date
+                        {{ s('Year To Date') }}
                       </dt>
                       <dd class="mt-1 text-xl sm:text-2xl lg:text-3xl font-semibold whitespace-nowrap" :class="ytdPnl >= 0 ? 'text-green-600' : 'text-red-600'">
                         {{ formatCurrency(ytdPnl) }}
                       </dd>
                       <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                        Through {{ format(expandedMonth, 'MMMM') }}
+                        {{ throughMonthLabel }}
                       </div>
                     </div>
                   </div>
                 </div>
                 <button @click="closeExpandedMonth" class="btn-secondary self-start sm:self-center xl:self-start">
-                  Close
+                  {{ s('Close') }}
                 </button>
               </div>
             </div>
 
             <!-- Calendar Grid - Weekdays Only -->
             <div class="grid grid-cols-6 gap-1 mb-2">
-              <div v-for="day in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']" :key="day"
+              <div v-for="day in weekdayLabels" :key="day"
                 class="text-center text-xs font-medium text-gray-500 dark:text-gray-400 py-2">
                 {{ day }}
               </div>
               <div class="text-center text-xs font-medium text-gray-500 dark:text-gray-400 py-2">
-                {{ showRValue ? 'Week R' : 'Week P/L' }}
+                {{ showRValue ? s('Week R') : s('Week P/L') }}
               </div>
             </div>
             <div v-for="(week, weekIndex) in expandedMonthWeekdays" :key="weekIndex" class="grid grid-cols-6 gap-1 mb-1">
@@ -147,7 +145,7 @@
                       {{ showRValue ? formatRValue(day.rValue || 0, 1) : formatCurrency(day.pnl, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}
                     </p>
                     <p class="text-xs" :class="getDaySubTextColor(day)">
-                      {{ day.trades }} {{ day.trades === 1 ? 'trade' : 'trades' }}
+                      {{ tradeCountLabel(day.trades) }}
                     </p>
                   </div>
                 </div>
@@ -169,16 +167,16 @@
           <div class="card-body p-4">
             <div class="flex justify-between items-center mb-3">
               <h3 class="font-medium text-gray-900 dark:text-white">
-                {{ format(month.date, 'MMMM') }}
+                {{ formatWithLocale(month.date, 'MMMM') }}
               </h3>
               <button @click="expandMonth(month.date)" class="text-primary-600 hover:text-primary-700 text-sm">
-                Open
+                {{ s('Open') }}
               </button>
             </div>
 
             <!-- Mini Calendar -->
             <div class="grid grid-cols-7 gap-0.5 text-xs">
-              <div v-for="day in ['S', 'M', 'T', 'W', 'T', 'F', 'S']" :key="day"
+              <div v-for="(day, dayIdx) in miniWeekdayLabels" :key="dayIdx"
                 class="text-center text-gray-400 dark:text-gray-500 pb-1">
                 {{ day }}
               </div>
@@ -235,17 +233,17 @@
                           ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
                           : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
                       ]">
-                      {{ contrib.side }}
+                      {{ s(contrib.side) }}
                     </span>
                     <span v-if="contrib.is_partial" class="px-2 inline-flex text-xs leading-5 font-medium rounded-full bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
-                      {{ (contrib.exit_count || 1) > 1 ? `Partial exits (${contrib.exit_count})` : 'Partial exit' }}
+                      {{ partialExitLabel(contrib.exit_count) }}
                     </span>
                     <span v-else class="px-2 inline-flex text-xs leading-5 font-medium rounded-full bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
-                      Trade
+                      {{ s('Trade') }}
                     </span>
                   </div>
                   <p v-if="contrib.is_partial && (contrib.exit_count || 1) > 1" class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    {{ contrib.exit_count }} exits from same trade
+                    {{ s('{count} exits from same trade').replace('{count}', String(contrib.exit_count)) }}
                   </p>
                 </div>
                 <div class="text-right">
@@ -253,13 +251,13 @@
                     {{ showRValue && contrib.r_value != null ? formatRValue(contrib.r_value) : formatCurrency(contrib.pnl) }}
                   </p>
                   <p v-if="showRValue && contrib.r_value == null && !contrib.is_partial" class="text-xs text-gray-400">
-                    No R data
+                    {{ s('No R data') }}
                   </p>
                   <p v-else-if="showRValue && contrib.is_partial" class="text-xs text-gray-400">
-                    Partial
+                    {{ s('Partial') }}
                   </p>
                   <p v-if="contrib.risk_amount != null" class="text-xs text-gray-500 dark:text-gray-400">
-                    Risk {{ formatCurrency(contrib.risk_amount) }}
+                    {{ s('Risk {amount}').replace('{amount}', formatCurrency(contrib.risk_amount)) }}
                   </p>
                 </div>
               </div>
@@ -268,14 +266,14 @@
 
           <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex-shrink-0">
             <div class="flex justify-between items-center">
-              <span class="font-medium text-gray-900 dark:text-white">{{ showRValue ? 'Total R for day:' : 'Total for day:' }}</span>
+              <span class="font-medium text-gray-900 dark:text-white">{{ showRValue ? s('Total R for day:') : s('Total for day:') }}</span>
               <span class="font-bold text-lg" :class="selectedDayTotal >= 0 ? 'text-green-600' : 'text-red-600'">
                 {{ showRValue ? formatRValue(selectedDayTotalRValue) : formatCurrency(selectedDayTotalPnl) }}
               </span>
             </div>
             <div v-if="selectedDayRiskTradeCount > 0" class="mt-2 flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
-              <span>Avg initial risk</span>
-              <span>{{ formatCurrency(selectedDayAvgRiskAmount) }} across {{ selectedDayRiskTradeCount }} {{ selectedDayRiskTradeCount === 1 ? 'trade' : 'trades' }}</span>
+              <span>{{ s('Avg initial risk') }}</span>
+              <span>{{ formatCurrency(selectedDayAvgRiskAmount) }} {{ s('across {count} trades').replace('{count}', String(selectedDayRiskTradeCount)) }}</span>
             </div>
           </div>
         </div>
@@ -287,17 +285,64 @@
 <script setup>
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import OnboardingCard from '@/components/onboarding/OnboardingCard.vue'
 import { useAuthStore } from '@/stores/auth'
-
-const authStore = useAuthStore()
-import { format, startOfYear, endOfYear, eachMonthOfInterval, startOfMonth, endOfMonth, eachDayOfInterval, getDay, isSameMonth, addMonths } from 'date-fns'
+import { format, startOfYear, endOfYear, eachMonthOfInterval, startOfMonth, endOfMonth, eachDayOfInterval, getDay, addMonths } from 'date-fns'
+import { zhCN, enUS } from 'date-fns/locale'
 import { ChevronLeftIcon, ChevronRightIcon, XMarkIcon, ArrowsPointingOutIcon, ArrowsPointingInIcon } from '@heroicons/vue/24/outline'
 import api from '@/services/api'
 import { useGlobalAccountFilter } from '@/composables/useGlobalAccountFilter'
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'
 
+const authStore = useAuthStore()
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
+
 const { formatCurrency, currencySymbol } = useCurrencyFormatter()
+
+const dateFnsLocale = computed(() => (locale.value === 'zh' ? zhCN : enUS))
+
+const weekdayLabels = computed(() => [s('Mon'), s('Tue'), s('Wed'), s('Thu'), s('Fri')])
+const miniWeekdayLabels = computed(() => [s('Sun'), s('Mon'), s('Tue'), s('Wed'), s('Thu'), s('Fri'), s('Sat')])
+
+const monthlyRiskSubtitle = computed(() => {
+  const count = monthlyRiskTradeCount.value
+  if (count <= 0) return s('No stop-loss data this month')
+  return s('{count} trades with stop loss').replace('{count}', String(count))
+})
+
+const throughMonthLabel = computed(() => {
+  if (!expandedMonth.value) return ''
+  return s('Through {month}').replace('{month}', formatWithLocale(expandedMonth.value, 'MMMM'))
+})
+
+const tradesForDateLabel = computed(() => {
+  if (!selectedDay.value?.date) return ''
+  return s('Trades for {date}').replace(
+    '{date}',
+    formatWithLocale(selectedDay.value.date, 'MMMM d, yyyy'),
+  )
+})
+
+function formatWithLocale(date, pattern) {
+  if (!date) return ''
+  return format(date, pattern, { locale: dateFnsLocale.value })
+}
+
+function tradeCountLabel(count) {
+  return `${count} ${s(count === 1 ? 'trade' : 'trades')}`
+}
+
+function partialExitLabel(exitCount) {
+  const count = exitCount || 1
+  if (count > 1) {
+    return s('Partial exits ({count})').replace('{count}', String(count))
+  }
+  return s('Partial exit')
+}
 
 const { selectedAccount } = useGlobalAccountFilter()
 

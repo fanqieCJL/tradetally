@@ -3,9 +3,9 @@
         <!-- Header -->
         <div class="flex items-center justify-between mb-8">
             <div>
-                <h1 class="heading-page">Trade Management</h1>
+                <h1 class="heading-page">{{ s('Trade Management') }}</h1>
                 <p class="text-gray-600 dark:text-gray-400 mt-1">
-                    Analyze trade execution quality with R-Multiple analysis
+                    {{ s('Analyze trade execution quality with R-Multiple analysis') }}
                 </p>
             </div>
         </div>
@@ -17,9 +17,9 @@
             :total-steps="3"
             :next-step="4"
             tour-type="pro"
-            title="Trade Management"
-            description="Advanced stop loss analysis, R-value tracking, and position sizing tools."
-            cta-label="Done"
+            :title="s('Trade Management')"
+            :description="s('Advanced stop loss analysis, R-value tracking, and position sizing tools.')"
+            :cta-label="s('Done')"
         />
 
         <!-- R-Multiple Performance Chart -->
@@ -37,11 +37,10 @@
             <h2
                 class="text-xl font-semibold text-gray-900 dark:text-white mb-2"
             >
-                Individual Trade Analysis
+                {{ s('Individual Trade Analysis') }}
             </h2>
             <p class="text-sm text-gray-500 dark:text-gray-400">
-                Select a trade to view detailed R-Multiple breakdown and chart
-                visualization
+                {{ s('Select a trade to view detailed R-Multiple breakdown and chart visualization') }}
             </p>
         </div>
 
@@ -85,8 +84,7 @@
                 class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4"
             >
                 <p class="text-gray-600 dark:text-gray-400 text-sm">
-                    Chart visualization is not available for
-                    {{ selectedTrade?.instrument_type }} trades.
+                    {{ s('Chart visualization is not available for {type} trades.').replace('{type}', selectedTrade?.instrument_type || '') }}
                 </p>
             </div>
 
@@ -120,7 +118,7 @@
                 class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto mb-4"
             ></div>
             <p class="text-gray-600 dark:text-gray-400">
-                Calculating R-Multiple analysis...
+                {{ s('Calculating R-Multiple analysis...') }}
             </p>
         </div>
 
@@ -136,12 +134,17 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { tSentence } from "@/i18n";
 import { useRoute, useRouter } from "vue-router";
 import api from "@/services/api";
 import OnboardingCard from "@/components/onboarding/OnboardingCard.vue";
 import { useAuthStore } from "@/stores/auth";
 
 const authStore = useAuthStore();
+const { locale } = useI18n();
+const s = (text) => tSentence(text, { context: "metrics" });
+void locale;
 import { useGlobalAccountFilter } from "@/composables/useGlobalAccountFilter";
 import TradeSelector from "@/components/trade-management/TradeSelector.vue";
 import StopLossTakeProfitForm from "@/components/trade-management/StopLossTakeProfitForm.vue";
@@ -264,7 +267,7 @@ async function fetchTrades() {
         pagination.value = response.data.pagination;
         console.log("[TRADE-MGMT] Fetched", trades.value.length, "trades");
     } catch (err) {
-        error.value = err.response?.data?.error || "Failed to fetch trades";
+        error.value = s(err.response?.data?.error || "Failed to fetch trades");
         console.error("Error fetching trades:", err);
     } finally {
         loading.value = false;
@@ -301,7 +304,7 @@ async function loadMoreTrades() {
         trades.value = [...trades.value, ...response.data.trades];
         pagination.value = response.data.pagination;
     } catch (err) {
-        error.value = err.response?.data?.error || "Failed to load more trades";
+        error.value = s(err.response?.data?.error || "Failed to load more trades");
     } finally {
         loading.value = false;
     }
@@ -358,7 +361,7 @@ async function fetchAnalysis(tradeId) {
             // Trade needs stop loss - this is handled by needsRiskLevels computed
         } else {
             error.value =
-                err.response?.data?.error || "Failed to fetch analysis";
+                s(err.response?.data?.error || "Failed to fetch analysis");
         }
     } finally {
         analysisLoading.value = false;

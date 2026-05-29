@@ -24,10 +24,9 @@
         </div>
 
         <div class="mb-8">
-            <h1 class="heading-page">Behavioral Analytics</h1>
+            <h1 class="heading-page">{{ s('Behavioral Analytics') }}</h1>
             <p class="mt-2 text-gray-600 dark:text-gray-400">
-                Analyze your trading behavior patterns and emotional
-                decision-making
+                {{ s('Analyze your trading behavior patterns and emotional decision-making') }}
             </p>
         </div>
 
@@ -38,9 +37,9 @@
             :total-steps="3"
             :next-step="2"
             tour-type="pro"
-            title="Behavioral Analytics"
-            description="Detect revenge trading, overtrading, and FOMO patterns. Understand your psychological edge."
-            cta-label="Next: Watchlists"
+            :title="s('Behavioral Analytics')"
+            :description="s('Detect revenge trading, overtrading, and FOMO patterns. Understand your psychological edge.')"
+            :cta-label="s('Next: Watchlists')"
             cta-route="markets"
         />
 
@@ -48,7 +47,7 @@
         <ProUpgradePrompt
             v-if="!hasAccess"
             variant="card"
-            description="Behavioral Analytics is a Pro feature that helps identify emotional trading patterns like revenge trading, overtrading, and FOMO."
+            :description="s('Behavioral Analytics is a Pro feature that helps identify emotional trading patterns like revenge trading, overtrading, and FOMO.')"
         />
 
         <!-- Initial Loading State - only shows on first load -->
@@ -69,7 +68,7 @@
                         class="animate-spin rounded-full h-4 w-4 border-2 border-primary-600 border-t-transparent"
                     ></div>
                     <span class="text-xs text-gray-600 dark:text-gray-400"
-                        >Updating...</span
+                        >{{ s('Updating...') }}</span
                     >
                 </div>
             </div>
@@ -107,9 +106,9 @@
                                 <div
                                     class="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"
                                 ></div>
-                                Analyzing Historical Trades...
+                                {{ s('Analyzing Historical Trades...') }}
                             </span>
-                            <span v-else> Analyze Historical Trades </span>
+                            <span v-else>{{ s('Analyze Historical Trades') }}</span>
                         </button>
                     </div>
                 </div>
@@ -117,7 +116,7 @@
 
             <!-- Active Alerts -->
             <div v-if="activeAlerts.length > 0" class="space-y-4">
-                <h2 class="heading-section">Active Alerts</h2>
+                <h2 class="heading-section">{{ s('Active Alerts') }}</h2>
                 <div class="grid gap-4">
                     <div
                         v-for="alert in activeAlerts"
@@ -136,12 +135,12 @@
                             <div class="flex items-start justify-between">
                                 <div class="flex-1">
                                     <h3 class="heading-card">
-                                        {{ alert.title }}
+                                        {{ s(alert.title) }}
                                     </h3>
                                     <p
                                         class="text-gray-600 dark:text-gray-400 mt-1"
                                     >
-                                        {{ alert.message }}
+                                        {{ s(alert.message) }}
                                     </p>
                                     <p
                                         class="text-sm text-gray-500 dark:text-gray-500 mt-2"
@@ -152,9 +151,7 @@
                                 <button
                                     @click="acknowledgeAlert(alert.id)"
                                     class="ml-4 px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
-                                >
-                                    Acknowledge
-                                </button>
+                                >{{ s('Acknowledge') }}</button>
                             </div>
                         </div>
                     </div>
@@ -165,9 +162,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="flex items-center justify-between mb-6">
-                        <h3 class="heading-card">
-                            Trading Personality Profiling
-                        </h3>
+                        <h3 class="heading-card">{{ s('Trading Personality Profiling') }}</h3>
                         <button
                             @click="analyzePersonality"
                             :disabled="loadingPersonality"
@@ -195,8 +190,8 @@
                             </svg>
                             {{
                                 loadingPersonality
-                                    ? "Analyzing..."
-                                    : "Refresh Analysis"
+                                    ? s("Analyzing...")
+                                    : s("Refresh Analysis")
                             }}
                         </button>
                     </div>
@@ -225,20 +220,14 @@
                         </div>
                         <h4
                             class="text-lg font-medium text-gray-900 dark:text-white mb-2"
-                        >
-                            No Trading Personality Profile Yet
-                        </h4>
+                        >{{ s('No Trading Personality Profile Yet') }}</h4>
                         <p
                             class="text-gray-600 dark:text-gray-400 mb-4 max-w-md mx-auto"
                         >
-                            To generate your trading personality profile, you
-                            need at least 20 completed trades. This helps us
-                            analyze your patterns and provide meaningful
-                            insights.
+                            {{ s('To generate your trading personality profile, you need at least 20 completed trades. This helps us analyze your patterns and provide meaningful insights.') }}
                         </p>
                         <p class="text-sm text-gray-500 dark:text-gray-500">
-                            Keep trading and check back once you've reached this
-                            milestone!
+                            {{ s("Keep trading and check back once you've reached this milestone!") }}
                         </p>
                     </div>
 
@@ -278,9 +267,7 @@
                                 <div class="text-right">
                                     <p
                                         class="text-sm text-gray-500 dark:text-gray-400"
-                                    >
-                                        Performance Score
-                                    </p>
+                                    >{{ s('Performance Score') }}</p>
                                     <p
                                         class="text-2xl font-bold text-purple-600 dark:text-purple-400"
                                     >
@@ -300,13 +287,11 @@
                                 <div
                                     class="text-center cursor-pointer p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                                     @click="viewTradesByStrategy('scalper')"
-                                    :title="'Click to view trades matching Scalper strategy patterns'"
+                                    :title="s('Click to view trades matching Scalper strategy patterns')"
                                 >
                                     <p
                                         class="text-xs text-gray-600 dark:text-gray-400 mb-1"
-                                    >
-                                        Scalper
-                                    </p>
+                                    >{{ s('Scalper') }}</p>
                                     <div
                                         class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-1"
                                     >
@@ -330,9 +315,7 @@
                                             :icon="mdiChartBox"
                                             :size="12"
                                             class="mr-1"
-                                        />
-                                        View trades
-                                    </p>
+                                        />{{ s('View trades') }}</p>
                                 </div>
                                 <div
                                     class="text-center cursor-pointer p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -341,9 +324,7 @@
                                 >
                                     <p
                                         class="text-xs text-gray-600 dark:text-gray-400 mb-1"
-                                    >
-                                        Momentum
-                                    </p>
+                                    >{{ s('Momentum') }}</p>
                                     <div
                                         class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-1"
                                     >
@@ -367,9 +348,7 @@
                                             :icon="mdiChartBox"
                                             :size="12"
                                             class="mr-1"
-                                        />
-                                        View trades
-                                    </p>
+                                        />{{ s('View trades') }}</p>
                                 </div>
                                 <div
                                     class="text-center cursor-pointer p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -380,9 +359,7 @@
                                 >
                                     <p
                                         class="text-xs text-gray-600 dark:text-gray-400 mb-1"
-                                    >
-                                        Mean Reversion
-                                    </p>
+                                    >{{ s('Mean Reversion') }}</p>
                                     <div
                                         class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-1"
                                     >
@@ -406,9 +383,7 @@
                                             :icon="mdiChartBox"
                                             :size="12"
                                             class="mr-1"
-                                        />
-                                        View trades
-                                    </p>
+                                        />{{ s('View trades') }}</p>
                                 </div>
                                 <div
                                     class="text-center cursor-pointer p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -417,9 +392,7 @@
                                 >
                                     <p
                                         class="text-xs text-gray-600 dark:text-gray-400 mb-1"
-                                    >
-                                        Swing
-                                    </p>
+                                    >{{ s('Swing') }}</p>
                                     <div
                                         class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-1"
                                     >
@@ -443,9 +416,7 @@
                                             :icon="mdiChartBox"
                                             :size="12"
                                             class="mr-1"
-                                        />
-                                        View trades
-                                    </p>
+                                        />{{ s('View trades') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -457,9 +428,7 @@
                             >
                                 <h5
                                     class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                >
-                                    Median Hold Time
-                                </h5>
+                                >{{ s('Median Hold Time') }}</h5>
                                 <p
                                     class="text-xl font-bold text-gray-900 dark:text-white"
                                 >
@@ -472,9 +441,7 @@
                                 </p>
                                 <p
                                     class="text-xs text-gray-500 dark:text-gray-400"
-                                >
-                                    Per trade
-                                </p>
+                                >{{ s('Per trade') }}</p>
                             </div>
 
                             <div
@@ -482,9 +449,7 @@
                             >
                                 <h5
                                     class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                >
-                                    Trading Frequency
-                                </h5>
+                                >{{ s('Trading Frequency') }}</h5>
                                 <p
                                     class="text-xl font-bold text-gray-900 dark:text-white"
                                 >
@@ -498,9 +463,7 @@
                                 </p>
                                 <p
                                     class="text-xs text-gray-500 dark:text-gray-400"
-                                >
-                                    Trades per day
-                                </p>
+                                >{{ s('Trades per day') }}</p>
                             </div>
 
                             <div
@@ -508,9 +471,7 @@
                             >
                                 <h5
                                     class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                >
-                                    Position Consistency
-                                </h5>
+                                >{{ s('Position Consistency') }}</h5>
                                 <p
                                     class="text-xl font-bold text-gray-900 dark:text-white"
                                 >
@@ -526,9 +487,7 @@
                                 </p>
                                 <p
                                     class="text-xs text-gray-500 dark:text-gray-400"
-                                >
-                                    Sizing discipline
-                                </p>
+                                >{{ s('Sizing discipline') }}</p>
                             </div>
                         </div>
 
@@ -561,9 +520,7 @@
                                 <div class="text-center">
                                     <p
                                         class="text-sm text-blue-700 dark:text-blue-300"
-                                    >
-                                        Your Percentile
-                                    </p>
+                                    >{{ s('Your Percentile') }}</p>
                                     <p
                                         class="text-2xl font-bold text-blue-900 dark:text-blue-100"
                                     >
@@ -586,9 +543,7 @@
                                 <div class="text-center">
                                     <p
                                         class="text-sm text-blue-700 dark:text-blue-300"
-                                    >
-                                        Your Performance
-                                    </p>
+                                    >{{ s('Your Performance') }}</p>
                                     <p
                                         class="text-2xl font-bold text-blue-900 dark:text-blue-100"
                                     >
@@ -613,9 +568,7 @@
                                 <div class="text-center">
                                     <p
                                         class="text-sm text-blue-700 dark:text-blue-300"
-                                    >
-                                        Top 10% Benchmark
-                                    </p>
+                                    >{{ s('Top 10% Benchmark') }}</p>
                                     <p
                                         class="text-2xl font-bold text-blue-900 dark:text-blue-100"
                                     >
@@ -627,9 +580,7 @@
                                     </p>
                                     <p
                                         class="text-xs text-blue-600 dark:text-blue-400"
-                                    >
-                                        Elite performers
-                                    </p>
+                                    >{{ s('Elite performers') }}</p>
                                 </div>
                             </div>
 
@@ -652,7 +603,7 @@
                                                     ?.holdTime?.user || 0
                                             }}m</span
                                         >
-                                        <span class="text-gray-500">vs</span>
+                                        <span class="text-gray-500">{{ s('vs') }}</span>
                                         <span
                                             >{{
                                                 personalityData.peerComparison
@@ -660,7 +611,7 @@
                                                     ?.holdTime?.peers || 0
                                             }}m</span
                                         >
-                                        <span class="text-gray-500">vs</span>
+                                        <span class="text-gray-500">{{ s('vs') }}</span>
                                         <span class="text-green-600 font-medium"
                                             >{{
                                                 personalityData.peerComparison
@@ -686,7 +637,7 @@
                                                     ?.frequency?.user || 0
                                             }}/d</span
                                         >
-                                        <span class="text-gray-500">vs</span>
+                                        <span class="text-gray-500">{{ s('vs') }}</span>
                                         <span
                                             >{{
                                                 personalityData.peerComparison
@@ -694,7 +645,7 @@
                                                     ?.frequency?.peers || 0
                                             }}/d</span
                                         >
-                                        <span class="text-gray-500">vs</span>
+                                        <span class="text-gray-500">{{ s('vs') }}</span>
                                         <span class="text-green-600 font-medium"
                                             >{{
                                                 personalityData.peerComparison
@@ -718,13 +669,13 @@
                                                 .behaviorComparison?.consistency
                                                 ?.user || 0
                                         }}</span>
-                                        <span class="text-gray-500">vs</span>
+                                        <span class="text-gray-500">{{ s('vs') }}</span>
                                         <span>{{
                                             personalityData.peerComparison
                                                 .behaviorComparison?.consistency
                                                 ?.peers || 0
                                         }}</span>
-                                        <span class="text-gray-500">vs</span>
+                                        <span class="text-gray-500">{{ s('vs') }}</span>
                                         <span
                                             class="text-green-600 font-medium"
                                             >{{
@@ -776,11 +727,11 @@
                                             <strong
                                                 >Drift Severity Levels</strong
                                             ><br />
-                                            <strong>LOW (0-0.4):</strong>
+                                            <strong>{{ s('LOW (0-0.4):') }}</strong>
                                             Minor behavioral changes<br />
-                                            <strong>MEDIUM (0.4-0.7):</strong>
+                                            <strong>{{ s('MEDIUM (0.4-0.7):') }}</strong>
                                             Noticeable pattern shifts<br />
-                                            <strong>HIGH (0.7-1.0):</strong>
+                                            <strong>{{ s('HIGH (0.7-1.0):') }}</strong>
                                             Significant behavioral
                                             transformation requiring attention
                                         </div>
@@ -798,9 +749,7 @@
                                     <div class="cursor-help">
                                         <p
                                             class="text-sm text-yellow-700 dark:text-yellow-300"
-                                        >
-                                            Personality Shift
-                                        </p>
+                                        >{{ s('Personality Shift') }}</p>
                                         <p class="font-medium">
                                             {{
                                                 personalityData.driftAnalysis
@@ -873,9 +822,7 @@
                                     <div class="cursor-help">
                                         <p
                                             class="text-sm text-yellow-700 dark:text-yellow-300"
-                                        >
-                                            Performance Impact
-                                        </p>
+                                        >{{ s('Performance Impact') }}</p>
                                         <p
                                             class="font-medium"
                                             :class="{
@@ -908,10 +855,10 @@
                                             ><br />
                                             Estimated financial impact of your
                                             behavioral changes.
-                                            <strong>Positive values</strong>
+                                            <strong>{{ s('Positive values') }}</strong>
                                             suggest the drift may be hurting
                                             performance, while
-                                            <strong>negative values</strong>
+                                            <strong>{{ s('negative values') }}</strong>
                                             suggest it may be helping.
                                         </div>
                                         <div
@@ -931,9 +878,7 @@
                                     <div class="cursor-help">
                                         <p
                                             class="text-sm text-yellow-700 dark:text-yellow-300"
-                                        >
-                                            Hold Time Change
-                                        </p>
+                                        >{{ s('Hold Time Change') }}</p>
                                         <p class="font-medium">
                                             {{
                                                 personalityData.driftAnalysis
@@ -970,9 +915,7 @@
                                     <div class="cursor-help">
                                         <p
                                             class="text-sm text-yellow-700 dark:text-yellow-300"
-                                        >
-                                            Frequency Change
-                                        </p>
+                                        >{{ s('Frequency Change') }}</p>
                                         <p class="font-medium">
                                             {{
                                                 personalityData.driftAnalysis
@@ -1010,9 +953,7 @@
                                     <div class="cursor-help">
                                         <p
                                             class="text-sm text-yellow-700 dark:text-yellow-300"
-                                        >
-                                            Risk Tolerance Change
-                                        </p>
+                                        >{{ s('Risk Tolerance Change') }}</p>
                                         <p class="font-medium">
                                             {{
                                                 personalityData.driftAnalysis
@@ -1054,9 +995,7 @@
                         >
                             <h5
                                 class="text-lg font-medium text-gray-700 dark:text-gray-300"
-                            >
-                                Personalized Recommendations
-                            </h5>
+                            >{{ s('Personalized Recommendations') }}</h5>
 
                             <div
                                 v-for="rec in personalityData.recommendations"
@@ -1095,11 +1034,8 @@
                         v-else
                         class="text-center py-8 text-gray-500 dark:text-gray-400"
                     >
-                        <p>No trading personality analysis available yet.</p>
-                        <p class="text-sm mt-2">
-                            Analysis will run automatically when you have enough
-                            trade data.
-                        </p>
+                        <p>{{ s('No trading personality analysis available yet.') }}</p>
+                        <p class="text-sm mt-2">{{ s('Analysis will run automatically when you have enough trade data.') }}</p>
                     </div>
                 </div>
             </div>
@@ -1133,9 +1069,7 @@
                                 <dl>
                                     <dt
                                         class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate"
-                                    >
-                                        Revenge Trading Events
-                                    </dt>
+                                    >{{ s('Revenge Trading Events') }}</dt>
                                     <dd
                                         class="text-lg font-medium text-gray-900 dark:text-white"
                                     >
@@ -1177,9 +1111,7 @@
                                 <dl>
                                     <dt
                                         class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate"
-                                    >
-                                        Revenge Trading Loss Rate
-                                    </dt>
+                                    >{{ s('Revenge Trading Loss Rate') }}</dt>
                                     <dd
                                         class="text-lg font-medium text-gray-900 dark:text-white"
                                     >
@@ -1221,9 +1153,7 @@
                                 <dl>
                                     <dt
                                         class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate"
-                                    >
-                                        Avg Duration
-                                    </dt>
+                                    >{{ s('Avg Duration') }}</dt>
                                     <dd
                                         class="text-lg font-medium text-gray-900 dark:text-white"
                                     >
@@ -1316,7 +1246,7 @@
                                                         0,
                                                 ) < 0
                                             "
-                                            >Total Losses Recovered</span
+                                            >{{ s('Total Losses Recovered') }}</span
                                         >
                                         <span
                                             v-else-if="
@@ -1326,9 +1256,9 @@
                                                         0,
                                                 ) > 0
                                             "
-                                            >Total Losses Increased</span
+                                            >{{ s('Total Losses Increased') }}</span
                                         >
-                                        <span v-else>Total Revenge P&L</span>
+                                        <span v-else>{{ s('Total Revenge P&L') }}</span>
                                     </dt>
                                     <dd
                                         class="text-lg font-medium"
@@ -1395,9 +1325,7 @@
                 <div class="card-body">
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white mb-6"
-                    >
-                        Revenge Trading Detection
-                    </h3>
+                    >{{ s('Revenge Trading Detection') }}</h3>
 
                     <!-- No Data State -->
                     <div
@@ -1423,14 +1351,11 @@
                         </div>
                         <h3
                             class="mt-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >
-                            No Revenge Trading Detected
-                        </h3>
+                        >{{ s('No Revenge Trading Detected') }}</h3>
                         <p
                             class="mt-1 text-sm text-gray-500 dark:text-gray-400"
                         >
-                            Great job! We haven't detected any revenge trading
-                            patterns in the selected time period.
+                            {{ s("Great job! We haven't detected any revenge trading patterns in the selected time period.") }}
                         </p>
                     </div>
 
@@ -1441,9 +1366,9 @@
                             <div
                                 class="text-sm text-gray-500 dark:text-gray-400"
                             >
-                                Showing
-                                {{ revengeAnalysis.events.length }} of
-                                {{ pagination.total }} revenge trading events
+                                {{ s('Showing {shown} of {total} revenge trading events')
+                                    .replace('{shown}', String(revengeAnalysis.events.length))
+                                    .replace('{total}', String(pagination.total)) }}
                             </div>
                             <button
                                 @click="reRunAnalysis"
@@ -1464,9 +1389,9 @@
                                     />
                                 </svg>
                                 <span v-if="loadingHistorical"
-                                    >Re-analyzing...</span
+                                    >{{ s('Re-analyzing...') }}</span
                                 >
-                                <span v-else>Re-run Analysis</span>
+                                <span v-else>{{ s('Re-run Analysis') }}</span>
                             </button>
                         </div>
 
@@ -1541,7 +1466,7 @@
                                             <div>
                                                 <span
                                                     class="text-red-600 dark:text-red-400 font-medium"
-                                                    >Symbol:</span
+                                                    >{{ s('Symbol:') }}</span
                                                 >
                                                 <span class="ml-1">{{
                                                     event.trigger_trade.symbol
@@ -1550,7 +1475,7 @@
                                             <div>
                                                 <span
                                                     class="text-red-600 dark:text-red-400 font-medium"
-                                                    >Entry:</span
+                                                    >{{ s('Entry:') }}</span
                                                 >
                                                 <span class="ml-1"
                                                     >${{
@@ -1564,7 +1489,7 @@
                                             <div>
                                                 <span
                                                     class="text-red-600 dark:text-red-400 font-medium"
-                                                    >Exit:</span
+                                                    >{{ s('Exit:') }}</span
                                                 >
                                                 <span class="ml-1"
                                                     >${{
@@ -1578,7 +1503,7 @@
                                             <div>
                                                 <span
                                                     class="text-red-600 dark:text-red-400 font-medium"
-                                                    >Loss:</span
+                                                    >{{ s('Loss:') }}</span
                                                 >
                                                 <span
                                                     class="ml-1 font-medium text-red-600 dark:text-red-400"
@@ -1595,7 +1520,7 @@
                                             >
                                                 <span
                                                     class="text-red-600 dark:text-red-400 font-medium"
-                                                    >Completed:</span
+                                                    >{{ s('Completed:') }}</span
                                                 >
                                                 <span class="ml-1">{{
                                                     formatDate(
@@ -1625,9 +1550,7 @@
                                                         :icon="mdiLightningBolt"
                                                         :size="16"
                                                         class="mr-1"
-                                                    />
-                                                    Revenge Trading Response
-                                                </h4>
+                                                    />{{ s('Revenge Trading Response') }}</h4>
                                                 <span
                                                     class="text-xs text-gray-500 dark:text-gray-400"
                                                 >
@@ -1742,9 +1665,7 @@
                                                                 "
                                                                 :size="16"
                                                                 class="mr-1"
-                                                            />
-                                                            Emotional Spillover
-                                                        </span>
+                                                            />{{ s('Emotional Spillover') }}</span>
                                                         <span
                                                             class="px-2 py-0.5 text-xs rounded"
                                                             :class="{
@@ -1779,7 +1700,7 @@
                                                     <div>
                                                         <span
                                                             class="text-gray-600 dark:text-gray-400"
-                                                            >Symbol:</span
+                                                            >{{ s('Symbol:') }}</span
                                                         >
                                                         <span
                                                             class="ml-1 font-medium"
@@ -1791,7 +1712,7 @@
                                                     <div>
                                                         <span
                                                             class="text-gray-600 dark:text-gray-400"
-                                                            >Side:</span
+                                                            >{{ s('Side:') }}</span
                                                         >
                                                         <span
                                                             class="ml-1 font-medium uppercase"
@@ -1803,7 +1724,7 @@
                                                     <div>
                                                         <span
                                                             class="text-gray-600 dark:text-gray-400"
-                                                            >Quantity:</span
+                                                            >{{ s('Quantity:') }}</span
                                                         >
                                                         <span class="ml-1">{{
                                                             pattern.quantity
@@ -1812,7 +1733,7 @@
                                                     <div>
                                                         <span
                                                             class="text-gray-600 dark:text-gray-400"
-                                                            >Time:</span
+                                                            >{{ s('Time:') }}</span
                                                         >
                                                         <span class="ml-1">{{
                                                             formatTime(
@@ -1829,7 +1750,7 @@
                                                     <div>
                                                         <span
                                                             class="text-gray-600 dark:text-gray-400"
-                                                            >Entry:</span
+                                                            >{{ s('Entry:') }}</span
                                                         >
                                                         <span class="ml-1"
                                                             >${{
@@ -1842,7 +1763,7 @@
                                                     <div>
                                                         <span
                                                             class="text-gray-600 dark:text-gray-400"
-                                                            >Exit:</span
+                                                            >{{ s('Exit:') }}</span
                                                         >
                                                         <span class="ml-1"
                                                             >${{
@@ -1855,7 +1776,7 @@
                                                     <div>
                                                         <span
                                                             class="text-gray-600 dark:text-gray-400"
-                                                            >Total Cost:</span
+                                                            >{{ s('Total Cost:') }}</span
                                                         >
                                                         <span
                                                             class="ml-1 font-medium"
@@ -1869,7 +1790,7 @@
                                                     <div>
                                                         <span
                                                             class="text-gray-600 dark:text-gray-400"
-                                                            >Fees:</span
+                                                            >{{ s('Fees:') }}</span
                                                         >
                                                         <span class="ml-1"
                                                             >${{
@@ -1947,7 +1868,7 @@
                                                     <div>
                                                         <span
                                                             class="text-gray-600 dark:text-gray-400"
-                                                            >Return:</span
+                                                            >{{ s('Return:') }}</span
                                                         >
                                                         <span
                                                             class="ml-1 font-medium"
@@ -2048,9 +1969,7 @@
                                                     :icon="mdiChartBox"
                                                     :size="18"
                                                     class="mr-1.5"
-                                                />
-                                                Revenge Trading Outcome
-                                            </h5>
+                                                />{{ s('Revenge Trading Outcome') }}</h5>
                                             <span
                                                 class="inline-flex px-3 py-1 text-sm font-semibold rounded-full"
                                                 :class="{
@@ -2139,7 +2058,7 @@
                                                                 event.total_additional_loss,
                                                             ) < 0
                                                         "
-                                                        >Losses recovered:</span
+                                                        >{{ s('Losses recovered:') }}</span
                                                     >
                                                     <span
                                                         v-else-if="
@@ -2147,7 +2066,7 @@
                                                                 event.total_additional_loss,
                                                             ) > 0
                                                         "
-                                                        >Losses increased:</span
+                                                        >{{ s('Losses increased:') }}</span
                                                     >
                                                     <span v-else
                                                         >Additional P&L:</span
@@ -2198,7 +2117,7 @@
                                             <div>
                                                 <span
                                                     class="text-gray-600 dark:text-gray-400"
-                                                    >Revenge trades:</span
+                                                    >{{ s('Revenge trades:') }}</span
                                                 >
                                                 <span
                                                     class="ml-1 font-medium"
@@ -2355,7 +2274,7 @@
                                             class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-50 disabled:cursor-not-allowed dark:ring-gray-600 dark:hover:bg-gray-700"
                                         >
                                             <span class="sr-only"
-                                                >Previous</span
+                                                >{{ s('Previous') }}</span
                                             >
                                             <svg
                                                 class="h-5 w-5"
@@ -2395,7 +2314,7 @@
                                             :disabled="!pagination.hasNextPage"
                                             class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-50 disabled:cursor-not-allowed dark:ring-gray-600 dark:hover:bg-gray-700"
                                         >
-                                            <span class="sr-only">Next</span>
+                                            <span class="sr-only">{{ s('Next') }}</span>
                                             <svg
                                                 class="h-5 w-5"
                                                 viewBox="0 0 20 20"
@@ -2422,16 +2341,14 @@
                 <div class="card-body">
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white mb-6"
-                    >
-                        Behavioral Insights
-                    </h3>
+                    >{{ s('Behavioral Insights') }}</h3>
 
                     <!-- Overall Risk Score -->
                     <div class="mb-6">
                         <div class="flex items-center justify-between mb-2">
                             <span
                                 class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                >Overall Risk Score</span
+                                >{{ s('Overall Risk Score') }}</span
                             >
                             <span
                                 class="text-lg font-bold text-gray-900 dark:text-white"
@@ -2459,7 +2376,7 @@
                         <p
                             class="text-sm text-gray-600 dark:text-gray-400 mt-2"
                         >
-                            {{ insights.overallRisk.description }}
+                            {{ s(insights.overallRisk.description) }}
                         </p>
                     </div>
 
@@ -2481,12 +2398,12 @@
                             <h4
                                 class="font-medium text-gray-900 dark:text-white"
                             >
-                                {{ insight.title }}
+                                {{ s(insight.title) }}
                             </h4>
                             <p
                                 class="text-sm text-gray-600 dark:text-gray-400 mt-1"
                             >
-                                {{ insight.message }}
+                                {{ s(insight.message) }}
                             </p>
                             <p
                                 class="text-sm font-medium text-gray-700 dark:text-gray-300 mt-2 flex items-start"
@@ -2496,7 +2413,7 @@
                                     :size="16"
                                     class="mr-1.5 mt-0.5 flex-shrink-0"
                                 />
-                                <span>{{ insight.recommendation }}</span>
+                                <span>{{ s(insight.recommendation) }}</span>
                             </p>
                         </div>
                     </div>
@@ -2505,9 +2422,7 @@
                     <div v-if="insights.recommendations?.length" class="mt-6">
                         <h4
                             class="font-medium text-gray-900 dark:text-white mb-3"
-                        >
-                            Recommended Actions
-                        </h4>
+                        >{{ s('Recommended Actions') }}</h4>
                         <div class="space-y-3">
                             <div
                                 v-for="rec in insights.recommendations"
@@ -2525,18 +2440,18 @@
                                             rec.priority === 'low',
                                     }"
                                 >
-                                    {{ rec.priority.toUpperCase() }}
+                                    {{ s(rec.priority.toUpperCase()) }}
                                 </span>
                                 <div class="flex-1 min-w-0">
                                     <p
                                         class="text-sm font-medium text-gray-900 dark:text-white leading-relaxed"
                                     >
-                                        {{ rec.action }}
+                                        {{ s(rec.action) }}
                                     </p>
                                     <p
                                         class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed"
                                     >
-                                        {{ rec.benefit }}
+                                        {{ s(rec.benefit) }}
                                     </p>
                                 </div>
                             </div>
@@ -2550,47 +2465,36 @@
                 <div class="card-body">
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white mb-4"
-                    >
-                        Risk Level Legend
-                    </h3>
+                    >{{ s('Risk Level Legend') }}</h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="flex items-center space-x-3">
                             <span
                                 class="px-2 py-1 text-xs font-semibold rounded bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400"
-                            >
-                                HIGH RISK
-                            </span>
+                            >{{ s('HIGH RISK') }}</span>
                             <span
                                 class="text-sm text-gray-600 dark:text-gray-400"
                             >
-                                Poor trade quality indicators, large position
-                                increases
+                                {{ s('Poor trade quality indicators, large position increases') }}
                             </span>
                         </div>
                         <div class="flex items-center space-x-3">
                             <span
                                 class="px-2 py-1 text-xs font-semibold rounded bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400"
-                            >
-                                MEDIUM RISK
-                            </span>
+                            >{{ s('MEDIUM RISK') }}</span>
                             <span
                                 class="text-sm text-gray-600 dark:text-gray-400"
                             >
-                                Some poor trade quality indicators, moderate
-                                position changes
+                                {{ s('Some poor trade quality indicators, moderate position changes') }}
                             </span>
                         </div>
                         <div class="flex items-center space-x-3">
                             <span
                                 class="px-2 py-1 text-xs font-semibold rounded bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400"
-                            >
-                                LOW RISK
-                            </span>
+                            >{{ s('LOW RISK') }}</span>
                             <span
                                 class="text-sm text-gray-600 dark:text-gray-400"
                             >
-                                Good trade quality with minor behavioral
-                                patterns
+                                {{ s('Good trade quality with minor behavioral patterns') }}
                             </span>
                         </div>
                     </div>
@@ -2618,22 +2522,18 @@
                     <div class="ml-3">
                         <h3
                             class="text-sm font-medium text-blue-800 dark:text-blue-300"
-                        >
-                            Understanding the Analytics
-                        </h3>
+                        >{{ s('Understanding the Analytics') }}</h3>
                         <div
                             class="mt-2 text-sm text-blue-700 dark:text-blue-200"
                         >
                             <p class="mb-2">
-                                • <strong>Loss Aversion Analysis</strong>:
-                                Reveals your behavioral patterns - do you hold
-                                losers longer than winners?
+                                • <strong>{{ s('Loss Aversion Analysis') }}</strong>:
+                                {{ s('Reveals your behavioral patterns - do you hold losers longer than winners?') }}
                             </p>
                             <p>
                                 •
-                                <strong>Missed Profit Opportunities</strong>:
-                                Shows specific trades where you exited early and
-                                left money on the table.
+                                <strong>{{ s('Missed Profit Opportunities') }}</strong>:
+                                {{ s('Shows specific trades where you exited early and left money on the table.') }}
                             </p>
                         </div>
                     </div>
@@ -2645,14 +2545,11 @@
                 <div class="card-body">
                     <div class="flex items-center justify-between mb-6">
                         <div>
-                            <h3 class="heading-card">
-                                Loss Aversion Behavior Analysis
-                            </h3>
+                            <h3 class="heading-card">{{ s('Loss Aversion Behavior Analysis') }}</h3>
                             <p
                                 class="text-sm text-gray-500 dark:text-gray-400 mt-1"
                             >
-                                Identifies psychological patterns: Do you hold
-                                losers too long and exit winners too early?
+                                {{ s('Identifies psychological patterns: Do you hold losers too long and exit winners too early?') }}
                             </p>
                         </div>
                         <button
@@ -2682,8 +2579,8 @@
                             </svg>
                             {{
                                 loadingLossAversion
-                                    ? "Analyzing..."
-                                    : "Analyze Exit Patterns"
+                                    ? s("Analyzing...")
+                                    : s("Analyze Exit Patterns")
                             }}
                         </button>
                     </div>
@@ -2957,9 +2854,7 @@
                                     <div>
                                         <p
                                             class="text-sm text-blue-700 dark:text-blue-300"
-                                        >
-                                            Total Missed Profit
-                                        </p>
+                                        >{{ s('Total Missed Profit') }}</p>
                                         <p
                                             class="text-xl font-bold text-blue-900 dark:text-blue-100"
                                         >
@@ -2973,9 +2868,7 @@
                                     <div>
                                         <p
                                             class="text-sm text-blue-700 dark:text-blue-300"
-                                        >
-                                            Avg Missed %
-                                        </p>
+                                        >{{ s('Avg Missed %') }}</p>
                                         <p
                                             class="text-xl font-bold text-blue-900 dark:text-blue-100"
                                         >
@@ -3216,9 +3109,9 @@
                         v-else
                         class="text-center py-8 text-gray-500 dark:text-gray-400"
                     >
-                        <p>No loss aversion analysis available yet.</p>
+                        <p>{{ s('No loss aversion analysis available yet.') }}</p>
                         <p class="text-sm mt-2">
-                            Click "Analyze Exit Patterns" to generate analysis.
+                            {{ s('Click "Analyze Exit Patterns" to generate analysis.') }}
                         </p>
                     </div>
                 </div>
@@ -3229,14 +3122,11 @@
                 <div class="card-body">
                     <div class="flex items-center justify-between mb-6">
                         <div>
-                            <h3 class="heading-card">
-                                Top Missed Profit Opportunities
-                            </h3>
+                            <h3 class="heading-card">{{ s('Top Missed Profit Opportunities') }}</h3>
                             <p
                                 class="text-sm text-gray-500 dark:text-gray-400 mt-1"
                             >
-                                Specific trades where you left money on the
-                                table by exiting too early
+                                {{ s('Specific trades where you left money on the table by exiting too early') }}
                             </p>
                         </div>
                         <div class="flex space-x-2">
@@ -3267,8 +3157,8 @@
                                 </svg>
                                 {{
                                     loadingTopMissedTrades
-                                        ? "Analyzing..."
-                                        : "Find Early Exit Trades"
+                                        ? s("Analyzing...")
+                                        : s("Find Early Exit Trades")
                                 }}
                             </button>
                         </div>
@@ -3308,7 +3198,7 @@
                                     ></path>
                                 </svg>
                                 <span class="text-sm font-medium"
-                                    >Updating analysis...</span
+                                    >{{ s('Updating analysis...') }}</span
                                 >
                             </div>
                         </div>
@@ -3323,9 +3213,7 @@
                                 <div>
                                     <p
                                         class="text-sm text-orange-700 dark:text-orange-300"
-                                    >
-                                        Trades Analyzed
-                                    </p>
+                                    >{{ s('Trades Analyzed') }}</p>
                                     <p
                                         class="text-xl font-bold text-orange-900 dark:text-orange-100"
                                     >
@@ -3335,9 +3223,7 @@
                                 <div>
                                     <p
                                         class="text-sm text-orange-700 dark:text-orange-300"
-                                    >
-                                        Trades Exited Too Early
-                                    </p>
+                                    >{{ s('Trades Exited Too Early') }}</p>
                                     <p
                                         class="text-xl font-bold text-orange-900 dark:text-orange-100"
                                     >
@@ -3349,9 +3235,7 @@
                                 <div>
                                     <p
                                         class="text-sm text-orange-700 dark:text-orange-300"
-                                    >
-                                        Total Missed Profit
-                                    </p>
+                                    >{{ s('Total Missed Profit') }}</p>
                                     <p
                                         class="text-xl font-bold text-orange-900 dark:text-orange-100"
                                     >
@@ -3365,9 +3249,7 @@
                                 <div>
                                     <p
                                         class="text-sm text-orange-700 dark:text-orange-300"
-                                    >
-                                        Avg Missed %
-                                    </p>
+                                    >{{ s('Avg Missed %') }}</p>
                                     <p
                                         class="text-xl font-bold text-orange-900 dark:text-orange-100"
                                     >
@@ -3819,7 +3701,7 @@
                                 >
                                     <span
                                         class="text-sm text-gray-600 dark:text-gray-400"
-                                        >Exit Quality Score:</span
+                                        >{{ s('Exit Quality Score:') }}</span
                                     >
                                     <div
                                         class="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2"
@@ -3999,8 +3881,9 @@
                                 class="mt-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                                 {{
-                                    topMissedTrades.message ||
-                                    "No missed opportunities found"
+                                    topMissedTrades.message
+                                        ? s(topMissedTrades.message)
+                                        : s("No missed opportunities found")
                                 }}
                             </h3>
                             <p
@@ -4008,8 +3891,8 @@
                             >
                                 {{
                                     topMissedTrades.totalAnalyzed > 0
-                                        ? `Analyzed ${topMissedTrades.totalAnalyzed} trades - all had reasonable exit timing!`
-                                        : "You need completed winning trades to analyze missed opportunities."
+                                        ? s('Analyzed {count} trades - all had reasonable exit timing!').replace('{count}', String(topMissedTrades.totalAnalyzed))
+                                        : s('You need completed winning trades to analyze missed opportunities.')
                                 }}
                             </p>
                         </div>
@@ -4019,10 +3902,9 @@
                         v-else
                         class="text-center py-8 text-gray-500 dark:text-gray-400"
                     >
-                        <p>No missed opportunities analysis available yet.</p>
+                        <p>{{ s('No missed opportunities analysis available yet.') }}</p>
                         <p class="text-sm mt-2">
-                            Click "Find Early Exit Trades" to see specific
-                            trades where you left profits on the table.
+                            {{ s('Click "Find Early Exit Trades" to see specific trades where you left profits on the table.') }}
                         </p>
                     </div>
                 </div>
@@ -4032,7 +3914,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="flex items-center justify-between mb-6">
-                        <h3 class="heading-card">Overconfidence Indicators</h3>
+                        <h3 class="heading-card">{{ s('Overconfidence Indicators') }}</h3>
                         <button
                             @click="analyzeOverconfidence"
                             :disabled="loadingOverconfidence"
@@ -4060,8 +3942,8 @@
                             </svg>
                             {{
                                 loadingOverconfidence
-                                    ? "Analyzing..."
-                                    : "Analyze Overconfidence"
+                                    ? s("Analyzing...")
+                                    : s("Analyze Overconfidence")
                             }}
                         </button>
                     </div>
@@ -4098,7 +3980,7 @@
                                     ></path>
                                 </svg>
                                 <span class="text-sm font-medium"
-                                    >Updating analysis...</span
+                                    >{{ s('Updating analysis...') }}</span
                                 >
                             </div>
                         </div>
@@ -4110,9 +3992,7 @@
                             >
                                 <h4
                                     class="text-sm font-medium text-yellow-800 dark:text-yellow-300"
-                                >
-                                    Overconfidence Events
-                                </h4>
+                                >{{ s('Overconfidence Events') }}</h4>
                                 <p
                                     class="text-2xl font-bold text-yellow-900 dark:text-yellow-200"
                                 >
@@ -4124,7 +4004,7 @@
                                 <p
                                     class="text-xs text-yellow-700 dark:text-yellow-400"
                                 >
-                                    Total detected
+                                    {{ s('Total detected') }}
                                 </p>
                             </div>
 
@@ -4134,7 +4014,7 @@
                                 <h4
                                     class="text-sm font-medium text-red-800 dark:text-red-300"
                                 >
-                                    Avg Position Increase
+                                    {{ s('Avg Position Increase') }}
                                 </h4>
                                 <p
                                     class="text-2xl font-bold text-red-900 dark:text-red-200"
@@ -4148,7 +4028,7 @@
                                 <p
                                     class="text-xs text-red-700 dark:text-red-400"
                                 >
-                                    During win streaks
+                                    {{ s('During win streaks') }}
                                 </p>
                             </div>
 
@@ -4157,9 +4037,7 @@
                             >
                                 <h4
                                     class="text-sm font-medium text-orange-800 dark:text-orange-300"
-                                >
-                                    Performance Impact
-                                </h4>
+                                >{{ s('Performance Impact') }}</h4>
                                 <p
                                     class="text-2xl font-bold text-orange-900 dark:text-orange-200"
                                 >
@@ -4195,7 +4073,7 @@
                                 <p
                                     class="text-xs text-orange-700 dark:text-orange-400"
                                 >
-                                    Net P&L impact
+                                    {{ s('Net P&L impact') }}
                                 </p>
                             </div>
 
@@ -4205,7 +4083,7 @@
                                 <h4
                                     class="text-sm font-medium text-purple-800 dark:text-purple-300"
                                 >
-                                    Success Rate
+                                    {{ s('Success Rate') }}
                                 </h4>
                                 <p
                                     class="text-2xl font-bold text-purple-900 dark:text-purple-200"
@@ -4219,7 +4097,7 @@
                                 <p
                                     class="text-xs text-purple-700 dark:text-purple-400"
                                 >
-                                    Of oversized trades
+                                    {{ s('Of oversized trades') }}
                                 </p>
                             </div>
                         </div>
@@ -4232,14 +4110,14 @@
                             <h4
                                 class="text-lg font-medium text-blue-800 dark:text-blue-300 mb-3"
                             >
-                                Win Streak Patterns
+                                {{ s('Win Streak Patterns') }}
                             </h4>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div>
                                     <p
                                         class="text-sm text-blue-700 dark:text-blue-300"
                                     >
-                                        Longest Win Streak
+                                        {{ s('Longest Win Streak') }}
                                     </p>
                                     <p
                                         class="text-xl font-bold text-blue-900 dark:text-blue-100"
@@ -4249,14 +4127,14 @@
                                                 .winStreakAnalysis
                                                 .longestStreak || 0
                                         }}
-                                        trades
+                                        {{ s('trades') }}
                                     </p>
                                 </div>
                                 <div>
                                     <p
                                         class="text-sm text-blue-700 dark:text-blue-300"
                                     >
-                                        Avg Streak Length
+                                        {{ s('Avg Streak Length') }}
                                     </p>
                                     <p
                                         class="text-xl font-bold text-blue-900 dark:text-blue-100"
@@ -4266,14 +4144,14 @@
                                                 1,
                                             ) || 0
                                         }}
-                                        trades
+                                        {{ s('trades') }}
                                     </p>
                                 </div>
                                 <div>
                                     <p
                                         class="text-sm text-blue-700 dark:text-blue-300"
                                     >
-                                        Position Size Growth
+                                        {{ s('Position Size Growth') }}
                                     </p>
                                     <p
                                         class="text-xl font-bold text-blue-900 dark:text-blue-100"
@@ -4298,9 +4176,7 @@
                         >
                             <h4
                                 class="text-lg font-medium text-gray-700 dark:text-gray-300"
-                            >
-                                Recent Overconfidence Events
-                            </h4>
+                            >{{ s('Recent Overconfidence Events') }}</h4>
 
                             <div
                                 v-for="event in overconfidenceData.analysis.events.slice(
@@ -4373,7 +4249,7 @@
                                         <div>
                                             <span
                                                 class="text-orange-700 dark:text-orange-400"
-                                                >Baseline Size:</span
+                                                >{{ s('Baseline Size:') }}</span
                                             >
                                             <span class="font-medium ml-1"
                                                 >${{
@@ -4387,7 +4263,7 @@
                                         <div>
                                             <span
                                                 class="text-orange-700 dark:text-orange-400"
-                                                >Peak Size:</span
+                                                >{{ s('Peak Size:') }}</span
                                             >
                                             <span class="font-medium ml-1"
                                                 >${{
@@ -4842,7 +4718,7 @@
                                                 ) < 0
                                             "
                                         >
-                                            <strong>What happened:</strong>
+                                            <strong>{{ s('What happened:') }}</strong>
                                             After
                                             {{ event.winStreakLength }}
                                             consecutive wins, overconfidence led
@@ -4885,7 +4761,7 @@
                                                 ) > 0
                                             "
                                         >
-                                            <strong>Lucky break:</strong>
+                                            <strong>{{ s('Lucky break:') }}</strong>
                                             After
                                             {{ event.winStreakLength }}
                                             consecutive wins,
@@ -4910,7 +4786,7 @@
                                             risk.
                                         </p>
                                         <p v-else>
-                                            <strong>Break even:</strong> The
+                                            <strong>{{ s('Break even:') }}</strong> The
                                             trade after the
                                             {{ event.winStreakLength }}-win
                                             streak resulted in no gain or loss.
@@ -5550,7 +5426,7 @@
                         v-else
                         class="text-center py-8 text-gray-500 dark:text-gray-400"
                     >
-                        <p>No overconfidence analysis available yet.</p>
+                        <p>{{ s('No overconfidence analysis available yet.') }}</p>
                         <p class="text-sm mt-2">
                             Click "Analyze Overconfidence" to detect win streak
                             patterns.
@@ -5564,9 +5440,7 @@
                 <div class="card-body">
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white mb-6"
-                    >
-                        Behavioral Settings
-                    </h3>
+                    >{{ s('Behavioral Settings') }}</h3>
                     <div class="space-y-6">
                         <!-- Revenge Trading Detection -->
                         <div>
@@ -5574,14 +5448,10 @@
                                 <div>
                                     <h4
                                         class="text-sm font-medium text-gray-900 dark:text-white"
-                                    >
-                                        Revenge Trading Detection
-                                    </h4>
+                                    >{{ s('Revenge Trading Detection') }}</h4>
                                     <p
                                         class="text-sm text-gray-500 dark:text-gray-400"
-                                    >
-                                        Monitor for revenge trading patterns
-                                    </p>
+                                    >{{ s('Monitor for revenge trading patterns') }}</p>
                                 </div>
                                 <button
                                     @click="
@@ -5614,9 +5484,7 @@
                             >
                                 <label
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                >
-                                    Detection Sensitivity
-                                </label>
+                                >{{ s('Detection Sensitivity') }}</label>
                                 <select
                                     v-model="
                                         settings.revengeTrading.sensitivity
@@ -5625,16 +5493,13 @@
                                     class="input"
                                 >
                                     <option value="low">
-                                        Low - 5%+ account loss triggers
-                                        detection
+                                        {{ s('Low - 5%+ account loss triggers detection') }}
                                     </option>
                                     <option value="medium">
-                                        Medium - 3%+ account loss triggers
-                                        detection
+                                        {{ s('Medium - 3%+ account loss triggers detection') }}
                                     </option>
                                     <option value="high">
-                                        High - 1%+ account loss triggers
-                                        detection
+                                        {{ s('High - 1%+ account loss triggers detection') }}
                                     </option>
                                 </select>
                             </div>
@@ -5646,22 +5511,16 @@
                                 <div>
                                     <h4
                                         class="text-sm font-medium text-gray-900 dark:text-white"
-                                    >
-                                        Cooling Period
-                                    </h4>
+                                    >{{ s('Cooling Period') }}</h4>
                                     <p
                                         class="text-sm text-gray-500 dark:text-gray-400"
-                                    >
-                                        Recommended break time after losses
-                                    </p>
+                                    >{{ s('Recommended break time after losses') }}</p>
                                 </div>
                             </div>
                             <div class="mt-4">
                                 <label
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                >
-                                    Duration (minutes)
-                                </label>
+                                >{{ s('Duration (minutes)') }}</label>
                                 <input
                                     v-model.number="
                                         settings.coolingPeriod.minutes
@@ -5686,6 +5545,8 @@
 <script setup>
 import { ref, onMounted, computed, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
+import { tSentence, i18n } from "@/i18n";
 import api from "@/services/api";
 import { useNotification } from "@/composables/useNotification";
 import { useAuthStore } from "@/stores/auth";
@@ -5712,6 +5573,11 @@ import {
 } from "@mdi/js";
 
 const { showSuccess, showError } = useNotification();
+const { locale } = useI18n();
+const s = (text) => tSentence(text, { context: "metrics" });
+function getDisplayLocale() {
+    return i18n.global.locale.value === "zh" ? "zh-CN" : "en-US";
+}
 const authStore = useAuthStore();
 const uiPreferencesStore = useUiPreferencesStore();
 const { selectedAccount } = useGlobalAccountFilter();
@@ -5838,7 +5704,7 @@ const loadData = async () => {
         if (error.response?.status === 403) {
             hasAccess.value = false;
         } else {
-            showError("Error", "Failed to load behavioral analytics data");
+            showError(s("Error"), s("Failed to load behavioral analytics data"));
         }
     } finally {
         loading.value = false;
@@ -5967,15 +5833,15 @@ const analyzeHistoricalTrades = async () => {
         );
 
         showSuccess(
-            "Analysis Complete",
-            `Analyzed historical trades. Found ${response.data.patternsDetected || 0} revenge trading patterns.`,
+            s("Analysis Complete"),
+            s('Analyzed historical trades. Found {count} revenge trading patterns.').replace('{count}', String(response.data.patternsDetected || 0)),
         );
 
         // Reload data after analysis
         await loadData();
     } catch (error) {
         console.error("Error analyzing historical trades:", error);
-        showError("Error", "Failed to analyze historical trades");
+        showError(s("Error"), s("Failed to analyze historical trades"));
     } finally {
         loadingHistorical.value = false;
     }
@@ -5988,9 +5854,9 @@ const acknowledgeAlert = async (alertId) => {
         activeAlerts.value = activeAlerts.value.filter(
             (alert) => alert.id !== alertId,
         );
-        showSuccess("Success", "Alert acknowledged");
+        showSuccess(s("Success"), s("Alert acknowledged"));
     } catch (error) {
-        showError("Error", "Failed to acknowledge alert");
+        showError(s("Error"), s("Failed to acknowledge alert"));
     }
 };
 
@@ -6007,9 +5873,9 @@ const toggleSetting = (category, key) => {
 const updateSettings = async () => {
     try {
         await api.put("/behavioral-analytics/settings", settings.value);
-        showSuccess("Success", "Settings updated");
+        showSuccess(s("Success"), s("Settings updated"));
     } catch (error) {
-        showError("Error", "Failed to update settings");
+        showError(s("Error"), s("Failed to update settings"));
     }
 };
 
@@ -6021,11 +5887,11 @@ const onSensitivityChange = async () => {
         pagination.value.page = 1;
         await loadData();
         showSuccess(
-            "Updated",
-            "Detection sensitivity updated and data refreshed",
+            s("Updated"),
+            s("Detection sensitivity updated and data refreshed"),
         );
     } catch (error) {
-        showError("Error", "Failed to update sensitivity");
+        showError(s("Error"), s("Failed to update sensitivity"));
     }
 };
 
@@ -6058,8 +5924,8 @@ const reRunAnalysis = async () => {
         );
 
         showSuccess(
-            "Analysis Complete",
-            `Re-analyzed historical trades with new thresholds. Found ${response.data.data.revengeEventsCreated || 0} revenge trading events.`,
+            s("Analysis Complete"),
+            s('Re-analyzed historical trades with new thresholds. Found {count} revenge trading events.').replace('{count}', String(response.data.data.revengeEventsCreated || 0)),
         );
 
         // Reset pagination and reload data
@@ -6067,7 +5933,7 @@ const reRunAnalysis = async () => {
         await loadData();
     } catch (error) {
         console.error("Error re-running analysis:", error);
-        showError("Error", "Failed to re-run analysis");
+        showError(s("Error"), s("Failed to re-run analysis"));
     } finally {
         loadingHistorical.value = false;
     }
@@ -6075,7 +5941,7 @@ const reRunAnalysis = async () => {
 
 // Format date for display
 const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
+    return new Date(dateString).toLocaleDateString(getDisplayLocale(), {
         year: "numeric",
         month: "short",
         day: "numeric",
@@ -6091,7 +5957,7 @@ const formatTime = (dateString) => {
 
 // Calculate time between trades
 const getTimeBetweenTrades = (startTime, endTime) => {
-    if (!startTime || !endTime) return "Unknown";
+    if (!startTime || !endTime) return s("Unknown");
 
     const start = new Date(startTime);
     const end = new Date(endTime);
@@ -6147,7 +6013,7 @@ const viewLossAversionTrades = () => {
                 query: {
                     filter: "loss_aversion",
                     tradeIds: tradeIds.join(","),
-                    title: "Loss Aversion Trades",
+                    title: s("Loss Aversion Trades"),
                 },
             });
         }
@@ -6217,7 +6083,7 @@ const toggleOverconfidenceEventExpansion = async (eventId) => {
                 }
             } catch (error) {
                 console.error("Error loading trade details:", error);
-                showError("Error", "Failed to load trade details");
+                showError(s("Error"), s("Failed to load trade details"));
             }
         }
     }
@@ -6261,11 +6127,11 @@ const analyzeLossAversion = async () => {
             cacheLossAversionData(response.data.data);
 
             if (response.data.data.error) {
-                showError("Analysis Error", response.data.data.message);
+                showError(s("Analysis Error"), s(response.data.data.message));
             } else {
                 showSuccess(
-                    "Analysis Complete",
-                    "Loss aversion patterns analyzed successfully",
+                    s("Analysis Complete"),
+                    s("Loss aversion patterns analyzed successfully"),
                 );
 
                 // Auto-load top missed trades after successful analysis
@@ -6277,9 +6143,9 @@ const analyzeLossAversion = async () => {
 
         // Check if it's a 400 error with specific requirements message
         if (error.response?.status === 400 && error.response?.data?.message) {
-            showError("Requirements Not Met", error.response.data.message);
+            showError(s("Requirements Not Met"), s(error.response.data.message));
         } else {
-            showError("Error", "Failed to analyze loss aversion patterns");
+            showError(s("Error"), s("Failed to analyze loss aversion patterns"));
         }
     } finally {
         loadingLossAversion.value = false;
@@ -6343,8 +6209,8 @@ const analyzeOverconfidence = async () => {
 
                 if (analysisResponse.data.data.error) {
                     showError(
-                        "Analysis Error",
-                        analysisResponse.data.data.message,
+                        s("Analysis Error"),
+                        s(analysisResponse.data.data.message),
                     );
                 } else {
                     const eventsCount =
@@ -6353,9 +6219,10 @@ const analyzeOverconfidence = async () => {
                             ?.totalEvents ||
                         0;
                     showSuccess(
-                        "Analysis Complete",
-                        response.data.message ||
-                            `Found ${eventsCount} overconfidence events`,
+                        s("Analysis Complete"),
+                        analysisResponse.data.data.message
+                            ? s(analysisResponse.data.data.message)
+                            : s('Found {count} overconfidence events').replace('{count}', String(eventsCount)),
                     );
                 }
             }
@@ -6365,9 +6232,9 @@ const analyzeOverconfidence = async () => {
 
         // Check if it's a 400 error with specific requirements message
         if (error.response?.status === 400 && error.response?.data?.message) {
-            showError("Requirements Not Met", error.response.data.message);
+            showError(s("Requirements Not Met"), s(error.response.data.message));
         } else {
-            showError("Error", "Failed to analyze overconfidence patterns");
+            showError(s("Error"), s("Failed to analyze overconfidence patterns"));
         }
     } finally {
         loadingOverconfidence.value = false;
@@ -6439,23 +6306,24 @@ const loadTopMissedTrades = async (forceRefresh = false) => {
                 response.data.data.topMissedTrades.length > 0
             ) {
                 showSuccess(
-                    "Analysis Complete",
-                    `Found ${response.data.data.topMissedTrades.length} trades with significant missed opportunities`,
+                    s("Analysis Complete"),
+                    s('Found {count} trades with significant missed opportunities').replace('{count}', String(response.data.data.topMissedTrades.length)),
                 );
             } else {
                 showSuccess(
-                    "Analysis Complete",
-                    response.data.data.message ||
-                        "No significant missed opportunities found",
+                    s("Analysis Complete"),
+                    response.data.data.message
+                        ? s(response.data.data.message)
+                        : s("No significant missed opportunities found"),
                 );
             }
         }
     } catch (error) {
         console.error("Failed to load top missed trades:", error);
         if (error.response?.status === 403) {
-            showError("Pro Tier Required", error.response.data.message);
+            showError(s("Pro Tier Required"), s(error.response.data.message));
         } else {
-            showError("Error", "Failed to load top missed trades analysis");
+            showError(s("Error"), s("Failed to load top missed trades analysis"));
         }
     } finally {
         loadingTopMissedTrades.value = false;
@@ -6491,11 +6359,11 @@ const analyzePersonality = async () => {
             localStorage.setItem(cacheKey, JSON.stringify(cacheData));
 
             if (response.data.data.error) {
-                showError("Analysis Error", response.data.data.message);
+                showError(s("Analysis Error"), s(response.data.data.message));
             } else {
                 showSuccess(
-                    "Analysis Complete",
-                    "Trading personality analyzed successfully",
+                    s("Analysis Complete"),
+                    s("Trading personality analyzed successfully"),
                 );
             }
         }
@@ -6504,9 +6372,9 @@ const analyzePersonality = async () => {
 
         // Check if it's a 400 error with specific requirements message
         if (error.response?.status === 400 && error.response?.data?.message) {
-            showError("Requirements Not Met", error.response.data.message);
+            showError(s("Requirements Not Met"), s(error.response.data.message));
         } else {
-            showError("Error", "Failed to analyze trading personality");
+            showError(s("Error"), s("Failed to analyze trading personality"));
         }
     } finally {
         loadingPersonality.value = false;
@@ -6518,7 +6386,7 @@ const viewTradesByStrategy = (strategy) => {
     // Define strategy-specific filters based on trading patterns
     const strategyFilters = {
         scalper: {
-            name: "Scalper Trades",
+            name: s("Scalper Trades"),
             description: "Very short-term trades (< 15 minutes)",
             filters: {
                 maxHoldTime: 15, // minutes
@@ -6526,7 +6394,7 @@ const viewTradesByStrategy = (strategy) => {
             },
         },
         momentum: {
-            name: "Momentum Trades",
+            name: s("Momentum Trades"),
             description: "Trend-following trades (15 minutes - 4 hours)",
             filters: {
                 minHoldTime: 15,
@@ -6535,7 +6403,7 @@ const viewTradesByStrategy = (strategy) => {
             },
         },
         mean_reversion: {
-            name: "Mean Reversion Trades",
+            name: s("Mean Reversion Trades"),
             description: "Counter-trend trades expecting price reversal",
             filters: {
                 minHoldTime: 30,
@@ -6544,7 +6412,7 @@ const viewTradesByStrategy = (strategy) => {
             },
         },
         swing: {
-            name: "Swing Trades",
+            name: s("Swing Trades"),
             description: "Multi-day position trades (> 1 day)",
             filters: {
                 minHoldTime: 1440, // 1 day in minutes
@@ -6589,13 +6457,13 @@ const viewTradesByStrategy = (strategy) => {
 const formatMinutes = (minutes) => {
     // Handle edge cases
     if (minutes === null || minutes === undefined || isNaN(minutes)) {
-        return "N/A";
+        return s("N/A");
     }
 
     const mins = Math.round(Number(minutes));
 
     if (mins < 1) {
-        return "< 1m";
+        return s("< 1m");
     } else if (mins < 60) {
         return `${mins}m`;
     } else if (mins < 1440) {

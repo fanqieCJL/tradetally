@@ -2,21 +2,21 @@
   <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
     <!-- Filters -->
     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-      <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Select a Trade to Analyze</h2>
+      <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ s('Select a Trade to Analyze') }}</h2>
       <div class="flex flex-wrap gap-4">
         <!-- Symbol Search -->
         <div class="flex-1 min-w-[200px]">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Symbol</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('Symbol') }}</label>
           <SymbolAutocomplete
             v-model="localFilters.symbol"
-            placeholder="Search by symbol..."
+            :placeholder="s('Search by symbol...')"
             @select="debouncedFilterChange"
           />
         </div>
 
         <!-- Start Date -->
         <div class="min-w-[150px]">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Date</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('Start Date') }}</label>
           <input
             v-model="localFilters.startDate"
             type="date"
@@ -27,7 +27,7 @@
 
         <!-- End Date -->
         <div class="min-w-[150px]">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Date</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('End Date') }}</label>
           <input
             v-model="localFilters.endDate"
             type="date"
@@ -42,7 +42,7 @@
             @click="clearFilters"
             class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
           >
-            Clear
+            {{ s('Clear') }}
           </button>
         </div>
       </div>
@@ -51,7 +51,7 @@
     <!-- Loading State -->
     <div v-if="loading && trades.length === 0" class="p-8 text-center">
       <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto mb-4"></div>
-      <p class="text-gray-600 dark:text-gray-400">Loading trades...</p>
+      <p class="text-gray-600 dark:text-gray-400">{{ s('Loading trades...') }}</p>
     </div>
 
     <!-- Empty State -->
@@ -59,8 +59,8 @@
       <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
       </svg>
-      <p class="mt-2 text-gray-600 dark:text-gray-400">No closed trades found</p>
-      <p class="text-sm text-gray-500 dark:text-gray-500">Try adjusting your filters</p>
+      <p class="mt-2 text-gray-600 dark:text-gray-400">{{ s('No closed trades found') }}</p>
+      <p class="text-sm text-gray-500 dark:text-gray-500">{{ s('Try adjusting your filters') }}</p>
     </div>
 
     <!-- Trade List -->
@@ -79,14 +79,14 @@
           <div
             v-if="trade.trade_number"
             class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded-full text-sm font-medium text-gray-600 dark:text-gray-300"
-            :title="`Trade #${trade.trade_number} on R-Performance chart`"
+            :title="s('Trade #{n} on R-Performance chart').replace('{n}', String(trade.trade_number))"
           >
             {{ trade.trade_number }}
           </div>
           <div
             v-else
             class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-gray-50 dark:bg-gray-800 rounded-full text-sm text-gray-400 dark:text-gray-500"
-            title="No trade number - stop loss not set"
+            :title="s('No trade number - stop loss not set')"
           >
             -
           </div>
@@ -117,7 +117,7 @@
                     : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
                 ]"
               >
-                {{ trade.side }}
+                {{ s(trade.side) }}
               </span>
             </div>
             <div class="text-sm text-gray-500 dark:text-gray-400">
@@ -153,22 +153,22 @@
             <span
               v-if="!trade.can_analyze"
               class="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 rounded"
-              title="Stop loss required for analysis"
+              :title="s('Stop loss required for analysis')"
             >
-              Needs SL
+              {{ s('Needs SL') }}
             </span>
             <span
               v-else-if="trade.needs_take_profit"
               class="text-xs px-2 py-1 bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400 rounded"
-              title="Take profit not set"
+              :title="s('Take profit not set')"
             >
-              No TP
+              {{ s('No TP') }}
             </span>
             <span
               v-else
               class="text-xs px-2 py-1 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 rounded"
             >
-              Ready
+              {{ s('Ready') }}
             </span>
 
             <!-- Selection Arrow -->
@@ -195,14 +195,16 @@
         :disabled="loading"
         class="w-full py-2 text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 disabled:opacity-50"
       >
-        {{ loading ? 'Loading...' : `Load more (${pagination.total - trades.length} remaining)` }}
+        {{ loadMoreLabel }}
       </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import { format } from 'date-fns'
 import { useUserTimezone } from '@/composables/useUserTimezone'
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'
@@ -210,6 +212,15 @@ import SymbolAutocomplete from '@/components/common/SymbolAutocomplete.vue'
 
 const { formatDateTime: formatDateTimeTz } = useUserTimezone()
 const { formatCurrency } = useCurrencyFormatter()
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
+
+const loadMoreLabel = computed(() => {
+  if (props.loading) return s('Loading...')
+  const remaining = props.pagination.total - props.trades.length
+  return s('Load more ({count} remaining)').replace('{count}', String(remaining))
+})
 
 const props = defineProps({
   trades: {
@@ -315,11 +326,11 @@ function formatPercent(value) {
 
 function formatInstrumentType(type) {
   const types = {
-    'option': 'Option',
-    'future': 'Future',
-    'forex': 'Forex',
-    'crypto': 'Crypto',
-    'stock': 'Stock'
+    option: s('Option'),
+    future: s('Future'),
+    forex: s('Forex'),
+    crypto: s('Crypto'),
+    stock: s('Stock'),
   }
   return types[type] || type
 }
