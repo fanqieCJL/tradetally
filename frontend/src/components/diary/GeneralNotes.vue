@@ -196,23 +196,24 @@ const saveNote = async () => {
         closeModal();
     } catch (error) {
         console.error("Error saving note:", error);
-        alert("Failed to save note");
+        alert(s('Failed to save note'));
     }
 };
 
 const deleteNote = (noteId) => {
     showDangerConfirmation(
-        "Delete Note",
-        "Are you sure you want to delete this note? This action cannot be undone.",
+        s('Delete Note'),
+        s('Are you sure you want to delete this note? This action cannot be undone.'),
         async () => {
             try {
                 await api.delete(`/diary/general-notes/${noteId}`);
                 await fetchNotes();
             } catch (error) {
                 console.error("Error deleting note:", error);
-                alert("Failed to delete note");
+                alert(s('Failed to delete note'));
             }
         },
+        { confirmText: s('Delete'), cancelText: s('Cancel') },
     );
 };
 

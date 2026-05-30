@@ -47,10 +47,8 @@
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {{ s('Start Date') }}
             </label>
-            <input
+            <AppDateInput
               v-model="startDate"
-              type="date"
-              class="input"
               :max="endDate"
             />
           </div>
@@ -58,10 +56,8 @@
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {{ s('End Date') }}
             </label>
-            <input
+            <AppDateInput
               v-model="endDate"
-              type="date"
-              class="input"
               :min="startDate"
               :max="today"
             />
@@ -170,6 +166,8 @@
 import { ref, computed } from 'vue'
 import { format, subDays, subWeeks, subMonths, startOfWeek, startOfMonth } from 'date-fns'
 import { tSentence } from '@/i18n'
+import { formatAppDate } from '@/utils/date'
+import AppDateInput from '@/components/common/AppDateInput.vue'
 import { useI18n } from 'vue-i18n'
 import { useDiaryStore } from '@/stores/diary'
 import api from '@/services/api'
@@ -211,12 +209,17 @@ const datePresets = computed(() => {
 const analysisPeriodSummary = computed(() => {
   if (!startDate.value || !endDate.value) return ''
   void locale.value
-  return s(`Period: ${formatDate(startDate.value)} - ${formatDate(endDate.value)} (${entriesAnalyzed.value} entries analyzed)`)
+  return s('Period: {start} - {end} ({count} entries analyzed)')
+    .replace('{start}', formatDate(startDate.value))
+    .replace('{end}', formatDate(endDate.value))
+    .replace('{count}', String(entriesAnalyzed.value))
 })
 
 const analyzingMessage = computed(() => {
   void locale.value
-  return s(`AI is reviewing your entries from ${startDate.value} to ${endDate.value}...`)
+  return s('AI is reviewing your entries from {start} to {end}...')
+    .replace('{start}', startDate.value)
+    .replace('{end}', endDate.value)
 })
 
 // Methods
@@ -268,7 +271,7 @@ const startNewAnalysis = () => {
 }
 
 const formatDate = (dateString) => {
-  return format(new Date(dateString), 'MMM d, yyyy')
+  return formatAppDate(dateString)
 }
 
 const shareAnalysis = () => {

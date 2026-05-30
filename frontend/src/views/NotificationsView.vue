@@ -5,7 +5,7 @@
       <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <h1 class="heading-page">
-            Notifications
+            {{ s('Notifications') }}
           </h1>
           <div class="flex items-center space-x-4">
             <button
@@ -14,7 +14,7 @@
               :disabled="deleting"
               class="btn-danger text-sm"
             >
-              {{ deleting ? 'Deleting...' : `Delete ${selectedNotifications.length}` }}
+              {{ deleting ? s('Deleting...') : s(`Delete ${selectedNotifications.length}`) }}
             </button>
             <button
               v-if="notifications.length > 0 && notifications.some(n => !n.is_read)"
@@ -22,14 +22,14 @@
               :disabled="markingRead"
               class="btn-secondary text-sm"
             >
-              {{ markingRead ? 'Marking...' : 'Mark all read' }}
+              {{ markingRead ? s('Marking...') : s('Mark all read') }}
             </button>
             <button
               @click="() => fetchNotifications(currentPage)"
               :disabled="loading"
               class="btn-primary text-sm"
             >
-              {{ loading ? 'Refreshing...' : 'Refresh' }}
+              {{ loading ? s('Refreshing...') : s('Refresh') }}
             </button>
           </div>
         </div>
@@ -38,17 +38,17 @@
       <!-- Loading State -->
       <div v-if="loading && notifications.length === 0" class="p-8 text-center">
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto"></div>
-        <p class="text-gray-500 dark:text-gray-400 mt-4">Loading notifications...</p>
+        <p class="text-gray-500 dark:text-gray-400 mt-4">{{ s('Loading notifications...') }}</p>
       </div>
 
       <!-- Empty State -->
       <div v-else-if="notifications.length === 0" class="p-12 text-center">
         <BellSlashIcon class="h-16 w-16 text-gray-400 mx-auto mb-4" />
         <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
-          No notifications yet
+          {{ s('No notifications yet') }}
         </h3>
         <p class="text-gray-500 dark:text-gray-400">
-          You'll see notifications here for achievements, trade comments, price alerts, and other account activity.
+          {{ s("You'll see notifications here for achievements, trade comments, price alerts, and other account activity.") }}
         </p>
       </div>
 
@@ -104,7 +104,7 @@
               class="flex-1 min-w-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded"
               role="button"
               tabindex="0"
-              :aria-label="`Open notification: ${notification.symbol || 'Notification'}`"
+              :aria-label="s(`Open notification: ${notification.symbol || 'Notification'}`)"
               @click="handleNotificationClick(notification)"
               @keydown.enter.prevent="handleNotificationClick(notification)"
               @keydown.space.prevent="handleNotificationClick(notification)"
@@ -113,23 +113,23 @@
                 <div class="flex-1">
                   <div class="flex items-center space-x-2 mb-1">
                     <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
-                      {{ notification.symbol || 'Notification' }}
+                      {{ translateNotificationText(notification.symbol || 'Notification') }}
                     </h3>
                     <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium" :class="getTypeBadgeClass(notification.type)">
                       {{ getTypeLabel(notification.type) }}
                     </span>
                   </div>
                   <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">
-                    {{ notification.message }}
+                    {{ translateNotificationText(notification.message) }}
                   </p>
                   
                   <!-- Additional details based on type -->
                   <div v-if="notification.type === 'price_alert'" class="text-xs text-gray-500 dark:text-gray-400">
                     <div v-if="notification.trigger_price" class="mb-1">
-                      <span class="font-medium">Triggered at:</span> ${{ parseFloat(notification.trigger_price).toFixed(2) }}
+                      <span class="font-medium">{{ s('Triggered at:') }}</span> ${{ parseFloat(notification.trigger_price).toFixed(2) }}
                     </div>
                     <div v-if="notification.target_price" class="mb-1">
-                      <span class="font-medium">Target price:</span> ${{ parseFloat(notification.target_price).toFixed(2) }}
+                      <span class="font-medium">{{ s('Target price:') }}</span> ${{ parseFloat(notification.target_price).toFixed(2) }}
                     </div>
                   </div>
                   
@@ -157,7 +157,7 @@
       <div v-if="pagination && pagination.totalPages > 1" class="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <div class="text-sm text-gray-700 dark:text-gray-300">
-            Showing {{ Math.min((pagination.page - 1) * pagination.limit + 1, pagination.total) }} to {{ Math.min(pagination.page * pagination.limit, pagination.total) }} of {{ pagination.total }} notifications
+            {{ paginationSummary }}
           </div>
           <div class="flex space-x-2">
             <button
@@ -165,14 +165,14 @@
               :disabled="pagination.page <= 1 || loading"
               class="btn-secondary text-sm"
             >
-              Previous
+              {{ s('Previous') }}
             </button>
             <button
               @click="loadPage(pagination.page + 1)"
               :disabled="pagination.page >= pagination.totalPages || loading"
               class="btn-secondary text-sm"
             >
-              Next
+              {{ s('Next') }}
             </button>
           </div>
         </div>
@@ -182,9 +182,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import api from '@/services/api'
+import { tSentence } from '@/i18n'
 import { 
   BellIcon, 
   BellSlashIcon, 
@@ -192,12 +194,13 @@ import {
   TrophyIcon,
   ArrowTrendingUpIcon
 } from '@heroicons/vue/24/outline'
-import { useAuthStore } from '@/stores/auth'
 import { useUserTimezone } from '@/composables/useUserTimezone'
 
 const router = useRouter()
-const authStore = useAuthStore()
+const { locale } = useI18n()
 const { formatDateTime: formatDateTimeTz } = useUserTimezone()
+const s = (text) => tSentence(text, { context: 'notifications' })
+void locale.value
 
 // Component state
 const notifications = ref([])
@@ -207,6 +210,16 @@ const markingRead = ref(false)
 const deleting = ref(false)
 const currentPage = ref(1)
 const selectedNotifications = ref([])
+
+const paginationSummary = computed(() => {
+  if (!pagination.value) return ''
+  const { page, limit, total } = pagination.value
+  const start = Math.min((page - 1) * limit + 1, total)
+  const end = Math.min(page * limit, total)
+  return s(`Showing ${start} to ${end} of ${total} notifications`)
+})
+
+const translateNotificationText = (text) => s(text || '')
 
 // Methods
 const fetchNotifications = async (page = 1) => {
@@ -219,7 +232,7 @@ const fetchNotifications = async (page = 1) => {
       notifications.value = data.data || []
       pagination.value = data.pagination
       currentPage.value = page
-      selectedNotifications.value = [] // Clear selections on new fetch
+      selectedNotifications.value = []
     } else {
       console.error('Failed to fetch notifications:', response.statusText)
     }
@@ -305,24 +318,24 @@ const formatTime = (timestamp) => {
   const diffHours = Math.floor(diffMs / 3600000)
   const diffDays = Math.floor(diffMs / 86400000)
 
-  if (diffMins < 1) return 'Just now'
-  if (diffMins < 60) return `${diffMins} minute${diffMins === 1 ? '' : 's'} ago`
-  if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? '' : 's'} ago`
-  if (diffDays < 7) return `${diffDays} day${diffDays === 1 ? '' : 's'} ago`
+  if (diffMins < 1) return s('Just now')
+  if (diffMins < 60) return s(`${diffMins} minute${diffMins === 1 ? '' : 's'} ago`)
+  if (diffHours < 24) return s(`${diffHours} hour${diffHours === 1 ? '' : 's'} ago`)
+  if (diffDays < 7) return s(`${diffDays} day${diffDays === 1 ? '' : 's'} ago`)
   return formatDateTimeTz(timestamp)
 }
 
 const getTypeLabel = (type) => {
   switch (type) {
-    case 'price_alert': return 'Price Alert'
-    case 'trade_comment': return 'Comment'
-    case 'achievement_earned': return 'Achievement'
-    case 'level_up': return 'Level Up'
-    case 'challenge_joined': return 'Challenge'
-    case 'challenge_completed': return 'Challenge'
-    case 'leaderboard_ranking': return 'Leaderboard'
-    case 'behavioral_alert': return 'Behavioral'
-    default: return 'Notification'
+    case 'price_alert': return s('Price Alert')
+    case 'trade_comment': return s('Comment')
+    case 'achievement_earned': return s('Achievement')
+    case 'level_up': return s('Level Up')
+    case 'challenge_joined': return s('Challenge')
+    case 'challenge_completed': return s('Challenge')
+    case 'leaderboard_ranking': return s('Leaderboard')
+    case 'behavioral_alert': return s('Behavioral')
+    default: return s('Notification')
   }
 }
 

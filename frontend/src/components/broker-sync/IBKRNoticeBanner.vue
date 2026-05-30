@@ -15,24 +15,22 @@
         <ExclamationTriangleIcon class="h-5 w-5 text-amber-500 dark:text-amber-400 flex-shrink-0 mt-0.5" />
         <div class="flex-1 min-w-0">
           <p class="text-sm font-semibold text-amber-800 dark:text-amber-300">
-            Action Required: IBKR Flex Token &amp; Query Regeneration
+            {{ s('Action Required: IBKR Flex Token & Query Regeneration') }}
           </p>
           <p class="mt-1 text-sm text-amber-700 dark:text-amber-400">
-            Due to changes on Interactive Brokers' side, your existing Flex Token and Flex Query may no longer work.
-            If your IBKR broker sync is failing, please log in to the
+            {{ s("Due to changes on Interactive Brokers' side, your existing Flex Token and Flex Query may no longer work. If your IBKR broker sync is failing, please log in to the") }}
             <a
               href="https://www.interactivebrokers.com/en/trading/flex-queries.php"
               target="_blank"
               rel="noopener noreferrer"
               class="underline hover:no-underline font-medium"
-            >IBKR Client Portal</a>,
-            regenerate your Flex Token and Flex Query, then update your connection settings with the new credentials.
+            >{{ s('IBKR Client Portal') }}</a>{{ s(', regenerate your Flex Token and Flex Query, then update your connection settings with the new credentials.') }}
           </p>
         </div>
         <button
           @click="dismiss"
           class="text-amber-500 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-200 flex-shrink-0"
-          aria-label="Dismiss notice"
+          :aria-label="s('Dismiss notice')"
         >
           <XMarkIcon class="h-5 w-5" />
         </button>
@@ -43,9 +41,15 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import { ExclamationTriangleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 
 const DISMISS_KEY = 'ibkrNoticeBannerDismissed_v1'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
 
 const dismissed = ref(false)
 

@@ -1,4 +1,81 @@
 import { format as formatDateFns } from 'date-fns'
+import { i18n } from '@/i18n'
+
+/**
+ * Whether the active UI locale is Chinese.
+ */
+export function isChineseLocale() {
+  return i18n.global.locale.value === 'zh'
+}
+
+/**
+ * BCP-47 locale tag for date/number formatting.
+ */
+export function getAppDateLocaleTag() {
+  return isChineseLocale() ? 'zh-CN' : 'en-US'
+}
+
+/**
+ * Placeholder hint for date inputs.
+ * zh → 年-月-日, en → yyyy-mm-dd
+ */
+export function getAppDateInputPlaceholder() {
+  return isChineseLocale() ? '年-月-日' : 'yyyy-mm-dd'
+}
+
+/**
+ * zh → yyyy年MM月dd日, en → yyyy-MM-dd
+ */
+export function formatAppDate(date) {
+  const d = parseTradeDate(date)
+  if (!d) return ''
+
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+
+  if (isChineseLocale()) {
+    return `${year}年${month}月${day}日`
+  }
+  return `${year}-${month}-${day}`
+}
+
+/**
+ * Extract YYYY-MM-DD date parts for a Date in a specific timezone.
+ */
+export function getDatePartsInTimezone(date, timezone = 'UTC') {
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: timezone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  })
+
+  const parts = formatter.formatToParts(date)
+  const values = {}
+  for (const part of parts) {
+    if (part.type !== 'literal') {
+      values[part.type] = part.value
+    }
+  }
+
+  return {
+    year: values.year,
+    month: values.month,
+    day: values.day
+  }
+}
+
+/**
+ * Format date parts according to UI locale.
+ */
+export function formatDateParts(parts, uiLocale = getAppDateLocaleTag()) {
+  if (!parts?.year || !parts?.month || !parts?.day) return ''
+  if (uiLocale === 'zh-CN') {
+    return `${parts.year}年${parts.month}月${parts.day}日`
+  }
+  return `${parts.year}-${parts.month}-${parts.day}`
+}
 
 /**
  * Format a Date object as YYYY-MM-DD in local timezone.

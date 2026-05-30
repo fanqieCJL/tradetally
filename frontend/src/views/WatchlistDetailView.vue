@@ -838,6 +838,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useNotification } from "@/composables/useNotification";
 import { useInvestmentsStore } from "@/stores/investments";
 import api from "@/services/api";
+import { formatAppDate } from "@/utils/date";
 import SymbolAutocomplete from "@/components/common/SymbolAutocomplete.vue";
 import StockLogo from "@/components/common/StockLogo.vue";
 
@@ -1149,11 +1150,7 @@ export default {
         };
 
         const formatDate = (dateString) => {
-            return new Date(dateString).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-            });
+            return formatAppDate(dateString);
         };
 
         const formatNewsDate = (timestamp) => {
@@ -1170,14 +1167,7 @@ export default {
             } else if (diffDays < 7) {
                 return s("{days}d ago").replace("{days}", String(diffDays));
             } else {
-                return date.toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year:
-                        date.getFullYear() !== now.getFullYear()
-                            ? "numeric"
-                            : undefined,
-                });
+                return formatAppDate(date);
             }
         };
 
@@ -1204,14 +1194,7 @@ export default {
             } else if (diffDays < 7) {
                 return s("In {days} days").replace("{days}", String(diffDays));
             } else {
-                return date.toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year:
-                        date.getFullYear() !== now.getFullYear()
-                            ? "numeric"
-                            : undefined,
-                });
+                return formatAppDate(dateString);
             }
         };
 

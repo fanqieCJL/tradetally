@@ -442,6 +442,9 @@ import api from "@/services/api";
 import { useNotification } from "@/composables/useNotification";
 import { useAuthStore } from "@/stores/auth";
 import { tSentence } from "@/i18n";
+import { formatAppDate } from "@/utils/date";
+import { formatDateTimeInTimezone } from "@/utils/timezone";
+import { useUserTimezone } from "@/composables/useUserTimezone";
 import MdiIcon from "@/components/MdiIcon.vue";
 import { mdiCheckCircle, mdiCloseCircle } from "@mdi/js";
 
@@ -451,6 +454,7 @@ void locale;
 
 const { showError, showSuccess } = useNotification();
 const authStore = useAuthStore();
+const { userTimezone, use12Hour } = useUserTimezone();
 
 function labelTier(tier) {
   const key = String(tier || "free").toLowerCase();
@@ -660,27 +664,15 @@ function formatNumber(value) {
 
 function formatDate(dateString) {
     if (!dateString) return s("N/A");
-    const date = new Date(dateString);
-    if (Number.isNaN(date.getTime())) return s("N/A");
-
-    return date.toLocaleDateString(localeTag(), {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-    });
+    const formatted = formatAppDate(dateString);
+    return formatted || s("N/A");
 }
 
 function formatDateTime(dateString) {
     if (!dateString) return s("Never");
-    const date = new Date(dateString);
-    if (Number.isNaN(date.getTime())) return s("Never");
-
-    return date.toLocaleString(localeTag(), {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
+    return formatDateTimeInTimezone(dateString, userTimezone.value, {
+        uiLocale: localeTag(),
+        hour12: use12Hour.value,
     });
 }
 

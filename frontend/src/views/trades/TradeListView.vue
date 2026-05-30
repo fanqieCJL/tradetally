@@ -975,6 +975,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { useTradesStore } from '@/stores/trades'
 import { useUiPreferencesStore } from '@/stores/uiPreferences'
 import { useUserTimezone } from '@/composables/useUserTimezone'
+import { getAppDateLocaleTag } from '@/utils/date'
+import { formatDateTimeInTimezone } from '@/utils/timezone'
 import { DocumentTextIcon, ChatBubbleLeftIcon } from '@heroicons/vue/24/outline'
 import TradeFilters from '@/components/trades/TradeFilters.vue'
 import TradeCommentsDialog from '@/components/trades/TradeCommentsDialog.vue'
@@ -1223,7 +1225,10 @@ function formatInUserTimezone(date, options) {
 function formatDate(date) {
   if (!date) return 'N/A'
   try {
-    return formatInUserTimezone(date, { year: 'numeric', month: 'short', day: '2-digit' }) ?? 'Invalid Date'
+    return formatDateTimeInTimezone(date, userTimezone.value, {
+      includeTime: false,
+      uiLocale: getAppDateLocaleTag()
+    })
   } catch (error) {
     console.error('Date formatting error:', error, 'for date:', date)
     return 'Invalid Date'

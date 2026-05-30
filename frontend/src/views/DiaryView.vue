@@ -130,11 +130,10 @@
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             {{ s('Start Date') }}
           </label>
-          <input
-            type="date"
+          <AppDateInput
             v-model="filters.startDate"
+            input-class="input text-sm"
             @change="applyFilters"
-            class="input text-sm"
           />
         </div>
 
@@ -142,11 +141,10 @@
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             {{ s('End Date') }}
           </label>
-          <input
-            type="date"
+          <AppDateInput
             v-model="filters.endDate"
+            input-class="input text-sm"
             @change="applyFilters"
-            class="input text-sm"
           />
         </div>
 
@@ -307,7 +305,7 @@
                 v-if="entry.watchlist.length > 5"
                 class="text-xs text-gray-500 dark:text-gray-400 px-2"
               >
-                {{ s(`+${entry.watchlist.length - 5} more`) }}
+                {{ s('+{count} more').replace('{count}', String(entry.watchlist.length - 5)) }}
               </span>
             </div>
           </div>
@@ -329,7 +327,7 @@
               v-if="entry.tags.length > 3"
               class="text-xs text-gray-500 dark:text-gray-400"
             >
-              {{ s(`+${entry.tags.length - 3} more tags`) }}
+              {{ s('+{count} more tags').replace('{count}', String(entry.tags.length - 3)) }}
             </span>
           </div>
 
@@ -456,7 +454,7 @@
                 class="text-xs text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-300"
                 @click.stop="showDayEntries(day.date)"
               >
-                {{ s(`+${day.entries.length - 2} more entries`) }}
+                {{ s('+{count} more entries').replace('{count}', String(day.entries.length - 2)) }}
               </div>
             </div>
           </div>
@@ -503,7 +501,7 @@
         </button>
         
         <span class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
-          {{ s(`Page ${pagination.page} of ${pagination.pages}`) }}
+          {{ s('Page {page} of {pages}').replace('{page}', String(pagination.page)).replace('{pages}', String(pagination.pages)) }}
         </span>
         
         <button
@@ -583,12 +581,15 @@ import { useAuthStore } from '@/stores/auth'
 import { useDiaryStore } from '@/stores/diary'
 import { useUiPreferencesStore } from '@/stores/uiPreferences'
 import { format, parseISO, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday, addMonths, subMonths, startOfWeek, endOfWeek } from 'date-fns'
+import { zhCN, enUS } from 'date-fns/locale'
+import { formatAppDate, isChineseLocale } from '@/utils/date'
 import { parseMarkdown, truncateHtml as truncateHtmlUtil } from '@/utils/markdown'
 import DiaryAnalysis from '@/components/diary/DiaryAnalysis.vue'
 import GeneralNotes from '@/components/diary/GeneralNotes.vue'
 import TemplateManager from '@/components/diary/TemplateManager.vue'
 import LinkedTradesList from '@/components/diary/LinkedTradesList.vue'
 import WatchlistSymbol from '@/components/diary/WatchlistSymbol.vue'
+import AppDateInput from '@/components/common/AppDateInput.vue'
 import OnboardingCard from '@/components/onboarding/OnboardingCard.vue'
 import {
   PlusIcon,
@@ -707,17 +708,16 @@ const calendarDays = computed(() => {
 
 // Methods
 const formatDate = (dateString) => {
-  // Parse as local date to avoid timezone shifts
-  const [year, month, day] = dateString.split('T')[0].split('-')
-  const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
-  const dateLocale = i18n.global.locale.value === 'zh' ? 'zh-CN' : 'en-US'
-  return date.toLocaleDateString(dateLocale, { year: 'numeric', month: 'short', day: 'numeric' })
+  void locale.value
+  return formatAppDate(dateString)
 }
 
 const formatCalendarMonth = computed(() => {
   void locale.value
-  const dateLocale = i18n.global.locale.value === 'zh' ? 'zh-CN' : 'en-US'
-  return calendarDate.value.toLocaleDateString(dateLocale, { year: 'numeric', month: 'long' })
+  if (isChineseLocale()) {
+    return format(calendarDate.value, 'yyyy年MM月', { locale: zhCN })
+  }
+  return format(calendarDate.value, 'MMMM yyyy', { locale: enUS })
 })
 
 const splitContent = (content) => {

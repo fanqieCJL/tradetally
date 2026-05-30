@@ -3,9 +3,9 @@
     <div class="card-body">
       <div class="flex items-center justify-between mb-6">
         <div>
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white">Notification Preferences</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('Notification Preferences') }}</h3>
           <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            Choose what types of notifications you want to receive
+            {{ s('Choose what types of notifications you want to receive') }}
           </p>
         </div>
         <MdiIcon :icon="bellIcon" :size="24" class="text-gray-400" />
@@ -24,7 +24,7 @@
           @click="fetchPreferences"
           class="btn-primary"
         >
-          Try Again
+          {{ s('Try Again') }}
         </button>
       </div>
 
@@ -34,16 +34,16 @@
         <div>
           <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-4 flex items-center">
             <MdiIcon :icon="chartIcon" :size="16" class="mr-2 text-blue-500" />
-            Trading Notifications
+            {{ s('Trading Notifications') }}
           </h4>
           <div class="space-y-4">
             <div class="flex items-center justify-between">
               <div class="flex-1">
                 <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  News on Open Positions
+                  {{ s('News on Open Positions') }}
                 </label>
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Get notified when news breaks for stocks you currently have open positions in
+                  {{ s('Get notified when news breaks for stocks you currently have open positions in') }}
                 </p>
               </div>
               <div class="ml-4">
@@ -63,10 +63,10 @@
             <div class="flex items-center justify-between">
               <div class="flex-1">
                 <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Earnings Announcements
+                  {{ s('Earnings Announcements') }}
                 </label>
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Receive notifications about upcoming earnings announcements for your watchlist
+                  {{ s('Receive notifications about upcoming earnings announcements for your watchlist') }}
                 </p>
               </div>
               <div class="ml-4">
@@ -86,10 +86,10 @@
             <div class="flex items-center justify-between">
               <div class="flex-1">
                 <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Trade Reminders
+                  {{ s('Trade Reminders') }}
                 </label>
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Receive behavioral analytics alerts for patterns like revenge trading and overconfidence warnings
+                  {{ s('Receive behavioral analytics alerts for patterns like revenge trading and overconfidence warnings') }}
                 </p>
               </div>
               <div class="ml-4">
@@ -112,16 +112,16 @@
         <div>
           <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-4 flex items-center">
             <MdiIcon :icon="alertBellIcon" :size="16" class="mr-2 text-orange-500" />
-            Alert Notifications
+            {{ s('Alert Notifications') }}
           </h4>
           <div class="space-y-4">
             <div class="flex items-center justify-between">
               <div class="flex-1">
                 <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Price Alerts
+                  {{ s('Price Alerts') }}
                 </label>
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Receive notifications when your price alerts and watchlist triggers are activated
+                  {{ s('Receive notifications when your price alerts and watchlist triggers are activated') }}
                 </p>
               </div>
               <div class="ml-4">
@@ -144,16 +144,16 @@
         <div>
           <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-4 flex items-center">
             <MdiIcon :icon="emailIcon" :size="16" class="mr-2 text-primary-500" />
-            Email Preferences
+            {{ s('Email Preferences') }}
           </h4>
           <div class="space-y-4">
             <div class="flex items-center justify-between">
               <div class="flex-1">
                 <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Marketing Emails
+                  {{ s('Marketing Emails') }}
                 </label>
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Receive weekly trading summaries, product tips, trial reminders, review requests, and re-engagement emails
+                  {{ s('Receive weekly trading summaries, product tips, trial reminders, review requests, and re-engagement emails') }}
                 </p>
               </div>
               <div class="ml-4">
@@ -198,10 +198,9 @@
           <div class="flex items-start">
             <MdiIcon :icon="infoIcon" :size="16" class="mr-2 text-primary-500 mt-0.5" />
             <div class="text-sm text-primary-800 dark:text-primary-300">
-              <p class="font-medium mb-1">About Notifications</p>
+              <p class="font-medium mb-1">{{ s('About Notifications') }}</p>
               <p class="text-xs">
-                Notification preferences control in-app and push notifications. Email preferences control marketing messages.
-                Critical security and account emails may still be sent regardless of these settings.
+                {{ s('Notification preferences control in-app and push notifications. Email preferences control marketing messages. Critical security and account emails may still be sent regardless of these settings.') }}
               </p>
             </div>
           </div>
@@ -213,9 +212,15 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import MdiIcon from '@/components/MdiIcon.vue'
 import { mdiBell, mdiAlert, mdiChartLine, mdiBellAlert, mdiCheck, mdiInformation, mdiEmailOutline } from '@mdi/js'
 import api from '@/services/api'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
 
 // Icons
 const bellIcon = mdiBell
@@ -250,7 +255,7 @@ async function fetchPreferences() {
     preferences.value = response.data
   } catch (err) {
     console.error('Failed to fetch notification preferences:', err)
-    error.value = err.response?.data?.error || 'Failed to load notification preferences'
+    error.value = s(err.response?.data?.error || 'Failed to load notification preferences')
   } finally {
     loading.value = false
   }
@@ -279,7 +284,7 @@ async function updatePreference(preferenceKey) {
 
     updateStatus.value = {
       type: 'success',
-      message: 'Notification preference updated successfully'
+      message: s('Notification preference updated successfully')
     }
 
     clearStatus()
@@ -291,7 +296,7 @@ async function updatePreference(preferenceKey) {
     
     updateStatus.value = {
       type: 'error',
-      message: err.response?.data?.error || 'Failed to update notification preference'
+      message: s(err.response?.data?.error || 'Failed to update notification preference')
     }
 
     clearStatus()

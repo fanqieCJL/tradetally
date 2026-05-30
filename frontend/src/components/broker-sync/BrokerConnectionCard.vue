@@ -3,7 +3,6 @@
     <div class="card-body">
       <div class="flex items-start justify-between">
         <div class="flex items-center space-x-4">
-          <!-- Broker Logo -->
           <div
             class="flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center"
             :class="brokerStyles.bgClass"
@@ -25,16 +24,15 @@
                 class="px-2 py-0.5 text-xs rounded-full"
                 :class="statusClass"
               >
-                {{ connection.connectionStatus }}
+                {{ translateStatus(connection.connectionStatus) }}
               </span>
               <span v-if="connection.autoSyncEnabled" class="text-xs text-gray-500 dark:text-gray-400">
-                Auto-sync {{ connection.syncFrequency }}
+                {{ s('Auto-sync {frequency}').replace('{frequency}', translateFrequency(connection.syncFrequency)) }}
               </span>
             </div>
           </div>
         </div>
 
-        <!-- Actions Menu -->
         <div class="relative" ref="menuRef">
           <button
             @click="showMenu = !showMenu"
@@ -53,42 +51,41 @@
               @click="emit('settings', connection); showMenu = false"
               class="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 first:rounded-t-lg"
             >
-              Settings
+              {{ s('Settings') }}
             </button>
             <button
               @click="emit('test', connection); showMenu = false"
               class="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              Test Connection
+              {{ s('Test Connection') }}
             </button>
             <button
               @click="emit('deleteTrades', connection); showMenu = false"
               class="w-full px-4 py-2 text-left text-sm text-orange-600 dark:text-orange-400 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              Delete All Trades
+              {{ s('Delete All Trades') }}
             </button>
             <button
               @click="emit('delete', connection); showMenu = false"
               class="w-full px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 last:rounded-b-lg"
             >
-              Disconnect
+              {{ s('Disconnect') }}
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Last Sync Info -->
       <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between text-sm">
           <div class="text-gray-500 dark:text-gray-400">
             <template v-if="connection.lastSyncAt">
-              Last synced: {{ formatDate(connection.lastSyncAt) }}
+              {{ s('Last synced:') }} {{ formatDate(connection.lastSyncAt) }}
               <span v-if="connection.lastSyncTradesImported" class="text-green-600 dark:text-green-400">
-                ({{ connection.lastSyncTradesImported }} imported)
+                {{ s('({count} imported)').replace('{count}', String(connection.lastSyncTradesImported)) }}
               </span>
             </template>
             <template v-else>
-              Never synced
+              {{ s('Never synced') }}
             </template>
           </div>
 
@@ -99,13 +96,12 @@
           >
             <span v-if="syncing" class="flex items-center">
               <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-              Syncing...
+              {{ s('Syncing...') }}
             </span>
-            <span v-else>Sync Now</span>
+            <span v-else>{{ s('Sync Now') }}</span>
           </button>
         </div>
 
-        <!-- Error Message -->
         <div
           v-if="connection.lastErrorMessage && connection.connectionStatus === 'error'"
           class="mt-2 p-2 bg-red-50 dark:bg-red-900/20 rounded text-sm text-red-700 dark:text-red-300"
@@ -119,6 +115,9 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
+import { formatAppDate } from '@/utils/date'
 import { useBrokerSyncStore } from '@/stores/brokerSync'
 
 const props = defineProps({
@@ -130,6 +129,10 @@ const props = defineProps({
 
 const emit = defineEmits(['sync', 'test', 'settings', 'delete', 'deleteTrades'])
 
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
+
 const store = useBrokerSyncStore()
 const showMenu = ref(false)
 const menuRef = ref(null)
@@ -137,17 +140,18 @@ const menuRef = ref(null)
 const syncing = computed(() => store.isConnectionSyncing(props.connection.id))
 
 const brokerStyles = computed(() => {
+  void locale.value
   switch (props.connection.brokerType) {
     case 'ibkr':
       return {
-        name: 'Interactive Brokers',
+        name: s('Interactive Brokers'),
         abbrev: 'IB',
         bgClass: 'bg-red-100 dark:bg-red-900/30',
         textClass: 'text-red-600 dark:text-red-400'
       }
     case 'schwab':
       return {
-        name: 'Charles Schwab',
+        name: s('Charles Schwab'),
         abbrev: 'CS',
         bgClass: 'bg-blue-100 dark:bg-blue-900/30',
         textClass: 'text-blue-600 dark:text-blue-400'
@@ -175,26 +179,34 @@ const statusClass = computed(() => {
   }
 })
 
+function translateStatus(status) {
+  if (!status) return ''
+  return s(status)
+}
+
+function translateFrequency(frequency) {
+  if (!frequency) return ''
+  return s(frequency)
+}
+
 function formatDate(date) {
   if (!date) return '-'
   const d = new Date(date)
   const now = new Date()
   const diff = now - d
 
-  // If less than 24 hours, show relative time
   if (diff < 86400000) {
     const hours = Math.floor(diff / 3600000)
     if (hours < 1) {
       const minutes = Math.floor(diff / 60000)
-      return minutes < 1 ? 'Just now' : `${minutes}m ago`
+      return minutes < 1 ? s('Just now') : s('{minutes}m ago').replace('{minutes}', String(minutes))
     }
-    return `${hours}h ago`
+    return s('{hours}h ago').replace('{hours}', String(hours))
   }
 
-  return d.toLocaleDateString()
+  return formatAppDate(date)
 }
 
-// Close menu when clicking outside
 function handleClickOutside(event) {
   if (menuRef.value && !menuRef.value.contains(event.target)) {
     showMenu.value = false

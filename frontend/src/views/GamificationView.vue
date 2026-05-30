@@ -1070,6 +1070,7 @@ import { ref, computed, onMounted, watch, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { tSentence, i18n } from "@/i18n";
+import { formatAppDate } from "@/utils/date";
 import api from "@/services/api";
 import MdiIcon from "@/components/MdiIcon.vue";
 import { useNotification } from "@/composables/useNotification";
@@ -1617,7 +1618,7 @@ export default {
             } else if (diffInHours < 24 * 7) {
                 return s(`${Math.floor(diffInHours / 24)}d ago`);
             } else {
-                return date.toLocaleDateString(dateLocale);
+                return formatAppDate(dateString);
             }
         };
 

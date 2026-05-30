@@ -17,10 +17,9 @@
         <!-- Start Date -->
         <div class="min-w-[150px]">
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('Start Date') }}</label>
-          <input
+          <AppDateInput
             v-model="localFilters.startDate"
-            type="date"
-            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
+            input-class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
             @change="emitFiltersChanged"
           />
         </div>
@@ -28,10 +27,9 @@
         <!-- End Date -->
         <div class="min-w-[150px]">
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ s('End Date') }}</label>
-          <input
+          <AppDateInput
             v-model="localFilters.endDate"
-            type="date"
-            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
+            input-class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
             @change="emitFiltersChanged"
           />
         </div>
@@ -205,7 +203,8 @@
 import { ref, watch, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { tSentence } from '@/i18n'
-import { format } from 'date-fns'
+import { formatAppDate } from '@/utils/date'
+import AppDateInput from '@/components/common/AppDateInput.vue'
 import { useUserTimezone } from '@/composables/useUserTimezone'
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'
 import SymbolAutocomplete from '@/components/common/SymbolAutocomplete.vue'
@@ -300,11 +299,7 @@ function selectTrade(trade) {
 
 function formatDate(dateString) {
   if (!dateString) return ''
-  try {
-    return format(new Date(dateString), 'MMM d, yyyy')
-  } catch {
-    return dateString
-  }
+  return formatAppDate(dateString) || dateString
 }
 
 /** Date and time using last execution time (exit_time), fallback to entry_time */

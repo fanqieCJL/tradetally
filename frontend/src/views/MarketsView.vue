@@ -830,6 +830,7 @@ import { useAuthStore } from "@/stores/auth";
 import { useUiPreferencesStore } from "@/stores/uiPreferences";
 import OnboardingCard from "@/components/onboarding/OnboardingCard.vue";
 import { useNotification } from "@/composables/useNotification";
+import { useUserTimezone } from "@/composables/useUserTimezone";
 import { usePriceAlertNotifications } from "@/composables/usePriceAlertNotifications";
 import api from "@/services/api";
 import ProUpgradePrompt from "@/components/ProUpgradePrompt.vue";
@@ -844,6 +845,7 @@ const authStore = useAuthStore();
 const uiPreferencesStore = useUiPreferencesStore();
 const { showSuccess, showError, showCriticalError, showConfirmation } =
     useNotification();
+const { formatDateTime: formatDateTimeTz } = useUserTimezone();
 const { locale } = useI18n();
 const s = (text) => tSentence(text, { context: "metrics" });
 void locale;
@@ -1146,13 +1148,7 @@ const formatPrice = (price) => {
 };
 
 const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-    });
+    return formatDateTimeTz(dateString);
 };
 
 const getConnectionStatusColor = () => {

@@ -1,9 +1,9 @@
 <template>
     <div class="content-wrapper py-8">
         <div class="mb-8">
-            <h1 class="heading-page">Backup Management</h1>
+            <h1 class="heading-page">{{ s('Backup Management') }}</h1>
             <p class="mt-2 text-gray-600 dark:text-gray-400">
-                Configure automatic backups and manage full site exports
+                {{ s('Configure automatic backups and manage full site exports') }}
             </p>
         </div>
 
@@ -21,7 +21,7 @@
                     <h3
                         class="text-lg leading-6 font-medium text-gray-900 dark:text-white mb-4"
                     >
-                        Backup Settings
+                        {{ s('Backup Settings') }}
                     </h3>
 
                     <!-- Success message -->
@@ -51,7 +51,7 @@
                         <h4
                             class="text-sm font-medium text-amber-800 dark:text-amber-300"
                         >
-                            Backup Warnings
+                            {{ s('Backup Warnings') }}
                         </h4>
                         <ul
                             class="mt-2 space-y-2 text-sm text-amber-700 dark:text-amber-400"
@@ -60,7 +60,7 @@
                                 v-for="warning in backupWarnings"
                                 :key="warning"
                             >
-                                {{ warning }}
+                                {{ translateWarning(warning) }}
                             </li>
                         </ul>
                     </div>
@@ -72,7 +72,7 @@
                         <h4
                             class="text-sm font-medium text-amber-800 dark:text-amber-300"
                         >
-                            Storage Warnings
+                            {{ s('Storage Warnings') }}
                         </h4>
                         <ul
                             class="mt-2 space-y-2 text-sm text-amber-700 dark:text-amber-400"
@@ -81,7 +81,7 @@
                                 v-for="warning in storageWarnings"
                                 :key="warning"
                             >
-                                {{ warning }}
+                                {{ translateWarning(warning) }}
                             </li>
                         </ul>
                     </div>
@@ -93,13 +93,12 @@
                                 <label
                                     class="text-sm font-medium text-gray-700 dark:text-gray-300"
                                 >
-                                    Automatic Backups
+                                    {{ s('Automatic Backups') }}
                                 </label>
                                 <p
                                     class="text-sm text-gray-500 dark:text-gray-400"
                                 >
-                                    Enable scheduled automatic backups of all
-                                    site data
+                                    {{ s('Enable scheduled automatic backups of all site data') }}
                                 </p>
                             </div>
                             <button
@@ -129,7 +128,7 @@
                             <label
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                             >
-                                Backup Schedule
+                                {{ s('Backup Schedule') }}
                             </label>
                             <select
                                 v-model="settings.schedule"
@@ -137,14 +136,10 @@
                                 :disabled="savingSettings"
                                 class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
                             >
-                                <option value="hourly">Hourly</option>
-                                <option value="daily">Daily (2 AM)</option>
-                                <option value="weekly">
-                                    Weekly (Sunday 2 AM)
-                                </option>
-                                <option value="monthly">
-                                    Monthly (1st day, 2 AM)
-                                </option>
+                                <option value="hourly">{{ s('Hourly') }}</option>
+                                <option value="daily">{{ s('Daily (2 AM)') }}</option>
+                                <option value="weekly">{{ s('Weekly (Sunday 2 AM)') }}</option>
+                                <option value="monthly">{{ s('Monthly (1st day, 2 AM)') }}</option>
                             </select>
                         </div>
 
@@ -153,7 +148,7 @@
                             <label
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                             >
-                                Retention Period (days)
+                                {{ s('Retention Period (days)') }}
                             </label>
                             <input
                                 v-model.number="settings.retentionDays"
@@ -167,8 +162,7 @@
                             <p
                                 class="mt-1 text-sm text-gray-500 dark:text-gray-400"
                             >
-                                Backups older than this will be automatically
-                                deleted
+                                {{ s('Backups older than this will be automatically deleted') }}
                             </p>
                         </div>
 
@@ -178,7 +172,7 @@
                             class="pt-4 border-t border-gray-200 dark:border-gray-700"
                         >
                             <p class="text-sm text-gray-700 dark:text-gray-300">
-                                Last automatic backup:
+                                {{ s('Last automatic backup:') }}
                                 <span class="font-medium">{{
                                     formatDate(settings.lastBackup)
                                 }}</span>
@@ -196,12 +190,12 @@
                             <h3
                                 class="text-lg leading-6 font-medium text-gray-900 dark:text-white"
                             >
-                                Manual Backup
+                                {{ s('Manual Backup') }}
                             </h3>
                             <p
                                 class="mt-2 text-sm text-gray-500 dark:text-gray-400"
                             >
-                                Create an immediate backup of all site data
+                                {{ s('Create an immediate backup of all site data') }}
                             </p>
                         </div>
                         <button
@@ -232,8 +226,8 @@
                             </svg>
                             {{
                                 creatingBackup
-                                    ? "Creating..."
-                                    : "Create Backup Now"
+                                    ? s('Creating...')
+                                    : s('Create Backup Now')
                             }}
                         </button>
                     </div>
@@ -247,12 +241,10 @@
                         <h3
                             class="text-lg leading-6 font-medium text-gray-900 dark:text-white"
                         >
-                            Backup History
+                            {{ s('Backup History') }}
                         </h3>
                         <div class="text-sm text-gray-500 dark:text-gray-400">
-                            {{ backups.length }} backup{{
-                                backups.length !== 1 ? "s" : ""
-                            }}
+                            {{ backupCountLabel }}
                         </div>
                     </div>
 
@@ -273,12 +265,12 @@
                         <h3
                             class="mt-2 text-sm font-medium text-gray-900 dark:text-white"
                         >
-                            No backups
+                            {{ s('No backups') }}
                         </h3>
                         <p
                             class="mt-1 text-sm text-gray-500 dark:text-gray-400"
                         >
-                            Get started by creating your first backup
+                            {{ s('Get started by creating your first backup') }}
                         </p>
                     </div>
 
@@ -291,32 +283,32 @@
                                     <th
                                         class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Filename
+                                        {{ s('Filename') }}
                                     </th>
                                     <th
                                         class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Type
+                                        {{ s('Type') }}
                                     </th>
                                     <th
                                         class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Size
+                                        {{ s('Size') }}
                                     </th>
                                     <th
                                         class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Status
+                                        {{ s('Status') }}
                                     </th>
                                     <th
                                         class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Created
+                                        {{ s('Created') }}
                                     </th>
                                     <th
                                         class="px-3 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                     >
-                                        Actions
+                                        {{ s('Actions') }}
                                     </th>
                                 </tr>
                             </thead>
@@ -342,7 +334,7 @@
                                                 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
                                             ]"
                                         >
-                                            {{ backup.backupType }}
+                                            {{ labelBackupType(backup.backupType) }}
                                         </span>
                                     </td>
                                     <td
@@ -361,7 +353,7 @@
                                                 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
                                             ]"
                                         >
-                                            {{ backup.status }}
+                                            {{ labelBackupStatus(backup.status) }}
                                         </span>
                                     </td>
                                     <td
@@ -385,8 +377,8 @@
                                         >
                                             {{
                                                 downloading[backup.id]
-                                                    ? "Downloading..."
-                                                    : "Download"
+                                                    ? s('Downloading...')
+                                                    : s('Download')
                                             }}
                                         </button>
                                         <button
@@ -396,8 +388,8 @@
                                         >
                                             {{
                                                 deleting[backup.id]
-                                                    ? "Deleting..."
-                                                    : "Delete"
+                                                    ? s('Deleting...')
+                                                    : s('Delete')
                                             }}
                                         </button>
                                     </td>
@@ -433,14 +425,12 @@
                             <h3
                                 class="text-lg leading-6 font-medium text-gray-900 dark:text-white"
                             >
-                                Restore from Backup
+                                {{ s('Restore from Backup') }}
                             </h3>
                             <p
                                 class="mt-2 text-sm text-gray-500 dark:text-gray-400"
                             >
-                                Upload a backup file to restore site data. This
-                                will add missing data without deleting existing
-                                records.
+                                {{ s('Upload a backup file to restore site data. This will add missing data without deleting existing records.') }}
                             </p>
                             <div class="mt-4">
                                 <input
@@ -470,7 +460,7 @@
                                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
                                             />
                                         </svg>
-                                        Select Backup File
+                                        {{ s('Select Backup File') }}
                                     </button>
                                     <span
                                         v-if="selectedRestoreFile"
@@ -497,13 +487,12 @@
                             <h3
                                 class="text-lg leading-6 font-medium text-gray-900 dark:text-white"
                             >
-                                Cleanup Old Backups
+                                {{ s('Cleanup Old Backups') }}
                             </h3>
                             <p
                                 class="mt-2 text-sm text-gray-500 dark:text-gray-400"
                             >
-                                Manually delete backups older than the retention
-                                period
+                                {{ s('Manually delete backups older than the retention period') }}
                             </p>
                         </div>
                         <button
@@ -532,7 +521,7 @@
                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                                 ></path>
                             </svg>
-                            {{ cleaningUp ? "Cleaning..." : "Run Cleanup" }}
+                            {{ cleaningUp ? s('Cleaning...') : s('Run Cleanup') }}
                         </button>
                     </div>
                 </div>
@@ -610,12 +599,10 @@
                                         for="clear-existing"
                                         class="font-medium text-gray-700 dark:text-gray-300"
                                     >
-                                        Full snapshot restore
+                                        {{ s('Full snapshot restore') }}
                                     </label>
                                     <p class="text-gray-500 dark:text-gray-400">
-                                        Clear all existing data before
-                                        restoring. Restores the server to the
-                                        exact state captured in the backup.
+                                        {{ s('Clear all existing data before restoring. Restores the server to the exact state captured in the backup.') }}
                                     </p>
                                 </div>
                             </div>
@@ -638,11 +625,10 @@
                                         for="overwrite-users"
                                         class="font-medium text-gray-700 dark:text-gray-300"
                                     >
-                                        Overwrite matching users data
+                                        {{ s('Overwrite matching users data') }}
                                     </label>
                                     <p class="text-gray-500 dark:text-gray-400">
-                                        Update existing users with data from the
-                                        backup (name, settings, etc.)
+                                        {{ s('Update existing users with data from the backup (name, settings, etc.)') }}
                                     </p>
                                 </div>
                             </div>
@@ -683,8 +669,8 @@
                                         >
                                             {{
                                                 clearExisting
-                                                    ? "Destructive Operation"
-                                                    : "Warning"
+                                                    ? s('Destructive Operation')
+                                                    : s('Warning')
                                             }}
                                         </h3>
                                         <div
@@ -702,19 +688,13 @@
                                                     v-if="clearExisting"
                                                     class="font-bold"
                                                 >
-                                                    ALL existing data will be
-                                                    permanently deleted before
-                                                    restoring
+                                                    {{ s('ALL existing data will be permanently deleted before restoring') }}
                                                 </li>
                                                 <li v-if="clearExisting">
-                                                    The server will be reset to
-                                                    the exact state in the
-                                                    backup file
+                                                    {{ s('The server will be reset to the exact state in the backup file') }}
                                                 </li>
                                                 <li v-if="!clearExisting">
-                                                    This will restore users,
-                                                    trades, and other data from
-                                                    the backup
+                                                    {{ s('This will restore users, trades, and other data from the backup') }}
                                                 </li>
                                                 <li
                                                     v-if="
@@ -722,8 +702,7 @@
                                                         !overwriteUsers
                                                     "
                                                 >
-                                                    Existing records with the
-                                                    same ID will be skipped
+                                                    {{ s('Existing records with the same ID will be skipped') }}
                                                 </li>
                                                 <li
                                                     v-if="
@@ -732,16 +711,13 @@
                                                     "
                                                     class="font-medium"
                                                 >
-                                                    Existing users will be
-                                                    UPDATED with backup data
+                                                    {{ s('Existing users will be UPDATED with backup data') }}
                                                 </li>
                                                 <li v-if="!clearExisting">
-                                                    New records from the backup
-                                                    will be added
+                                                    {{ s('New records from the backup will be added') }}
                                                 </li>
                                                 <li>
-                                                    This action may take several
-                                                    minutes for large backups
+                                                    {{ s('This action may take several minutes for large backups') }}
                                                 </li>
                                             </ul>
                                         </div>
@@ -778,7 +754,7 @@
                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                             ></path>
                         </svg>
-                        {{ restoring ? "Restoring..." : "Restore Backup" }}
+                        {{ restoring ? s('Restoring...') : s('Restore Backup') }}
                     </button>
                     <button
                         @click="cancelRestore"
@@ -786,7 +762,7 @@
                         type="button"
                         class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:mt-0 sm:w-auto sm:text-sm disabled:opacity-50"
                     >
-                        Cancel
+                        {{ s('Cancel') }}
                     </button>
                 </div>
             </div>
@@ -795,13 +771,76 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import api from "@/services/api";
 import { useUserTimezone } from "@/composables/useUserTimezone";
 import { useNotification } from "@/composables/useNotification";
+import { tSentence } from "@/i18n";
+
+const { locale } = useI18n();
+const s = (text) => tSentence(text, { context: "metrics" });
+void locale;
 
 const { formatDateTime: formatDateTimeTz } = useUserTimezone();
 const { showDangerConfirmation } = useNotification();
+
+function labelBackupType(type) {
+    const key = String(type || "").toLowerCase();
+    if (key === "manual") return s("manual");
+    if (key === "automatic") return s("automatic");
+    return type;
+}
+
+function labelBackupStatus(status) {
+    const key = String(status || "").toLowerCase();
+    if (key === "completed") return s("completed");
+    if (key === "failed") return s("failed");
+    return status;
+}
+
+function labelScheduleValue(value) {
+    const key = String(value || "").toLowerCase();
+    if (key === "hourly") return s("hourly");
+    if (key === "daily") return s("daily");
+    if (key === "weekly") return s("weekly");
+    if (key === "monthly") return s("monthly");
+    return value;
+}
+
+function translateWarning(warning) {
+    const translated = s(warning);
+    if (translated !== warning) return translated;
+
+    const staleMatch = warning.match(
+        /^Last backup is stale for the configured (\w+) schedule\.$/,
+    );
+    if (staleMatch) {
+        return s("Last backup is stale for the configured {schedule} schedule.").replace(
+            "{schedule}",
+            labelScheduleValue(staleMatch[1]),
+        );
+    }
+
+    const uploadMatch = warning.match(
+        /^Upload directories are not initialized yet: (.+)\.$/,
+    );
+    if (uploadMatch) {
+        return s("Upload directories are not initialized yet: {dirs}.").replace(
+            "{dirs}",
+            uploadMatch[1],
+        );
+    }
+
+    return warning;
+}
+
+const backupCountLabel = computed(() => {
+    const count = backups.value.length;
+    return count === 1
+        ? s("1 backup")
+        : s("{count} backups").replace("{count}", String(count));
+});
 
 const loading = ref(true);
 const creatingBackup = ref(false);
@@ -863,7 +902,7 @@ async function loadData() {
     } catch (error) {
         console.error("Error loading backup data:", error);
         errorMessage.value =
-            error.response?.data?.error || "Failed to load backup data";
+            error.response?.data?.error || s("Failed to load backup data");
     } finally {
         loading.value = false;
     }
@@ -888,14 +927,14 @@ async function saveSettings() {
             retention_days: settings.value.retentionDays,
         });
 
-        successMessage.value = "Settings saved successfully";
+        successMessage.value = s("Settings saved successfully");
         setTimeout(() => {
             successMessage.value = "";
         }, 3000);
     } catch (error) {
         console.error("Error saving settings:", error);
         errorMessage.value =
-            error.response?.data?.error || "Failed to save settings";
+            error.response?.data?.error || s("Failed to save settings");
     } finally {
         savingSettings.value = false;
     }
@@ -910,7 +949,10 @@ async function createManualBackup() {
 
         const response = await api.post("/admin/backup");
 
-        successMessage.value = `Backup created successfully: ${response.data.filename}`;
+        successMessage.value = s("Backup created successfully: {filename}").replace(
+            "{filename}",
+            response.data.filename,
+        );
         setTimeout(() => {
             successMessage.value = "";
         }, 5000);
@@ -920,7 +962,7 @@ async function createManualBackup() {
     } catch (error) {
         console.error("Error creating backup:", error);
         errorMessage.value =
-            error.response?.data?.error || "Failed to create backup";
+            error.response?.data?.error || s("Failed to create backup");
     } finally {
         creatingBackup.value = false;
     }
@@ -946,7 +988,7 @@ async function downloadBackup(backupId, filename) {
         window.URL.revokeObjectURL(url);
     } catch (error) {
         console.error("Error downloading backup:", error);
-        errorMessage.value = "Failed to download backup";
+        errorMessage.value = s("Failed to download backup");
     } finally {
         downloading.value[backupId] = false;
     }
@@ -955,15 +997,15 @@ async function downloadBackup(backupId, filename) {
 // Delete backup
 function deleteBackup(backupId) {
     showDangerConfirmation(
-        "Delete Backup",
-        "Are you sure you want to delete this backup? This action cannot be undone.",
+        s("Delete Backup"),
+        s("Are you sure you want to delete this backup? This action cannot be undone."),
         async () => {
             try {
                 deleting.value[backupId] = true;
 
                 await api.delete(`/admin/backup/${backupId}`);
 
-                successMessage.value = "Backup deleted successfully";
+                successMessage.value = s("Backup deleted successfully");
                 setTimeout(() => {
                     successMessage.value = "";
                 }, 3000);
@@ -973,19 +1015,23 @@ function deleteBackup(backupId) {
             } catch (error) {
                 console.error("Error deleting backup:", error);
                 errorMessage.value =
-                    error.response?.data?.error || "Failed to delete backup";
+                    error.response?.data?.error || s("Failed to delete backup");
             } finally {
                 deleting.value[backupId] = false;
             }
         },
+        { confirmText: s("Delete"), cancelText: s("Cancel") },
     );
 }
 
 // Cleanup old backups
 function cleanupOldBackups() {
     showDangerConfirmation(
-        "Cleanup Backups",
-        `Delete backups older than ${settings.value.retentionDays} days?`,
+        s("Cleanup Backups"),
+        s("Delete backups older than {days} days?").replace(
+            "{days}",
+            String(settings.value.retentionDays),
+        ),
         async () => {
             try {
                 cleaningUp.value = true;
@@ -1006,11 +1052,12 @@ function cleanupOldBackups() {
             } catch (error) {
                 console.error("Error cleaning up backups:", error);
                 errorMessage.value =
-                    error.response?.data?.error || "Failed to cleanup backups";
+                    error.response?.data?.error || s("Failed to cleanup backups");
             } finally {
                 cleaningUp.value = false;
             }
         },
+        { confirmText: s("Run Cleanup"), cancelText: s("Cancel") },
     );
 }
 
@@ -1028,7 +1075,7 @@ function handleRestoreFileSelect(event) {
 // Execute the restore
 async function executeRestore() {
     if (!selectedRestoreFile.value) {
-        errorMessage.value = "No backup file selected";
+        errorMessage.value = s("No backup file selected");
         return;
     }
 
@@ -1054,15 +1101,40 @@ async function executeRestore() {
             const results = response.data.results;
             const details = [];
             if (results.users?.added > 0)
-                details.push(`${results.users.added} users`);
+                details.push(
+                    s("{count} users").replace(
+                        "{count}",
+                        String(results.users.added),
+                    ),
+                );
             if (results.users?.updated > 0)
-                details.push(`${results.users.updated} users updated`);
+                details.push(
+                    s("{count} users updated").replace(
+                        "{count}",
+                        String(results.users.updated),
+                    ),
+                );
             if (results.trades?.added > 0)
-                details.push(`${results.trades.added} trades`);
+                details.push(
+                    s("{count} trades").replace(
+                        "{count}",
+                        String(results.trades.added),
+                    ),
+                );
             if (results.diaryEntries?.added > 0)
-                details.push(`${results.diaryEntries.added} diary entries`);
+                details.push(
+                    s("{count} diary entries").replace(
+                        "{count}",
+                        String(results.diaryEntries.added),
+                    ),
+                );
             if (results.other?.added > 0)
-                details.push(`${results.other.added} other records`);
+                details.push(
+                    s("{count} other records").replace(
+                        "{count}",
+                        String(results.other.added),
+                    ),
+                );
             if (details.length > 0 && !message.includes("Restored:")) {
                 message += ` - ${details.join(", ")}`;
             }
@@ -1082,7 +1154,7 @@ async function executeRestore() {
         const errorMsg =
             error.response?.data?.error ||
             error.response?.data?.message ||
-            "Restore failed";
+            s("Restore failed");
         errorMessage.value = hint ? `${errorMsg} - ${hint}` : errorMsg;
     } finally {
         restoring.value = false;
@@ -1099,18 +1171,18 @@ function cancelRestore() {
 
 // Format date
 function formatDate(dateString) {
-    if (!dateString) return "Never";
+    if (!dateString) return s("Never");
     return formatDateTimeTz(dateString);
 }
 
 // Format file size
 function formatFileSize(bytes) {
-    if (!bytes) return "N/A";
-    if (bytes < 1024) return bytes + " B";
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + " KB";
+    if (!bytes) return s("N/A");
+    if (bytes < 1024) return `${bytes} ${s("B")}`;
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ` ${s("KB")}`;
     if (bytes < 1024 * 1024 * 1024)
-        return (bytes / (1024 * 1024)).toFixed(2) + " MB";
-    return (bytes / (1024 * 1024 * 1024)).toFixed(2) + " GB";
+        return (bytes / (1024 * 1024)).toFixed(2) + ` ${s("MB")}`;
+    return (bytes / (1024 * 1024 * 1024)).toFixed(2) + ` ${s("GB")}`;
 }
 
 onMounted(() => {

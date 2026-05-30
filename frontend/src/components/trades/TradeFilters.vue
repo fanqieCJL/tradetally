@@ -49,23 +49,21 @@
 
       <div v-if="selectedPeriod === 'custom'">
         <label for="startDate" class="label">{{ s('Start Date') }}</label>
-        <input
+        <AppDateInput
           id="startDate"
           v-model="filters.startDate"
-          type="date"
-          class="input"
-          @keydown.enter="applyFilters"
+          @enter="applyFilters"
+          @change="applyFilters"
         />
       </div>
 
       <div v-if="selectedPeriod === 'custom'">
         <label for="endDate" class="label">{{ s('End Date') }}</label>
-        <input
+        <AppDateInput
           id="endDate"
           v-model="filters.endDate"
-          type="date"
-          class="input"
-          @keydown.enter="applyFilters"
+          @enter="applyFilters"
+          @change="applyFilters"
         />
       </div>
 
@@ -696,6 +694,7 @@ import { useUiPreferencesStore } from '@/stores/uiPreferences'
 import { formatLocalDate } from '@/utils/date'
 import { useGlobalAccountFilter } from '@/composables/useGlobalAccountFilter'
 import SymbolAutocomplete from '@/components/common/SymbolAutocomplete.vue'
+import AppDateInput from '@/components/common/AppDateInput.vue'
 import { tSentence } from '@/i18n'
 
 const { locale } = useI18n()

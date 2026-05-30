@@ -219,16 +219,21 @@ import {
   MinusIcon
 } from '@heroicons/vue/24/outline'
 import { tSentence } from '@/i18n'
+import { useI18n } from 'vue-i18n'
 
+const { locale } = useI18n()
 const s = (text) => tSentence(text, { context: 'diary' })
+
+const quickNotesPlaceholder = computed(() => {
+  void locale.value
+  return s("What's your plan for today?")
+})
 
 function formatBiasLabel(bias) {
   if (!bias) return ''
   const key = bias.charAt(0).toUpperCase() + bias.slice(1)
   return s(key)
 }
-
-const quickNotesPlaceholder = s("What's your plan for today?")
 
 const router = useRouter()
 const diaryStore = useDiaryStore()

@@ -433,7 +433,7 @@
               </button>
             </div>
             <div v-if="!showLinkedTradesSection" class="text-sm text-gray-500 dark:text-gray-400">
-              <span v-if="form.linkedTrades.length > 0">{{ s(`${form.linkedTrades.length} trade${form.linkedTrades.length === 1 ? '' : 's'} linked`) }}</span>
+              <span v-if="form.linkedTrades.length > 0">{{ formatLinkedTradesLabel(form.linkedTrades.length) }}</span>
               <span v-else>{{ s('Trade lookup loads when you open this section.') }}</span>
             </div>
             <TradeSelector
@@ -561,7 +561,7 @@
           </div>
 
           <div v-if="!showAttachmentsSection" class="text-sm text-gray-500 dark:text-gray-400">
-            <span v-if="entryAttachments.length > 0">{{ s(`${entryAttachments.length} uploaded image${entryAttachments.length === 1 ? '' : 's'}`) }}</span>
+            <span v-if="entryAttachments.length > 0">{{ formatUploadedImagesLabel(entryAttachments.length) }}</span>
             <span v-else-if="hasPendingImages">{{ s('Images ready to upload when you save.') }}</span>
             <span v-else>{{ s('Uploader stays unloaded until you open this section.') }}</span>
           </div>
@@ -631,13 +631,24 @@ const s = (text) => tSentence(text, { context: 'diary' })
 
 const duplicateEntryMessage = computed(() => {
   void locale.value
-  return s(`An entry for ${form.value.entryDate} already exists. Would you like to append to the existing entry or overwrite it?`)
+  return s('An entry for {date} already exists. Would you like to append to the existing entry or overwrite it?')
+    .replace('{date}', form.value.entryDate)
 })
 
 const linkedTradesHint = computed(() => {
   void locale.value
-  return s(`Link trades from ${form.value.entryDate} to this journal entry`)
+  return s('Link trades from {date} to this journal entry').replace('{date}', form.value.entryDate)
 })
+
+function formatLinkedTradesLabel(count) {
+  const key = count === 1 ? '{count} trade linked' : '{count} trades linked'
+  return s(key).replace('{count}', String(count))
+}
+
+function formatUploadedImagesLabel(count) {
+  const key = count === 1 ? '{count} uploaded image' : '{count} uploaded images'
+  return s(key).replace('{count}', String(count))
+}
 
 const route = useRoute()
 const router = useRouter()

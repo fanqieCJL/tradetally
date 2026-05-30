@@ -3,6 +3,8 @@
  * Uses Intl.DateTimeFormat - no external dependencies required
  */
 
+import { getDatePartsInTimezone, formatDateParts } from './date.js'
+
 /**
  * Comprehensive list of timezone options for the profile selector
  * Grouped by region for better UX
@@ -98,36 +100,42 @@ export function getTimezoneLabel(timezone) {
 export function formatDateTimeInTimezone(utcDateTime, timezone = 'UTC', options = {}) {
   if (!utcDateTime) return 'N/A'
 
-  const { includeDate = true, includeTime = true, includeSeconds = false, hour12 = false } = options
+  const {
+    includeDate = true,
+    includeTime = true,
+    includeSeconds = false,
+    hour12 = false,
+    uiLocale = 'en-US'
+  } = options
 
   try {
-    // Parse the datetime
     const date = new Date(utcDateTime)
     if (isNaN(date.getTime())) return 'Invalid Date'
 
-    // Build format options
-    const formatOptions = {
-      timeZone: timezone
+    if (includeDate && !includeTime) {
+      const parts = getDatePartsInTimezone(date, timezone)
+      return formatDateParts(parts, uiLocale)
     }
 
-    if (includeDate) {
-      formatOptions.year = 'numeric'
-      formatOptions.month = 'short'
-      formatOptions.day = '2-digit'
+    const timeOptions = {
+      timeZone: timezone,
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12
+    }
+    if (includeSeconds) {
+      timeOptions.second = '2-digit'
     }
 
-    if (includeTime) {
-      formatOptions.hour = '2-digit'
-      formatOptions.minute = '2-digit'
-      formatOptions.hour12 = hour12
+    const timeFormatter = new Intl.DateTimeFormat('en-US', timeOptions)
+    const timePart = includeTime ? timeFormatter.format(date) : ''
 
-      if (includeSeconds) {
-        formatOptions.second = '2-digit'
-      }
+    if (!includeDate) {
+      return timePart
     }
 
-    const formatter = new Intl.DateTimeFormat('en-US', formatOptions)
-    return formatter.format(date)
+    const datePart = formatDateParts(getDatePartsInTimezone(date, timezone), uiLocale)
+    return timePart ? `${datePart} ${timePart}` : datePart
   } catch (error) {
     console.error('[TIMEZONE] Error formatting datetime:', error, { utcDateTime, timezone })
     return 'Invalid Date'

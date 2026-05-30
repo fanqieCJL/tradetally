@@ -3,31 +3,26 @@
         <div
             class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
         >
-            <!-- Background overlay -->
             <div
                 class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
                 @click="$emit('close')"
             ></div>
 
-            <!-- Modal -->
             <div
                 class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-6xl sm:w-full"
             >
-                <!-- Header -->
                 <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6">
                     <div class="flex items-center justify-between">
                         <div>
                             <h3
                                 class="text-lg leading-6 font-medium text-gray-900 dark:text-white"
                             >
-                                All CUSIP Mappings
+                                {{ s('All CUSIP Mappings') }}
                             </h3>
                             <p
                                 class="mt-1 text-sm text-gray-500 dark:text-gray-400"
                             >
-                                View and manage all CUSIP to ticker symbol
-                                mappings. Includes both mapped and unmapped
-                                CUSIPs from your trades.
+                                {{ s('View and manage all CUSIP to ticker symbol mappings. Includes both mapped and unmapped CUSIPs from your trades.') }}
                             </p>
                         </div>
                         <button
@@ -39,7 +34,6 @@
                     </div>
                 </div>
 
-                <!-- Filters -->
                 <div
                     class="px-4 sm:px-6 pb-4 border-b border-gray-200 dark:border-gray-700"
                 >
@@ -49,7 +43,7 @@
                                 v-model="searchQuery"
                                 @input="debouncedSearch"
                                 type="text"
-                                placeholder="Search CUSIP, ticker, or company..."
+                                :placeholder="s('Search CUSIP, ticker, or company...')"
                                 class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
                             />
                         </div>
@@ -58,19 +52,19 @@
                             @change="loadMappings(1)"
                             class="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
                         >
-                            <option value="">All Status</option>
-                            <option value="mapped">Mapped</option>
-                            <option value="unmapped">Unmapped</option>
+                            <option value="">{{ s('All Status') }}</option>
+                            <option value="mapped">{{ s('Mapped') }}</option>
+                            <option value="unmapped">{{ s('Unmapped') }}</option>
                         </select>
                         <select
                             v-model="sourceFilter"
                             @change="loadMappings(1)"
                             class="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
                         >
-                            <option value="">All Sources</option>
-                            <option value="finnhub">Finnhub</option>
-                            <option value="ai">AI</option>
-                            <option value="manual">Manual</option>
+                            <option value="">{{ s('All Sources') }}</option>
+                            <option value="finnhub">{{ s('Finnhub') }}</option>
+                            <option value="ai">{{ s('AI') }}</option>
+                            <option value="manual">{{ s('Manual') }}</option>
                         </select>
                         <button
                             @click="loadMappings(1)"
@@ -81,14 +75,12 @@
                                 class="h-4 w-4 mr-2"
                                 :class="{ 'animate-spin': loading }"
                             />
-                            Refresh
+                            {{ s('Refresh') }}
                         </button>
                     </div>
                 </div>
 
-                <!-- Content -->
                 <div class="px-4 sm:px-6 pb-4">
-                    <!-- Loading State -->
                     <div
                         v-if="loading"
                         class="flex items-center justify-center py-12"
@@ -96,12 +88,11 @@
                         <div
                             class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"
                         ></div>
-                        <span class="ml-3 text-gray-500 dark:text-gray-400"
-                            >Loading mappings...</span
-                        >
+                        <span class="ml-3 text-gray-500 dark:text-gray-400">{{
+                            s('Loading mappings...')
+                        }}</span>
                     </div>
 
-                    <!-- Empty State -->
                     <div
                         v-else-if="mappings.length === 0"
                         class="text-center py-12"
@@ -112,18 +103,17 @@
                         <h3
                             class="text-lg font-medium text-gray-900 dark:text-white mb-2"
                         >
-                            No mappings found
+                            {{ s('No mappings found') }}
                         </h3>
                         <p class="text-gray-500 dark:text-gray-400">
                             {{
                                 searchQuery
-                                    ? "Try adjusting your search criteria."
-                                    : "No CUSIP mappings available."
+                                    ? s('Try adjusting your search criteria.')
+                                    : s('No CUSIP mappings available.')
                             }}
                         </p>
                     </div>
 
-                    <!-- Mappings Table -->
                     <div v-else class="mt-4">
                         <div class="overflow-x-auto">
                             <table
@@ -134,32 +124,32 @@
                                         <th
                                             class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                         >
-                                            CUSIP
+                                            {{ s('CUSIP') }}
                                         </th>
                                         <th
                                             class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                         >
-                                            Ticker
+                                            {{ s('Ticker') }}
                                         </th>
                                         <th
                                             class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                         >
-                                            Company
+                                            {{ s('Company') }}
                                         </th>
                                         <th
                                             class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                         >
-                                            Source
+                                            {{ s('Source') }}
                                         </th>
                                         <th
                                             class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                         >
-                                            Trades
+                                            {{ s('Trades') }}
                                         </th>
                                         <th
                                             class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                         >
-                                            Actions
+                                            {{ s('Actions') }}
                                         </th>
                                     </tr>
                                 </thead>
@@ -194,7 +184,7 @@
                                                 >
                                                     <CheckCircleIcon
                                                         class="h-4 w-4 text-green-500"
-                                                        title="Verified"
+                                                        :title="s('Verified')"
                                                     />
                                                 </span>
                                             </div>
@@ -204,7 +194,7 @@
                                             >
                                                 <span
                                                     class="text-sm text-red-600 dark:text-red-400 font-medium"
-                                                    >Unmapped</span
+                                                    >{{ s('Unmapped') }}</span
                                                 >
                                                 <button
                                                     @click="
@@ -214,7 +204,7 @@
                                                     "
                                                     class="ml-2 text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
                                                 >
-                                                    Map Now
+                                                    {{ s('Map Now') }}
                                                 </button>
                                             </div>
                                         </td>
@@ -224,7 +214,7 @@
                                             >
                                                 {{
                                                     mapping.company_name ||
-                                                    "Unknown"
+                                                    s('Unknown')
                                                 }}
                                             </div>
                                         </td>
@@ -264,11 +254,11 @@
                                                 >
                                                 <span
                                                     class="ml-1 text-gray-500 dark:text-gray-400"
-                                                    >trade{{
-                                                        (mapping.trade_count ||
-                                                            0) !== 1
-                                                            ? "s"
-                                                            : ""
+                                                    >{{
+                                                        tradeCountLabel(
+                                                            mapping.trade_count ||
+                                                                0,
+                                                        )
                                                     }}</span
                                                 >
                                             </div>
@@ -290,7 +280,7 @@
                                                         )
                                                     "
                                                     class="text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
-                                                    title="Verify mapping"
+                                                    :title="s('Verify mapping')"
                                                 >
                                                     <CheckIcon
                                                         class="h-4 w-4"
@@ -302,7 +292,7 @@
                                                         editMapping(mapping)
                                                     "
                                                     class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
-                                                    title="Edit mapping"
+                                                    :title="s('Edit mapping')"
                                                 >
                                                     <PencilIcon
                                                         class="h-4 w-4"
@@ -319,7 +309,9 @@
                                                         )
                                                     "
                                                     class="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
-                                                    title="Delete user override"
+                                                    :title="
+                                                        s('Delete user override')
+                                                    "
                                                 >
                                                     <TrashIcon
                                                         class="h-4 w-4"
@@ -332,7 +324,6 @@
                             </table>
                         </div>
 
-                        <!-- Pagination -->
                         <div
                             v-if="pagination && pagination.totalPages > 1"
                             class="mt-6 flex items-center justify-between"
@@ -340,23 +331,7 @@
                             <div
                                 class="text-sm text-gray-700 dark:text-gray-300"
                             >
-                                Showing
-                                {{
-                                    Math.min(
-                                        (pagination.page - 1) *
-                                            pagination.limit +
-                                            1,
-                                        pagination.total,
-                                    )
-                                }}
-                                to
-                                {{
-                                    Math.min(
-                                        pagination.page * pagination.limit,
-                                        pagination.total,
-                                    )
-                                }}
-                                of {{ pagination.total }} items
+                                {{ paginationLabel(pagination) }}
                             </div>
                             <div class="flex space-x-2">
                                 <button
@@ -364,7 +339,7 @@
                                     :disabled="pagination.page <= 1 || loading"
                                     class="btn-secondary text-sm"
                                 >
-                                    Previous
+                                    {{ s('Previous') }}
                                 </button>
                                 <button
                                     @click="loadPage(pagination.page + 1)"
@@ -374,14 +349,13 @@
                                     "
                                     class="btn-secondary text-sm"
                                 >
-                                    Next
+                                    {{ s('Next') }}
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Footer -->
                 <div
                     class="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"
                 >
@@ -389,13 +363,12 @@
                         @click="$emit('close')"
                         class="w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
                     >
-                        Close
+                        {{ s('Close') }}
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Edit Mapping Modal -->
         <CusipMappingModal
             v-if="editingMapping"
             :isOpen="!!editingMapping"
@@ -407,7 +380,9 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { tSentence } from "@/i18n";
 import {
     XMarkIcon,
     DocumentMagnifyingGlassIcon,
@@ -417,10 +392,9 @@ import {
     PencilIcon,
     TrashIcon,
 } from "@heroicons/vue/24/outline";
-import { useAuthStore } from "@/stores/auth";
 import { useNotification } from "@/composables/useNotification";
 import CusipMappingModal from "./CusipMappingModal.vue";
-// Simple debounce implementation to avoid lodash-es dependency
+
 const debounce = (func, wait) => {
     let timeout;
     return function executedFunction(...args) {
@@ -442,10 +416,12 @@ const props = defineProps({
 
 const emit = defineEmits(["close", "mappingChanged"]);
 
-const authStore = useAuthStore();
+const { locale } = useI18n();
+const s = (text) => tSentence(text, { context: "metrics" });
+void locale;
+
 const { showDangerConfirmation } = useNotification();
 
-// Component state
 const mappings = ref([]);
 const pagination = ref(null);
 const loading = ref(false);
@@ -454,13 +430,29 @@ const statusFilter = ref("");
 const sourceFilter = ref("");
 const editingMapping = ref(null);
 
-// Methods
+function tradeCountLabel(count) {
+    return count === 1 ? s("trade") : s("trades");
+}
+
+function paginationLabel(paginationData) {
+    const start = Math.min(
+        (paginationData.page - 1) * paginationData.limit + 1,
+        paginationData.total,
+    );
+    const end = Math.min(
+        paginationData.page * paginationData.limit,
+        paginationData.total,
+    );
+    return s("Showing {start} to {end} of {total} items")
+        .replace("{start}", String(start))
+        .replace("{end}", String(end))
+        .replace("{total}", String(paginationData.total));
+}
+
 const loadMappings = async (page = 1) => {
     try {
-        console.log("loadMappings called with page:", page);
         loading.value = true;
 
-        // Build query parameters
         const params = new URLSearchParams({
             page: page.toString(),
             limit: "20",
@@ -472,18 +464,10 @@ const loadMappings = async (page = 1) => {
         else if (statusFilter.value === "unmapped")
             params.append("verified", "false");
 
-        console.log("API request URL:", `/api/cusip-mappings?${params}`);
-
-        // Get all CUSIPs (mapped and unmapped) from the main API
         const response = await fetch(`/api/cusip-mappings?${params}`);
-
-        console.log("API response status:", response.status);
 
         if (response.ok) {
             const data = await response.json();
-            console.log("API response data:", data);
-
-            // Apply status filter on frontend since backend doesn't handle it directly
             let filteredMappings = data.data || [];
 
             if (statusFilter.value === "mapped") {
@@ -492,23 +476,15 @@ const loadMappings = async (page = 1) => {
                 filteredMappings = filteredMappings.filter((m) => !m.ticker);
             }
 
-            console.log("Setting mappings:", filteredMappings.length, "items");
             mappings.value = filteredMappings;
             pagination.value = data.pagination;
         } else {
-            const errorText = await response.text();
-            console.error(
-                "Failed to load mappings:",
-                response.status,
-                response.statusText,
-                errorText,
-            );
+            console.error("Failed to load mappings:", response.status);
         }
     } catch (error) {
         console.error("Error loading mappings:", error);
     } finally {
         loading.value = false;
-        console.log("loadMappings completed, loading:", loading.value);
     }
 };
 
@@ -524,13 +500,13 @@ const debouncedSearch = debounce(() => {
 
 const verifyMapping = async (cusip) => {
     try {
-            const response = await fetch(`/api/cusip-mappings/${cusip}/verify`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ verified: true }),
-            });
+        const response = await fetch(`/api/cusip-mappings/${cusip}/verify`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ verified: true }),
+        });
 
         if (response.ok) {
             await loadMappings(pagination.value?.page || 1);
@@ -547,8 +523,10 @@ const editMapping = (mapping) => {
 
 const deleteMapping = (cusip) => {
     showDangerConfirmation(
-        "Delete Mapping",
-        "Delete this user override? This will revert to the global mapping if one exists.",
+        s("Delete Mapping"),
+        s(
+            "Delete this user override? This will revert to the global mapping if one exists.",
+        ),
         async () => {
             try {
                 const response = await fetch(`/api/cusip-mappings/${cusip}`, {
@@ -584,19 +562,22 @@ const handleMappingSaved = () => {
 const getSourceLabel = (source, isUserOverride) => {
     if (isUserOverride) {
         return source === "manual"
-            ? "Manual (User)"
-            : `${source ? source.toUpperCase() : "AI"} (User)`;
+            ? s("Manual (User)")
+            : s("{source} (User)").replace(
+                  "{source}",
+                  source ? source.toUpperCase() : s("AI"),
+              );
     }
 
     switch (source) {
         case "finnhub":
-            return "Finnhub";
+            return s("Finnhub");
         case "ai":
-            return "AI";
+            return s("AI");
         case "manual":
-            return "Manual";
+            return s("Manual");
         default:
-            return source || "Unknown";
+            return source || s("Unknown");
     }
 };
 
@@ -617,16 +598,12 @@ const getSourceBadgeClass = (source, isUserOverride) => {
     }
 };
 
-// Load mappings when modal opens
 watch(
     () => props.isOpen,
     async (isOpen) => {
         if (isOpen) {
-            console.log("Modal opened, loading mappings...");
             await loadMappings(1);
-            console.log("Mappings loaded:", mappings.value.length, "items");
         } else {
-            // Reset state when modal closes
             searchQuery.value = "";
             statusFilter.value = "";
             sourceFilter.value = "";

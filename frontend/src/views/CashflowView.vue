@@ -23,19 +23,11 @@
             <div class="flex flex-wrap items-end gap-4">
               <div class="flex-1 min-w-[140px]">
                 <label class="label">{{ s('Start Date') }}</label>
-                <input
-                  v-model="startDate"
-                  type="date"
-                  class="input w-full"
-                />
+                <AppDateInput v-model="startDate" input-class="input w-full" />
               </div>
               <div class="flex-1 min-w-[140px]">
                 <label class="label">{{ s('End Date') }}</label>
-                <input
-                  v-model="endDate"
-                  type="date"
-                  class="input w-full"
-                />
+                <AppDateInput v-model="endDate" input-class="input w-full" />
               </div>
               <div class="flex gap-2">
                 <button @click="applyDateFilter" class="btn-primary">
@@ -346,6 +338,8 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { tSentence, i18n } from '@/i18n'
+import { formatAppDate } from '@/utils/date'
+import AppDateInput from '@/components/common/AppDateInput.vue'
 import { useAccountsStore } from '@/stores/accounts'
 import { useNotification } from '@/composables/useNotification'
 import AccountModal from '@/components/accounts/AccountModal.vue'
@@ -442,32 +436,8 @@ const balanceClass = computed(() => {
 
 function formatDate(dateStr) {
   if (!dateStr) return ''
-  // Handle various date formats
-  let date
-  if (typeof dateStr === 'string') {
-    // If it's already a full ISO string, parse directly
-    if (dateStr.includes('T')) {
-      date = new Date(dateStr)
-    } else {
-      // Assume YYYY-MM-DD format
-      date = new Date(dateStr + 'T00:00:00')
-    }
-  } else if (dateStr instanceof Date) {
-    date = dateStr
-  } else {
-    return String(dateStr)
-  }
-
-  if (isNaN(date.getTime())) {
-    return String(dateStr) // Return original if parsing failed
-  }
-
-  const dateLocale = i18n.global.locale.value === 'zh' ? 'zh-CN' : 'en-US'
-  return date.toLocaleDateString(dateLocale, {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
-  })
+  const formatted = formatAppDate(dateStr)
+  return formatted || String(dateStr)
 }
 
 /**

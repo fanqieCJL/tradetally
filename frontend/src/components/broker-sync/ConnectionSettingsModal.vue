@@ -1,24 +1,21 @@
 <template>
     <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-center justify-center p-4">
-            <!-- Backdrop -->
             <div
                 class="fixed inset-0 bg-black/50 transition-opacity"
                 @click="emit('close')"
             ></div>
 
-            <!-- Modal -->
             <div
                 class="relative bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-lg"
             >
-                <!-- Header -->
                 <div
                     class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700"
                 >
                     <h3
                         class="text-lg font-semibold text-gray-900 dark:text-white"
                     >
-                        Connection Settings
+                        {{ s('Connection Settings') }}
                     </h3>
                     <button
                         @click="emit('close')"
@@ -40,9 +37,7 @@
                     </button>
                 </div>
 
-                <!-- Body -->
                 <div class="p-6 space-y-6">
-                    <!-- Connection Info -->
                     <div
                         class="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg"
                     >
@@ -64,36 +59,34 @@
                                 {{ brokerStyles.name }}
                             </h4>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Connected {{ formatDate(connection.createdAt) }}
+                                {{ s('Connected') }} {{ formatDate(connection.createdAt) }}
                             </p>
                         </div>
                     </div>
 
-                    <!-- Account Label -->
                     <div>
-                        <label for="settingsAccountLabel" class="label">Account Label</label>
+                        <label for="settingsAccountLabel" class="label">{{ s('Account Label') }}</label>
                         <input
                             id="settingsAccountLabel"
                             v-model="form.accountLabel"
                             type="text"
                             class="input"
-                            placeholder="e.g., Main Account, Paper Trading"
+                            :placeholder="s('e.g., Main Account, Paper Trading')"
                         />
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                            Optional name to identify this connection
+                            {{ s('Optional name to identify this connection') }}
                         </p>
                     </div>
 
-                    <!-- Auto-Sync Toggle -->
                     <div class="flex items-center justify-between">
                         <div>
                             <label
                                 class="block text-sm font-medium text-gray-900 dark:text-white"
                             >
-                                Auto-Sync
+                                {{ s('Auto-Sync') }}
                             </label>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Automatically sync trades on schedule
+                                {{ s('Automatically sync trades on schedule') }}
                             </p>
                         </div>
                         <button
@@ -119,41 +112,38 @@
                         </button>
                     </div>
 
-                    <!-- Sync Frequency -->
                     <div v-if="form.autoSyncEnabled">
                         <label for="syncFrequency" class="label"
-                            >Sync Frequency</label
+                            >{{ s('Sync Frequency') }}</label
                         >
                         <select
                             id="syncFrequency"
                             v-model="form.syncFrequency"
                             class="input"
                         >
-                            <option value="hourly">Every hour</option>
-                            <option value="every_4_hours">Every 4 hours</option>
-                            <option value="every_6_hours">Every 6 hours</option>
+                            <option value="hourly">{{ s('Every hour') }}</option>
+                            <option value="every_4_hours">{{ s('Every 4 hours') }}</option>
+                            <option value="every_6_hours">{{ s('Every 6 hours') }}</option>
                             <option value="every_12_hours">
-                                Every 12 hours
+                                {{ s('Every 12 hours') }}
                             </option>
-                            <option value="daily">Daily</option>
-                            <option value="manual">Manual only</option>
+                            <option value="daily">{{ s('Daily') }}</option>
+                            <option value="manual">{{ s('Manual only') }}</option>
                         </select>
                         <p
                             class="mt-1 text-sm text-gray-500 dark:text-gray-400"
                         >
-                            More frequent syncing keeps your dashboard up to
-                            date with broker data.
+                            {{ s('More frequent syncing keeps your dashboard up to date with broker data.') }}
                         </p>
                     </div>
 
-                    <!-- Sync Time (only shown for daily frequency) -->
                     <div
                         v-if="
                             form.autoSyncEnabled &&
                             form.syncFrequency === 'daily'
                         "
                     >
-                        <label for="syncTime" class="label">Sync Time</label>
+                        <label for="syncTime" class="label">{{ s('Sync Time') }}</label>
                         <input
                             id="syncTime"
                             v-model="form.syncTime"
@@ -163,14 +153,12 @@
                         <p
                             class="mt-1 text-sm text-gray-500 dark:text-gray-400"
                         >
-                            Time to sync each day (in your local timezone). Only
-                            applies to daily frequency.
+                            {{ s('Time to sync each day (in your local timezone). Only applies to daily frequency.') }}
                         </p>
                     </div>
 
-                    <!-- Sync Range -->
                     <div>
-                        <label class="label">Sync Trades From</label>
+                        <label class="label">{{ s('Sync Trades From') }}</label>
                         <div class="flex flex-wrap gap-2 mb-2">
                             <button
                                 v-for="preset in syncRangePresets"
@@ -184,53 +172,50 @@
                                         : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600',
                                 ]"
                             >
-                                {{ preset.label }}
+                                {{ s(preset.label) }}
                             </button>
                         </div>
-                        <input
+                        <AppDateInput
                             v-if="activePreset === 'custom'"
                             v-model="form.syncStartDate"
-                            type="date"
-                            class="input"
                             :max="todayIso"
                         />
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                            Only sync trades on or after this date. "All Time" pulls the full history available from the broker.
+                            {{ s('Only sync trades on or after this date. "All Time" pulls the full history available from the broker.') }}
                         </p>
                     </div>
 
-                    <!-- Status Info -->
                     <div
                         class="pt-4 border-t border-gray-200 dark:border-gray-700"
                     >
                         <h4
                             class="text-sm font-medium text-gray-900 dark:text-white mb-3"
                         >
-                            Connection Status
+                            {{ s('Connection Status') }}
                         </h4>
                         <dl class="space-y-2 text-sm">
                             <div class="flex justify-between">
                                 <dt class="text-gray-500 dark:text-gray-400">
-                                    Status
+                                    {{ s('Status') }}
                                 </dt>
                                 <dd>
                                     <span
                                         class="px-2 py-0.5 rounded-full text-xs"
                                         :class="statusClass"
                                     >
-                                        {{ connection.connectionStatus }}
+                                        {{ translateStatus(connection.connectionStatus) }}
                                     </span>
                                 </dd>
                             </div>
                             <div class="flex justify-between">
                                 <dt class="text-gray-500 dark:text-gray-400">
-                                    Last Sync
+                                    {{ s('Last Sync') }}
                                 </dt>
                                 <dd class="text-gray-900 dark:text-white">
                                     {{
                                         connection.lastSyncAt
                                             ? formatDate(connection.lastSyncAt)
-                                            : "Never"
+                                            : s('Never')
                                     }}
                                 </dd>
                             </div>
@@ -239,7 +224,7 @@
                                 class="flex justify-between"
                             >
                                 <dt class="text-gray-500 dark:text-gray-400">
-                                    Next Sync
+                                    {{ s('Next Sync') }}
                                 </dt>
                                 <dd class="text-gray-900 dark:text-white">
                                     {{
@@ -251,7 +236,6 @@
                     </div>
                 </div>
 
-                <!-- Footer -->
                 <div
                     class="flex items-center justify-end space-x-3 p-6 border-t border-gray-200 dark:border-gray-700"
                 >
@@ -260,7 +244,7 @@
                         @click="emit('close')"
                         class="btn-secondary"
                     >
-                        Cancel
+                        {{ s('Cancel') }}
                     </button>
                     <button
                         @click="handleSave"
@@ -271,9 +255,9 @@
                             <div
                                 class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
                             ></div>
-                            Saving...
+                            {{ s('Saving...') }}
                         </span>
-                        <span v-else>Save Changes</span>
+                        <span v-else>{{ s('Save Changes') }}</span>
                     </button>
                 </div>
             </div>
@@ -283,6 +267,10 @@
 
 <script setup>
 import { ref, computed, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { tSentence } from "@/i18n";
+import AppDateInput from "@/components/common/AppDateInput.vue";
+import { useUserTimezone } from "@/composables/useUserTimezone";
 import { syncRangePresets, applyPresetToForm, resolveActivePreset, todayIso } from "@/utils/syncRangePresets";
 
 const props = defineProps({
@@ -297,6 +285,12 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["close", "save"]);
+
+const { locale } = useI18n();
+const s = (text) => tSentence(text, { context: "metrics" });
+void locale;
+
+const { formatDateTime: formatDateTimeTz } = useUserTimezone();
 
 function initialSyncStartDate(value) {
     if (!value) return null;
@@ -318,7 +312,6 @@ function applySyncRangePreset(presetId) {
     applyPresetToForm(form.value, presetId);
 }
 
-// Update form when connection changes
 watch(
     () => props.connection,
     (newConnection) => {
@@ -334,17 +327,18 @@ watch(
 );
 
 const brokerStyles = computed(() => {
+    void locale.value;
     switch (props.connection.brokerType) {
         case "ibkr":
             return {
-                name: "Interactive Brokers",
+                name: s("Interactive Brokers"),
                 abbrev: "IB",
                 bgClass: "bg-red-100 dark:bg-red-900/30",
                 textClass: "text-red-600 dark:text-red-400",
             };
         case "schwab":
             return {
-                name: "Charles Schwab",
+                name: s("Charles Schwab"),
                 abbrev: "CS",
                 bgClass: "bg-blue-100 dark:bg-blue-900/30",
                 textClass: "text-blue-600 dark:text-blue-400",
@@ -374,9 +368,14 @@ const statusClass = computed(() => {
     }
 });
 
+function translateStatus(status) {
+    if (!status) return "";
+    return s(status);
+}
+
 function formatDate(date) {
     if (!date) return "-";
-    return new Date(date).toLocaleString();
+    return formatDateTimeTz(date);
 }
 
 function handleSave() {

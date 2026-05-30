@@ -56,7 +56,7 @@
               </p>
 
               <div v-if="template.use_count > 0" class="flex items-center mt-2 text-xs text-gray-500 dark:text-gray-400">
-                <span>{{ s(`Used ${template.use_count} ${template.use_count === 1 ? 'time' : 'times'}`) }}</span>
+                <span>{{ formatUseCount(template.use_count) }}</span>
               </div>
             </div>
           </div>
@@ -322,7 +322,7 @@
           </h3>
                 <div class="mt-2">
                   <p class="text-sm text-gray-500 dark:text-gray-400">
-                    {{ s(`Are you sure you want to delete "${templateToDelete?.name}"? This action cannot be undone.`) }}
+                    {{ s('Are you sure you want to delete "{name}"? This action cannot be undone.').replace('{name}', templateToDelete?.name || '') }}
                   </p>
                 </div>
 
@@ -367,6 +367,11 @@ const emit = defineEmits(['apply-template', 'template-created'])
 const templateStore = useDiaryTemplateStore()
 const { locale } = useI18n()
 const s = (text) => tSentence(text, { context: 'diary' })
+
+function formatUseCount(count) {
+  const key = count === 1 ? 'Used {count} time' : 'Used {count} times'
+  return s(key).replace('{count}', String(count))
+}
 
 // Component state
 const showCreateModal = ref(false)

@@ -65,21 +65,17 @@
 
           <!-- Custom Date Range Inputs -->
           <div v-if="filters.timeRange === 'custom'" class="flex gap-2">
-            <input
-              type="date"
+            <AppDateInput
               v-model="filters.startDate"
+              input-class="input text-sm"
               @change="applyFilters"
-              @keydown.enter="applyFilters"
-              class="input text-sm"
-              :placeholder="s('Start Date')"
+              @enter="applyFilters"
             />
-            <input
-              type="date"
+            <AppDateInput
               v-model="filters.endDate"
+              input-class="input text-sm"
               @change="applyFilters"
-              @keydown.enter="applyFilters"
-              class="input text-sm"
-              :placeholder="s('End Date')"
+              @enter="applyFilters"
             />
           </div>
 
@@ -1366,6 +1362,7 @@ import YearWrappedBanner from '@/components/yearWrapped/YearWrappedBanner.vue'
 import YearWrappedModal from '@/components/yearWrapped/YearWrappedModal.vue'
 import OnboardingCard from '@/components/onboarding/OnboardingCard.vue'
 import StockLogo from '@/components/common/StockLogo.vue'
+import AppDateInput from '@/components/common/AppDateInput.vue'
 import { useYearWrappedStore } from '@/stores/yearWrapped'
 import { useUiPreferencesStore } from '@/stores/uiPreferences'
 import { useGlobalAccountFilter } from '@/composables/useGlobalAccountFilter'

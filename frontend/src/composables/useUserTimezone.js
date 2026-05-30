@@ -1,5 +1,6 @@
 import { computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { getAppDateLocaleTag } from '@/utils/date'
 import {
   formatDateTimeInTimezone,
   formatTimeInTimezone,
@@ -44,7 +45,11 @@ export function useUserTimezone() {
    * @returns {string} Formatted datetime string
    */
   function formatDateTime(utcDateTime, options = {}) {
-    return formatDateTimeInTimezone(utcDateTime, userTimezone.value, { hour12: use12Hour.value, ...options })
+    return formatDateTimeInTimezone(utcDateTime, userTimezone.value, {
+      hour12: use12Hour.value,
+      uiLocale: getAppDateLocaleTag(),
+      ...options
+    })
   }
 
   /**

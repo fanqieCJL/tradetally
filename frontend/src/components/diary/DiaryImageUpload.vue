@@ -1,9 +1,9 @@
 <template>
   <div class="space-y-4">
     <div>
-      <label class="label">Attachments</label>
+      <label class="label">{{ s('Attachments') }}</label>
       <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
-        Upload images related to this journal entry (charts, screenshots, etc.). Images will be compressed automatically.
+        {{ s('Upload images related to this journal entry (charts, screenshots, etc.). Images will be compressed automatically.') }}
       </p>
 
       <!-- File upload area - always show, even for new entries -->
@@ -34,12 +34,12 @@
               @click="$refs.fileInput.click()"
               class="text-primary-600 hover:text-primary-500 font-medium"
             >
-              Choose files
+              {{ s('Choose files') }}
             </button>
-            <span class="text-gray-500 dark:text-gray-400"> or drag and drop</span>
+            <span class="text-gray-500 dark:text-gray-400">{{ s(' or drag and drop') }}</span>
           </div>
           <p class="text-xs text-gray-500 dark:text-gray-400">
-            JPEG, PNG, WebP up to 50MB each &middot; paste from clipboard with {{ pasteShortcut }}
+            {{ s('JPEG, PNG, WebP up to 50MB each · paste from clipboard with {shortcut}').replace('{shortcut}', pasteShortcut) }}
           </p>
         </div>
       </div>
@@ -47,13 +47,13 @@
 
     <!-- Pending files info for new entries -->
     <div v-if="!diaryEntryId && pendingFiles.length > 0" class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 text-sm text-blue-800 dark:text-blue-200">
-      {{ pendingFiles.length }} image{{ pendingFiles.length > 1 ? 's' : '' }} will be uploaded when you save the entry.
+      {{ formatPendingUploadMessage(pendingFiles.length) }}
     </div>
 
     <!-- Selected/Pending files preview -->
     <div v-if="pendingFiles.length > 0" class="space-y-2">
       <h4 class="text-sm font-medium text-gray-900 dark:text-white">
-        {{ diaryEntryId ? 'Selected Files' : 'Pending Images' }}
+        {{ diaryEntryId ? s('Selected Files') : s('Pending Images') }}
       </h4>
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
         <div
@@ -97,7 +97,7 @@
 
     <!-- Existing images -->
     <div v-if="existingImages.length > 0" class="space-y-2">
-      <h4 class="text-sm font-medium text-gray-900 dark:text-white">Uploaded Images</h4>
+      <h4 class="text-sm font-medium text-gray-900 dark:text-white">{{ s('Uploaded Images') }}</h4>
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
         <div
           v-for="image in existingImages"
@@ -194,8 +194,21 @@
 
 <script setup>
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
 import { useNotification } from '@/composables/useNotification'
 import api from '@/services/api'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'diary' })
+
+function formatPendingUploadMessage(count) {
+  void locale.value
+  const key = count === 1
+    ? '{count} image will be uploaded when you save the entry.'
+    : '{count} images will be uploaded when you save the entry.'
+  return s(key).replace('{count}', String(count))
+}
 
 const props = defineProps({
   diaryEntryId: {
@@ -291,13 +304,13 @@ function addFiles(files) {
   const validFiles = files.filter(file => {
     // Check file type
     if (!supportedTypes.includes(file.type)) {
-      showError('Invalid File', `${file.name} is not a supported image format`)
+      showError(s('Invalid File'), s('{name} is not a supported image format').replace('{name}', file.name))
       return false
     }
 
     // Check file size (50MB)
     if (file.size > 50 * 1024 * 1024) {
-      showError('File Too Large', `${file.name} is larger than 50MB`)
+      showError(s('File Too Large'), s('{name} is larger than 50MB').replace('{name}', file.name))
       return false
     }
 
@@ -365,19 +378,28 @@ async function uploadPendingImages(entryId) {
     const totalCount = response.data.totalImages || 0
 
     if (successCount === totalCount) {
-      showSuccess('Success', `${successCount} image${successCount > 1 ? 's' : ''} uploaded successfully`)
+      showSuccess(
+        s('Success'),
+        s(successCount === 1 ? '{count} image uploaded successfully' : '{count} images uploaded successfully')
+          .replace('{count}', String(successCount)),
+      )
       pendingFiles.value = [] // Clear pending files
       emit('pending-changed', pendingFiles.value)
       emit('uploaded', response.data.images)
       return { success: true, images: response.data.images }
     } else {
-      showError('Partial Success', `${successCount} of ${totalCount} images uploaded successfully`)
+      showError(
+        s('Partial Success'),
+        s('{success} of {total} images uploaded successfully')
+          .replace('{success}', String(successCount))
+          .replace('{total}', String(totalCount)),
+      )
       return { success: false, images: response.data.images }
     }
 
   } catch (error) {
     console.error('Image upload error:', error)
-    showError('Upload Failed', error.response?.data?.error || 'Failed to upload images')
+    showError(s('Upload Failed'), error.response?.data?.error || s('Failed to upload images'))
     return { success: false, error: error.message }
   } finally {
     uploading.value = false
@@ -386,7 +408,7 @@ async function uploadPendingImages(entryId) {
 
 async function uploadImages() {
   if (!props.diaryEntryId) {
-    showError('Error', 'Diary entry ID is required for image upload')
+    showError(s('Error'), s('Diary entry ID is required for image upload'))
     return
   }
 
@@ -402,7 +424,7 @@ async function deleteImage(image) {
 
   try {
     await api.delete(`/diary/${props.diaryEntryId}/images/${image.id}`)
-    showSuccess('Success', 'Image deleted successfully')
+    showSuccess(s('Success'), s('Image deleted successfully'))
     emit('deleted', image.id)
   } catch (error) {
     console.error('Image delete error:', error)

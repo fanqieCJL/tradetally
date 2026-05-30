@@ -1499,6 +1499,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useTradesStore } from '@/stores/trades'
 import { useNotification } from '@/composables/useNotification'
 import { useUserTimezone } from '@/composables/useUserTimezone'
+import { formatAppDate } from '@/utils/date'
 import { format, formatDistanceToNow, formatDistance } from 'date-fns'
 import { DocumentIcon, ChatBubbleLeftIcon, SparklesIcon } from '@heroicons/vue/24/outline'
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'
@@ -2147,28 +2148,7 @@ function formatQuantity(num) {
 
 function formatDate(date) {
   if (!date) return 'N/A'
-  try {
-    // Parse date string manually to avoid timezone issues
-    // If it's a date-only string (YYYY-MM-DD), parse components directly
-    const dateStr = date.toString()
-
-    // Match date-only format (YYYY-MM-DD) or date with midnight time (YYYY-MM-DDT00:00:00...)
-    const dateOnlyMatch = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})(?:T00:00:00(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?$/)
-    if (dateOnlyMatch) {
-      const [, year, month, day] = dateOnlyMatch.map(Number)
-      // Create date in local timezone (month is 0-indexed)
-      const dateObj = new Date(year, month - 1, day)
-      return format(dateObj, 'MMM dd, yyyy')
-    }
-
-    // For datetime strings with non-midnight times, use as-is
-    const dateObj = new Date(date)
-    if (isNaN(dateObj.getTime())) return 'Invalid Date'
-    return format(dateObj, 'MMM dd, yyyy')
-  } catch (error) {
-    console.error('Date formatting error:', error, 'for date:', date)
-    return 'Invalid Date'
-  }
+  return formatAppDate(date) || 'Invalid Date'
 }
 
 function formatDateTime(date) {

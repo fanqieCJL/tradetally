@@ -1248,7 +1248,7 @@ function getDisplayLocale() {
   return i18n.global.locale.value === 'zh' ? 'zh-CN' : 'en-US'
 }
 
-const { use12Hour } = useUserTimezone()
+const { use12Hour, formatDateTime: formatDateTimeTz } = useUserTimezone()
 const { formatCurrency, currencySymbol } = useCurrencyFormatter()
 const { monthlyPricePerMonthLabel } = usePricingExperiment()
 import draggable from 'vuedraggable'
@@ -3291,7 +3291,7 @@ function startProgressTracking() {
 }
 
 function formatDate(dateString) {
-  return new Date(dateString).toLocaleString(getDisplayLocale())
+  return formatDateTimeTz(dateString)
 }
 
 async function loadData() {

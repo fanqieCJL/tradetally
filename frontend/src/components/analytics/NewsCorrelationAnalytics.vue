@@ -361,7 +361,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { formatTradeDate } from '@/utils/date'
+import { formatAppDate } from '@/utils/date'
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'
 import { tSentence } from '@/i18n'
 import MdiIcon from '@/components/MdiIcon.vue'
@@ -450,7 +450,7 @@ function tradeExecutionLabel(trade) {
 }
 
 function formatDate(date) {
-  return formatTradeDate(date, 'MMM dd, yyyy')
+  return formatAppDate(date)
 }
 
 async function fetchAnalytics() {

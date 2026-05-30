@@ -9,7 +9,7 @@
         @click="handleAddToWatchlist"
         :disabled="addingToWatchlist"
         class="p-0.5 rounded hover:bg-blue-200 dark:hover:bg-blue-700 transition-colors disabled:opacity-50"
-        title="Add to main watchlist"
+        :title="s('Add to main watchlist')"
       >
         <PlusCircleIcon class="w-3.5 h-3.5" />
       </button>
@@ -18,7 +18,7 @@
       <button
         @click="handleCreateAlert"
         class="p-0.5 rounded hover:bg-blue-200 dark:hover:bg-blue-700 transition-colors"
-        title="Create price alert"
+        :title="s('Create price alert')"
       >
         <BellAlertIcon class="w-3.5 h-3.5" />
       </button>
@@ -34,29 +34,29 @@
     >
       <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Create Price Alert for {{ symbol }}
+          {{ s('Create Price Alert for {symbol}').replace('{symbol}', symbol) }}
         </h3>
 
         <form @submit.prevent="submitAlert">
           <!-- Alert Type -->
           <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Alert Type
+              {{ s('Alert Type') }}
             </label>
             <select
               v-model="alertForm.alertType"
               class="input"
               required
             >
-              <option value="above">Above</option>
-              <option value="below">Below</option>
+              <option value="above">{{ s('Above') }}</option>
+              <option value="below">{{ s('Below') }}</option>
             </select>
           </div>
 
           <!-- Target Price -->
           <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Target Price
+              {{ s('Target Price') }}
             </label>
             <input
               v-model.number="alertForm.targetPrice"
@@ -68,14 +68,14 @@
               required
             />
             <p v-if="currentPrice" class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              Current price: ${{ currentPrice.toFixed(2) }}
+              {{ s('Current price: ${price}').replace('{price}', currentPrice.toFixed(2)) }}
             </p>
           </div>
 
           <!-- Notification Methods -->
           <div class="mb-4 space-y-2">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Notification Methods
+              {{ s('Notification Methods') }}
             </label>
             <label class="flex items-center">
               <input
@@ -83,7 +83,7 @@
                 type="checkbox"
                 class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
               />
-              <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Email</span>
+              <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">{{ s('Email') }}</span>
             </label>
             <label class="flex items-center">
               <input
@@ -91,7 +91,7 @@
                 type="checkbox"
                 class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
               />
-              <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Browser Push</span>
+              <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">{{ s('Browser Push') }}</span>
             </label>
           </div>
 
@@ -107,14 +107,14 @@
               @click="showAlertModal = false"
               class="btn-secondary"
             >
-              Cancel
+              {{ s('Cancel') }}
             </button>
             <button
               type="submit"
               :disabled="creatingAlert || (!alertForm.emailEnabled && !alertForm.browserEnabled)"
               class="btn-primary"
             >
-              {{ creatingAlert ? 'Creating...' : 'Create Alert' }}
+              {{ creatingAlert ? s('Creating...') : s('Create Alert') }}
             </button>
           </div>
         </form>
@@ -126,7 +126,10 @@
 <script setup>
 import { ref } from 'vue'
 import { PlusCircleIcon, BellAlertIcon } from '@heroicons/vue/24/outline'
+import { tSentence } from '@/i18n'
 import api from '@/services/api'
+
+const s = (text) => tSentence(text, { context: 'diary' })
 
 const props = defineProps({
   symbol: {
@@ -155,19 +158,16 @@ const handleAddToWatchlist = async () => {
     addingToWatchlist.value = true
     alertError.value = null
 
-    // Get user's watchlists
     const watchlistsResponse = await api.get('/watchlists')
     const watchlists = watchlistsResponse.data.data
 
     if (watchlists.length === 0) {
-      alertError.value = 'No watchlist found. Please create a watchlist first.'
+      alertError.value = s('No watchlist found. Please create a watchlist first.')
       return
     }
 
-    // Find default watchlist or use the first one
     const defaultWatchlist = watchlists.find(w => w.is_default) || watchlists[0]
 
-    // Add symbol to watchlist
     await api.post(`/watchlists/${defaultWatchlist.id}/symbols`, {
       symbol: props.symbol
     })
@@ -188,7 +188,6 @@ const handleCreateAlert = async () => {
   showAlertModal.value = true
   alertError.value = null
 
-  // Fetch current price
   try {
     const response = await api.get(`/market/quote/${props.symbol}`)
     if (response.data && response.data.currentPrice) {
@@ -215,7 +214,6 @@ const submitAlert = async () => {
     emit('alert-created', props.symbol)
     showAlertModal.value = false
 
-    // Reset form
     alertForm.value = {
       alertType: 'above',
       targetPrice: null,
@@ -225,7 +223,7 @@ const submitAlert = async () => {
 
   } catch (error) {
     console.error('Error creating alert:', error)
-    alertError.value = error.response?.data?.error || 'Failed to create price alert'
+    alertError.value = error.response?.data?.error || s('Failed to create price alert')
   } finally {
     creatingAlert.value = false
   }

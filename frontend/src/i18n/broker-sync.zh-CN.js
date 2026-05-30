@@ -1,0 +1,150 @@
+/** Chinese translations for Broker Sync */
+export const brokerSyncZhCN = {
+  'Broker Sync': '券商同步',
+  'Connect your brokerage accounts to automatically sync trades.':
+    '连接券商账户，自动同步交易记录。',
+  'Connected Brokers': '已连接券商',
+  'Add Broker Connection': '添加券商连接',
+  'Interactive Brokers': '盈透证券（IBKR）',
+  'Charles Schwab': '嘉信理财（Schwab）',
+  'Add another IBKR account': '添加另一个 IBKR 账户',
+  'Connect via Flex Query': '通过 Flex Query 连接',
+  'Already connected': '已连接',
+  'Connecting...': '连接中…',
+  'Connect via OAuth': '通过 OAuth 连接',
+  'Note for former TD Ameritrade users:':
+    '原 TD Ameritrade 用户请注意：',
+  'The Schwab API only returns trades made natively on Schwab. Historical TD Ameritrade trades are not available via API sync. Use CSV import for complete trade history.':
+    'Schwab API 仅返回在 Schwab 平台上产生的交易，无法通过 API 同步 TD Ameritrade 历史交易。如需完整历史，请使用 CSV 导入。',
+  'Sync History': '同步历史',
+  Refresh: '刷新',
+  'No sync history yet. Connect a broker and sync to see history here.':
+    '暂无同步历史。连接券商并同步后，记录将显示在此处。',
+  Broker: '券商',
+  Type: '类型',
+  Status: '状态',
+  Imported: '已导入',
+  Duplicates: '重复',
+  Date: '日期',
+  'Schwab account connected successfully. Ready to sync trades.':
+    'Schwab 账户连接成功，可以开始同步交易。',
+  'Connection failed: {detail}': '连接失败：{detail}',
+  'Connection failed: {error}': '连接失败：{error}',
+  'IBKR connection added successfully!': 'IBKR 连接添加成功！',
+  'Sync started. Check the history below for results.':
+    '同步已开始，请在下方历史中查看结果。',
+  'Connection test successful!': '连接测试成功！',
+  'Connection test failed': '连接测试失败',
+  'Settings updated successfully!': '设置已更新！',
+  'Disconnect {broker}?': '断开 {broker} 连接？',
+  'This will remove the broker connection. Your imported trades will not be deleted.':
+    '这将移除券商连接，已导入的交易不会被删除。',
+  'Connection removed successfully!': '连接已移除！',
+  'Delete All {broker} Trades?': '删除全部 {broker} 交易？',
+  'This will permanently delete ALL trades that were imported via broker sync from {broker}. This action cannot be undone.':
+    '这将永久删除通过券商同步从 {broker} 导入的全部交易，此操作无法撤销。',
+  'Delete All Trades': '删除全部交易',
+  'Deleted trades from {broker}': '已删除 {broker} 的交易',
+
+  Settings: '设置',
+  'Test Connection': '测试连接',
+  Disconnect: '断开连接',
+  'Last synced:': '上次同步：',
+  '({count} imported)': '（已导入 {count} 笔）',
+  'Never synced': '从未同步',
+  'Syncing...': '同步中…',
+  'Sync Now': '立即同步',
+  'Just now': '刚刚',
+  '{minutes}m ago': '{minutes} 分钟前',
+  '{hours}h ago': '{hours} 小时前',
+  'Auto-sync {frequency}': '自动同步 · {frequency}',
+  'Connect Interactive Brokers': '连接盈透证券（IBKR）',
+  'Setup Instructions': '设置说明',
+  'Log in to': '登录',
+  'IBKR Client Portal': 'IBKR 客户端门户',
+  'Navigate to': '前往',
+  'Performance & Reports > Flex Queries': 'Performance & Reports > Flex Queries',
+  'Under "Activity Flex Query", click the + button to create a new query':
+    '在「Activity Flex Query」下，点击 + 创建新查询',
+  'Name your query, select Trades in the Sections, then Save':
+    '为查询命名，在 Sections 中选择 Trades，然后保存',
+  'Note the Query ID shown next to your saved query':
+    '记下已保存查询旁显示的 Query ID',
+  'Click the gear icon next to "Configure Flex Web Service"':
+    '点击「Configure Flex Web Service」旁的齿轮图标',
+  'Generate or copy your Current Token': '生成或复制 Current Token',
+  "View IBKR's official Flex Query documentation":
+    '查看 IBKR 官方 Flex Query 文档',
+  'Account Label': '账户标签',
+  'e.g., Main Account, Paper Trading': '例如：主账户、模拟交易',
+  'Optional name to identify this account': '可选，用于识别此账户',
+  'Optional name to identify this connection': '可选，用于识别此连接',
+  'Flex Token': 'Flex Token',
+  'Enter your Flex Token': '输入 Flex Token',
+  'Flex Query ID': 'Flex Query ID',
+  'e.g., 123456': '例如：123456',
+  'Auto-Sync': '自动同步',
+  'Automatically sync trades daily': '每日自动同步交易',
+  'Automatically sync trades on schedule': '按计划自动同步交易',
+  'Sync Time': '同步时间',
+  'Time to automatically sync each day (in your local timezone)':
+    '每日自动同步时间（本地时区）',
+  'Time to sync each day (in your local timezone). Only applies to daily frequency.':
+    '每日同步时间（本地时区），仅适用于「每日」频率。',
+  'Sync Trades From': '同步交易起始日期',
+  'Only sync trades on or after this date. Leave as "All Time" to import the full history available from the broker.':
+    '仅同步此日期及之后的交易。选择「全部时间」可导入券商提供的完整历史。',
+  'Only sync trades on or after this date. "All Time" pulls the full history available from the broker.':
+    '仅同步此日期及之后的交易。「全部时间」将拉取券商提供的完整历史。',
+  Cancel: '取消',
+  Connect: '连接',
+  'Connection Settings': '连接设置',
+  'Sync Frequency': '同步频率',
+  'Every hour': '每小时',
+  'Every 4 hours': '每 4 小时',
+  'Every 6 hours': '每 6 小时',
+  'Every 12 hours': '每 12 小时',
+  Daily: '每日',
+  'Manual only': '仅手动',
+  'More frequent syncing keeps your dashboard up to date with broker data.':
+    '更频繁的同步可让仪表盘与券商数据保持最新。',
+  'Connection Status': '连接状态',
+  'Last Sync': '上次同步',
+  'Next Sync': '下次同步',
+  Never: '从未',
+  Connected: '已连接',
+  'Saving...': '保存中…',
+  'Save Changes': '保存更改',
+
+  'This Year': '今年',
+  'Last 30 Days': '最近 30 天',
+  'Last 90 Days': '最近 90 天',
+  'Last 1 Year': '最近 1 年',
+  Custom: '自定义',
+
+  active: '正常',
+  error: '错误',
+  expired: '已过期',
+  completed: '已完成',
+  failed: '失败',
+  started: '已开始',
+  fetching: '获取中',
+  parsing: '解析中',
+  importing: '导入中',
+  manual: '手动',
+  automatic: '自动',
+  scheduled: '定时',
+  hourly: '每小时',
+  every_4_hours: '每 4 小时',
+  every_6_hours: '每 6 小时',
+  every_12_hours: '每 12 小时',
+  daily: '每日',
+
+  'Action Required: IBKR Flex Token & Query Regeneration':
+    '需要操作：重新生成 IBKR Flex Token 与 Query',
+  "Due to changes on Interactive Brokers' side, your existing Flex Token and Flex Query may no longer work. If your IBKR broker sync is failing, please log in to the":
+    '由于盈透证券（IBKR）侧变更，现有 Flex Token 与 Flex Query 可能已失效。若 IBKR 券商同步失败，请登录',
+  ', regenerate your Flex Token and Flex Query, then update your connection settings with the new credentials.':
+    '，重新生成 Flex Token 与 Flex Query，并在连接设置中更新凭据。',
+  'Dismiss notice': '关闭通知'
+}

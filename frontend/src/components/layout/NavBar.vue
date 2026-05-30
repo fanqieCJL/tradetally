@@ -145,15 +145,15 @@
       <div v-if="isMobileMenuOpen" class="sm:hidden border-t border-gray-200 dark:border-gray-700">
         <div class="pt-2 pb-3 space-y-1">
           <template v-if="authStore.isAuthenticated">
-            <template v-for="item in navigation" :key="item.name">
+            <template v-for="item in navigation" :key="item.sectionKey || item.name">
               <!-- Dropdown items - collapsible in mobile -->
               <template v-if="item.type === 'dropdown'">
                 <button
-                  @click="toggleSection(item.name)"
+                  @click="toggleSection(item.sectionKey)"
                   class="w-full text-left mx-3 px-4 py-3 rounded-lg text-base font-semibold transition-all duration-200 flex items-center justify-between text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
                 >
                   {{ item.name }}
-                  <ChevronDownIcon v-if="!expandedSections[item.name]" class="h-5 w-5" />
+                  <ChevronDownIcon v-if="!expandedSections[item.sectionKey]" class="h-5 w-5" />
                   <ChevronUpIcon v-else class="h-5 w-5" />
                 </button>
                 <transition
@@ -164,8 +164,8 @@
                   leave-from-class="opacity-100 translate-y-0"
                   leave-to-class="opacity-0 -translate-y-1"
                 >
-                  <div v-if="expandedSections[item.name]" class="pb-2">
-                    <template v-for="subItem in item.items" :key="subItem.name">
+                  <div v-if="expandedSections[item.sectionKey]" class="pb-2">
+                    <template v-for="subItem in item.items" :key="subItem.route || subItem.href || subItem.name">
                       <!-- External link -->
                       <a
                         v-if="subItem.external"
@@ -241,7 +241,7 @@
               <!-- Mobile Account Selector -->
               <div class="px-3 mb-3">
                 <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
-                  Account Filter
+                  {{ t('nav.accountFilter') }}
                 </div>
                 <GlobalAccountSelector />
               </div>
@@ -331,7 +331,75 @@ const NAV_TEXT_KEYS = {
   FAQ: 'nav.faq',
   Compare: 'nav.compare',
   Admin: 'nav.admin',
-  'User Management': 'nav.userManagement'
+  'User Management': 'nav.userManagement',
+  'Backup Management': 'nav.backupManagement',
+  'Trading Dashboard': 'nav.tradingDashboard',
+  'Trading Journal': 'nav.tradingJournal',
+  'Account & Cashflow': 'nav.accountCashflow',
+  Leaderboard: 'nav.leaderboard',
+  'Community Forum': 'nav.communityForum',
+  'Performance Metrics': 'nav.performanceMetrics',
+  'Monthly Performance': 'nav.monthlyPerformance',
+  'Partial Exit Analytics': 'nav.partialExitAnalytics',
+  'Behavioral Analytics': 'nav.behavioralAnalytics',
+  'Health Analytics': 'nav.healthAnalytics',
+  Investments: 'nav.investments',
+  Watchlists: 'nav.watchlists',
+  'Trade Management': 'nav.tradeManagement',
+  Playbooks: 'nav.playbooks',
+  'OAuth Applications': 'nav.oauthApplications',
+  Testimonials: 'nav.testimonials'
+}
+
+const NAV_DESC_KEYS = {
+  'Trading Dashboard': 'nav.desc.tradingDashboard',
+  'Trading Journal': 'nav.desc.tradingJournal',
+  'Account & Cashflow': 'nav.desc.accountCashflow',
+  Leaderboard: 'nav.desc.leaderboard',
+  'Public Trades': 'nav.desc.publicTrades',
+  'Community Forum': 'nav.desc.communityForum',
+  'Performance Metrics': 'nav.desc.performanceMetrics',
+  'Monthly Performance': 'nav.desc.monthlyPerformance',
+  'Partial Exit Analytics': 'nav.desc.partialExitAnalytics',
+  'Behavioral Analytics': 'nav.desc.behavioralAnalytics',
+  'Health Analytics': 'nav.desc.healthAnalytics',
+  Investments: 'nav.desc.investments',
+  Watchlists: 'nav.desc.watchlists',
+  'Trade Management': 'nav.desc.tradeManagement',
+  Playbooks: 'nav.desc.playbooks',
+  'User Management': 'nav.desc.userManagement',
+  'OAuth Applications': 'nav.desc.oauthApplications',
+  Testimonials: 'nav.desc.testimonials',
+  'Backup Management': 'nav.desc.backupManagement'
+}
+
+function translateNavName(name) {
+  return NAV_TEXT_KEYS[name] ? t(NAV_TEXT_KEYS[name]) : name
+}
+
+function translateNavSubItem(sub) {
+  const translated = {
+    ...sub,
+    name: translateNavName(sub.name)
+  }
+  if (sub.description && NAV_DESC_KEYS[sub.name]) {
+    translated.description = t(NAV_DESC_KEYS[sub.name])
+  }
+  if (sub.badge?.type === 'pro') {
+    translated.badge = { ...sub.badge, text: t('nav.pro') }
+  }
+  return translated
+}
+
+function translateNavItem(item) {
+  return {
+    ...item,
+    name: translateNavName(item.name),
+    sectionKey: item.name,
+    ...(item.items
+      ? { items: item.items.map((sub) => translateNavSubItem(sub)) }
+      : {})
+  }
 }
 
 const currentLanguageLabel = computed(() => (locale.value === 'zh' ? '中' : 'EN'))
@@ -476,21 +544,7 @@ const publicNavigation = computed(() => {
     )
   }
 
-  const translateNavName = (name) =>
-    NAV_TEXT_KEYS[name] ? t(NAV_TEXT_KEYS[name]) : name
-
-  return nav.map((item) => ({
-    ...item,
-    name: translateNavName(item.name),
-    ...(item.items
-      ? {
-          items: item.items.map((sub) => ({
-            ...sub,
-            name: translateNavName(sub.name),
-          })),
-        }
-      : {}),
-  }))
+  return nav.map((item) => translateNavItem(item))
 })
 
 const navigation = computed(() => {
@@ -537,21 +591,7 @@ const navigation = computed(() => {
     })
   }
 
-  const translateNavName = (name) =>
-    NAV_TEXT_KEYS[name] ? t(NAV_TEXT_KEYS[name]) : name
-
-  return nav.map((item) => ({
-    ...item,
-    name: translateNavName(item.name),
-    ...(item.items
-      ? {
-          items: item.items.map((sub) => ({
-            ...sub,
-            name: translateNavName(sub.name),
-          })),
-        }
-      : {}),
-  }))
+  return nav.map((item) => translateNavItem(item))
 })
 
 function toggleDarkMode() {

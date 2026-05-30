@@ -2901,11 +2901,7 @@
                                             <p
                                                 class="text-sm text-gray-500 dark:text-gray-400"
                                             >
-                                                {{
-                                                    new Date(
-                                                        trade.exitTime,
-                                                    ).toLocaleDateString()
-                                                }}
+                                                {{ formatAppDate(trade.exitTime) }}
                                                 •
                                                 {{ trade.side.toUpperCase() }}
                                                 •
@@ -3350,11 +3346,7 @@
                                         <p
                                             class="text-sm text-gray-500 dark:text-gray-400"
                                         >
-                                            {{
-                                                new Date(
-                                                    trade.exitTime,
-                                                ).toLocaleDateString()
-                                            }}
+                                            {{ formatAppDate(trade.exitTime) }}
                                             •
                                             {{ trade.side.toUpperCase() }} •
                                             {{ trade.quantity }} shares
@@ -3823,11 +3815,7 @@
                                             <span
                                                 class="text-xs text-gray-500 dark:text-gray-400 ml-2"
                                             >
-                                                {{
-                                                    new Date(
-                                                        trade.exitTime,
-                                                    ).toLocaleDateString()
-                                                }}
+                                                {{ formatAppDate(trade.exitTime) }}
                                             </span>
                                         </div>
                                         <div class="text-right">
@@ -4205,11 +4193,7 @@
                                         <p
                                             class="text-sm text-gray-500 dark:text-gray-400"
                                         >
-                                            {{
-                                                new Date(
-                                                    event.detectionDate,
-                                                ).toLocaleDateString()
-                                            }}
+                                            {{ formatAppDate(event.detectionDate) }}
                                             •
                                             <span class="font-medium">{{
                                                 (event.streakTradeDetails || [])
@@ -4529,13 +4513,7 @@
                                                 <p
                                                     class="text-xs text-gray-500 dark:text-gray-400"
                                                 >
-                                                    {{
-                                                        new Date(
-                                                            event
-                                                                .outcomeTradeDetails
-                                                                .entry_time,
-                                                        ).toLocaleDateString()
-                                                    }}
+                                                    {{ formatAppDate(event.outcomeTradeDetails.entry_time) }}
                                                     •
                                                     {{
                                                         event.outcomeTradeDetails.side?.toUpperCase()
@@ -5249,11 +5227,7 @@
                                                     <div
                                                         class="text-xs text-gray-500 dark:text-gray-400"
                                                     >
-                                                        {{
-                                                            new Date(
-                                                                trade.entry_time,
-                                                            ).toLocaleDateString()
-                                                        }}
+                                                        {{ formatAppDate(trade.entry_time) }}
                                                     </div>
                                                 </div>
 
@@ -5554,6 +5528,7 @@ import { useUiPreferencesStore } from "@/stores/uiPreferences";
 import OnboardingCard from "@/components/onboarding/OnboardingCard.vue";
 import { useGlobalAccountFilter } from "@/composables/useGlobalAccountFilter";
 import { useUserTimezone } from "@/composables/useUserTimezone";
+import { formatAppDate } from "@/utils/date";
 import ProUpgradePrompt from "@/components/ProUpgradePrompt.vue";
 import MdiIcon from "@/components/MdiIcon.vue";
 import TradeFilters from "@/components/trades/TradeFilters.vue";
@@ -5581,7 +5556,7 @@ function getDisplayLocale() {
 const authStore = useAuthStore();
 const uiPreferencesStore = useUiPreferencesStore();
 const { selectedAccount } = useGlobalAccountFilter();
-const { formatTime: formatTimeTz } = useUserTimezone();
+const { formatTime: formatTimeTz, formatDateTime: formatDateTimeTz } = useUserTimezone();
 const router = useRouter();
 const route = useRoute();
 
@@ -5941,13 +5916,7 @@ const reRunAnalysis = async () => {
 
 // Format date for display
 const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString(getDisplayLocale(), {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-    });
+    return formatDateTimeTz(dateString);
 };
 
 // Format time only (timezone-aware)

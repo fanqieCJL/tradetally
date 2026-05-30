@@ -4,7 +4,7 @@
     <button
       @click="toggleDropdown"
       class="relative p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
-      :aria-label="isOpen ? 'Close notifications' : 'Open notifications'"
+      :aria-label="isOpen ? s('Close notifications') : s('Open notifications')"
       :aria-expanded="isOpen"
     >
       <BellIcon class="h-5 w-5" />
@@ -35,7 +35,7 @@
         <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
           <div class="flex items-center justify-between">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-              Notifications
+              {{ s('Notifications') }}
             </h3>
             <button
               v-if="notifications.length > 0 && notifications.some(n => !n.is_read)"
@@ -45,9 +45,9 @@
             >
               <span v-if="markingAsRead" class="flex items-center">
                 <div class="animate-spin rounded-full h-3 w-3 border-b border-current mr-1"></div>
-                Marking...
+                {{ s('Marking...') }}
               </span>
-              <span v-else>Mark all read</span>
+              <span v-else>{{ s('Mark all read') }}</span>
             </button>
           </div>
         </div>
@@ -56,18 +56,18 @@
         <div class="max-h-96 overflow-y-auto">
           <div v-if="loading" class="p-4 text-center">
             <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-600 mx-auto"></div>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Loading notifications...</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">{{ s('Loading notifications...') }}</p>
           </div>
 
           <div v-else-if="notifications.length === 0" class="p-8 text-center">
             <BellSlashIcon class="h-12 w-12 text-gray-400 mx-auto mb-3" />
-            <p class="text-gray-500 dark:text-gray-400">No unread notifications</p>
+            <p class="text-gray-500 dark:text-gray-400">{{ s('No unread notifications') }}</p>
             <router-link
               to="/notifications"
               class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 mt-2 inline-block"
               @click="closeDropdown"
             >
-              View all notifications
+              {{ s('View all notifications') }}
             </router-link>
           </div>
 
@@ -103,19 +103,19 @@
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center justify-between">
                     <p class="text-sm font-medium text-gray-900 dark:text-white">
-                      {{ notification.symbol || 'Notification' }}
+                      {{ translateNotificationText(notification.symbol || 'Notification') }}
                     </p>
                     <time class="text-xs text-gray-500 dark:text-gray-400">
                       {{ formatTime(notification.created_at) }}
                     </time>
                   </div>
                   <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                    {{ notification.message }}
+                    {{ translateNotificationText(notification.message) }}
                   </p>
                   
                   <!-- Additional info for price alerts -->
                   <div v-if="notification.type === 'price_alert' && notification.trigger_price" class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    Triggered at ${{ parseFloat(notification.trigger_price).toFixed(2) }}
+                    {{ s(`Triggered at $${parseFloat(notification.trigger_price).toFixed(2)}`) }}
                   </div>
                 </div>
 
@@ -130,8 +130,8 @@
                   @click.stop="dismissNotification(notification)"
                   :disabled="dismissingIds.has(notification.id)"
                   class="flex-shrink-0 p-1 -m-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                  aria-label="Dismiss notification"
-                  title="Dismiss"
+                  :aria-label="s('Dismiss notification')"
+                  :title="s('Dismiss')"
                 >
                   <XMarkIcon class="h-4 w-4" />
                 </button>
@@ -147,7 +147,7 @@
             class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
             @click="closeDropdown"
           >
-            View all notifications
+            {{ s('View all notifications') }}
           </router-link>
         </div>
       </div>
@@ -158,6 +158,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import {
   BellIcon,
   BellSlashIcon,
@@ -167,6 +168,7 @@ import {
   XMarkIcon
 } from '@heroicons/vue/24/outline'
 import api from '@/services/api'
+import { tSentence } from '@/i18n'
 import { useAuthStore } from '@/stores/auth'
 import { useUserTimezone } from '@/composables/useUserTimezone'
 import { useNotificationCenter } from '@/composables/useNotificationCenter'
@@ -174,8 +176,12 @@ import { useNotification } from '@/composables/useNotification'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const { locale } = useI18n()
 const { formatDateTime: formatDateTimeTz } = useUserTimezone()
 const { showError } = useNotification()
+const s = (text) => tSentence(text, { context: 'notifications' })
+void locale.value
+const translateNotificationText = (text) => s(text || '')
 const {
   unreadCount,
   recentUnreadNotifications,
@@ -339,9 +345,9 @@ const markAllAsRead = async () => {
       const message =
         error.response?.data?.message
         || error.response?.data?.error
-        || 'Could not mark notifications as read. Please try again.'
+        || s('Could not mark notifications as read. Please try again.')
       console.error('Failed to mark all notifications as read:', message)
-      showError('Notifications', message)
+      showError(s('Notifications'), message)
       return
     }
 
@@ -353,7 +359,7 @@ const markAllAsRead = async () => {
     await Promise.all([fetchNotifications(), fetchUnreadCount()])
   } catch (error) {
     console.error('Error marking all notifications as read:', error)
-    showError('Notifications', 'Could not mark notifications as read. Please try again.')
+    showError(s('Notifications'), s('Could not mark notifications as read. Please try again.'))
   } finally {
     markingAsRead.value = false
   }
@@ -368,7 +374,7 @@ const markSingleAsRead = async (notification) => {
     const message =
       error.response?.data?.message
       || error.response?.data?.error
-      || 'Could not dismiss notification. Please try again.'
+      || s('Could not dismiss notification. Please try again.')
     throw new Error(message)
   }
 }
@@ -387,7 +393,7 @@ const dismissNotification = async (notification) => {
     decrementUnreadCount()
   } catch (error) {
     console.error('Error dismissing notification:', error)
-    showError('Notifications', error.message || 'Could not dismiss notification.')
+    showError(s('Notifications'), error.message || s('Could not dismiss notification. Please try again.'))
   } finally {
     dismissingIds.value.delete(notification.id)
     dismissingIds.value = new Set(dismissingIds.value)
@@ -408,7 +414,7 @@ const handleNotificationClick = async (notification) => {
       decrementUnreadCount()
     } catch (error) {
       console.error('Error marking notification as read:', error)
-      showError('Notifications', error.message || 'Could not mark notification as read.')
+      showError(s('Notifications'), error.message || s('Could not mark notification as read.'))
     }
   }
   
@@ -443,10 +449,10 @@ const formatTime = (timestamp) => {
   const diffHours = Math.floor(diffMs / 3600000)
   const diffDays = Math.floor(diffMs / 86400000)
 
-  if (diffMins < 1) return 'Just now'
-  if (diffMins < 60) return `${diffMins}m ago`
-  if (diffHours < 24) return `${diffHours}h ago`
-  if (diffDays < 7) return `${diffDays}d ago`
+  if (diffMins < 1) return s('Just now')
+  if (diffMins < 60) return s(`${diffMins}m ago`)
+  if (diffHours < 24) return s(`${diffHours}h ago`)
+  if (diffDays < 7) return s(`${diffDays}d ago`)
   return formatDateTimeTz(timestamp)
 }
 

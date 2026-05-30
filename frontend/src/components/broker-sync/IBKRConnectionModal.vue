@@ -1,15 +1,12 @@
 <template>
   <div class="fixed inset-0 z-50 overflow-y-auto">
     <div class="flex min-h-full items-center justify-center p-4">
-      <!-- Backdrop -->
       <div class="fixed inset-0 bg-black/50 transition-opacity" @click="emit('close')"></div>
 
-      <!-- Modal -->
       <div class="relative bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-lg">
-        <!-- Header -->
         <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-            Connect Interactive Brokers
+            {{ s('Connect Interactive Brokers') }}
           </h3>
           <button
             @click="emit('close')"
@@ -21,26 +18,29 @@
           </button>
         </div>
 
-        <!-- Body -->
         <div class="p-6">
-          <!-- Instructions -->
           <div class="mb-6 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
-            <h4 class="text-sm font-medium text-primary-800 dark:text-primary-300 mb-2">Setup Instructions</h4>
+            <h4 class="text-sm font-medium text-primary-800 dark:text-primary-300 mb-2">{{ s('Setup Instructions') }}</h4>
             <ol class="text-sm text-primary-700 dark:text-primary-400 space-y-2 list-decimal list-inside">
-              <li>Log in to <a href="https://www.interactivebrokers.com/sso/Login" target="_blank" class="underline font-medium">IBKR Client Portal</a></li>
-              <li>Navigate to <strong>Performance & Reports > Flex Queries</strong></li>
-              <li>Under "Activity Flex Query", click the <strong>+</strong> button to create a new query</li>
-              <li>Name your query, select <strong>Trades</strong> in the Sections, then Save</li>
-              <li>Note the <strong>Query ID</strong> shown next to your saved query</li>
-              <li>Click the <strong>gear icon</strong> next to "Configure Flex Web Service"</li>
-              <li>Generate or copy your <strong>Current Token</strong></li>
+              <li>
+                {{ s('Log in to') }}
+                <a href="https://www.interactivebrokers.com/sso/Login" target="_blank" class="underline font-medium">{{ s('IBKR Client Portal') }}</a>
+              </li>
+              <li>
+                {{ s('Navigate to') }}
+                <strong>{{ s('Performance & Reports > Flex Queries') }}</strong>
+              </li>
+              <li>{{ s('Under "Activity Flex Query", click the + button to create a new query') }}</li>
+              <li>{{ s('Name your query, select Trades in the Sections, then Save') }}</li>
+              <li>{{ s('Note the Query ID shown next to your saved query') }}</li>
+              <li>{{ s('Click the gear icon next to "Configure Flex Web Service"') }}</li>
+              <li>{{ s('Generate or copy your Current Token') }}</li>
             </ol>
             <p class="mt-3 text-xs text-primary-600 dark:text-primary-400">
-              <a href="https://www.interactivebrokers.com/en/software/am/am/reports/activityflexqueries.htm" target="_blank" class="underline">View IBKR's official Flex Query documentation</a>
+              <a href="https://www.interactivebrokers.com/en/software/am/am/reports/activityflexqueries.htm" target="_blank" class="underline">{{ s("View IBKR's official Flex Query documentation") }}</a>
             </p>
           </div>
 
-          <!-- Error Message -->
           <div v-if="props.error" class="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
             <div class="flex">
               <svg class="h-5 w-5 text-red-400 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
@@ -52,39 +52,39 @@
 
           <form @submit.prevent="handleSubmit" class="space-y-4">
             <div>
-              <label for="accountLabel" class="label">Account Label</label>
+              <label for="accountLabel" class="label">{{ s('Account Label') }}</label>
               <input
                 id="accountLabel"
                 v-model="form.accountLabel"
                 type="text"
                 class="input"
-                placeholder="e.g., Main Account, Paper Trading"
+                :placeholder="s('e.g., Main Account, Paper Trading')"
               />
               <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Optional name to identify this account
+                {{ s('Optional name to identify this account') }}
               </p>
             </div>
 
             <div>
-              <label for="flexToken" class="label">Flex Token</label>
+              <label for="flexToken" class="label">{{ s('Flex Token') }}</label>
               <input
                 id="flexToken"
                 v-model="form.flexToken"
                 type="password"
                 class="input"
-                placeholder="Enter your Flex Token"
+                :placeholder="s('Enter your Flex Token')"
                 required
               />
             </div>
 
             <div>
-              <label for="flexQueryId" class="label">Flex Query ID</label>
+              <label for="flexQueryId" class="label">{{ s('Flex Query ID') }}</label>
               <input
                 id="flexQueryId"
                 v-model="form.flexQueryId"
                 type="text"
                 class="input"
-                placeholder="e.g., 123456"
+                :placeholder="s('e.g., 123456')"
                 required
               />
             </div>
@@ -92,10 +92,10 @@
             <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
               <div>
                 <label class="block text-sm font-medium text-gray-900 dark:text-white">
-                  Auto-Sync
+                  {{ s('Auto-Sync') }}
                 </label>
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                  Automatically sync trades daily
+                  {{ s('Automatically sync trades daily') }}
                 </p>
               </div>
               <button
@@ -116,7 +116,7 @@
             </div>
 
             <div v-if="form.autoSyncEnabled">
-              <label for="syncTime" class="label">Sync Time</label>
+              <label for="syncTime" class="label">{{ s('Sync Time') }}</label>
               <input
                 id="syncTime"
                 v-model="form.syncTime"
@@ -124,12 +124,12 @@
                 class="input"
               />
               <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Time to automatically sync each day (in your local timezone)
+                {{ s('Time to automatically sync each day (in your local timezone)') }}
               </p>
             </div>
 
             <div>
-              <label class="label">Sync Trades From</label>
+              <label class="label">{{ s('Sync Trades From') }}</label>
               <div class="flex flex-wrap gap-2 mb-2">
                 <button
                   v-for="preset in syncRangePresets"
@@ -143,31 +143,28 @@
                       : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600'
                   ]"
                 >
-                  {{ preset.label }}
+                  {{ s(preset.label) }}
                 </button>
               </div>
-              <input
+              <AppDateInput
                 v-if="activePreset === 'custom'"
                 v-model="form.syncStartDate"
-                type="date"
-                class="input"
                 :max="todayIso"
               />
               <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Only sync trades on or after this date. Leave as "All Time" to import the full history available from the broker.
+                {{ s('Only sync trades on or after this date. Leave as "All Time" to import the full history available from the broker.') }}
               </p>
             </div>
           </form>
         </div>
 
-        <!-- Footer -->
         <div class="flex items-center justify-end space-x-3 p-6 border-t border-gray-200 dark:border-gray-700">
           <button
             type="button"
             @click="emit('close')"
             class="btn-secondary"
           >
-            Cancel
+            {{ s('Cancel') }}
           </button>
           <button
             @click="handleSubmit"
@@ -176,9 +173,9 @@
           >
             <span v-if="loading" class="flex items-center">
               <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-              Connecting...
+              {{ s('Connecting...') }}
             </span>
-            <span v-else>Connect</span>
+            <span v-else>{{ s('Connect') }}</span>
           </button>
         </div>
       </div>
@@ -188,7 +185,10 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { syncRangePresets, applyPresetToForm, resolveActivePreset, todayIso } from '@/utils/syncRangePresets'
+import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
+import AppDateInput from '@/components/common/AppDateInput.vue'
+import { syncRangePresets, applyPresetToForm, todayIso } from '@/utils/syncRangePresets'
 
 const props = defineProps({
   loading: {
@@ -202,6 +202,10 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['close', 'save'])
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
 
 const form = ref({
   accountLabel: '',

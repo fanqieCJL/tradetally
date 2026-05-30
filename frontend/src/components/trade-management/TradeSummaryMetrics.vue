@@ -322,7 +322,7 @@
 import { ref, computed, nextTick, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { tSentence } from '@/i18n'
-import { format } from 'date-fns'
+import { formatAppDate } from '@/utils/date'
 import api from '@/services/api'
 import { useUserTimezone } from '@/composables/useUserTimezone'
 import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'
@@ -881,11 +881,7 @@ function formatPercent(value) {
 
 function formatDate(dateString) {
   if (!dateString) return '-'
-  try {
-    return format(new Date(dateString), 'MMM d, yyyy')
-  } catch {
-    return dateString
-  }
+  return formatAppDate(dateString) || dateString
 }
 
 /** Date and time using last execution time (exit_time), fallback to entry_time */

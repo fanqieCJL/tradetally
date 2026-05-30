@@ -220,11 +220,9 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
-import { format } from 'date-fns'
-import { zhCN, enUS } from 'date-fns/locale'
 import { useI18n } from 'vue-i18n'
 import { tSentence } from '@/i18n'
-import { parseTradeDate } from '@/utils/date'
+import { formatAppDate } from '@/utils/date'
 import { DocumentTextIcon, DocumentIcon, ChatBubbleLeftIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import api from '@/services/api'
 import TradeCommentsDialog from '@/components/trades/TradeCommentsDialog.vue'
@@ -271,10 +269,7 @@ function commentsLabel(count) {
 
 function formatDate(date) {
   void locale.value
-  const d = parseTradeDate(date)
-  if (!d) return ''
-  const dateLocale = locale.value === 'zh' ? zhCN : enUS
-  return format(d, 'MMM dd, yyyy', { locale: dateLocale })
+  return formatAppDate(date)
 }
 
 function formatDateTime(date) {

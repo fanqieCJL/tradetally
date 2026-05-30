@@ -1,10 +1,9 @@
 <template>
     <div class="content-wrapper py-8">
         <div class="mb-8">
-            <h1 class="heading-page">Profile</h1>
+            <h1 class="heading-page">{{ s('Profile') }}</h1>
             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Manage your profile information, security, and trading
-                preferences.
+                {{ s('Manage your profile information, security, and trading preferences.') }}
             </p>
         </div>
 
@@ -15,26 +14,26 @@
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white mb-6"
                     >
-                        Profile Information
+                        {{ s('Profile Information') }}
                     </h3>
                     <form @submit.prevent="updateProfile" class="space-y-6">
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <div>
                                 <label for="fullName" class="label"
-                                    >Full Name</label
+                                    >{{ s('Full Name') }}</label
                                 >
                                 <input
                                     id="fullName"
                                     v-model="profileForm.fullName"
                                     type="text"
                                     class="input"
-                                    placeholder="John Doe"
+                                    :placeholder="s('John Doe')"
                                 />
                             </div>
 
                             <div>
                                 <label for="username" class="label"
-                                    >Username</label
+                                    >{{ s('Username') }}</label
                                 >
                                 <input
                                     id="username"
@@ -46,12 +45,12 @@
                                 <p
                                     class="mt-1 text-sm text-gray-500 dark:text-gray-400"
                                 >
-                                    Username cannot be changed.
+                                    {{ s('Username cannot be changed.') }}
                                 </p>
                             </div>
 
                             <div>
-                                <label for="email" class="label">Email</label>
+                                <label for="email" class="label">{{ s('Email') }}</label>
                                 <input
                                     id="email"
                                     v-model="profileForm.email"
@@ -67,18 +66,17 @@
                                     class="mt-1 text-sm text-gray-500 dark:text-gray-400"
                                 >
                                     <span v-if="twoFactorStatus.enabled">
-                                        Email can be changed when 2FA is
-                                        enabled.
+                                        {{ s('Email can be changed when 2FA is enabled.') }}
                                     </span>
                                     <span v-else>
-                                        Enable 2FA to change your email address.
+                                        {{ s('Enable 2FA to change your email address.') }}
                                     </span>
                                 </p>
                             </div>
 
                             <div>
                                 <label for="timezone" class="label"
-                                    >Timezone</label
+                                    >{{ s('Timezone') }}</label
                                 >
                                 <select
                                     id="timezone"
@@ -102,29 +100,28 @@
                                 <p
                                     class="mt-1 text-sm text-gray-500 dark:text-gray-400"
                                 >
-                                    Trade times will be displayed in this
-                                    timezone.
+                                    {{ s('Trade times will be displayed in this timezone.') }}
                                 </p>
                             </div>
 
                             <div>
                                 <label for="timeDisplayFormat" class="label"
-                                    >Time format</label
+                                    >{{ s('Time format') }}</label
                                 >
                                 <select
                                     id="timeDisplayFormat"
                                     v-model="profileForm.timeDisplayFormat"
                                     class="input"
                                 >
-                                    <option value="24h">24-hour (14:00)</option>
+                                    <option value="24h">{{ s('24-hour (14:00)') }}</option>
                                     <option value="12h">
-                                        12-hour (2:00 PM)
+                                        {{ s('12-hour (2:00 PM)') }}
                                     </option>
                                 </select>
                                 <p
                                     class="mt-1 text-sm text-gray-500 dark:text-gray-400"
                                 >
-                                    How times are displayed across the app.
+                                    {{ s('How times are displayed across the app.') }}
                                 </p>
                             </div>
                         </div>
@@ -135,8 +132,8 @@
                                 :disabled="profileLoading"
                                 class="btn-primary"
                             >
-                                <span v-if="profileLoading">Updating...</span>
-                                <span v-else>Update Profile</span>
+                                <span v-if="profileLoading">{{ s('Updating...') }}</span>
+                                <span v-else>{{ s('Update Profile') }}</span>
                             </button>
                         </div>
                     </form>
@@ -149,11 +146,10 @@
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white mb-6"
                     >
-                        Two-Factor Authentication
+                        {{ s('Two-Factor Authentication') }}
                     </h3>
                     <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
-                        Add an extra layer of security to your account with
-                        two-factor authentication.
+                        {{ s('Add an extra layer of security to your account with two-factor authentication.') }}
                     </p>
 
                     <div v-if="twoFactorStatus.enabled" class="space-y-4">
@@ -179,17 +175,18 @@
                                     <h4
                                         class="text-sm font-medium text-green-800 dark:text-green-300"
                                     >
-                                        2FA is enabled
+                                        {{ s('2FA is enabled') }}
                                     </h4>
                                     <p
                                         class="text-sm text-green-700 dark:text-green-400 mt-1"
                                     >
-                                        Your account is protected with
-                                        two-factor authentication.
+                                        {{ s('Your account is protected with two-factor authentication.') }}
                                         {{
-                                            twoFactorStatus.backupCodesRemaining
+                                            s('{count} backup codes remaining.').replace(
+                                                '{count}',
+                                                twoFactorStatus.backupCodesRemaining,
+                                            )
                                         }}
-                                        backup codes remaining.
                                     </p>
                                 </div>
                             </div>
@@ -202,9 +199,9 @@
                                 class="btn-danger"
                             >
                                 <span v-if="twoFactorLoading"
-                                    >Disabling...</span
+                                    >{{ s('Disabling...') }}</span
                                 >
-                                <span v-else>Disable 2FA</span>
+                                <span v-else>{{ s('Disable 2FA') }}</span>
                             </button>
                         </div>
                     </div>
@@ -232,13 +229,12 @@
                                     <h4
                                         class="text-sm font-medium text-yellow-800 dark:text-yellow-300"
                                     >
-                                        2FA is not enabled
+                                        {{ s('2FA is not enabled') }}
                                     </h4>
                                     <p
                                         class="text-sm text-yellow-700 dark:text-yellow-400 mt-1"
                                     >
-                                        Enhance your account security by
-                                        enabling two-factor authentication.
+                                        {{ s('Enhance your account security by enabling two-factor authentication.') }}
                                     </p>
                                 </div>
                             </div>
@@ -249,8 +245,8 @@
                             :disabled="twoFactorLoading"
                             class="btn-primary"
                         >
-                            <span v-if="twoFactorLoading">Setting up...</span>
-                            <span v-else>Enable 2FA</span>
+                            <span v-if="twoFactorLoading">{{ s('Setting up...') }}</span>
+                            <span v-else>{{ s('Enable 2FA') }}</span>
                         </button>
                     </div>
                 </div>
@@ -260,10 +256,10 @@
             <div class="card">
                 <div class="card-body">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-6">
-                        Passkeys
+                        {{ s('Passkeys') }}
                     </h3>
                     <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
-                        Sign in without a password using your device's biometrics, security key, or PIN.
+                        {{ s("Sign in without a password using your device's biometrics, security key, or PIN.") }}
                     </p>
 
                     <!-- Loading -->
@@ -287,8 +283,8 @@
                                         {{ pk.device_name }}
                                     </p>
                                     <p class="text-xs text-gray-500 dark:text-gray-400">
-                                        Added {{ formatDate(pk.created_at) }}
-                                        <span v-if="pk.last_used_at"> - Last used {{ formatDate(pk.last_used_at) }}</span>
+                                        {{ s('Added') }} {{ formatDate(pk.created_at) }}
+                                        <span v-if="pk.last_used_at"> - {{ s('Last used') }} {{ formatDate(pk.last_used_at) }}</span>
                                     </p>
                                 </div>
                             </div>
@@ -296,7 +292,7 @@
                                 @click="deletePasskeyConfirm(pk)"
                                 class="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-sm"
                             >
-                                Delete
+                                {{ s('Delete') }}
                             </button>
                         </div>
                     </div>
@@ -304,7 +300,7 @@
                     <!-- No passkeys message -->
                     <div v-else-if="!passkeysLoading" class="mb-6">
                         <p class="text-sm text-gray-500 dark:text-gray-400">
-                            No passkeys registered yet.
+                            {{ s('No passkeys registered yet.') }}
                         </p>
                     </div>
 
@@ -313,8 +309,8 @@
                         :disabled="addingPasskey"
                         class="btn-primary"
                     >
-                        <span v-if="addingPasskey">Registering...</span>
-                        <span v-else>Add passkey</span>
+                        <span v-if="addingPasskey">{{ s('Registering...') }}</span>
+                        <span v-else>{{ s('Add passkey') }}</span>
                     </button>
                 </div>
             </div>
@@ -325,7 +321,7 @@
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white mb-6"
                     >
-                        Subscription
+                        {{ s('Subscription') }}
                     </h3>
 
                     <!-- Loading State -->
@@ -334,7 +330,7 @@
                             class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"
                         ></div>
                         <p class="mt-4 text-gray-600 dark:text-gray-400">
-                            Loading subscription details...
+                            {{ s('Loading subscription details...') }}
                         </p>
                     </div>
 
@@ -348,14 +344,14 @@
                                 <h4
                                     class="text-sm font-medium text-gray-900 dark:text-white"
                                 >
-                                    Current Plan
+                                    {{ s('Current Plan') }}
                                 </h4>
                                 <p
                                     class="text-sm text-gray-600 dark:text-gray-400 mt-1"
                                 >
                                     {{
                                         subscription.subscription.plan_name ||
-                                        "Pro Plan"
+                                        s('Pro Plan')
                                     }}
                                 </p>
                             </div>
@@ -385,7 +381,7 @@
                                         .cancel_at_period_end
                                 "
                             >
-                                Cancels on
+                                {{ s('Cancels on') }}
                                 {{
                                     formatDate(
                                         subscription.subscription
@@ -394,7 +390,7 @@
                                 }}
                             </span>
                             <span v-else>
-                                Next billing date:
+                                {{ s('Next billing date:') }}
                                 {{
                                     formatDate(
                                         subscription.subscription
@@ -410,12 +406,12 @@
                                 :disabled="portalLoading"
                                 class="btn-primary"
                             >
-                                <span v-if="portalLoading">Loading...</span>
-                                <span v-else>Manage Subscription</span>
+                                <span v-if="portalLoading">{{ s('Loading...') }}</span>
+                                <span v-else>{{ s('Manage Subscription') }}</span>
                             </button>
 
                             <router-link to="/billing" class="btn-secondary">
-                                View Billing Details
+                                {{ s('View Billing Details') }}
                             </router-link>
                         </div>
                     </div>
@@ -434,25 +430,29 @@
                                     <h4
                                         class="text-sm font-medium text-blue-900 dark:text-blue-100"
                                     >
-                                        Pro Trial Active
+                                        {{ s('Pro Trial Active') }}
                                     </h4>
                                     <p
                                         class="text-sm text-blue-700 dark:text-blue-300 mt-1"
                                     >
-                                        {{ subscription.trial.days_remaining }}
-                                        days remaining in your free trial
+                                        {{
+                                            s('{days} days remaining in your free trial').replace(
+                                                '{days}',
+                                                subscription.trial.days_remaining,
+                                            )
+                                        }}
                                     </p>
                                 </div>
                                 <span
                                     class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100"
                                 >
-                                    TRIAL
+                                    {{ s('TRIAL') }}
                                 </span>
                             </div>
                             <div
                                 class="mt-3 text-xs text-blue-600 dark:text-blue-400"
                             >
-                                Trial expires:
+                                {{ s('Trial expires:') }}
                                 {{ formatDate(subscription.trial.expires_at) }}
                             </div>
                         </div>
@@ -467,24 +467,21 @@
                             >
                                 {{
                                     subscription.tier === "pro"
-                                        ? "Pro Plan"
-                                        : "Free Plan"
+                                        ? s('Pro Plan')
+                                        : s('Free Plan')
                                 }}
                             </h4>
                             <p
                                 class="text-sm text-gray-600 dark:text-gray-400 mt-1"
                             >
                                 <span v-if="subscription.tier === 'pro'">
-                                    You have Pro access through a tier override.
+                                    {{ s('You have Pro access through a tier override.') }}
                                 </span>
                                 <span v-else-if="subscription.has_used_trial">
-                                    You've used your free trial. Upgrade to Pro
-                                    for continued access to advanced features.
+                                    {{ s("You've used your free trial. Upgrade to Pro for continued access to advanced features.") }}
                                 </span>
                                 <span v-else>
-                                    You're currently on the free plan. Start a
-                                    free trial or upgrade to Pro for advanced
-                                    features.
+                                    {{ s("You're currently on the free plan. Start a free trial or upgrade to Pro for advanced features.") }}
                                 </span>
                             </p>
                         </div>
@@ -501,12 +498,12 @@
                                     subscription.trial.active
                                 "
                             >
-                                Upgrade Before Trial Ends
+                                {{ s('Upgrade Before Trial Ends') }}
                             </span>
                             <span v-else-if="subscription.has_used_trial">
-                                Upgrade to Pro
+                                {{ s('Upgrade to Pro') }}
                             </span>
-                            <span v-else> Start Free Trial or Upgrade </span>
+                            <span v-else>{{ s('Start Free Trial or Upgrade') }}</span>
                         </router-link>
                     </div>
                 </div>
@@ -518,21 +515,17 @@
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white mb-6"
                     >
-                        API Keys
+                        {{ s('API Keys') }}
                     </h3>
                     <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
-                        Generate API keys to access your TradeTally data
-                        programmatically. Keep your keys secure and don't share
-                        them.
+                        {{ s("Generate API keys to access your TradeTally data programmatically. Keep your keys secure and don't share them.") }}
                     </p>
 
                     <div
                         v-if="billingStatus.billing_available && !canManageApiKeys"
                         class="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-900/40 dark:bg-amber-950/30 dark:text-amber-200"
                     >
-                        API keys are available with a Pro subscription.
-                        Upgrade to create personal integrations and external
-                        automations.
+                        {{ s('API keys are available with a Pro subscription. Upgrade to create personal integrations and external automations.') }}
                     </div>
 
                     <!-- API Keys List -->
@@ -554,7 +547,7 @@
                                             v-if="!apiKey.isActive"
                                             class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400"
                                         >
-                                            Inactive
+                                            {{ s('Inactive') }}
                                         </span>
                                         <span
                                             v-else-if="
@@ -564,7 +557,7 @@
                                             "
                                             class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400"
                                         >
-                                            Expired
+                                            {{ s('Expired') }}
                                         </span>
                                     </div>
                                     <div
@@ -573,7 +566,7 @@
                                         <span>{{ apiKey.keyPrefix }}...</span>
                                         <span class="mx-2">•</span>
                                         <span>{{
-                                            apiKey.permissions.join(", ")
+                                            formatPermissions(apiKey.permissions)
                                         }}</span>
                                         <span
                                             v-if="apiKey.lastUsedAt"
@@ -581,13 +574,13 @@
                                             >•</span
                                         >
                                         <span v-if="apiKey.lastUsedAt"
-                                            >Last used
+                                            >{{ s('Last used') }}
                                             {{
                                                 formatDate(apiKey.lastUsedAt)
                                             }}</span
                                         >
                                         <span v-else class="mx-2"
-                                            >• Never used</span
+                                            >• {{ s('Never used') }}</span
                                         >
                                         <span
                                             v-if="apiKey.expiresAt"
@@ -595,7 +588,7 @@
                                             >•</span
                                         >
                                         <span v-if="apiKey.expiresAt"
-                                            >Expires
+                                            >{{ s('Expires') }}
                                             {{
                                                 formatDate(apiKey.expiresAt)
                                             }}</span
@@ -610,8 +603,8 @@
                                     >
                                         {{
                                             apiKey.isActive
-                                                ? "Deactivate"
-                                                : "Activate"
+                                                ? s('Deactivate')
+                                                : s('Activate')
                                         }}
                                     </button>
                                     <button
@@ -619,7 +612,7 @@
                                         :disabled="apiKeysLoading"
                                         class="btn-danger text-xs py-1 px-2"
                                     >
-                                        Delete
+                                        {{ s('Delete') }}
                                     </button>
                                 </div>
                             </div>
@@ -628,7 +621,7 @@
 
                     <div v-else class="text-center py-8">
                         <p class="text-sm text-gray-500 dark:text-gray-400">
-                            No API keys created yet.
+                            {{ s('No API keys created yet.') }}
                         </p>
                     </div>
 
@@ -639,7 +632,7 @@
                             :disabled="apiKeysLoading"
                             class="btn-primary"
                         >
-                            Create API Key
+                            {{ s('Create API Key') }}
                         </button>
                     </div>
                 </div>
@@ -654,11 +647,10 @@
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white mb-6"
                     >
-                        Trading Profile
+                        {{ s('Trading Profile') }}
                     </h3>
                     <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
-                        Customize your trading preferences to get more
-                        personalized AI analytics and recommendations.
+                        {{ s('Customize your trading preferences to get more personalized AI analytics and recommendations.') }}
                     </p>
 
                     <form
@@ -670,7 +662,7 @@
                             <h4
                                 class="text-md font-medium text-gray-900 dark:text-white mb-4"
                             >
-                                General Information
+                                {{ s('General Information') }}
                             </h4>
                             <div
                                 class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
@@ -678,7 +670,7 @@
                                 <!-- Risk Tolerance -->
                                 <div>
                                     <label for="riskTolerance" class="label"
-                                        >Risk Tolerance</label
+                                        >{{ s('Risk Tolerance') }}</label
                                     >
                                     <select
                                         id="riskTolerance"
@@ -688,13 +680,13 @@
                                         class="input"
                                     >
                                         <option value="conservative">
-                                            Conservative
+                                            {{ s('Conservative') }}
                                         </option>
                                         <option value="moderate">
-                                            Moderate
+                                            {{ s('Moderate') }}
                                         </option>
                                         <option value="aggressive">
-                                            Aggressive
+                                            {{ s('Aggressive') }}
                                         </option>
                                     </select>
                                 </div>
@@ -702,7 +694,7 @@
                                 <!-- Experience Level -->
                                 <div>
                                     <label for="experienceLevel" class="label"
-                                        >Experience Level</label
+                                        >{{ s('Experience Level') }}</label
                                     >
                                     <select
                                         id="experienceLevel"
@@ -712,16 +704,16 @@
                                         class="input"
                                     >
                                         <option value="beginner">
-                                            Beginner (0-1 years)
+                                            {{ s('Beginner (0-1 years)') }}
                                         </option>
                                         <option value="intermediate">
-                                            Intermediate (1-3 years)
+                                            {{ s('Intermediate (1-3 years)') }}
                                         </option>
                                         <option value="advanced">
-                                            Advanced (3-5 years)
+                                            {{ s('Advanced (3-5 years)') }}
                                         </option>
                                         <option value="expert">
-                                            Expert (5+ years)
+                                            {{ s('Expert (5+ years)') }}
                                         </option>
                                     </select>
                                 </div>
@@ -731,7 +723,7 @@
                                     <label
                                         for="averagePositionSize"
                                         class="label"
-                                        >Average Position Size</label
+                                        >{{ s('Average Position Size') }}</label
                                     >
                                     <select
                                         id="averagePositionSize"
@@ -741,13 +733,13 @@
                                         class="input"
                                     >
                                         <option value="small">
-                                            Small ($100 - $1,000)
+                                            {{ s('Small ($100 - $1,000)') }}
                                         </option>
                                         <option value="medium">
-                                            Medium ($1,000 - $10,000)
+                                            {{ s('Medium ($1,000 - $10,000)') }}
                                         </option>
                                         <option value="large">
-                                            Large ($10,000+)
+                                            {{ s('Large ($10,000+)') }}
                                         </option>
                                     </select>
                                 </div>
@@ -759,13 +751,13 @@
                             <h4
                                 class="text-md font-medium text-gray-900 dark:text-white mb-4"
                             >
-                                Trading Preferences
+                                {{ s('Trading Preferences') }}
                             </h4>
                             <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
                                 <!-- Trading Strategies -->
                                 <div>
                                     <label class="label"
-                                        >Trading Strategies</label
+                                        >{{ s('Trading Strategies') }}</label
                                     >
                                     <div class="space-y-2 mt-2">
                                         <div
@@ -786,7 +778,7 @@
                                                 :for="`strategy-${strategy}`"
                                                 class="ml-2 text-sm text-gray-700 dark:text-gray-300"
                                             >
-                                                {{ strategy }}
+                                                {{ s(strategy) }}
                                             </label>
                                         </div>
                                     </div>
@@ -794,7 +786,7 @@
 
                                 <!-- Trading Styles -->
                                 <div>
-                                    <label class="label">Trading Styles</label>
+                                    <label class="label">{{ s('Trading Styles') }}</label>
                                     <div class="space-y-2 mt-2">
                                         <div
                                             v-for="style in styleOptions"
@@ -814,7 +806,7 @@
                                                 :for="`style-${style}`"
                                                 class="ml-2 text-sm text-gray-700 dark:text-gray-300"
                                             >
-                                                {{ style }}
+                                                {{ s(style) }}
                                             </label>
                                         </div>
                                     </div>
@@ -822,7 +814,7 @@
 
                                 <!-- Primary Markets -->
                                 <div>
-                                    <label class="label">Primary Markets</label>
+                                    <label class="label">{{ s('Primary Markets') }}</label>
                                     <div class="space-y-2 mt-2">
                                         <div
                                             v-for="market in marketOptions"
@@ -842,7 +834,7 @@
                                                 :for="`market-${market}`"
                                                 class="ml-2 text-sm text-gray-700 dark:text-gray-300"
                                             >
-                                                {{ market }}
+                                                {{ s(market) }}
                                             </label>
                                         </div>
                                     </div>
@@ -850,7 +842,7 @@
 
                                 <!-- Trading Goals -->
                                 <div>
-                                    <label class="label">Trading Goals</label>
+                                    <label class="label">{{ s('Trading Goals') }}</label>
                                     <div class="space-y-2 mt-2">
                                         <div
                                             v-for="goal in goalOptions"
@@ -870,7 +862,7 @@
                                                 :for="`goal-${goal}`"
                                                 class="ml-2 text-sm text-gray-700 dark:text-gray-300"
                                             >
-                                                {{ goal }}
+                                                {{ s(goal) }}
                                             </label>
                                         </div>
                                     </div>
@@ -883,13 +875,13 @@
                             <h4
                                 class="text-md font-medium text-gray-900 dark:text-white mb-4"
                             >
-                                Sector Preferences
+                                {{ s('Sector Preferences') }}
                             </h4>
                             <div class="grid grid-cols-1 gap-6">
                                 <!-- Preferred Sectors -->
                                 <div>
                                     <label class="label"
-                                        >Preferred Sectors</label
+                                        >{{ s('Preferred Sectors') }}</label
                                     >
                                     <div
                                         class="grid grid-cols-2 gap-2 mt-2 sm:grid-cols-3 lg:grid-cols-4"
@@ -912,7 +904,7 @@
                                                 :for="`sector-${sector}`"
                                                 class="ml-2 text-sm text-gray-700 dark:text-gray-300"
                                             >
-                                                {{ sector }}
+                                                {{ s(sector) }}
                                             </label>
                                         </div>
                                     </div>
@@ -927,9 +919,9 @@
                                 class="btn-primary"
                             >
                                 <span v-if="tradingProfileLoading"
-                                    >Updating...</span
+                                    >{{ s('Updating...') }}</span
                                 >
-                                <span v-else>Update Trading Profile</span>
+                                <span v-else>{{ s('Update Trading Profile') }}</span>
                             </button>
                         </div>
                     </form>
@@ -942,11 +934,10 @@
                     <h3
                         class="text-lg font-medium text-red-600 dark:text-red-400 mb-4"
                     >
-                        Danger Zone
+                        {{ s('Danger Zone') }}
                     </h3>
                     <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
-                        Permanently delete your account and all associated data.
-                        This action cannot be undone.
+                        {{ s('Permanently delete your account and all associated data. This action cannot be undone.') }}
                     </p>
 
                     <div
@@ -970,15 +961,12 @@
                                 <h4
                                     class="text-sm font-medium text-red-800 dark:text-red-300"
                                 >
-                                    Warning
+                                    {{ s('Warning') }}
                                 </h4>
                                 <p
                                     class="text-sm text-red-700 dark:text-red-400 mt-1"
                                 >
-                                    Deleting your account will permanently
-                                    remove all your trades, analytics data,
-                                    settings, and any other data associated with
-                                    your account. This cannot be reversed.
+                                    {{ s('Deleting your account will permanently remove all your trades, analytics data, settings, and any other data associated with your account. This cannot be reversed.') }}
                                 </p>
                             </div>
                         </div>
@@ -988,7 +976,7 @@
                         @click="showDeleteAccountModal = true"
                         class="btn-danger"
                     >
-                        Delete My Account
+                        {{ s('Delete My Account') }}
                     </button>
                 </div>
             </div>
@@ -1006,7 +994,7 @@
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white mb-4"
                     >
-                        Set Up Two-Factor Authentication
+                        {{ s('Set Up Two-Factor Authentication') }}
                     </h3>
 
                     <div class="space-y-6">
@@ -1015,18 +1003,17 @@
                             <h4
                                 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3"
                             >
-                                Step 1: Scan QR Code
+                                {{ s('Step 1: Scan QR Code') }}
                             </h4>
                             <p
                                 class="text-sm text-gray-600 dark:text-gray-400 mb-4"
                             >
-                                Scan this QR code with your authenticator app
-                                (Google Authenticator, Authy, etc.)
+                                {{ s('Scan this QR code with your authenticator app (Google Authenticator, Authy, etc.)') }}
                             </p>
                             <div class="flex justify-center mb-4">
                                 <img
                                     :src="qrCodeUrl"
-                                    alt="2FA QR Code"
+                                    :alt="s('2FA QR Code')"
                                     class="border rounded-lg"
                                 />
                             </div>
@@ -1034,7 +1021,7 @@
                                 <p
                                     class="text-xs text-gray-500 dark:text-gray-400 mb-2"
                                 >
-                                    Or enter this code manually:
+                                    {{ s('Or enter this code manually:') }}
                                 </p>
                                 <code
                                     class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded break-all"
@@ -1048,13 +1035,12 @@
                             <h4
                                 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3"
                             >
-                                Step 2: Enter Verification Code
+                                {{ s('Step 2: Enter Verification Code') }}
                             </h4>
                             <p
                                 class="text-sm text-gray-600 dark:text-gray-400 mb-3"
                             >
-                                Enter the 6-digit code from your authenticator
-                                app
+                                {{ s('Enter the 6-digit code from your authenticator app') }}
                             </p>
                             <input
                                 v-model="verificationCode"
@@ -1070,14 +1056,12 @@
                             <h4
                                 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3"
                             >
-                                Backup Codes
+                                {{ s('Backup Codes') }}
                             </h4>
                             <p
                                 class="text-sm text-gray-600 dark:text-gray-400 mb-3"
                             >
-                                Save these backup codes in a secure place. You
-                                can use them to access your account if you lose
-                                your authenticator device.
+                                {{ s('Save these backup codes in a secure place. You can use them to access your account if you lose your authenticator device.') }}
                             </p>
                             <div
                                 class="bg-gray-50 dark:bg-gray-700 p-3 rounded-md max-h-32 overflow-y-auto"
@@ -1101,7 +1085,7 @@
                                 @click="cancel2FASetup"
                                 class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600"
                             >
-                                Cancel
+                                {{ s('Cancel') }}
                             </button>
                             <button
                                 @click="enable2FA"
@@ -1110,8 +1094,8 @@
                                 "
                                 class="px-4 py-2 text-sm font-medium text-white bg-primary-600 border border-transparent rounded-md hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                <span v-if="twoFactorLoading">Enabling...</span>
-                                <span v-else>Enable 2FA</span>
+                                <span v-if="twoFactorLoading">{{ s('Enabling...') }}</span>
+                                <span v-else>{{ s('Enable 2FA') }}</span>
                             </button>
                         </div>
                     </div>
@@ -1131,7 +1115,7 @@
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white mb-4"
                     >
-                        Disable Two-Factor Authentication
+                        {{ s('Disable Two-Factor Authentication') }}
                     </h3>
 
                     <div
@@ -1155,14 +1139,12 @@
                                 <h4
                                     class="text-sm font-medium text-red-800 dark:text-red-300"
                                 >
-                                    Security Warning
+                                    {{ s('Security Warning') }}
                                 </h4>
                                 <p
                                     class="text-sm text-red-700 dark:text-red-400 mt-1"
                                 >
-                                    Disabling 2FA will make your account less
-                                    secure. You'll only need your password to
-                                    log in.
+                                    {{ s("Disabling 2FA will make your account less secure. You'll only need your password to log in.") }}
                                 </p>
                             </div>
                         </div>
@@ -1171,7 +1153,7 @@
                     <form @submit.prevent="confirmDisable2FA" class="space-y-4">
                         <div>
                             <label for="disablePassword" class="label"
-                                >Current Password</label
+                                >{{ s('Current Password') }}</label
                             >
                             <input
                                 id="disablePassword"
@@ -1179,13 +1161,13 @@
                                 type="password"
                                 required
                                 class="input"
-                                placeholder="Enter your current password"
+                                :placeholder="s('Enter your current password')"
                             />
                         </div>
 
                         <div>
                             <label for="disableToken" class="label"
-                                >2FA Verification Code</label
+                                >{{ s('2FA Verification Code') }}</label
                             >
                             <input
                                 id="disableToken"
@@ -1194,13 +1176,12 @@
                                 maxlength="8"
                                 required
                                 class="input text-center text-lg tracking-widest"
-                                placeholder="Enter 6-digit code or backup code"
+                                :placeholder="s('Enter 6-digit code or backup code')"
                             />
                             <p
                                 class="mt-1 text-xs text-gray-500 dark:text-gray-400"
                             >
-                                Enter the code from your authenticator app or
-                                use a backup code
+                                {{ s('Enter the code from your authenticator app or use a backup code') }}
                             </p>
                         </div>
 
@@ -1210,7 +1191,7 @@
                                 @click="cancelDisable2FA"
                                 class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600"
                             >
-                                Cancel
+                                {{ s('Cancel') }}
                             </button>
                             <button
                                 type="submit"
@@ -1222,9 +1203,9 @@
                                 class="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 <span v-if="twoFactorLoading"
-                                    >Disabling...</span
+                                    >{{ s('Disabling...') }}</span
                                 >
-                                <span v-else>Disable 2FA</span>
+                                <span v-else>{{ s('Disable 2FA') }}</span>
                             </button>
                         </div>
                     </form>
@@ -1244,25 +1225,25 @@
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white mb-4"
                     >
-                        Create API Key
+                        {{ s('Create API Key') }}
                     </h3>
 
                     <form @submit.prevent="createApiKey" class="space-y-4">
                         <div>
-                            <label for="apiKeyName" class="label">Name</label>
+                            <label for="apiKeyName" class="label">{{ s('Name') }}</label>
                             <input
                                 id="apiKeyName"
                                 v-model="createApiKeyForm.name"
                                 type="text"
                                 required
                                 class="input"
-                                placeholder="My API Key"
+                                :placeholder="s('My API Key')"
                             />
                         </div>
 
                         <div>
                             <label for="apiKeyPermissions" class="label"
-                                >Permissions</label
+                                >{{ s('Permissions') }}</label
                             >
                             <div class="space-y-2">
                                 <div class="flex items-center">
@@ -1277,7 +1258,7 @@
                                         for="permRead"
                                         class="ml-2 block text-sm text-gray-900 dark:text-white"
                                     >
-                                        Read - View trades and analytics
+                                        {{ s('Read - View trades and analytics') }}
                                     </label>
                                 </div>
                                 <div class="flex items-center">
@@ -1292,7 +1273,7 @@
                                         for="permWrite"
                                         class="ml-2 block text-sm text-gray-900 dark:text-white"
                                     >
-                                        Write - Create and modify trades
+                                        {{ s('Write - Create and modify trades') }}
                                     </label>
                                 </div>
                                 <div
@@ -1310,7 +1291,7 @@
                                         for="permAdmin"
                                         class="ml-2 block text-sm text-gray-900 dark:text-white"
                                     >
-                                        Admin - Full administrative access
+                                        {{ s('Admin - Full administrative access') }}
                                     </label>
                                 </div>
                             </div>
@@ -1318,18 +1299,18 @@
 
                         <div>
                             <label for="apiKeyExpiry" class="label"
-                                >Expires in (days)</label
+                                >{{ s('Expires in (days)') }}</label
                             >
                             <select
                                 id="apiKeyExpiry"
                                 v-model="createApiKeyForm.expiresIn"
                                 class="input"
                             >
-                                <option :value="null">Never</option>
-                                <option :value="30">30 days</option>
-                                <option :value="90">90 days</option>
-                                <option :value="180">180 days</option>
-                                <option :value="365">1 year</option>
+                                <option :value="null">{{ s('Never') }}</option>
+                                <option :value="30">{{ s('30 days') }}</option>
+                                <option :value="90">{{ s('90 days') }}</option>
+                                <option :value="180">{{ s('180 days') }}</option>
+                                <option :value="365">{{ s('1 year') }}</option>
                             </select>
                         </div>
 
@@ -1339,7 +1320,7 @@
                                 @click="closeCreateApiKeyModal"
                                 class="btn-secondary"
                             >
-                                Cancel
+                                {{ s('Cancel') }}
                             </button>
                             <button
                                 type="submit"
@@ -1350,9 +1331,9 @@
                                 class="btn-primary"
                             >
                                 <span v-if="createApiKeyLoading"
-                                    >Creating...</span
+                                    >{{ s('Creating...') }}</span
                                 >
-                                <span v-else>Create API Key</span>
+                                <span v-else>{{ s('Create API Key') }}</span>
                             </button>
                         </div>
                     </form>
@@ -1372,7 +1353,7 @@
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white mb-4"
                     >
-                        API Key Created
+                        {{ s('API Key Created') }}
                     </h3>
 
                     <div class="space-y-4">
@@ -1382,14 +1363,13 @@
                             <p
                                 class="text-sm text-yellow-800 dark:text-yellow-400"
                             >
-                                <strong>Important:</strong> This is the only
-                                time you'll see this key. Copy it now and store
-                                it securely.
+                                <strong>{{ s('Important') }}:</strong>
+                                {{ s("This is the only time you'll see this key. Copy it now and store it securely.") }}
                             </p>
                         </div>
 
                         <div>
-                            <label class="label">API Key</label>
+                            <label class="label">{{ s('API Key') }}</label>
                             <div class="flex">
                                 <input
                                     :value="createdApiKey.key"
@@ -1400,21 +1380,21 @@
                                     @click="copyApiKey"
                                     class="ml-2 btn-secondary text-xs px-3"
                                 >
-                                    Copy
+                                    {{ s('Copy') }}
                                 </button>
                             </div>
                         </div>
 
                         <div class="text-sm text-gray-600 dark:text-gray-400">
                             <p>
-                                <strong>Name:</strong> {{ createdApiKey.name }}
+                                <strong>{{ s('Name') }}:</strong> {{ createdApiKey.name }}
                             </p>
                             <p>
-                                <strong>Permissions:</strong>
-                                {{ createdApiKey.permissions.join(", ") }}
+                                <strong>{{ s('Permissions') }}:</strong>
+                                {{ formatPermissions(createdApiKey.permissions) }}
                             </p>
                             <p v-if="createdApiKey.expiresAt">
-                                <strong>Expires:</strong>
+                                <strong>{{ s('Expires') }}:</strong>
                                 {{ formatDate(createdApiKey.expiresAt) }}
                             </p>
                         </div>
@@ -1424,7 +1404,7 @@
                                 @click="closeApiKeyCreatedModal"
                                 class="btn-primary"
                             >
-                                Done
+                                {{ s('Done') }}
                             </button>
                         </div>
                     </div>
@@ -1462,13 +1442,12 @@
                     <h3
                         class="text-lg font-medium text-gray-900 dark:text-white text-center mb-2"
                     >
-                        Delete Your Account
+                        {{ s('Delete Your Account') }}
                     </h3>
                     <p
                         class="text-sm text-gray-600 dark:text-gray-400 text-center mb-6"
                     >
-                        This action is permanent and cannot be undone. All your
-                        data will be deleted.
+                        {{ s('This action is permanent and cannot be undone. All your data will be deleted.') }}
                     </p>
 
                     <form
@@ -1479,15 +1458,13 @@
                             class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4"
                         >
                             <p class="text-sm text-red-700 dark:text-red-400">
-                                To confirm, please enter your password below.
-                                This will immediately delete your account and
-                                log you out.
+                                {{ s('To confirm, please enter your password below. This will immediately delete your account and log you out.') }}
                             </p>
                         </div>
 
                         <div>
                             <label for="deleteAccountPassword" class="label"
-                                >Password</label
+                                >{{ s('Password') }}</label
                             >
                             <input
                                 id="deleteAccountPassword"
@@ -1495,7 +1472,7 @@
                                 type="password"
                                 required
                                 class="input"
-                                placeholder="Enter your password"
+                                :placeholder="s('Enter your password')"
                             />
                         </div>
 
@@ -1512,7 +1489,7 @@
                                 @click="cancelDeleteAccount"
                                 class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600"
                             >
-                                Cancel
+                                {{ s('Cancel') }}
                             </button>
                             <button
                                 type="submit"
@@ -1523,9 +1500,9 @@
                                 class="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 <span v-if="deleteAccountLoading"
-                                    >Deleting...</span
+                                    >{{ s('Deleting...') }}</span
                                 >
-                                <span v-else>Delete Account</span>
+                                <span v-else>{{ s('Delete Account') }}</span>
                             </button>
                         </div>
                     </form>
@@ -1538,16 +1515,34 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import { useAuthStore } from "@/stores/auth";
 import { useNotification } from "@/composables/useNotification";
 import NotificationPreferences from "@/components/profile/NotificationPreferences.vue";
 import api from "@/services/api";
+import { tSentence } from "@/i18n";
+import { formatAppDate } from "@/utils/date";
 import { TIMEZONE_OPTIONS } from "@/utils/timezone";
 
 const router = useRouter();
+const { locale } = useI18n();
+const s = (text) => tSentence(text, { context: "metrics" });
+void locale;
 
 const authStore = useAuthStore();
 const { showSuccess, showError, showDangerConfirmation } = useNotification();
+
+function notifySuccess(message) {
+    showSuccess(s("Success"), s(message));
+}
+
+function notifyError(message) {
+    showError(s("Error"), s(message));
+}
+
+function formatPermissions(permissions) {
+    return permissions.map((perm) => s(perm)).join(", ");
+}
 
 // Profile form data
 const profileLoading = ref(false);
@@ -1702,7 +1697,7 @@ const timezoneGroups = computed(() => {
         groups[tz.group].push(tz);
     }
     return Object.keys(groups).map((name) => ({
-        name,
+        name: s(name),
         options: groups[name],
     }));
 });
@@ -1771,14 +1766,11 @@ async function updateProfile() {
             });
         }
 
-        showSuccess("Success", "Profile updated successfully");
+        notifySuccess("Profile updated successfully");
 
         await authStore.fetchUser();
     } catch (error) {
-        showError(
-            "Error",
-            error.response?.data?.error || "Failed to update profile",
-        );
+        notifyError(error.response?.data?.error || "Failed to update profile");
     } finally {
         profileLoading.value = false;
     }
@@ -1804,7 +1796,7 @@ async function setup2FA() {
         setupSecret.value = response.data.secret;
         backupCodes.value = response.data.backupCodes || [];
     } catch (error) {
-        showError("Error", "Failed to set up 2FA");
+        notifyError("Failed to set up 2FA");
     } finally {
         twoFactorLoading.value = false;
     }
@@ -1812,7 +1804,7 @@ async function setup2FA() {
 
 async function enable2FA() {
     if (!verificationCode.value) {
-        showError("Error", "Please enter the verification code");
+        notifyError("Please enter the verification code");
         return;
     }
 
@@ -1825,15 +1817,12 @@ async function enable2FA() {
             backupCodes: backupCodes.value,
         });
 
-        showSuccess("Success", "2FA has been enabled successfully");
+        notifySuccess("2FA has been enabled successfully");
         show2FASetup.value = false;
         verificationCode.value = "";
         await fetch2FAStatus();
     } catch (error) {
-        showError(
-            "Error",
-            error.response?.data?.error || "Failed to enable 2FA",
-        );
+        notifyError(error.response?.data?.error || "Failed to enable 2FA");
     } finally {
         twoFactorLoading.value = false;
     }
@@ -1845,7 +1834,7 @@ async function disable2FA() {
 
 async function confirmDisable2FA() {
     if (!disable2FAForm.value.password || !disable2FAForm.value.token) {
-        showError("Error", "Both password and verification code are required");
+        notifyError("Both password and verification code are required");
         return;
     }
 
@@ -1857,15 +1846,12 @@ async function confirmDisable2FA() {
             token: disable2FAForm.value.token,
         });
 
-        showSuccess("Success", "2FA has been disabled successfully");
+        notifySuccess("2FA has been disabled successfully");
         showDisable2FAModal.value = false;
         disable2FAForm.value = { password: "", token: "" };
         await fetch2FAStatus();
     } catch (error) {
-        showError(
-            "Error",
-            error.response?.data?.error || "Failed to disable 2FA",
-        );
+        notifyError(error.response?.data?.error || "Failed to disable 2FA");
     } finally {
         twoFactorLoading.value = false;
     }
@@ -1915,7 +1901,9 @@ async function addPasskey() {
         console.log("[PASSKEY] Registration response received");
 
         // Ask for device name
-        const deviceName = prompt("Name this passkey (e.g., MacBook Touch ID):") || "Unnamed passkey";
+        const deviceName =
+            prompt(s("Name this passkey (e.g., MacBook Touch ID):")) ||
+            s("Unnamed passkey");
 
         // Verify with server
         await api.post("/auth/passkey/register/verify", {
@@ -1923,14 +1911,18 @@ async function addPasskey() {
             deviceName,
         });
 
-        showSuccess("Success", "Passkey registered successfully.");
+        notifySuccess("Passkey registered successfully.");
         await fetchPasskeys();
     } catch (error) {
         console.error("[PASSKEY] Registration error:", error.name, error.message, error);
         if (error.name === "NotAllowedError" || error.name === "InvalidStateError") {
-            showError("Cancelled", "Passkey registration was cancelled.");
+            showError(s("Cancelled"), s("Passkey registration was cancelled."));
         } else {
-            showError("Error", error.response?.data?.error || error.message || "Failed to register passkey.");
+            notifyError(
+                error.response?.data?.error ||
+                    error.message ||
+                    "Failed to register passkey.",
+            );
         }
     } finally {
         addingPasskey.value = false;
@@ -1939,7 +1931,14 @@ async function addPasskey() {
 
 function deletePasskeyConfirm(pk) {
     passkeyToDelete.value = pk;
-    if (confirm(`Delete passkey "${pk.device_name}"? This cannot be undone.`)) {
+    if (
+        confirm(
+            s('Delete passkey "{name}"? This cannot be undone.').replace(
+                "{name}",
+                pk.device_name,
+            ),
+        )
+    ) {
         deletePasskey(pk.id);
     }
     passkeyToDelete.value = null;
@@ -1948,10 +1947,10 @@ function deletePasskeyConfirm(pk) {
 async function deletePasskey(id) {
     try {
         await api.delete(`/auth/passkey/${id}`);
-        showSuccess("Success", "Passkey deleted.");
+        notifySuccess("Passkey deleted.");
         await fetchPasskeys();
     } catch (error) {
-        showError("Error", error.response?.data?.error || "Failed to delete passkey.");
+        notifyError(error.response?.data?.error || "Failed to delete passkey.");
     }
 }
 
@@ -1967,7 +1966,7 @@ async function fetchApiKeys() {
         const response = await api.get("/api-keys");
         apiKeys.value = response.data.apiKeys;
     } catch (error) {
-        showError("Error", "Failed to load API keys");
+        notifyError("Failed to load API keys");
     } finally {
         apiKeysLoading.value = false;
     }
@@ -1994,12 +1993,9 @@ async function createApiKey() {
         // Refresh the API keys list
         await fetchApiKeys();
 
-        showSuccess("Success", "API key created successfully");
+        notifySuccess("API key created successfully");
     } catch (error) {
-        showError(
-            "Error",
-            error.response?.data?.error || "Failed to create API key",
-        );
+        notifyError(error.response?.data?.error || "Failed to create API key");
     } finally {
         createApiKeyLoading.value = false;
     }
@@ -2019,9 +2015,9 @@ function closeApiKeyCreatedModal() {
 async function copyApiKey() {
     try {
         await navigator.clipboard.writeText(createdApiKey.value.key);
-        showSuccess("Success", "API key copied to clipboard");
+        notifySuccess("API key copied to clipboard");
     } catch (error) {
-        showError("Error", "Failed to copy API key");
+        notifyError("Failed to copy API key");
     }
 }
 
@@ -2035,15 +2031,11 @@ async function toggleApiKey(apiKey) {
         // Refresh the API keys list
         await fetchApiKeys();
 
-        showSuccess(
-            "Success",
-            `API key ${apiKey.isActive ? "deactivated" : "activated"}`,
+        notifySuccess(
+            apiKey.isActive ? "API key deactivated" : "API key activated",
         );
     } catch (error) {
-        showError(
-            "Error",
-            error.response?.data?.error || "Failed to update API key",
-        );
+        notifyError(error.response?.data?.error || "Failed to update API key");
     } finally {
         apiKeysLoading.value = false;
     }
@@ -2051,8 +2043,10 @@ async function toggleApiKey(apiKey) {
 
 function deleteApiKey(apiKey) {
     showDangerConfirmation(
-        "Delete API Key",
-        `Are you sure you want to delete the API key "${apiKey.name}"? This action cannot be undone.`,
+        s("Delete API Key"),
+        s(
+            'Are you sure you want to delete the API key "{name}"? This action cannot be undone.',
+        ).replace("{name}", apiKey.name),
         async () => {
             try {
                 apiKeysLoading.value = true;
@@ -2061,10 +2055,9 @@ function deleteApiKey(apiKey) {
                 // Refresh the API keys list
                 await fetchApiKeys();
 
-                showSuccess("Success", "API key deleted successfully");
+                notifySuccess("API key deleted successfully");
             } catch (error) {
-                showError(
-                    "Error",
+                notifyError(
                     error.response?.data?.error || "Failed to delete API key",
                 );
             } finally {
@@ -2114,7 +2107,7 @@ async function openCustomerPortal() {
         }
     } catch (error) {
         console.error("Error opening customer portal:", error);
-        showError("Error", "Failed to open customer portal. Please try again.");
+        notifyError("Failed to open customer portal. Please try again.");
     } finally {
         portalLoading.value = false;
     }
@@ -2144,7 +2137,7 @@ function formatSubscriptionStatus(status) {
         canceled: "Canceled",
         unpaid: "Unpaid",
     };
-    return formatted[status] || status;
+    return s(formatted[status] || status);
 }
 
 // Trading profile methods
@@ -2153,9 +2146,9 @@ async function updateTradingProfile() {
 
     try {
         await api.put("/settings/trading-profile", tradingProfileForm.value);
-        showSuccess("Success", "Trading profile updated successfully");
+        notifySuccess("Trading profile updated successfully");
     } catch (error) {
-        showError("Error", "Failed to update trading profile");
+        notifyError("Failed to update trading profile");
     } finally {
         tradingProfileLoading.value = false;
     }
@@ -2190,7 +2183,7 @@ function cancelDeleteAccount() {
 
 async function confirmDeleteAccount() {
     if (!deleteAccountForm.value.password) {
-        deleteAccountError.value = "Password is required";
+        deleteAccountError.value = s("Password is required");
         return;
     }
 
@@ -2206,9 +2199,10 @@ async function confirmDeleteAccount() {
         authStore.logout();
         router.push("/");
     } catch (error) {
-        deleteAccountError.value =
+        deleteAccountError.value = s(
             error.response?.data?.error ||
-            "Failed to delete account. Please try again.";
+                "Failed to delete account. Please try again.",
+        );
     } finally {
         deleteAccountLoading.value = false;
     }
@@ -2216,12 +2210,8 @@ async function confirmDeleteAccount() {
 
 // Utility functions
 function formatDate(dateString) {
-    if (!dateString) return "Never";
-    return new Date(dateString).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-    });
+    if (!dateString) return s("Never");
+    return formatAppDate(dateString);
 }
 
 // Initialize data on component mount

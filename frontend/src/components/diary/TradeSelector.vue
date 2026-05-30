@@ -58,21 +58,20 @@
 
     <!-- Selected Count -->
     <div v-if="selectedTrades.length > 0" class="mt-3 text-sm text-gray-600 dark:text-gray-400">
-      {{ s(`${selectedTrades.length} trade${selectedTrades.length === 1 ? '' : 's'} selected`) }}
+      {{ formatSelectedTradesLabel() }}
     </div>
   </div>
 </template>
 
 <script setup>
-import { tSentence } from '@/i18n'
+import { ref, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { tSentence } from '@/i18n'
+import api from '@/services/api'
+import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'
 
 const { locale } = useI18n()
 const s = (text) => tSentence(text, { context: 'diary' })
-
-import { ref, watch, computed } from 'vue'
-import api from '@/services/api'
-import { useCurrencyFormatter } from '@/composables/useCurrencyFormatter'
 
 const props = defineProps({
   modelValue: {
@@ -95,6 +94,13 @@ const selectedTrades = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value)
 })
+
+function formatSelectedTradesLabel() {
+  void locale.value
+  const count = selectedTrades.value.length
+  const key = count === 1 ? '{count} trade selected' : '{count} trades selected'
+  return s(key).replace('{count}', String(count))
+}
 
 const isSelected = (tradeId) => {
   return selectedTrades.value.includes(tradeId)

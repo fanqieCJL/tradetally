@@ -882,7 +882,7 @@ import { tSentence } from "@/i18n";
 import { useRouter, useRoute } from "vue-router";
 import { useInvestmentsStore } from "@/stores/investments";
 import { useNotification } from "@/composables/useNotification";
-import { format } from "date-fns";
+import { formatAppDate } from "@/utils/date";
 import api from "@/services/api";
 import EightPillarsCard from "@/components/investments/EightPillarsCard.vue";
 import KeyMetricsCard from "@/components/investments/KeyMetricsCard.vue";
@@ -1196,6 +1196,6 @@ function formatPercent(value) {
 
 function formatDate(date) {
     if (!date) return "";
-    return format(new Date(date), "MMM d, yyyy");
+    return formatAppDate(date);
 }
 </script>

@@ -8,6 +8,12 @@ import { calendarZhCN } from './calendar.zh-CN.js'
 import { importZhCN } from './import.zh-CN.js'
 import { settingsZhCN } from './settings.zh-CN.js'
 import { userManagementZhCN } from './user-management.zh-CN.js'
+import { backupManagementZhCN } from './backup-management.zh-CN.js'
+import { brokerSyncZhCN } from './broker-sync.zh-CN.js'
+import { cusipMappingsZhCN } from './cusip-mappings.zh-CN.js'
+import { diaryZhCN } from './diary.zh-CN.js'
+import { profileZhCN } from './profile.zh-CN.js'
+import { notificationsZhCN } from './notifications.zh-CN.js'
 
 export const zhCNMap = {
   exact: {
@@ -990,7 +996,13 @@ export const zhCNMap = {
     ...calendarZhCN,
     ...importZhCN,
     ...settingsZhCN,
-    ...userManagementZhCN
+    ...userManagementZhCN,
+    ...backupManagementZhCN,
+    ...brokerSyncZhCN,
+    ...cusipMappingsZhCN,
+    ...diaryZhCN,
+    ...profileZhCN,
+    ...notificationsZhCN
   },
 
   templated: [
@@ -1240,6 +1252,89 @@ export const zhCNMap = {
     {
       pattern: /^Are you sure you want to delete this trade for (.+)\?$/i,
       render: ([, symbol]) => `确定要删除 ${symbol} 的这笔交易吗？`
+    },
+    {
+      pattern: /^Delete (\d+)$/,
+      render: ([, count]) => `删除 ${count} 条`
+    },
+    {
+      pattern: /^Showing (\d+) to (\d+) of (\d+) notifications$/,
+      render: ([, start, end, total]) => `显示 ${start}–${end} / 共 ${total} 条通知`
+    },
+    {
+      pattern: /^(\d+) minute ago$/,
+      render: ([, n]) => `${n} 分钟前`
+    },
+    {
+      pattern: /^(\d+) minutes ago$/,
+      render: ([, n]) => `${n} 分钟前`
+    },
+    {
+      pattern: /^(\d+) hour ago$/,
+      render: ([, n]) => `${n} 小时前`
+    },
+    {
+      pattern: /^(\d+) hours ago$/,
+      render: ([, n]) => `${n} 小时前`
+    },
+    {
+      pattern: /^(\d+) day ago$/,
+      render: ([, n]) => `${n} 天前`
+    },
+    {
+      pattern: /^(\d+) days ago$/,
+      render: ([, n]) => `${n} 天前`
+    },
+    {
+      pattern: /^Open notification: (.+)$/,
+      render: ([, symbol]) => `打开通知：${symbol}`
+    },
+    {
+      pattern: /^Achievement unlocked: (.+)$/,
+      render: ([, name]) => `成就已解锁：${name}`
+    },
+    {
+      pattern: /^You reached Level (\d+)$/,
+      render: ([, level]) => `您已达到 ${level} 级`
+    },
+    {
+      pattern: /^Level (\d+)$/,
+      render: ([, level]) => `${level} 级`
+    },
+    {
+      pattern: /^Joined challenge: (.+)$/,
+      render: ([, name]) => `已加入挑战：${name}`
+    },
+    {
+      pattern: /^Completed challenge: (.+)$/,
+      render: ([, name]) => `已完成挑战：${name}`
+    },
+    {
+      pattern: /^Leaderboard update: (.+)$/,
+      render: ([, name]) => `排行榜更新：${name}`
+    },
+    {
+      pattern: /^(.+) commented on your (.+) trade$/,
+      render: ([, user, symbol]) => `${user} 评论了您的 ${symbol} 交易`
+    },
+    {
+      pattern: /^(.+) has reached \$(\d+\.\d+), which is above your target of \$(\d+\.\d+)$/,
+      render: ([, symbol, current, target]) =>
+        `${symbol} 已达到 $${current}，高于您设定的目标价 $${target}`
+    },
+    {
+      pattern: /^(.+) has dropped to \$(\d+\.\d+), which is below your target of \$(\d+\.\d+)$/,
+      render: ([, symbol, current, target]) =>
+        `${symbol} 已跌至 $${current}，低于您设定的目标价 $${target}`
+    },
+    {
+      pattern: /^(.+) has moved ([+-]?\d+\.\d+)%, reaching your threshold of ([+-]?\d+\.\d+)%$/,
+      render: ([, symbol, change, threshold]) =>
+        `${symbol} 变动 ${change}%，已达到您设定的阈值 ${threshold}%`
+    },
+    {
+      pattern: /^Triggered at \$(\d+\.\d+)$/,
+      render: ([, price]) => `触发价：$${price}`
     }
   ],
 

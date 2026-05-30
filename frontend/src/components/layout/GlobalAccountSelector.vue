@@ -18,7 +18,7 @@
       <span
         v-if="isFiltered"
         class="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0"
-        title="Account filter active"
+        :title="t('account.filterActive')"
       ></span>
 
       <!-- Chevron -->
@@ -41,7 +41,7 @@
         <div class="py-1" role="menu">
           <!-- Header -->
           <div class="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-700">
-            Filter by Account
+            {{ t('account.filterByAccount') }}
           </div>
 
           <!-- All Accounts Option -->
@@ -51,7 +51,7 @@
             :class="!isFiltered ? 'text-primary-600 dark:text-primary-400 font-medium' : 'text-gray-700 dark:text-gray-300'"
             role="menuitem"
           >
-            <span>All Accounts</span>
+            <span>{{ t('account.allAccounts') }}</span>
             <CheckIcon v-if="!isFiltered" class="h-4 w-4" />
           </button>
 
@@ -62,7 +62,7 @@
             :class="selectedAccount === UNSORTED_ACCOUNT ? 'text-primary-600 dark:text-primary-400 font-medium' : 'text-gray-700 dark:text-gray-300'"
             role="menuitem"
           >
-            <span>Unsorted</span>
+            <span>{{ t('account.unsorted') }}</span>
             <CheckIcon v-if="selectedAccount === UNSORTED_ACCOUNT" class="h-4 w-4" />
           </button>
 
@@ -71,12 +71,12 @@
 
           <!-- Loading state -->
           <div v-if="loading" class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
-            Loading accounts...
+            {{ t('account.loadingAccounts') }}
           </div>
 
           <!-- No accounts state -->
           <div v-else-if="accounts.length === 0" class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
-            No accounts found
+            {{ t('account.noAccountsFound') }}
           </div>
 
           <!-- Account List -->
@@ -106,8 +106,11 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { BuildingOfficeIcon, ChevronDownIcon, CheckIcon } from '@heroicons/vue/24/outline'
 import { useGlobalAccountFilter } from '@/composables/useGlobalAccountFilter'
+
+const { t } = useI18n()
 
 const {
   selectedAccount,

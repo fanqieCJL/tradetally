@@ -36,6 +36,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { tSentence } from '@/i18n'
+import { formatAppDate } from '@/utils/date'
 
 const props = defineProps({
   metrics: {
@@ -82,7 +83,7 @@ function formatRatio(value) {
 
 function formatDate(value) {
   if (!value) return null
-  return value
+  return formatAppDate(value) || null
 }
 
 const groups = computed(() => {

@@ -312,6 +312,7 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { tSentence } from '@/i18n'
+import { formatAppDate } from '@/utils/date'
 import api from '@/services/api'
 import { useNotification } from '@/composables/useNotification'
 
@@ -563,7 +564,7 @@ function formatEnum(value) {
 
 function formatDate(value) {
   if (!value) return s('N/A')
-  return new Date(value).toLocaleDateString()
+  return formatAppDate(value) || s('N/A')
 }
 
 onMounted(loadData)

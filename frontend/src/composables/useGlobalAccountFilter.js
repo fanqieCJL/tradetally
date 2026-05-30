@@ -1,5 +1,6 @@
 import { ref, computed, watch } from 'vue'
 import api from '@/services/api'
+import { i18n } from '@/i18n'
 import { useUiPreferencesStore } from '@/stores/uiPreferences'
 
 export const STORAGE_KEY = 'tradetally_global_account'
@@ -64,12 +65,14 @@ export function useGlobalAccountFilter() {
   }
 
   const selectedAccountLabel = computed(() => {
+    void i18n.global.locale.value
+
     if (selectedAccount.value === UNSORTED_ACCOUNT) {
-      return 'Unsorted'
+      return i18n.global.t('account.unsorted')
     }
 
     if (!selectedAccount.value) {
-      return 'All Accounts'
+      return i18n.global.t('account.allAccounts')
     }
 
     const matchingAccount = accounts.value.find(account => account.value === selectedAccount.value)

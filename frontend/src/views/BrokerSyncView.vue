@@ -1,16 +1,14 @@
 <template>
   <div class="content-wrapper py-8">
     <div class="mb-8">
-      <h1 class="heading-page">Broker Sync</h1>
+      <h1 class="heading-page">{{ s('Broker Sync') }}</h1>
       <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-        Connect your brokerage accounts to automatically sync trades.
+        {{ s('Connect your brokerage accounts to automatically sync trades.') }}
       </p>
     </div>
 
-    <!-- IBKR Maintenance Notice -->
     <IBKRNoticeBanner />
 
-    <!-- Success/Error Messages -->
     <div v-if="successMessage" class="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
       <div class="flex">
         <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
@@ -29,16 +27,13 @@
       </div>
     </div>
 
-    <!-- Loading State -->
     <div v-if="store.loading && !store.hasConnections" class="flex items-center justify-center py-12">
       <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
     </div>
 
-    <!-- Main Content -->
     <div v-else class="space-y-8">
-      <!-- Connected Brokers -->
       <div v-if="store.hasConnections" class="space-y-4">
-        <h2 class="text-lg font-medium text-gray-900 dark:text-white">Connected Brokers</h2>
+        <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('Connected Brokers') }}</h2>
 
         <div class="grid gap-4 md:grid-cols-2">
           <BrokerConnectionCard
@@ -54,13 +49,11 @@
         </div>
       </div>
 
-      <!-- Add New Connection -->
       <div class="card">
         <div class="card-body">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-6">Add Broker Connection</h3>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-6">{{ s('Add Broker Connection') }}</h3>
 
           <div class="grid gap-6 md:grid-cols-2">
-            <!-- IBKR Card -->
             <div
               class="p-6 border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-400 rounded-lg transition-colors cursor-pointer"
               @click="openIBKRModal()"
@@ -70,15 +63,14 @@
                   <span class="text-red-600 dark:text-red-400 font-bold text-lg">IB</span>
                 </div>
                 <div>
-                  <h4 class="font-medium text-gray-900 dark:text-white">Interactive Brokers</h4>
+                  <h4 class="font-medium text-gray-900 dark:text-white">{{ s('Interactive Brokers') }}</h4>
                   <p class="text-sm text-gray-500 dark:text-gray-400">
-                    {{ store.ibkrConnections.length > 0 ? 'Add another IBKR account' : 'Connect via Flex Query' }}
+                    {{ store.ibkrConnections.length > 0 ? s('Add another IBKR account') : s('Connect via Flex Query') }}
                   </p>
                 </div>
               </div>
             </div>
 
-            <!-- Schwab Card -->
             <div
               class="p-6 border-2 rounded-lg transition-colors"
               :class="[
@@ -96,51 +88,50 @@
                   <span v-else class="text-primary-600 dark:text-primary-400 font-bold text-lg">CS</span>
                 </div>
                 <div>
-                  <h4 class="font-medium text-gray-900 dark:text-white">Charles Schwab</h4>
+                  <h4 class="font-medium text-gray-900 dark:text-white">{{ s('Charles Schwab') }}</h4>
                   <p class="text-sm text-gray-500 dark:text-gray-400">
-                    {{ store.schwabConnection ? 'Already connected' : schwabConnecting ? 'Connecting...' : 'Connect via OAuth' }}
+                    {{ store.schwabConnection ? s('Already connected') : schwabConnecting ? s('Connecting...') : s('Connect via OAuth') }}
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Schwab Note -->
           <div class="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
             <p class="text-xs text-amber-700 dark:text-amber-300">
-              <strong>Note for former TD Ameritrade users:</strong> The Schwab API only returns trades made natively on Schwab. Historical TD Ameritrade trades are not available via API sync. Use CSV import for complete trade history.
+              <strong>{{ s('Note for former TD Ameritrade users:') }}</strong>
+              {{ s('The Schwab API only returns trades made natively on Schwab. Historical TD Ameritrade trades are not available via API sync. Use CSV import for complete trade history.') }}
             </p>
           </div>
         </div>
       </div>
 
-      <!-- Sync History -->
       <div class="card">
         <div class="card-body">
           <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Sync History</h3>
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ s('Sync History') }}</h3>
             <button
               @click="refreshLogs"
               class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
             >
-              Refresh
+              {{ s('Refresh') }}
             </button>
           </div>
 
           <div v-if="store.syncLogs.length === 0" class="text-center py-8 text-gray-500 dark:text-gray-400">
-            No sync history yet. Connect a broker and sync to see history here.
+            {{ s('No sync history yet. Connect a broker and sync to see history here.') }}
           </div>
 
           <div v-else class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
               <thead>
                 <tr>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Broker</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Type</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Imported</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Duplicates</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ s('Broker') }}</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ s('Type') }}</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ s('Status') }}</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ s('Imported') }}</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ s('Duplicates') }}</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{{ s('Date') }}</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -149,14 +140,14 @@
                     <span class="font-medium text-gray-900 dark:text-white uppercase">{{ log.brokerType }}</span>
                   </td>
                   <td class="px-4 py-3 whitespace-nowrap text-gray-500 dark:text-gray-400 capitalize">
-                    {{ log.syncType }}
+                    {{ translateSyncType(log.syncType) }}
                   </td>
                   <td class="px-4 py-3 whitespace-nowrap">
                     <span
                       class="px-2 py-1 text-xs rounded-full"
                       :class="getStatusClass(log.status)"
                     >
-                      {{ log.status }}
+                      {{ translateStatus(log.status) }}
                     </span>
                   </td>
                   <td class="px-4 py-3 whitespace-nowrap text-gray-900 dark:text-white">
@@ -176,7 +167,6 @@
       </div>
     </div>
 
-    <!-- IBKR Connection Modal -->
     <IBKRConnectionModal
       v-if="showIBKRModal"
       @close="closeIBKRModal"
@@ -185,7 +175,6 @@
       :error="store.error"
     />
 
-    <!-- Settings Modal -->
     <ConnectionSettingsModal
       v-if="showSettingsModal"
       :connection="selectedConnection"
@@ -198,20 +187,28 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
+import { tSentence } from '@/i18n'
 import { useBrokerSyncStore } from '@/stores/brokerSync'
 import { useTradesStore } from '@/stores/trades'
 import { useNotification } from '@/composables/useNotification'
+import { useUserTimezone } from '@/composables/useUserTimezone'
 import BrokerConnectionCard from '@/components/broker-sync/BrokerConnectionCard.vue'
 import IBKRConnectionModal from '@/components/broker-sync/IBKRConnectionModal.vue'
 import ConnectionSettingsModal from '@/components/broker-sync/ConnectionSettingsModal.vue'
 import IBKRNoticeBanner from '@/components/broker-sync/IBKRNoticeBanner.vue'
+
+const { locale } = useI18n()
+const s = (text) => tSentence(text, { context: 'metrics' })
+void locale
 
 const store = useBrokerSyncStore()
 const tradesStore = useTradesStore()
 const route = useRoute()
 const router = useRouter()
 const { showConfirmation, showDangerConfirmation } = useNotification()
+const { formatDateTime: formatDateTimeTz } = useUserTimezone()
 
 const showIBKRModal = ref(false)
 const showSettingsModal = ref(false)
@@ -219,6 +216,16 @@ const selectedConnection = ref(null)
 const successMessage = ref('')
 const schwabConnecting = ref(false)
 const SCHWAB_PENDING_STORAGE_KEY = 'broker_sync_schwab_pending'
+
+function translateStatus(status) {
+  if (!status) return ''
+  return s(status)
+}
+
+function translateSyncType(type) {
+  if (!type) return ''
+  return s(type)
+}
 
 function scheduleSuccessMessage(message) {
   successMessage.value = message
@@ -247,14 +254,14 @@ async function consumeOAuthCallbackState(query) {
   ])
 
   if (query.success === 'schwab') {
-    scheduleSuccessMessage('Schwab account connected successfully. Ready to sync trades.')
+    scheduleSuccessMessage(s('Schwab account connected successfully. Ready to sync trades.'))
   }
 
   if (query.error) {
     const detail = typeof query.details === 'string' ? decodeURIComponent(query.details) : ''
     store.error = detail
-      ? `Connection failed: ${detail}`
-      : `Connection failed: ${query.error}`
+      ? s('Connection failed: {detail}').replace('{detail}', detail)
+      : s('Connection failed: {error}').replace('{error}', query.error)
   }
 
   await router.replace({ query: {} })
@@ -268,7 +275,6 @@ onMounted(async () => {
   await consumeOAuthCallbackState(route.query)
 })
 
-// Watch for route changes (OAuth callback)
 watch(() => route.query, async (newQuery) => {
   await consumeOAuthCallbackState(newQuery)
 })
@@ -292,7 +298,7 @@ async function handleIBKRSave(credentials) {
   try {
     await store.addIBKRConnection(credentials)
     showIBKRModal.value = false
-    scheduleSuccessMessage('IBKR connection added successfully!')
+    scheduleSuccessMessage(s('IBKR connection added successfully!'))
   } catch (error) {
     // Error is handled by store
   }
@@ -305,25 +311,22 @@ async function handleSchwabConnect() {
       window.sessionStorage.setItem(SCHWAB_PENDING_STORAGE_KEY, 'true')
     }
     const authUrl = await store.initSchwabOAuth()
-    // Redirect to Schwab OAuth
     window.location.href = authUrl
   } catch (error) {
     schwabConnecting.value = false
     if (typeof window !== 'undefined') {
       window.sessionStorage.removeItem(SCHWAB_PENDING_STORAGE_KEY)
     }
-    // Error is handled by store
   }
 }
 
 async function handleSync(connection) {
   try {
     await store.triggerSync(connection.id)
-    scheduleSuccessMessage('Sync started. Check the history below for results.')
+    scheduleSuccessMessage(s('Sync started. Check the history below for results.'))
 
-    // Poll for updates until sync completes
     const pollInterval = 3000
-    const maxAttempts = 40 // 2 minutes max
+    const maxAttempts = 40
     let attempts = 0
 
     const poll = async () => {
@@ -341,7 +344,6 @@ async function handleSync(connection) {
       if (hasActiveSyncs && attempts < maxAttempts) {
         setTimeout(poll, pollInterval)
       } else {
-        // Sync finished - refresh trades data to update P&L and counts
         await Promise.all([
           tradesStore.fetchTrades(),
           tradesStore.fetchAnalytics()
@@ -359,9 +361,9 @@ async function handleTest(connection) {
   try {
     const result = await store.testConnection(connection.id)
     if (result.success) {
-      successMessage.value = 'Connection test successful!'
+      successMessage.value = s('Connection test successful!')
     } else {
-      store.error = result.message || 'Connection test failed'
+      store.error = result.message || s('Connection test failed')
     }
     setTimeout(() => { successMessage.value = '' }, 5000)
   } catch (error) {
@@ -373,7 +375,7 @@ async function handleSettingsSave(updates) {
   try {
     await store.updateConnection(selectedConnection.value.id, updates)
     showSettingsModal.value = false
-    successMessage.value = 'Settings updated successfully!'
+    successMessage.value = s('Settings updated successfully!')
     setTimeout(() => { successMessage.value = '' }, 5000)
   } catch (error) {
     // Error is handled by store
@@ -384,12 +386,12 @@ async function handleDelete(connection) {
   const brokerName = connection.brokerType.toUpperCase()
 
   showConfirmation(
-    `Disconnect ${brokerName}?`,
-    'This will remove the broker connection. Your imported trades will not be deleted.',
+    s('Disconnect {broker}?').replace('{broker}', brokerName),
+    s('This will remove the broker connection. Your imported trades will not be deleted.'),
     async () => {
       try {
         await store.deleteConnection(connection.id)
-        successMessage.value = 'Connection removed successfully!'
+        successMessage.value = s('Connection removed successfully!')
         setTimeout(() => { successMessage.value = '' }, 5000)
       } catch (error) {
         // Error is handled by store
@@ -402,27 +404,23 @@ async function handleDeleteTrades(connection) {
   const brokerName = connection.brokerType.toUpperCase()
 
   showDangerConfirmation(
-    `Delete All ${brokerName} Trades?`,
-    `This will permanently delete ALL trades that were imported via broker sync from ${brokerName}. This action cannot be undone.`,
+    s('Delete All {broker} Trades?').replace('{broker}', brokerName),
+    s('This will permanently delete ALL trades that were imported via broker sync from {broker}. This action cannot be undone.').replace('{broker}', brokerName),
     async () => {
       try {
         const result = await store.deleteBrokerTrades(connection.id)
-        successMessage.value = result.message || `Deleted trades from ${brokerName}`
+        successMessage.value = result.message || s('Deleted trades from {broker}').replace('{broker}', brokerName)
         setTimeout(() => { successMessage.value = '' }, 5000)
 
-        // Refresh trades data to update P&L and counts
-        console.log('[BROKER-SYNC] Refreshing trades store after delete...')
         await Promise.all([
           tradesStore.fetchTrades(),
           tradesStore.fetchAnalytics()
         ])
-        console.log('[BROKER-SYNC] Trades store refreshed. Total P&L:', tradesStore.totalPnL, 'Total trades:', tradesStore.totalTrades)
       } catch (error) {
         console.error('[BROKER-SYNC] Error refreshing trades:', error)
-        // Error is handled by store
       }
     },
-    { confirmText: 'Delete All Trades' }
+    { confirmText: s('Delete All Trades') }
   )
 }
 
@@ -432,7 +430,7 @@ async function refreshLogs() {
 
 function formatDate(date) {
   if (!date) return '-'
-  return new Date(date).toLocaleString()
+  return formatDateTimeTz(date)
 }
 
 function getStatusClass(status) {
